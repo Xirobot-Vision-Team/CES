@@ -62,3 +62,5 @@ Licensed under Apache-2.0. See [LICENSE](LICENSE), [NOTICE](NOTICE) and
 [third-party information](THIRD_PARTY.md).
 
 Release preparation: **1.8.0**. See [cleanup and release scope](docs/CLEANUP.md).
+
+Use the existing `$ces` skill for **CES 项目维护** to maintain the selected CES GitHub source repository. See [maintenance mode](docs/MAINTENANCE.md); no separate skill or scheduler is installed.

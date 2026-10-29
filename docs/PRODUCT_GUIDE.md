@@ -69,3 +69,7 @@ CES-Workflow保留兼容入口，权威实现在CES/operator。原生Action和�
 
 使用GitHub原生指派与@提及事件。各成员在 https://github.com/settings/notifications 开启参与/提及的Email与On GitHub；发布账号自己的事件另检查Your own updates。CES不读取成员私人邮箱或强制修改个人设置，不维护收件邮箱映射。GitHub决定实际通知邮件，正文格式也由GitHub决定，不能保证“只发送链接”。此前SMTP链接邮件试装已取消且关闭，不能从本地配置残留推断为正在发送。
 
+
+## CES自身项目维护
+
+在同一个 `$ces` skill 中说“CES 项目维护”或“维护 CES GitHub 项目”，可调用源码审阅、修复、Issue/PR整理、CI核验、合并及发布流程。目标和授权来自用户上下文或外部维护配置，不借用业务项目profile；此入口不新增skill、CLI或定时器。详见[维护模式](MAINTENANCE.md)。

@@ -1,6 +1,6 @@
 ---
 name: ces
-description: Use CES for 仓库每日分析、仓库周总结、仓库月总结、仓库年报告、仓库知识扩展、仓库测试审查; source-bound code analysis, opt-in project test contracts and report analysis, configured builds, deep Issues, GitHub reminders, and repository knowledge documentation.
+description: Use CES for 仓库每日分析、仓库周总结、仓库月总结、仓库年报告、仓库知识扩展、仓库测试审查、CES项目维护; source-bound code analysis, opt-in project test contracts and report analysis, configured builds, deep Issues, GitHub reminders, and repository knowledge documentation.
 ---
 
 # CES
@@ -34,6 +34,12 @@ For 仓库测试审查, a supplied test entry, or test-result analysis, read doc
 Execution is separately opt-in: explicit human authorization plus testing.enabled, testing.allow_execute, execution_policy.run_runtime_tests=true and `test run --execute`. A build-only project stays disabled until the user explicitly enables its test entry. After execution read actual logs/results and relevant code, write receipt-bound ces.test_analysis.v1, then `test analyze` and authorized `test publish` to a test-report Issue, CCing configured project owners/test maintainers and ordinary project CC recipients. Do not invent code defects from failures or automatically mark Issues fixed. New project test receipts do not replace track's independent fix criteria. Installation does not add test runs to existing automations.
 
 Use explicit user-registered function/feature ownership from the external profile or `test owners` registry to map case IDs/patterns to developers. When given a subject and developers, inspect test registration/call sites to prepare its case selectors; leave ambiguous associations unresolved. Failed/error cases CC only matching developers in addition to normal report roles; disclose unmapped cases, preserve each run's ownership snapshot, do not infer accounts from test output/blame, and do not treat registration as proof of fault. Updating ownership alone does not authorize tests or resend old reports.
+
+## CES project maintenance
+
+“CES 项目维护”, “维护 CES GitHub 项目”, or an explicit request to review/fix/merge/release CES itself invokes this mode within `$ces`; do not create or route to a separate skill. Read docs/MAINTENANCE.md, the target repository's current GOVERNANCE.md and relevant development/security guides. Resolve the exact source repository from explicit user context or an external maintenance profile, not a business project's audit profile. Verify Git origin and remote repository identity before writing. This is assistant orchestration, not a new CLI subcommand; installing the entry does not execute maintenance or create a timer.
+
+Reuse existing human authorization for AI review, PR merging and release publication; the profile cannot manufacture it. Record actual exact-head AI review, require current CI, merge normally and publish only from verified merged main. Preserve other branch/Actions protections, external deployment data and all unrelated repositories/organization settings. Report actual PR/CI/release outcomes and distinguish source maintenance from installing an upgrade. Detailed workflow and boundaries: docs/MAINTENANCE.md.
 
 ## Public source maintenance
 

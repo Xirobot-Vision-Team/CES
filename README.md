@@ -58,3 +58,5 @@ Windows 的 `ces-product.cmd` 与直接调用 `operator/ces_product.py` 使用�
 [第三方依赖说明](THIRD_PARTY.md)。源码完整性与本地测试结果不等于独立安全认证。
 
 Release preparation: **1.8.0**. See [cleanup and release scope](docs/CLEANUP.md).
+
+Use the existing `$ces` skill for **CES 项目维护** to maintain the selected CES GitHub source repository. See [maintenance mode](docs/MAINTENANCE.md); no separate skill or scheduler is installed.
