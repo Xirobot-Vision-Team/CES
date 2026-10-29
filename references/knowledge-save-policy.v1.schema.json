@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ces.local/knowledge-save-policy.v1.schema.json",
+  "title": "knowledge-save-policy",
+  "description": "Extra explicit limited local append policy. Receipts are host assertions; independent approvals are signed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "purpose",
+    "store_instance_id",
+    "store_scope_binding_sha256",
+    "authorization_scope_sha256",
+    "permission_receipt_sha256",
+    "permit_local_version_append",
+    "permit_reviewed_text_local_persistence",
+    "permit_restricted_local_persistence",
+    "permit_source_knowledge_overwrite",
+    "permit_business_repository_write",
+    "permit_issue_or_provider_write",
+    "permit_publish"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "ces.knowledge_save_policy.v1"
+    },
+    "purpose": {
+      "type": "string",
+      "const": "append_immutable_local_ces_knowledge_metadata_only"
+    },
+    "store_instance_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "store_scope_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "authorization_scope_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permission_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permit_local_version_append": {
+      "type": "boolean"
+    },
+    "permit_reviewed_text_local_persistence": {
+      "type": "boolean"
+    },
+    "permit_restricted_local_persistence": {
+      "type": "boolean"
+    },
+    "permit_source_knowledge_overwrite": {
+      "const": false
+    },
+    "permit_business_repository_write": {
+      "const": false
+    },
+    "permit_issue_or_provider_write": {
+      "const": false
+    },
+    "permit_publish": {
+      "const": false
+    }
+  }
+}

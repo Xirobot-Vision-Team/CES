@@ -1,0 +1,1066 @@
+{
+  "type": "object",
+  "title": "EC200 report history show/correction envelope, never publish",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.report_history.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^REPORT_HISTORY_[A-Z0-9_]+$",
+      "maxLength": 128
+    },
+    "subject": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "title": "Internal report display with exact immutable history and typed diffs",
+          "additionalProperties": false,
+          "properties": {
+            "report_slot_ref": {
+              "type": "string",
+              "pattern": "^cesrslot1:[0-9a-f]{64}$"
+            },
+            "slot_key": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+            },
+            "period_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "slot_members": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 32,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "repository_ref": {
+                    "type": "string",
+                    "pattern": "^cesrepo1:[0-9a-f]{64}$"
+                  },
+                  "report_subject_ref": {
+                    "type": "string",
+                    "pattern": "^cesrs1:[0-9a-f]{64}$"
+                  }
+                },
+                "required": [
+                  "repository_ref",
+                  "report_subject_ref"
+                ]
+              }
+            },
+            "selected_version": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 64
+            },
+            "latest_version": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 64
+            },
+            "selected_report_ref": {
+              "type": "string",
+              "pattern": "^cesrr1:[0-9a-f]{64}$"
+            },
+            "selected_entry_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "index_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "record_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "rendered_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "document_state": {
+              "const": "UNPUBLISHED_INTERNAL_REVIEW_ARTIFACT"
+            },
+            "trust_state": {
+              "const": "DECLARED_ONLY_NOT_AUTHENTICATED"
+            },
+            "publication_state": {
+              "const": "NOT_PUBLISHED"
+            },
+            "source_pins": {
+              "type": "object",
+              "title": "EC199 replay-bound source pins",
+              "additionalProperties": false,
+              "properties": {
+                "prepare_binding_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "prepare_canonical_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "ai_input_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "scope_binding_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "metrics_binding_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "release_policy_binding_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "scope_ref": {
+                  "type": "string",
+                  "maxLength": 256
+                },
+                "period_id": {
+                  "type": "string",
+                  "maxLength": 256
+                }
+              },
+              "required": [
+                "prepare_binding_sha256",
+                "prepare_canonical_sha256",
+                "ai_input_sha256",
+                "scope_binding_sha256",
+                "metrics_binding_sha256",
+                "release_policy_binding_sha256",
+                "scope_ref",
+                "period_id"
+              ]
+            },
+            "render_policy_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "repositories": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 32,
+              "items": {
+                "type": "object",
+                "title": "Per-repository four-channel display",
+                "additionalProperties": false,
+                "properties": {
+                  "repository_ref": {
+                    "type": "string",
+                    "pattern": "^cesrepo1:[0-9a-f]{64}$"
+                  },
+                  "report_subject_ref": {
+                    "type": "string",
+                    "pattern": "^cesrs1:[0-9a-f]{64}$"
+                  },
+                  "source_mode": {
+                    "enum": [
+                      "WorkingTree",
+                      "DeliveredTarget",
+                      "ProposedPR"
+                    ]
+                  },
+                  "source_binding_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "people_binding_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "path_scope": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "inventory_state": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "scope_gap_codes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "maxItems": 64
+                  },
+                  "period_window_complete_declared": {
+                    "type": "boolean"
+                  },
+                  "channels": {
+                    "type": "array",
+                    "minItems": 4,
+                    "maxItems": 4,
+                    "items": {
+                      "type": "object",
+                      "title": "Channel projection",
+                      "additionalProperties": false,
+                      "properties": {
+                        "channel": {
+                          "enum": [
+                            "ai_conclusion",
+                            "ci_execution",
+                            "git_activity",
+                            "unknown_signal"
+                          ]
+                        },
+                        "coverage_state": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 128
+                        },
+                        "coverage_reason_codes": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          "maxItems": 64
+                        },
+                        "release_state": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 128
+                        },
+                        "ci_completion_signal": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 128
+                        },
+                        "citation_count": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 512
+                        },
+                        "citation_refs": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^cesrc1:[0-9a-f]{64}$"
+                          },
+                          "maxItems": 512
+                        }
+                      },
+                      "required": [
+                        "channel",
+                        "coverage_state",
+                        "coverage_reason_codes",
+                        "release_state",
+                        "ci_completion_signal",
+                        "citation_count",
+                        "citation_refs"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "repository_ref",
+                  "report_subject_ref",
+                  "source_mode",
+                  "source_binding_sha256",
+                  "people_binding_sha256",
+                  "path_scope",
+                  "inventory_state",
+                  "scope_gap_codes",
+                  "period_window_complete_declared",
+                  "channels"
+                ]
+              }
+            },
+            "history": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 64,
+              "items": {
+                "type": "object",
+                "title": "Immutable index version projection",
+                "additionalProperties": false,
+                "properties": {
+                  "version": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 64
+                  },
+                  "report_ref": {
+                    "type": "string",
+                    "pattern": "^cesrr1:[0-9a-f]{64}$"
+                  },
+                  "entry_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "record_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "rendered_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "handoff_draft_ref": {
+                    "type": "string",
+                    "pattern": "^cesrhd1:[0-9a-f]{64}$"
+                  },
+                  "render_policy_binding_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "version_intent": {
+                    "enum": [
+                      "INITIAL_REPORT",
+                      "NOT_RECORDED_IN_EC199_INDEX"
+                    ]
+                  }
+                },
+                "required": [
+                  "version",
+                  "report_ref",
+                  "entry_sha256",
+                  "record_sha256",
+                  "rendered_sha256",
+                  "handoff_draft_ref",
+                  "render_policy_binding_sha256",
+                  "version_intent"
+                ]
+              }
+            },
+            "comparison": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "title": "Two persisted report versions compared as unverified declarations",
+                  "additionalProperties": false,
+                  "properties": {
+                    "before_version": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 64
+                    },
+                    "after_version": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 64
+                    },
+                    "before_report_ref": {
+                      "type": "string",
+                      "pattern": "^cesrr1:[0-9a-f]{64}$"
+                    },
+                    "after_report_ref": {
+                      "type": "string",
+                      "pattern": "^cesrr1:[0-9a-f]{64}$"
+                    },
+                    "changed_categories": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "maxItems": 5,
+                      "items": {
+                        "enum": [
+                          "source",
+                          "scope",
+                          "permission",
+                          "citation",
+                          "coverage"
+                        ]
+                      }
+                    },
+                    "changes": {
+                      "type": "object",
+                      "title": "Category-specific differences",
+                      "additionalProperties": false,
+                      "properties": {
+                        "source": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "title": "Explicit stored declaration difference",
+                            "additionalProperties": false,
+                            "properties": {
+                              "repository_ref": {
+                                "oneOf": [
+                                  {
+                                    "type": "string",
+                                    "pattern": "^cesrepo1:[0-9a-f]{64}$"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "channel": {
+                                "oneOf": [
+                                  {
+                                    "enum": [
+                                      "ai_conclusion",
+                                      "ci_execution",
+                                      "git_activity",
+                                      "unknown_signal"
+                                    ]
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "field": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              },
+                              "before": {},
+                              "after": {}
+                            },
+                            "required": [
+                              "repository_ref",
+                              "channel",
+                              "field",
+                              "before",
+                              "after"
+                            ]
+                          },
+                          "maxItems": 512
+                        },
+                        "scope": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "title": "Explicit stored declaration difference",
+                            "additionalProperties": false,
+                            "properties": {
+                              "repository_ref": {
+                                "oneOf": [
+                                  {
+                                    "type": "string",
+                                    "pattern": "^cesrepo1:[0-9a-f]{64}$"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "channel": {
+                                "oneOf": [
+                                  {
+                                    "enum": [
+                                      "ai_conclusion",
+                                      "ci_execution",
+                                      "git_activity",
+                                      "unknown_signal"
+                                    ]
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "field": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              },
+                              "before": {},
+                              "after": {}
+                            },
+                            "required": [
+                              "repository_ref",
+                              "channel",
+                              "field",
+                              "before",
+                              "after"
+                            ]
+                          },
+                          "maxItems": 512
+                        },
+                        "permission": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "title": "Explicit stored declaration difference",
+                            "additionalProperties": false,
+                            "properties": {
+                              "repository_ref": {
+                                "oneOf": [
+                                  {
+                                    "type": "string",
+                                    "pattern": "^cesrepo1:[0-9a-f]{64}$"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "channel": {
+                                "oneOf": [
+                                  {
+                                    "enum": [
+                                      "ai_conclusion",
+                                      "ci_execution",
+                                      "git_activity",
+                                      "unknown_signal"
+                                    ]
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "field": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              },
+                              "before": {},
+                              "after": {}
+                            },
+                            "required": [
+                              "repository_ref",
+                              "channel",
+                              "field",
+                              "before",
+                              "after"
+                            ]
+                          },
+                          "maxItems": 512
+                        },
+                        "citation": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "title": "Bounded citation set delta",
+                            "additionalProperties": false,
+                            "properties": {
+                              "repository_ref": {
+                                "type": "string",
+                                "pattern": "^cesrepo1:[0-9a-f]{64}$"
+                              },
+                              "channel": {
+                                "enum": [
+                                  "ai_conclusion",
+                                  "ci_execution",
+                                  "git_activity",
+                                  "unknown_signal"
+                                ]
+                              },
+                              "field": {
+                                "const": "citation_refs"
+                              },
+                              "before_count": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 512
+                              },
+                              "after_count": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 512
+                              },
+                              "added_count": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 512
+                              },
+                              "removed_count": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 512
+                              },
+                              "added_refs": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "pattern": "^cesrc1:[0-9a-f]{64}$"
+                                },
+                                "maxItems": 32
+                              },
+                              "removed_refs": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "pattern": "^cesrc1:[0-9a-f]{64}$"
+                                },
+                                "maxItems": 32
+                              },
+                              "added_omitted_count": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 512
+                              },
+                              "removed_omitted_count": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 512
+                              },
+                              "before_set_sha256": {
+                                "type": "string",
+                                "pattern": "^[0-9a-f]{64}$"
+                              },
+                              "after_set_sha256": {
+                                "type": "string",
+                                "pattern": "^[0-9a-f]{64}$"
+                              }
+                            },
+                            "required": [
+                              "repository_ref",
+                              "channel",
+                              "field",
+                              "before_count",
+                              "after_count",
+                              "added_count",
+                              "removed_count",
+                              "added_refs",
+                              "removed_refs",
+                              "added_omitted_count",
+                              "removed_omitted_count",
+                              "before_set_sha256",
+                              "after_set_sha256"
+                            ]
+                          },
+                          "maxItems": 128
+                        },
+                        "coverage": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "title": "Explicit stored declaration difference",
+                            "additionalProperties": false,
+                            "properties": {
+                              "repository_ref": {
+                                "oneOf": [
+                                  {
+                                    "type": "string",
+                                    "pattern": "^cesrepo1:[0-9a-f]{64}$"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "channel": {
+                                "oneOf": [
+                                  {
+                                    "enum": [
+                                      "ai_conclusion",
+                                      "ci_execution",
+                                      "git_activity",
+                                      "unknown_signal"
+                                    ]
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "field": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              },
+                              "before": {},
+                              "after": {}
+                            },
+                            "required": [
+                              "repository_ref",
+                              "channel",
+                              "field",
+                              "before",
+                              "after"
+                            ]
+                          },
+                          "maxItems": 1024
+                        }
+                      },
+                      "required": [
+                        "source",
+                        "scope",
+                        "permission",
+                        "citation",
+                        "coverage"
+                      ]
+                    },
+                    "permission_interpretation": {
+                      "const": "HASH_AND_RELEASE_STATES_ONLY_UNVERIFIED_NO_HISTORIC_GRANT_VALUES"
+                    },
+                    "citation_diff_limit_per_channel": {
+                      "const": 32
+                    }
+                  },
+                  "required": [
+                    "before_version",
+                    "after_version",
+                    "before_report_ref",
+                    "after_report_ref",
+                    "changed_categories",
+                    "changes",
+                    "permission_interpretation",
+                    "citation_diff_limit_per_channel"
+                  ]
+                }
+              ]
+            },
+            "rendered_markdown": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 524288
+                }
+              ]
+            },
+            "store_read_state": {
+              "const": "PRIVATE_LOCAL_STORE_BYTES_VERIFIED_NOT_EXTERNAL_AUTHENTICATION"
+            },
+            "policy_notice": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            "limitations": {
+              "type": "object",
+              "title": "Never-upgraded trust claims",
+              "additionalProperties": false,
+              "properties": {
+                "external_authorization_or_review_receipts_authenticated": {
+                  "const": false
+                },
+                "report_contents_or_source_claims_independently_verified": {
+                  "const": false
+                },
+                "ci_execution_or_pass_verified": {
+                  "const": false
+                },
+                "repository_universe_or_identity_authenticated": {
+                  "const": false
+                },
+                "personal_performance_assessed_or_scored": {
+                  "const": false
+                },
+                "ai_model_or_external_provider_invoked": {
+                  "const": false
+                },
+                "external_publication_or_egress_authorized": {
+                  "const": false
+                },
+                "report_published": {
+                  "const": false
+                },
+                "native_powershell_report_render_registered": {
+                  "const": false
+                },
+                "local_storage_attacker_proof_or_cross_os_verified": {
+                  "const": false
+                },
+                "historical_store_identity_cryptographically_authenticated": {
+                  "const": false
+                },
+                "correction_grants_and_reasons_externally_authenticated": {
+                  "const": false
+                },
+                "historic_render_permission_values_available": {
+                  "const": false
+                },
+                "correction_intent_persisted_in_ec199_index": {
+                  "const": false
+                },
+                "power_shell_report_show_registered": {
+                  "const": false
+                }
+              },
+              "required": [
+                "external_authorization_or_review_receipts_authenticated",
+                "report_contents_or_source_claims_independently_verified",
+                "ci_execution_or_pass_verified",
+                "repository_universe_or_identity_authenticated",
+                "personal_performance_assessed_or_scored",
+                "ai_model_or_external_provider_invoked",
+                "external_publication_or_egress_authorized",
+                "report_published",
+                "native_powershell_report_render_registered",
+                "local_storage_attacker_proof_or_cross_os_verified",
+                "historical_store_identity_cryptographically_authenticated",
+                "correction_grants_and_reasons_externally_authenticated",
+                "historic_render_permission_values_available",
+                "correction_intent_persisted_in_ec199_index",
+                "power_shell_report_show_registered"
+              ]
+            },
+            "correction_declaration": {
+              "type": "object",
+              "title": "Correction declaration only in response, not EC199 durable index",
+              "additionalProperties": false,
+              "properties": {
+                "correction_categories": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 5,
+                  "uniqueItems": true,
+                  "items": {
+                    "enum": [
+                      "source",
+                      "scope",
+                      "permission",
+                      "citation",
+                      "coverage"
+                    ]
+                  }
+                },
+                "previous_version": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 63
+                },
+                "previous_report_ref": {
+                  "type": "string",
+                  "pattern": "^cesrr1:[0-9a-f]{64}$"
+                },
+                "previous_entry_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "correction_policy_receipt_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "correction_authentication": {
+                  "const": "DECLARED_ONLY_NOT_AUTHENTICATED"
+                },
+                "permanent_index_intent": {
+                  "const": "NOT_STORED_IN_EC199_INDEX"
+                }
+              },
+              "required": [
+                "correction_categories",
+                "previous_version",
+                "previous_report_ref",
+                "previous_entry_sha256",
+                "correction_policy_receipt_sha256",
+                "correction_authentication",
+                "permanent_index_intent"
+              ]
+            }
+          },
+          "required": [
+            "report_slot_ref",
+            "slot_key",
+            "period_id",
+            "slot_members",
+            "selected_version",
+            "latest_version",
+            "selected_report_ref",
+            "selected_entry_sha256",
+            "index_binding_sha256",
+            "record_sha256",
+            "rendered_sha256",
+            "document_state",
+            "trust_state",
+            "publication_state",
+            "source_pins",
+            "render_policy_binding_sha256",
+            "repositories",
+            "history",
+            "comparison",
+            "rendered_markdown",
+            "store_read_state",
+            "policy_notice",
+            "limitations"
+          ]
+        }
+      ]
+    },
+    "canonical_json": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "maxLength": 2097152
+        }
+      ]
+    },
+    "correction_storage": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "title": "EC199 returned save receipt or verified idempotent correction",
+          "additionalProperties": false,
+          "properties": {
+            "state": {
+              "enum": [
+                "SAVED_NEW_VERSION",
+                "REPLAY_ALREADY_SAVED"
+              ]
+            },
+            "version": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 64
+            },
+            "report_ref": {
+              "type": "string",
+              "pattern": "^cesrr1:[0-9a-f]{64}$"
+            },
+            "entry_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "index_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "publication_state": {
+              "const": "NOT_PUBLISHED"
+            },
+            "durability": {
+              "const": "LOCAL_POSIX_ATOMIC_INDEX_ADVISORY_LOCK_NOT_AUTHENTICATED"
+            },
+            "report_slot_ref": {
+              "type": "string",
+              "pattern": "^cesrslot1:[0-9a-f]{64}$"
+            },
+            "version_count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 64
+            },
+            "report_record_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "rendered_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "state",
+            "version",
+            "report_ref",
+            "entry_sha256",
+            "index_binding_sha256",
+            "publication_state"
+          ]
+        }
+      ]
+    },
+    "limitations": {
+      "type": "object",
+      "title": "Never-upgraded trust claims",
+      "additionalProperties": false,
+      "properties": {
+        "external_authorization_or_review_receipts_authenticated": {
+          "const": false
+        },
+        "report_contents_or_source_claims_independently_verified": {
+          "const": false
+        },
+        "ci_execution_or_pass_verified": {
+          "const": false
+        },
+        "repository_universe_or_identity_authenticated": {
+          "const": false
+        },
+        "personal_performance_assessed_or_scored": {
+          "const": false
+        },
+        "ai_model_or_external_provider_invoked": {
+          "const": false
+        },
+        "external_publication_or_egress_authorized": {
+          "const": false
+        },
+        "report_published": {
+          "const": false
+        },
+        "native_powershell_report_render_registered": {
+          "const": false
+        },
+        "local_storage_attacker_proof_or_cross_os_verified": {
+          "const": false
+        },
+        "historical_store_identity_cryptographically_authenticated": {
+          "const": false
+        },
+        "correction_grants_and_reasons_externally_authenticated": {
+          "const": false
+        },
+        "historic_render_permission_values_available": {
+          "const": false
+        },
+        "correction_intent_persisted_in_ec199_index": {
+          "const": false
+        },
+        "power_shell_report_show_registered": {
+          "const": false
+        }
+      },
+      "required": [
+        "external_authorization_or_review_receipts_authenticated",
+        "report_contents_or_source_claims_independently_verified",
+        "ci_execution_or_pass_verified",
+        "repository_universe_or_identity_authenticated",
+        "personal_performance_assessed_or_scored",
+        "ai_model_or_external_provider_invoked",
+        "external_publication_or_egress_authorized",
+        "report_published",
+        "native_powershell_report_render_registered",
+        "local_storage_attacker_proof_or_cross_os_verified",
+        "historical_store_identity_cryptographically_authenticated",
+        "correction_grants_and_reasons_externally_authenticated",
+        "historic_render_permission_values_available",
+        "correction_intent_persisted_in_ec199_index",
+        "power_shell_report_show_registered"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "subject",
+    "canonical_json",
+    "correction_storage",
+    "limitations"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/references/report-history-result.v1.schema.json"
+}

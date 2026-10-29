@@ -1,0 +1,16 @@
+* text=auto
+*.py text eol=lf
+*.ps1 text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.sh text eol=lf
+*.cmd text eol=lf
+*.txt text eol=lf
+LICENSE text eol=lf
+NOTICE text eol=lf
+# These overrides must be last: preserve protected historical protocol bytes.
+scripts/** -text
+construction/** -text
+references/** -text

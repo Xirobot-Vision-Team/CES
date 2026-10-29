@@ -1,0 +1,92 @@
+{
+  "schema": "ces.task_staging_contract.v1",
+  "introduced_in": "V4.82/R172/EC-172",
+  "implementation": "construction/task_staging.py",
+  "scope": "PRIVATE_LOCAL_CES_STAGE_ONLY_NOT_AI_HANDOFF_INPUT_OR_DISPATCH",
+  "dependency": {
+    "ec170_source_schema": "ces.code_prepare_multisource.v1",
+    "ec171_lifecycle_schema": "ces.handoff_lifecycle.v1",
+    "ec171_context_digest_required": true,
+    "immutable_stage_of_real_created_lifecycle": true,
+    "legacy_power_shell_r150_changed": false
+  },
+  "api": {
+    "class": "TaskStaging",
+    "constructor": ["root", "business_repo_root", "clock_optional"],
+    "methods": {
+      "initialize": ["approve_init"],
+      "start": ["prepared", "operation_key", "expected_parent_pin", "authorize_stage", "expected_revision=1", "ttl_seconds=900", "actor_claim_optional"],
+      "stage_live": ["Lifecycle_session", "expected_parent_pin", "expected_revision", "context_sha256", "operation_key", "authorize_stage", "ttl_seconds=900"],
+      "reenter": ["prepared", "operation_key", "expected_parent_pin", "run_id", "expected_revision"],
+      "inspect": ["expected_parent_pin"]
+    },
+    "standalone_cli": ["--init", "--start", "--reenter", "--inspect"],
+    "cli_all_modes_require": ["--root", "--business-repo-root"],
+    "cli_init_approval": "--approve-init",
+    "cli_new_stage_approval": "--approve-stage",
+    "cli_stage_and_reentry_parent_pin": "--parent-pin"
+  },
+  "storage": {
+    "preprovisioned_empty_stage_root": true,
+    "user_owner_private_stage_root_and_immediate_parent": true,
+    "explicit_absolute_canonical_non_symlinked_root_and_business_repo": true,
+    "reject_stage_nested_in_repo_and_repo_nested_in_stage": true,
+    "reject_inode_equivalent_parent_aliases": true,
+    "supported_writer": "POSIX_WITH_O_NOFOLLOW_O_DIRECTORY_DIRFD_FLOCK_HARDLINK_AND_FSYNC_ONLY",
+    "other_os": "UNAVAILABLE_FAIL_CLOSED",
+    "root_files": ["manifest.json", ".staging-key", ".staging-lock"],
+    "stage_record_pattern": "run_v1_<48 lowercase hex>.stage.json",
+    "staging_file_ownership": "CURRENT_UID_OWNER_ONLY_0600_OR_STRICTER_AND_SINGLE_HARDLINK",
+    "root_identity_pin_fields": ["store_id", "root_dev", "root_ino", "root_uid", "root_path_sha256", "repo_dev", "repo_ino", "repo_path_sha256", "key_sha256"],
+    "local_hmac": "HMAC_SHA256_WITH_OWNER_PRIVATE_32_BYTE_ROOT_KEY_NOT_REMOTE_AUTHENTICATION",
+    "checkpoint": "EC171_CANONICAL_REPLAYED_SNAPSHOT_NO_RAW_SOURCE",
+    "stage_record_max_bytes": 270336,
+    "prepared_context_max_bytes": 4194304,
+    "checkpoint_max_bytes": 262144,
+    "stage_entry_capacity": 128,
+    "ttl_min_seconds": 60,
+    "ttl_default_seconds": 900,
+    "ttl_max_seconds": 86400,
+    "expiry_extension_on_reentry": false,
+    "expired_record_deleted_or_reused": false,
+    "no_clobber": "EXCLUSIVE_TEMP_FSYNC_THEN_LINK_IF_ABSENT_THEN_DIRECTORY_FSYNC_UNLINK_TEMP_FSYNC",
+    "unknown_partial_or_pending": "UNAVAILABLE_MANUAL_REVIEW_REQUIRED",
+    "crash_or_power_failure_execution_recovery": "NOT_ATTESTED_NO_MUTABLE_RESTORE",
+    "uncertain_commit": "UNAVAILABLE_NO_CREATED_ID_RETURNED"
+  },
+  "identity_and_conflict": {
+    "new_ids_only_from_ec171_live_creation": true,
+    "id_visible_only_after_stage_commit": true,
+    "idempotency_key": "EC171_RUN_CREATED_OPERATION_KEY_UNIQUE_IN_STORE",
+    "idempotent_match_required": ["operation_key", "source_context_sha256", "source_identity_sha256", "source_mode", "source_quality", "revision", "ttl_seconds", "declared_actor_label"],
+    "read_only_reentry_match_required": ["parent_pin", "run_id", "operation_key", "source_record", "revision", "not_expired", "local_hmac_and_checkpoint_replay"],
+    "duplicate_different_input": "INVALID_INPUT_NO_NEW_RECORD",
+    "tamper_link_path_or_crash_unknown": "UNAVAILABLE_NO_PRIVILEGE",
+    "non_evicting_append_only": true
+  },
+  "outcome": {
+    "schema": "ces.task_staging.v1",
+    "statuses": {"success": 0, "invalid_input": 4, "unavailable": 5},
+    "success_reason_codes": ["PRIVATE_STAGING_INITIALIZED", "STAGING_CREATED_LOCAL_ONLY", "STAGING_IDEMPOTENT_REENTRY_READ_ONLY", "STAGING_STORE_INSPECTED_LOCAL_ONLY"],
+    "exposure": "MINIMAL_METADATA_WITH_LOCAL_RUN_ID_ONLY_AFTER_SAFE_STAGE_COMMIT",
+    "actor_authenticated": false,
+    "source_provider_authenticated": false,
+    "external_ai_dispatched": false,
+    "ai_result_or_previous_success_authenticated": false,
+    "mutable_lifecycle_from_staged_json": false,
+    "business_repo_or_git_written": false,
+    "native_ai_handoff_registered": false,
+    "ec173_input_package_or_input_path_created": false,
+    "ec174_ai_route_created": false,
+    "ec175_staged_validate_created": false
+  },
+  "validation_boundary": {
+    "ec172_focused_offline_tests": 30,
+    "ec171_inherited_focused_tests": 43,
+    "native_powershell7_and_15_smoke": "NOT_RUN",
+    "live_provider_and_ai": "NOT_RUN",
+    "windows_macos_linux_path_fs_race_and_power_loss": "NOT_RUN",
+    "performance_e63_e66": "NOT_RUN",
+    "final_user_assisted_acceptance": "NOT_STARTED"
+  }
+}

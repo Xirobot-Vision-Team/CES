@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ces/issue-sync-grant.v1.schema.json",
+  "title": "CES EC212 independent host-declared IssueSync batch read grant (not authenticated)",
+  "description": "Serialize an IssueSyncGrant declaration. The actual Python routine enforces exact context/scope, sorted unique numbers, expiry, independent EC211 grants and no writes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "method",
+    "provider",
+    "api_host",
+    "account_ref",
+    "repository",
+    "expected_repository_id",
+    "numbers",
+    "expires_at_utc",
+    "authorized",
+    "allow_write"
+  ],
+  "properties": {
+    "method": {
+      "const": "READ_ISSUE_SYNC_SNAPSHOT"
+    },
+    "provider": {
+      "enum": [
+        "github",
+        "gitlab"
+      ]
+    },
+    "api_host": {
+      "enum": [
+        "api.github.com",
+        "gitlab.com"
+      ]
+    },
+    "account_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+    },
+    "repository": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 240,
+      "pattern": "^[A-Za-z0-9_][A-Za-z0-9_.-]{0,99}(?:/[A-Za-z0-9_][A-Za-z0-9_.-]{0,99}){1,11}$"
+    },
+    "expected_repository_id": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775807
+    },
+    "numbers": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 2147483647
+      },
+      "minItems": 1,
+      "maxItems": 8,
+      "uniqueItems": true
+    },
+    "expires_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+    },
+    "authorized": {
+      "const": true
+    },
+    "allow_write": {
+      "const": false
+    }
+  }
+}

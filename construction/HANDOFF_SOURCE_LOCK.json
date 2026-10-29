@@ -1,0 +1,8 @@
+{
+  "schema": "ces.handoff_source_lock.v1",
+  "baseline": "1.0.0",
+  "scope": "local source binding; no execution or authority proof",
+  "unchanged_original_sha256": {
+    "construction/ai_handoff_router.py": "189f9fefcd2d239c5ab90ddcde1c7821fa8fd68d0f93b75a0a484c7a6b930945"
+  }
+}

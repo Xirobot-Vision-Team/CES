@@ -1,0 +1,22 @@
+[
+  {
+    "old_path": "lib/old.py",
+    "new_path": "lib/new.py",
+    "new_file": false,
+    "deleted_file": false,
+    "renamed_file": true,
+    "too_large": false,
+    "collapsed": false,
+    "diff": "SECRET_DIFF_MUST_NEVER_ESCAPE"
+  },
+  {
+    "old_path": "images/logo.png",
+    "new_path": "images/logo.png",
+    "new_file": false,
+    "deleted_file": false,
+    "renamed_file": false,
+    "collapsed": true,
+    "too_large": false,
+    "diff": ""
+  }
+]

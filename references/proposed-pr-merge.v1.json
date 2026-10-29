@@ -1,0 +1,65 @@
+{
+  "schema": "ces.proposed_pr_merge.v1",
+  "introduced": "EC-167 / V4.77 / R167",
+  "entry": "construction/proposed_pr_merge.py",
+  "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+  "purpose": "Read-only provider-claimed merge commit and independently observable local Git parent/tree association; not a delivery attestation",
+  "required_inputs": {
+    "ec162_result": "Complete valid ces.proposed_pr_identity.v1 with merged-state pin",
+    "ec166_result": "Consistent ces.proposed_pr_reconcile.v1 FRESH_OBSERVATION with identical pin, exact provider count, compatible provenance, observed <= 900 seconds ago",
+    "provider_locator": ["provider", "repository", "number"],
+    "local_git": "Explicit absolute local target repository root chosen by operator (provider membership not authenticated)",
+    "ec162_max_bytes": 65536,
+    "ec166_max_bytes": 131072,
+    "duplicate_json_keys": "REJECTED"
+  },
+  "independent_permission_gates": {
+    "remote_metadata": "--allow-network",
+    "local_object_read": "--allow-local-git",
+    "default": "DENY_BOTH",
+    "live_credential_env": {"github": "CES_GITHUB_TOKEN", "gitlab": "CES_GITLAB_TOKEN"},
+    "synthetic_transport_never_claims_live_attestation": true
+  },
+  "remote_reads": {
+    "requests_per_attempt": "At most one new provider metadata GET after all preflight gates",
+    "github": "GET https://api.github.com/repos/{owner}/{repo}/pulls/{number}",
+    "gitlab": "GET https://gitlab.com/api/v4/projects/{path}/merge_requests/{iid}",
+    "merge_sha_field": "merge_commit_sha only; read only after merged state is reported",
+    "squash_sha": "NOT_USED_EC168",
+    "complete_full_oid_required": true,
+    "previous_ec166_provider_count_must_match": true,
+    "current_pin_full_comparison": true,
+    "patch_or_file_page_read": false,
+    "write": false
+  },
+  "local_git_reads": {
+    "commands": ["rev-parse --is-bare-repository/--show-toplevel/--absolute-git-dir/--show-object-format", "cat-file -t/-s/-p <exact full OID>", "merge-base --is-ancestor <full OID> <full OID>"],
+    "reads_mutable_git_ref": false,
+    "fetch_or_network": false,
+    "lazy_fetch": "DISABLED",
+    "git_replacements": "DISABLED",
+    "commit_max_bytes": 65536,
+    "git_process_timeout_seconds": 5,
+    "supported_positive_topology": "Exactly two parents; second parent is pinned head; first parent lies on proven target-tip lineage; merge tree object readable",
+    "github_target_tip_cases": ["target tip ancestor of first parent", "merged commit ancestor of observed later GitHub target tip"],
+    "gitlab_target_tip_case": "diff_refs.start_sha ancestor of first parent; diff_refs.base_sha is merge-base not target tip",
+    "single_parent_or_squash_rebase": "UNAVAILABLE_UNKNOWN - deferred to EC168",
+    "provider_repository_membership_authenticated": false,
+    "local_object_presence_equals_deployment": false
+  },
+  "response": {
+    "keys": ["schema", "status", "exit_code", "association_state", "reason_code", "message", "identity_scope", "observations", "provider_claim", "local_git", "evidence_policy", "synthetic", "local_merge_graph_verified", "provider_actor_verified", "delivery_or_merge_proven", "target_repository_membership_authenticated", "native_cli_action_registered", "write_authorized"],
+    "positive": {"status": "partial", "exit_code": 2, "association_state": "LOCAL_MERGE_GRAPH_VERIFIED"},
+    "unavailable": {"status": "unavailable", "exit_code": 5, "association_state": "UNAVAILABLE_UNKNOWN"},
+    "invalid_input": {"status": "invalid_input", "exit_code": 4, "association_state": "UNAVAILABLE_UNKNOWN"},
+    "success_status_supported": false,
+    "always_false": ["provider_actor_verified", "delivery_or_merge_proven", "target_repository_membership_authenticated", "native_cli_action_registered", "write_authorized", "evidence_policy.provider_merge_claim_independently_authenticated", "evidence_policy.local_objects_prove_provider_repository_membership", "evidence_policy.squash_or_rebase_equivalence_mapped", "evidence_policy.deployment_proven", "evidence_policy.release_proven", "evidence_policy.remote_write_performed"]
+  },
+  "native_collect_proposed_pr": "NOT_IMPLEMENTED",
+  "native_reconcile_remote_delivery": "NOT_IMPLEMENTED",
+  "development_checks": "construction/test_proposed_pr_merge.py",
+  "provider_online_validation": "NOT_RUN",
+  "native_powershell_validation": "NOT_RUN",
+  "cross_os_git_validation": "NOT_RUN",
+  "final_user_assisted_acceptance": "NOT_STARTED"
+}

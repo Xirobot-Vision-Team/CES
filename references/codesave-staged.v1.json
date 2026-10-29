@@ -1,0 +1,104 @@
+{
+  "schema": "ces.codesave_staged_contract.v1",
+  "introduced_in": "V4.86/R176/EC-176",
+  "implementation": "construction/codesave_staged.py",
+  "scope": "STANDALONE_PYTHON_POSIX_PRIVATE_CES_METADATA_ONLY",
+  "native_powershell_codesave_staged": "NOT_IMPLEMENTED",
+  "apis": {
+    "constructor": "StagedCodeSaver(stage_root, business_repo_root, save_root, *, clock=None)",
+    "initialize": "initialize(*, approve_init)",
+    "save": "save(prepared, route_result, validation_result, *, expected_save_store_pin, expected_parent_pin, run_id, handoff_id, expected_revision, expected_event_sha256, input_operation_key, validation_operation_key, save_operation_key, expected_candidate_sha256, expected_validation_receipt_sha256, authorize_save, authorize_read, save_content_for, manual_review, authorize_manual_review, manual_review_content_for, trusted_verifier_id, trusted_verifier_key, draft=None, allow_historical_proposal=False, approve_historical_proposal_metadata_save=False, acknowledge_partial_coverage=False, max_source_age_seconds=600)",
+    "read_saved": "read_saved(*, expected_save_store_pin, save_operation_key, authorize_read, read_content_for)",
+    "inspect": "inspect(*, expected_save_store_pin)"
+  },
+  "source_chain": [
+    "EC170 source-scoped permission and no unapproved source content",
+    "EC171 ACTIVE/READY RunId HandoffId",
+    "EC172 HMAC-sealed private stage with revision/event and parent pin",
+    "EC173 immutable HMAC-sealed input with exact source/evidence/material and TTL",
+    "EC174 dispatched callback candidate (schema_only is not a valid candidate)",
+    "EC175 independently reconstructed structural validation and pinned manual review"
+  ],
+  "independent_authorization": {
+    "store_init": "approve_init=true on previously created empty owner-private directory, separate private parent",
+    "save_permission": "authorize_save=true; prior validation partial and SHA are NOT save grants",
+    "source_permission": "authorize_read=true and save_content_for matching exact EC173 source mode",
+    "write_identity": "save_operation_key distinct from input_operation_key and validation_operation_key",
+    "target_identity": "expected_save_store_pin bound to local store key, directory dev/ino/UID, absolute pathname, source stage dev/ino/path and business repo dev/ino/path",
+    "validation_identity": "expected_parent_pin, run_id, handoff_id, event SHA, revision, input and validate operation keys, separately pinned candidate SHA and original EC175 receipt SHA",
+    "manual_review": "all >=1 candidate findings must have signed confirm (never reject, inconclusive or missing) bound to EC175 validation operation and all original finding SHA, with authorize_manual_review=true, exact source and separately configured trusted HMAC verifier id/key",
+    "proposed_pr": "allow_historical_proposal=true AND approve_historical_proposal_metadata_save=true; is always historical and partial",
+    "incomplete_source": "acknowledge_partial_coverage=true independently, no promotion to complete",
+    "read_record": "new authorize_read=true plus exact source scope and store pin; no saved Finding reconstructed"
+  },
+  "confirmation_is_not": [
+    "authenticated human identity or credential issuer",
+    "proof a software defect exists or AI output is correct",
+    "proof of real CI or test execution",
+    "remote Provider AI actor authentication",
+    "live atomic Git source, remote repository or delivered state",
+    "authorization to write business files or issues",
+    "an EC177 Finding"
+  ],
+  "recheck_before_commit": [
+    "ignore the unkeyed EC175 receipt as independent authorization",
+    "verify original exact v1 EC175 fields and separately pinned receipt digest",
+    "rerun EC175 source, route, draft, candidate, all original full-line anchors, HMAC input/stage, review signature, TTL, source-scoped grants",
+    "compare every stable field including proof/effects/coverage and manual review attestation against supplied result",
+    "require fresh complete per-finding confirmed declarations, no unreviewed/rejected/inconclusive",
+    "repeat entire fresh EC175 check after acquiring private store lock",
+    "bind save lifetime to min(original validation expiry, new validation expiry, signed manual review expiry)",
+    "scan and HMAC-validate all private records; fail if unknown entries, symlinks, hardlinks, malformed record or unfinished pending transaction"
+  ],
+  "persistent_record": {
+    "schema": "ces.codesave_staged_metadata_record.v1",
+    "max_bytes": 8192,
+    "max_records": 128,
+    "hashes": [
+      "RunId/HandoffId/stage revision/event/source context and identity/evidence/material digests",
+      "candidate, normalized draft, EC174 route result digest",
+      "supplied and freshly rebuilt EC175 validation receipt digests",
+      "pinned separate reviewer attestation digest and verifier ID",
+      "input and validation operation digest and source stage parent pin digest",
+      "per-finding hashes only (no raw finding text)",
+      "source coverage canonical digest and conservative completeness/missing-requirements count"
+    ],
+    "timestamps": ["source observed", "review signed", "review expires", "saved", "valid until"],
+    "never_persisted": ["source paths", "source code", "patches", "line quotes", "AI finding title/analysis/suggestion", "raw model responses", "review notes", "review verifier key", "Provider token", "Git credentials"],
+    "false_proof_flags": ["source_currentness_proven", "verified_ci_or_test", "verified_remote_actor_or_git", "finding_created"],
+    "content": "CES-owned metadata only; no CodeSave business source edits"
+  },
+  "disk_safety": {
+    "supported": "POSIX with secure no-follow directory FDs, flock, fsync and hardlink-if-absent; fail on unsupported OS/filesystem",
+    "directory": "pre-provisioned owner 0700 root AND parent, pinned no symlink, strictly disjoint from EC172 store and business repo",
+    "permissions": "0600 exclusive regular one-link metadata files and private 32-byte random store key",
+    "publish": "fsync temporary record, recheck pinned store/stage/repo roots, os.link no-clobber, fsync directory, remove temporary name, fsync directory",
+    "integrity": "separate local HMAC-SHA256 per record and private manifest key binding; hashes alone do not confer authority",
+    "idempotency": "same save operation and exact immutable stable content -> read-only original record with unchanged TTL; any conflict -> refuse; same candidate under a new save operation -> refuse",
+    "failure": "unknown/pending files, hardlinks, symlinks, unsafe permissions or incomplete transaction block further use; post-link durability uncertainty explicitly reports unknown commit state and requires human examination",
+    "excluded": "same-UID malicious process/key compromise, hostile OS, remote/filesystem atomic guarantee, crash/power-loss proof, cross-platform validation"
+  },
+  "status_and_exit": {
+    "successful_metadata_save_or_idempotent_reentry": "partial/2 (metadata commit is real, candidate semantics not proven)",
+    "store_initialization_or_aggregate_inspection_only": "success/0",
+    "bad_grants_scope_or_input": "invalid_input/4",
+    "stale_source_expired_review_corruption_io_or_unknown_commit": "unavailable/5",
+    "business_write_or_finding_success": "NEVER"
+  },
+  "cli": {
+    "entrypoint": "python construction/codesave_staged.py --stage-root ... --business-repo-root ... --save-root ... (--init|--inspect|--read)",
+    "init": "--init --approve-init",
+    "inspect": "--inspect --save-store-pin <pin>",
+    "read": "--read --save-store-pin <pin> --save-operation-key <key> --approve-read --read-content-for <source_mode>",
+    "save": "Python API ONLY with in-memory externally pinned manual key; no secret-key CLI flags",
+    "output": "init/inspect counts or explicitly scoped HMAC metadata; not model/source text"
+  },
+  "development_checks": {
+    "ec176_focused_synthetic": "LOCAL_ONLY",
+    "real_external_ai_review_and_git_ci": "NOT_RUN",
+    "native_powershell7_15_smoke": "NOT_RUN",
+    "cross_os_true_races_crashes_and_filesystem_proof": "NOT_RUN",
+    "performance_e63_e66": "NOT_RUN",
+    "final_user_assisted_acceptance": "NOT_STARTED"
+  }
+}

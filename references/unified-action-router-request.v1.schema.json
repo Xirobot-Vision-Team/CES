@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/unified-action-router-request.v1.schema.json",
+  "title": "EC241 unified Action/Mode request - actual modes require code-level contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "action",
+    "mode"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.unified_action_router.request.v1"
+    },
+    "action": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9]{0,47}$"
+    },
+    "mode": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9]{0,47}$"
+    },
+    "argv": {
+      "type": "array",
+      "maxItems": 96,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4096,
+        "pattern": "^[^\\u0000]+$"
+      }
+    },
+    "parameters": {
+      "type": "object",
+      "maxProperties": 64
+    },
+    "init": {
+      "type": "object",
+      "maxProperties": 64
+    },
+    "stdin_json": {
+      "type": "object"
+    },
+    "acknowledge_private_ces_write": {
+      "type": "boolean"
+    },
+    "allow_network_read": {
+      "type": "boolean"
+    }
+  },
+  "description": "Code enforces exact Action/Mode, per-route argv/API/host fields, explicit local-write and network opt-in. JSON Boolean flags never create independent host grants."
+}

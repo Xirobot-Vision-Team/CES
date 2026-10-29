@@ -1,0 +1,58 @@
+{
+  "schema": "ces.proposed_pr_linear.v1",
+  "introduced": "EC-168 / V4.78 / R168",
+  "implementation": "construction/proposed_pr_linear.py",
+  "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+  "authority": "STANDALONE_READ_ONLY_PYTHON_EVIDENCE_CONSUMER_NOT_NATIVE_CLI_ROUTE",
+  "input": {
+    "provider": ["github", "gitlab"],
+    "identity": "Full merged-state EC162 identity response, immutable IDs and complete SHA/OID pin",
+    "reconciliation": "Matching coherent EC166 FRESH_OBSERVATION, observed <=900 seconds before invocation, exact provider count",
+    "local_repo": "Operator-selected absolute Git repository root (not authenticated as Provider target)",
+    "token_source": "CES_GITHUB_TOKEN or CES_GITLAB_TOKEN, externally injected",
+    "synthetic": "Transport override labeled synthetic_fixture; cannot be combined with live evidence",
+    "allowed_credential_read": "Only after complete preflight and both independent read permissions"
+  },
+  "permissions": {"network": "--allow-network, default deny", "local_git": "--allow-local-git, default deny", "write": "NEVER"},
+  "provider": {
+    "remote_reads_per_association": "At most one new scoped fixed-URL GH/GL PR/MR metadata GET",
+    "recheck": "All original pin fields, exact count and merged flag must match fresh metadata",
+    "github": {"merge_commit_sha": "Merged provider-associated commit claim, not an historical squash/rebase method", "merge_method": "UNREPORTED"},
+    "gitlab": {"squash_on_merge": "Effective squash intention claim", "squash_commit_sha": "Provider's explicit resulting squash OID", "squash_without_both": "UNKNOWN"},
+    "source_adapter_options": {"include_merge_commit_claim": true, "include_squash_claim": true, "other_callers_compatible": true}
+  },
+  "local_git": {
+    "read_only": true,
+    "complete_oid_only": true,
+    "object_format": ["sha1", "sha256"],
+    "commit_max_bytes": 65536,
+    "delta_max_bytes": 4194304,
+    "delta_max_paths": 4096,
+    "new_blob_budget": 4096,
+    "process_timeout_seconds": 5,
+    "command_families": ["rev-parse", "cat-file -t/-s/-p", "cat-file --batch-check", "merge-base --all/--is-ancestor", "diff-tree -r --raw -z --no-renames --no-ext-diff --no-textconv"],
+    "submodule_pointer_equivalence": "UNAVAILABLE_UNKNOWN",
+    "ambiguous_source_merge_base": "UNAVAILABLE_UNKNOWN",
+    "source_net_delta": "Exact path, resulting mode, blob OID equality (never a historical operation attestation)",
+    "no_provider_clone_proof": true,
+    "no_fetch_checkout_ref_index_write": true
+  },
+  "positive_states": [
+    "LOCAL_GITLAB_SQUASH_TREE_VERIFIED",
+    "LOCAL_SINGLE_COMMIT_NET_TREE_VERIFIED_METHOD_UNKNOWN",
+    "LOCAL_EXACT_HEAD_GRAPH_VERIFIED_METHOD_UNKNOWN",
+    "LOCAL_MERGE_GRAPH_VERIFIED"
+  ],
+  "unknown": {"association_state": "UNAVAILABLE_UNKNOWN", "status": "unavailable", "exit_code": 5},
+  "invalid_input": {"association_state": "UNAVAILABLE_UNKNOWN", "status": "invalid_input", "exit_code": 4},
+  "positive": {"status": "partial", "exit_code": 2},
+  "success_0_supported": false,
+  "always_false": ["delivery_or_merge_proven", "target_repository_membership_authenticated", "provider_actor_verified", "native_cli_action_registered", "write_authorized", "evidence_policy.rebase_commit_mapping_complete", "evidence_policy.squash_historical_method_authenticated", "evidence_policy.deployment_proven", "evidence_policy.release_proven"],
+  "response_keys": ["schema", "status", "exit_code", "association_state", "candidate_kind", "reason_code", "message", "identity_scope", "observations", "provider_claim", "local_git", "evidence_policy", "synthetic", "local_association_verified", "local_merge_graph_verified", "delivery_or_merge_proven", "target_repository_membership_authenticated", "provider_actor_verified", "native_cli_action_registered", "write_authorized"],
+  "development_focused_cases": 28,
+  "ec167_regression_cases": 19,
+  "live_provider": "NOT_RUN",
+  "powershell7_and_legacy_smoke": "NOT_RUN",
+  "cross_platform": "NOT_RUN",
+  "final_user_assisted_acceptance": "NOT_STARTED"
+}

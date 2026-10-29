@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schema/issue-eligibility-review.v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "method",
+    "reviewer_key_id",
+    "evaluation_sha256",
+    "decision",
+    "acknowledges_selected_issues_not_inventory",
+    "acknowledges_duplicate_absence_unproven",
+    "acknowledges_source_and_signer_authority_unverified",
+    "issued_at_utc",
+    "expires_at_utc",
+    "signature_base64"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.issue_eligibility_review.v1"
+    },
+    "method": {
+      "const": "REVIEW_LOCAL_ISSUE_PROPOSAL_ELIGIBILITY"
+    },
+    "reviewer_key_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$"
+    },
+    "evaluation_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "decision": {
+      "const": "ACKNOWLEDGE_FOR_LOCAL_PROPOSAL_ONLY"
+    },
+    "acknowledges_selected_issues_not_inventory": {
+      "const": true
+    },
+    "acknowledges_duplicate_absence_unproven": {
+      "const": true
+    },
+    "acknowledges_source_and_signer_authority_unverified": {
+      "const": true
+    },
+    "issued_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+    },
+    "expires_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+    },
+    "signature_base64": {
+      "type": "string",
+      "minLength": 88,
+      "maxLength": 88,
+      "pattern": "^[A-Za-z0-9+/]{86}==$"
+    }
+  },
+  "description": "Signed detached Ed25519 host-reviewed *local drafting* acknowledgment only. Requires independent configured reviewer public key, <=300s expiry, exact signed input digest; not an IssueCreate permission."
+}

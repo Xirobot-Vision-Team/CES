@@ -1,0 +1,841 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "subject",
+    "canonical_json",
+    "limitations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.cross_repository_report_scope.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^CROSS_REPOSITORY_SCOPE_[A-Z0-9_]+$"
+    },
+    "subject": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/record"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "canonical_json": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 1048576
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "limitations": {
+      "$ref": "#/$defs/claims"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/cross-repository-report-scope-result.v1.schema.json",
+  "title": "EC195 explicit cross-repository report scope, denial-safe coverage gaps and declared-permission intersection",
+  "$defs": {
+    "utcStamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$"
+    },
+    "localStamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?[+-]\\d{2}:\\d{2}(?::\\d{2}(?:\\.\\d{1,6})?)?$"
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "period_id",
+        "project_timezone",
+        "cadence",
+        "label",
+        "week_rule",
+        "period_index",
+        "calendar_anchor_date",
+        "actual_start_local_date",
+        "actual_end_exclusive_local_date",
+        "start_local",
+        "end_exclusive_local",
+        "start_utc",
+        "end_exclusive_utc",
+        "elapsed_seconds"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ces.natural_period.v1"
+        },
+        "period_id": {
+          "type": "string",
+          "minLength": 12,
+          "maxLength": 160,
+          "pattern": "^cesnp1:(day|week|month|year):[A-Za-z0-9_+./-]+:[0-9]{4}(?:-[0-9]{2}(?:-[0-9]{2})?|-W[0-9]{2})?$"
+        },
+        "project_timezone": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 96
+        },
+        "cadence": {
+          "enum": [
+            "day",
+            "week",
+            "month",
+            "year"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "pattern": "^[0-9]{4}(?:-[0-9]{2}(?:-[0-9]{2})?|-W[0-9]{2})?$"
+        },
+        "week_rule": {
+          "const": "ISO_MONDAY"
+        },
+        "period_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "calendar_anchor_date": {
+          "$ref": "#/$defs/date"
+        },
+        "actual_start_local_date": {
+          "$ref": "#/$defs/date"
+        },
+        "actual_end_exclusive_local_date": {
+          "$ref": "#/$defs/date"
+        },
+        "start_local": {
+          "$ref": "#/$defs/localStamp"
+        },
+        "end_exclusive_local": {
+          "$ref": "#/$defs/localStamp"
+        },
+        "start_utc": {
+          "$ref": "#/$defs/utcStamp"
+        },
+        "end_exclusive_utc": {
+          "$ref": "#/$defs/utcStamp"
+        },
+        "elapsed_seconds": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "namespace_key",
+        "project_key",
+        "repository_key"
+      ],
+      "properties": {
+        "namespace_key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+        },
+        "project_key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+        },
+        "repository_key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+        }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "report_subject_id",
+        "repository_binding_sha256",
+        "people_binding_sha256"
+      ],
+      "properties": {
+        "report_subject_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^cesrs1:[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "repository_binding_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "people_binding_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "auth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose",
+        "receipt_sha256",
+        "valid_from_utc",
+        "valid_until_exclusive_utc",
+        "granted_operations",
+        "state",
+        "authorization_binding_sha256"
+      ],
+      "properties": {
+        "purpose": {
+          "const": "periodic_cross_repository_report"
+        },
+        "receipt_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "valid_from_utc": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "valid_until_exclusive_utc": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "granted_operations": {
+          "type": "array",
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "report.actors.link",
+              "report.actors.read",
+              "report.evidence.read",
+              "report.scope.read"
+            ]
+          }
+        },
+        "state": {
+          "const": "DECLARED_GRANTED_UNVERIFIED"
+        },
+        "authorization_binding_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "report_subject_id",
+        "report_key",
+        "period_id",
+        "source_mode",
+        "source_selector",
+        "repository_binding_sha256",
+        "coverage_sha256",
+        "period_window_complete",
+        "path_scope",
+        "inventory_state",
+        "people_subject_id",
+        "people_binding_sha256"
+      ],
+      "properties": {
+        "report_subject_id": {
+          "type": "string",
+          "pattern": "^cesrs1:[0-9a-f]{64}$"
+        },
+        "report_key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+        },
+        "period_id": {
+          "type": "string",
+          "minLength": 12
+        },
+        "source_mode": {
+          "enum": [
+            "WorkingTree",
+            "DeliveredTarget",
+            "ProposedPR"
+          ]
+        },
+        "source_selector": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "key"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "checkout_key",
+                "delivery_key",
+                "proposal_key"
+              ]
+            },
+            "key": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]*$"
+            }
+          }
+        },
+        "repository_binding_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "coverage_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "period_window_complete": {
+          "type": "boolean"
+        },
+        "path_scope": {
+          "enum": [
+            "ENTIRE_REPOSITORY_DECLARED",
+            "SELECTED_PATHS"
+          ]
+        },
+        "inventory_state": {
+          "enum": [
+            "unknown",
+            "partial_declared",
+            "complete_declared"
+          ]
+        },
+        "people_subject_id": {
+          "type": "string",
+          "pattern": "^cesprs1:[0-9a-f]{64}$"
+        },
+        "people_binding_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "repository_id",
+        "expected",
+        "availability",
+        "status",
+        "report",
+        "authorization",
+        "effective_declared_operations",
+        "reason_codes"
+      ],
+      "properties": {
+        "repository": {
+          "$ref": "#/$defs/repository"
+        },
+        "repository_id": {
+          "type": "string",
+          "pattern": "^cesrepo1:[0-9a-f]{64}$"
+        },
+        "expected": {
+          "$ref": "#/$defs/expected"
+        },
+        "availability": {
+          "enum": [
+            "SUBMITTED",
+            "MISSING",
+            "INACCESSIBLE"
+          ]
+        },
+        "status": {
+          "enum": [
+            "READY",
+            "GAP"
+          ]
+        },
+        "report": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/report"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "authorization": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/auth"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "effective_declared_operations": {
+          "type": "array",
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "report.actors.link",
+              "report.actors.read",
+              "report.evidence.read",
+              "report.scope.read"
+            ]
+          }
+        },
+        "reason_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "AUTHORIZATION_INVALID",
+              "AUTHORIZATION_MISSING",
+              "AUTHORIZATION_WINDOW_INSUFFICIENT",
+              "OPERATION_NOT_GRANTED",
+              "PARTIAL_PERIOD_WINDOW",
+              "PATH_INVENTORY_UNVERIFIED",
+              "PEOPLE_BINDING_PIN_MISSING",
+              "PERIOD_MISMATCH",
+              "REPORT_SLOT_MISMATCH",
+              "REPORT_SLOT_PIN_MISSING",
+              "REPOSITORY_BINDING_PIN_MISSING",
+              "REPOSITORY_IDENTITY_MISMATCH",
+              "REPOSITORY_INACCESSIBLE",
+              "REPOSITORY_MISSING",
+              "SELECTED_PATH_SCOPE",
+              "STALE_PEOPLE_BINDING",
+              "STALE_REPOSITORY_BINDING",
+              "SUBJECT_NOT_SUPPLIED",
+              "SUBJECT_REPLAY_FAILED",
+              "SUBJECT_REPLAY_UNAVAILABLE"
+            ]
+          }
+        }
+      }
+    },
+    "member": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_id",
+        "actor_key"
+      ],
+      "properties": {
+        "repository_id": {
+          "type": "string",
+          "pattern": "^cesrepo1:[0-9a-f]{64}$"
+        },
+        "actor_key": {
+          "type": "string",
+          "pattern": "^cesra1:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "link_key",
+        "link_id",
+        "receipt_sha256",
+        "identity_scope_sha256",
+        "members",
+        "state"
+      ],
+      "properties": {
+        "link_key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "link_id": {
+          "type": "string",
+          "pattern": "^cesrml1:[0-9a-f]{64}$"
+        },
+        "receipt_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "identity_scope_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "members": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 16,
+          "items": {
+            "$ref": "#/$defs/member"
+          }
+        },
+        "state": {
+          "const": "DECLARED_SAME_SCOPE_UNVERIFIED"
+        }
+      }
+    },
+    "linkGap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "link_key",
+        "reason_code"
+      ],
+      "properties": {
+        "link_key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "reason_code": {
+          "enum": [
+            "LINK_ACTOR_NOT_ELIGIBLE",
+            "LINK_IDENTITY_SCOPE_MISMATCH",
+            "LINK_NOT_PERMITTED_FOR_SET",
+            "LINK_REPOSITORY_NOT_READY"
+          ]
+        }
+      }
+    },
+    "coverageGap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "repository_id",
+        "reason_codes"
+      ],
+      "properties": {
+        "repository": {
+          "$ref": "#/$defs/repository"
+        },
+        "repository_id": {
+          "type": "string",
+          "pattern": "^cesrepo1:[0-9a-f]{64}$"
+        },
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "AUTHORIZATION_INVALID",
+              "AUTHORIZATION_MISSING",
+              "AUTHORIZATION_WINDOW_INSUFFICIENT",
+              "OPERATION_NOT_GRANTED",
+              "PARTIAL_PERIOD_WINDOW",
+              "PATH_INVENTORY_UNVERIFIED",
+              "PEOPLE_BINDING_PIN_MISSING",
+              "PERIOD_MISMATCH",
+              "REPORT_SLOT_MISMATCH",
+              "REPORT_SLOT_PIN_MISSING",
+              "REPOSITORY_BINDING_PIN_MISSING",
+              "REPOSITORY_IDENTITY_MISMATCH",
+              "REPOSITORY_INACCESSIBLE",
+              "REPOSITORY_MISSING",
+              "SELECTED_PATH_SCOPE",
+              "STALE_PEOPLE_BINDING",
+              "STALE_REPOSITORY_BINDING",
+              "SUBJECT_NOT_SUPPLIED",
+              "SUBJECT_REPLAY_FAILED",
+              "SUBJECT_REPLAY_UNAVAILABLE"
+            ]
+          }
+        }
+      }
+    },
+    "claims": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_universe_complete_verified",
+        "repository_identity_authenticated",
+        "repository_source_authenticated",
+        "period_timezone_rules_pinned",
+        "repository_permissions_authenticated",
+        "cross_repository_actor_identity_authenticated",
+        "actor_link_receipt_authenticated",
+        "actor_contribution_ownership_verified",
+        "report_metrics_computed",
+        "individual_performance_assessed",
+        "report_prepared_or_published",
+        "native_powershell_report_registered",
+        "git_or_business_repository_written"
+      ],
+      "properties": {
+        "repository_universe_complete_verified": {
+          "const": false
+        },
+        "repository_identity_authenticated": {
+          "const": false
+        },
+        "repository_source_authenticated": {
+          "const": false
+        },
+        "period_timezone_rules_pinned": {
+          "const": false
+        },
+        "repository_permissions_authenticated": {
+          "const": false
+        },
+        "cross_repository_actor_identity_authenticated": {
+          "const": false
+        },
+        "actor_link_receipt_authenticated": {
+          "const": false
+        },
+        "actor_contribution_ownership_verified": {
+          "const": false
+        },
+        "report_metrics_computed": {
+          "const": false
+        },
+        "individual_performance_assessed": {
+          "const": false
+        },
+        "report_prepared_or_published": {
+          "const": false
+        },
+        "native_powershell_report_registered": {
+          "const": false
+        },
+        "git_or_business_repository_written": {
+          "const": false
+        }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "scope_id",
+        "period",
+        "requested_operation",
+        "repository_set",
+        "effective_operations",
+        "requested_operation_declared_for_all",
+        "actor_link_proposals",
+        "actor_link_gaps",
+        "coverage_gaps",
+        "global_gaps",
+        "claims",
+        "binding_sha256"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ces.cross_repository_report_scope.v1"
+        },
+        "scope_id": {
+          "type": "string",
+          "pattern": "^cesmrs1:[0-9a-f]{64}$"
+        },
+        "period": {
+          "$ref": "#/$defs/period"
+        },
+        "requested_operation": {
+          "enum": [
+            "report.actors.link",
+            "report.actors.read",
+            "report.evidence.read",
+            "report.scope.read"
+          ]
+        },
+        "repository_set": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": {
+            "$ref": "#/$defs/row"
+          }
+        },
+        "effective_operations": {
+          "type": "array",
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "report.actors.link",
+              "report.actors.read",
+              "report.evidence.read",
+              "report.scope.read"
+            ]
+          }
+        },
+        "requested_operation_declared_for_all": {
+          "type": "boolean"
+        },
+        "actor_link_proposals": {
+          "type": "array",
+          "maxItems": 128,
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        },
+        "actor_link_gaps": {
+          "type": "array",
+          "maxItems": 128,
+          "items": {
+            "$ref": "#/$defs/linkGap"
+          }
+        },
+        "coverage_gaps": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "$ref": "#/$defs/coverageGap"
+          }
+        },
+        "global_gaps": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "REPOSITORY_UNIVERSE_NOT_VERIFIED",
+              "REPOSITORY_SOURCE_NOT_AUTHENTICATED",
+              "REPOSITORY_AUTHORIZATION_NOT_AUTHENTICATED",
+              "TIMEZONE_RULESET_NOT_PINNED",
+              "EXPLICIT_REPOSITORY_SET_HAS_UNUSABLE_OR_UNAUTHORIZED_MEMBERS",
+              "EXPLICIT_REPOSITORY_SET_HAS_PARTIAL_COVERAGE",
+              "EXPLICIT_ACTOR_LINKS_NOT_ALL_ACCEPTED"
+            ]
+          }
+        },
+        "claims": {
+          "$ref": "#/$defs/claims"
+        },
+        "binding_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "subject": {
+            "$ref": "#/$defs/record"
+          },
+          "canonical_json": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          },
+          "subject": {
+            "type": "null"
+          },
+          "canonical_json": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          },
+          "subject": {
+            "type": "null"
+          },
+          "canonical_json": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

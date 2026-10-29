@@ -1,0 +1,632 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schemas/cycle-next-result.v1.schema.json",
+  "title": "CES EC233 Cycle Next read-only source-backed handler proposal",
+  "description": "A Next decision about ONE real EC231 saved run, NEVER a command or proof of successful execution, authorization, source/actor identity, resume, or completed dependencies.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "run_id",
+    "status",
+    "next_kind",
+    "reason_code",
+    "record_sha256",
+    "action_set_sha256",
+    "input_sha256",
+    "graph_sha256",
+    "proposal_sha256",
+    "metadata_run_state",
+    "ready_root_step_ids",
+    "unproven_step_ids",
+    "blocked_by_step_ids",
+    "next_step",
+    "trust",
+    "effects"
+  ],
+  "$defs": {
+    "sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "maybeSha": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/sha"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "runId": {
+      "type": "string",
+      "pattern": "^run_v1_[0-9a-f]{48}$"
+    },
+    "stepId": {
+      "type": "string",
+      "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$"
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/stepId"
+      },
+      "maxItems": 32,
+      "uniqueItems": true
+    },
+    "sourcePath": {
+      "type": "string",
+      "pattern": "^(scripts/[A-Za-z0-9_-]+\\.ps1|construction/[A-Za-z0-9_-]+\\.py)$"
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "implementation",
+        "route_id",
+        "entrypoint",
+        "handler_file",
+        "handler_symbol",
+        "handler_sha256",
+        "entrypoint_sha256",
+        "runtime_verified",
+        "read_only",
+        "operator_parameters_required",
+        "operator_parameters_optional",
+        "ec152_primary_smoke"
+      ],
+      "properties": {
+        "implementation": {
+          "enum": [
+            "NATIVE_R150_POWERSHELL_SOURCE_AUTHORED_UNVERIFIED",
+            "EC174_PYTHON_SOURCE_BACKED_UNVERIFIED"
+          ]
+        },
+        "route_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "entrypoint": {
+          "$ref": "#/$defs/sourcePath"
+        },
+        "handler_file": {
+          "$ref": "#/$defs/sourcePath"
+        },
+        "handler_symbol": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+        },
+        "handler_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "entrypoint_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "runtime_verified": {
+          "const": false
+        },
+        "read_only": {
+          "type": "boolean"
+        },
+        "operator_parameters_required": {
+          "type": "array",
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 90
+          }
+        },
+        "operator_parameters_optional": {
+          "type": "array",
+          "maxItems": 24,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        "ec152_primary_smoke": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^tests/[A-Za-z0-9._-]+\\.Smoke\\.ps1$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "nextStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "step_id",
+        "action",
+        "declared_mode",
+        "effective_mode",
+        "depends_on",
+        "handler"
+      ],
+      "properties": {
+        "step_id": {
+          "$ref": "#/$defs/stepId"
+        },
+        "action": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Za-z0-9]{0,47}$"
+        },
+        "declared_mode": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 32
+        },
+        "effective_mode": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 32
+        },
+        "depends_on": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "handler": {
+          "$ref": "#/$defs/target"
+        }
+      }
+    }
+  },
+  "properties": {
+    "schema": {
+      "const": "ces.cycle_next_result.v1"
+    },
+    "run_id": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/runId"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "status": {
+      "enum": [
+        "NEXT_PROPOSED_NO_EXECUTION",
+        "OPERATOR_HANDOFF_REQUIRED",
+        "BLOCKED_NO_NEXT",
+        "UNKNOWN_BLOCKED"
+      ]
+    },
+    "next_kind": {
+      "enum": [
+        "cli_action",
+        "ai_handoff",
+        "await_permission",
+        "none"
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^CYCLE_[A-Z0-9_]{3,80}$"
+    },
+    "record_sha256": {
+      "$ref": "#/$defs/maybeSha"
+    },
+    "action_set_sha256": {
+      "$ref": "#/$defs/maybeSha"
+    },
+    "input_sha256": {
+      "$ref": "#/$defs/maybeSha"
+    },
+    "graph_sha256": {
+      "$ref": "#/$defs/maybeSha"
+    },
+    "proposal_sha256": {
+      "$ref": "#/$defs/maybeSha"
+    },
+    "metadata_run_state": {
+      "enum": [
+        "NOT_STARTED",
+        "PARTIAL",
+        "UNKNOWN",
+        null
+      ]
+    },
+    "ready_root_step_ids": {
+      "$ref": "#/$defs/steps"
+    },
+    "unproven_step_ids": {
+      "$ref": "#/$defs/steps"
+    },
+    "blocked_by_step_ids": {
+      "$ref": "#/$defs/steps"
+    },
+    "next_step": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/nextStep"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "trust": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metadata_integrity",
+        "source_authenticated",
+        "actor_verified",
+        "handler_runtime_verified",
+        "permissions_granted",
+        "dependencies_satisfied_by_execution"
+      ],
+      "properties": {
+        "metadata_integrity": {
+          "const": "UNSIGNED_LOCAL_SELF_HASH_ONLY"
+        },
+        "source_authenticated": {
+          "const": false
+        },
+        "actor_verified": {
+          "const": false
+        },
+        "handler_runtime_verified": {
+          "const": false
+        },
+        "permissions_granted": {
+          "const": false
+        },
+        "dependencies_satisfied_by_execution": {
+          "const": false
+        }
+      }
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "steps_executed",
+        "handler_invoked",
+        "can_dispatch",
+        "can_resume",
+        "permission_pause_persisted",
+        "write_authorized",
+        "native_cycle_action_registered"
+      ],
+      "properties": {
+        "steps_executed": {
+          "const": false
+        },
+        "handler_invoked": {
+          "const": false
+        },
+        "can_dispatch": {
+          "const": false
+        },
+        "can_resume": {
+          "const": false
+        },
+        "permission_pause_persisted": {
+          "const": false
+        },
+        "write_authorized": {
+          "const": false
+        },
+        "native_cycle_action_registered": {
+          "const": false
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "NEXT_PROPOSED_NO_EXECUTION"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "next_kind": {
+            "const": "cli_action"
+          },
+          "reason_code": {
+            "const": "CYCLE_NEXT_READ_ONLY_HANDLER_PROPOSED"
+          },
+          "next_step": {
+            "$ref": "#/$defs/nextStep",
+            "properties": {
+              "handler": {
+                "properties": {
+                  "read_only": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          "proposal_sha256": {
+            "$ref": "#/$defs/sha"
+          },
+          "metadata_run_state": {
+            "const": "NOT_STARTED"
+          },
+          "ready_root_step_ids": {
+            "minItems": 1
+          },
+          "unproven_step_ids": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "OPERATOR_HANDOFF_REQUIRED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "next_kind": {
+            "enum": [
+              "ai_handoff",
+              "await_permission"
+            ]
+          },
+          "reason_code": {
+            "enum": [
+              "CYCLE_NEXT_AI_HANDOFF_ONLY",
+              "CYCLE_NEXT_PERSIST_PERMISSION_REQUIRED"
+            ]
+          },
+          "next_step": {
+            "$ref": "#/$defs/nextStep"
+          },
+          "proposal_sha256": {
+            "$ref": "#/$defs/sha"
+          },
+          "metadata_run_state": {
+            "const": "NOT_STARTED"
+          },
+          "ready_root_step_ids": {
+            "minItems": 1
+          },
+          "unproven_step_ids": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "BLOCKED_NO_NEXT"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "next_kind": {
+            "const": "none"
+          },
+          "next_step": {
+            "type": "null"
+          },
+          "proposal_sha256": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "UNKNOWN_BLOCKED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "next_kind": {
+            "const": "none"
+          },
+          "next_step": {
+            "type": "null"
+          },
+          "record_sha256": {
+            "type": "null"
+          },
+          "action_set_sha256": {
+            "type": "null"
+          },
+          "input_sha256": {
+            "type": "null"
+          },
+          "graph_sha256": {
+            "type": "null"
+          },
+          "proposal_sha256": {
+            "type": "null"
+          },
+          "metadata_run_state": {
+            "type": "null"
+          },
+          "ready_root_step_ids": {
+            "maxItems": 0
+          },
+          "unproven_step_ids": {
+            "maxItems": 0
+          },
+          "blocked_by_step_ids": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "next_kind": {
+            "const": "cli_action"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "NEXT_PROPOSED_NO_EXECUTION"
+          },
+          "next_step": {
+            "$ref": "#/$defs/nextStep",
+            "properties": {
+              "handler": {
+                "properties": {
+                  "implementation": {
+                    "const": "NATIVE_R150_POWERSHELL_SOURCE_AUTHORED_UNVERIFIED"
+                  },
+                  "read_only": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "next_kind": {
+            "const": "ai_handoff"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "OPERATOR_HANDOFF_REQUIRED"
+          },
+          "reason_code": {
+            "const": "CYCLE_NEXT_AI_HANDOFF_ONLY"
+          },
+          "next_step": {
+            "$ref": "#/$defs/nextStep",
+            "properties": {
+              "action": {
+                "const": "AIHandoff"
+              },
+              "effective_mode": {
+                "const": "CodeAnalysis"
+              },
+              "handler": {
+                "properties": {
+                  "implementation": {
+                    "const": "EC174_PYTHON_SOURCE_BACKED_UNVERIFIED"
+                  },
+                  "route_id": {
+                    "const": "ces.route.code_analysis.v1"
+                  },
+                  "handler_symbol": {
+                    "const": "HandoffRouter.route"
+                  },
+                  "handler_file": {
+                    "const": "construction/ai_handoff_router.py"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "next_kind": {
+            "const": "await_permission"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "OPERATOR_HANDOFF_REQUIRED"
+          },
+          "reason_code": {
+            "const": "CYCLE_NEXT_PERSIST_PERMISSION_REQUIRED"
+          },
+          "next_step": {
+            "$ref": "#/$defs/nextStep",
+            "properties": {
+              "action": {
+                "const": "CodeSave"
+              },
+              "effective_mode": {
+                "const": "Snapshot"
+              },
+              "handler": {
+                "properties": {
+                  "implementation": {
+                    "const": "NATIVE_R150_POWERSHELL_SOURCE_AUTHORED_UNVERIFIED"
+                  },
+                  "route_id": {
+                    "const": "CodeSave:Snapshot"
+                  },
+                  "read_only": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "next_kind": {
+            "const": "none"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "enum": [
+              "BLOCKED_NO_NEXT",
+              "UNKNOWN_BLOCKED"
+            ]
+          },
+          "next_step": {
+            "type": "null"
+          },
+          "proposal_sha256": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

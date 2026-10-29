@@ -1,0 +1,364 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schema/delivery-identity-result.v1.schema.json",
+  "title": "EC223 local exact recipient/channel/project identity verification. Never delivery approval.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "identity_verification_id",
+    "verification",
+    "delivery_state",
+    "effects"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.delivery_identity.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "blocked",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^DELIVERY_IDENTITY_[A-Z0-9_]+$",
+      "maxLength": 120
+    },
+    "identity_verification_id": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^cesdi1:[a-f0-9]{64}$"
+        }
+      ]
+    },
+    "verification": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "identity_verification_id",
+            "trust_anchor_binding_sha256",
+            "project_binding_sha256",
+            "destination_binding_sha256",
+            "route_sha256",
+            "revocation_checkpoint_sha256",
+            "verification_permit_sha256",
+            "base_preview_id",
+            "review_id",
+            "policy_revision_sha256",
+            "redacted_markdown_sha256",
+            "source_set_sha256",
+            "effective_minimum_privacy_class",
+            "verified_under_host_pinned_directory_only",
+            "recipient_verified",
+            "channel_verified",
+            "audience_verified",
+            "project_verified",
+            "explicit_single_recipient",
+            "fresh_signed_revocation_checkpoint_checked",
+            "independent_signed_check_permission_checked",
+            "real_world_person_identity_independently_proven",
+            "organizational_privacy_declassification",
+            "recipient_contacted",
+            "is_deliverable_payload",
+            "ready_to_send",
+            "safe_for_external_send",
+            "delivery_authorized",
+            "message_sent",
+            "published",
+            "cross_source_atomic_snapshot"
+          ],
+          "properties": {
+            "identity_verification_id": {
+              "type": "string",
+              "pattern": "^cesdi1:[a-f0-9]{64}$"
+            },
+            "trust_anchor_binding_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "project_binding_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "destination_binding_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "route_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "revocation_checkpoint_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "verification_permit_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "base_preview_id": {
+              "type": "string",
+              "pattern": "^cesdp1:[a-f0-9]{64}$"
+            },
+            "review_id": {
+              "type": "string",
+              "pattern": "^cesdr1:[a-f0-9]{64}$"
+            },
+            "policy_revision_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "redacted_markdown_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "source_set_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "effective_minimum_privacy_class": {
+              "enum": [
+                "INTERNAL",
+                "CONFIDENTIAL",
+                "RESTRICTED"
+              ]
+            },
+            "verified_under_host_pinned_directory_only": {
+              "const": true
+            },
+            "recipient_verified": {
+              "const": true
+            },
+            "channel_verified": {
+              "const": true
+            },
+            "audience_verified": {
+              "const": true
+            },
+            "project_verified": {
+              "const": true
+            },
+            "explicit_single_recipient": {
+              "const": true
+            },
+            "fresh_signed_revocation_checkpoint_checked": {
+              "const": true
+            },
+            "independent_signed_check_permission_checked": {
+              "const": true
+            },
+            "real_world_person_identity_independently_proven": {
+              "const": false
+            },
+            "organizational_privacy_declassification": {
+              "const": false
+            },
+            "recipient_contacted": {
+              "const": false
+            },
+            "is_deliverable_payload": {
+              "const": false
+            },
+            "ready_to_send": {
+              "const": false
+            },
+            "safe_for_external_send": {
+              "const": false
+            },
+            "delivery_authorized": {
+              "const": false
+            },
+            "message_sent": {
+              "const": false
+            },
+            "published": {
+              "const": false
+            },
+            "cross_source_atomic_snapshot": {
+              "const": false
+            }
+          }
+        }
+      ]
+    },
+    "delivery_state": {
+      "const": "NO_DELIVERY_OR_PUBLICATION"
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "external_network_requested",
+        "recipient_contacted",
+        "message_sent",
+        "delivery_accepted",
+        "delivered",
+        "published",
+        "issue_or_pr_created_or_modified",
+        "git_or_business_files_written",
+        "ces_records_written",
+        "external_ai_invoked",
+        "source_content_disclosed_in_preview",
+        "recipient_identity_verified",
+        "delivery_authorized"
+      ],
+      "properties": {
+        "external_network_requested": {
+          "const": false
+        },
+        "recipient_contacted": {
+          "const": false
+        },
+        "message_sent": {
+          "const": false
+        },
+        "delivery_accepted": {
+          "const": false
+        },
+        "delivered": {
+          "const": false
+        },
+        "published": {
+          "const": false
+        },
+        "issue_or_pr_created_or_modified": {
+          "const": false
+        },
+        "git_or_business_files_written": {
+          "const": false
+        },
+        "ces_records_written": {
+          "const": false
+        },
+        "external_ai_invoked": {
+          "const": false
+        },
+        "source_content_disclosed_in_preview": {
+          "const": false
+        },
+        "recipient_identity_verified": {
+          "type": "boolean"
+        },
+        "delivery_authorized": {
+          "const": false
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "verification": {
+            "type": "object"
+          },
+          "identity_verification_id": {
+            "type": "string",
+            "pattern": "^cesdi1:[a-f0-9]{64}$"
+          },
+          "effects": {
+            "properties": {
+              "recipient_identity_verified": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          },
+          "verification": {
+            "type": "null"
+          },
+          "identity_verification_id": {
+            "type": "null"
+          },
+          "effects": {
+            "properties": {
+              "recipient_identity_verified": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "blocked",
+              "unavailable"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          },
+          "verification": {
+            "type": "null"
+          },
+          "identity_verification_id": {
+            "type": "null"
+          },
+          "effects": {
+            "properties": {
+              "recipient_identity_verified": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

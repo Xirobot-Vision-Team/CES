@@ -1,0 +1,1355 @@
+{
+  "schema_version": "ces.ec152.action_trace.v1",
+  "source_baseline": "1.0.0",
+  "claim_level": "STATIC_SOURCE_TRACE_AND_TEST_FILE_PRESENCE_ONLY",
+  "summary": {
+    "action_families": 7,
+    "authored_routes": 16,
+    "code_show_modes": 9,
+    "primary_smoke_suites_referenced": 15
+  },
+  "shared_cli_contract": {
+    "entrypoint": "scripts/ces.ps1",
+    "action_parameter": {
+      "name": "Action",
+      "default": "Inspect",
+      "unknown_action": "not_implemented / NOT_IMPLEMENTED / exit 3",
+      "source_line": 1418
+    },
+    "mode_parameter": {
+      "name": "Mode",
+      "default": "WorkingTree",
+      "collect_modes": [
+        "WorkingTree",
+        "DeliveredTarget"
+      ],
+      "snapshot_actions": [
+        "Reconcile",
+        "CodePrepare",
+        "CodeValidate",
+        "CodeSave"
+      ],
+      "codeshow_modes": [
+        "List",
+        "Detail",
+        "Findings",
+        "Compare",
+        "Trace",
+        "Overview",
+        "Triage",
+        "Recurrence",
+        "Sequence"
+      ],
+      "case_insensitive_in_dispatch": true,
+      "notes": "Snapshot actions ignore the global WorkingTree default if Mode is omitted; CodeShow demands an explicitly bound Mode; Inspect does not branch on Mode."
+    },
+    "common_prerequisites": {
+      "RepoPath": "explicit, nonblank for supported actions",
+      "git": "installed on PATH, command readonly under analysis actions",
+      "pwsh": "PowerShell 7 via #requires -Version 7.0"
+    },
+    "json_stdout": {
+      "flag": "Json",
+      "writer": {
+        "file": "scripts/ces.ps1",
+        "symbol": "Finish",
+        "line": 327
+      },
+      "schema_version": "ces.cli.v1",
+      "fields": [
+        "schema_version",
+        "product_version",
+        "build",
+        "action",
+        "status",
+        "reason_code",
+        "next_step",
+        "message",
+        "supported_actions",
+        "supported_collect_modes",
+        "supported_codeshow_modes",
+        "read_only",
+        "data",
+        "coverage",
+        "warnings",
+        "evidence"
+      ],
+      "output": "single compressed JSON object on stdout (source intent, unverified at runtime)",
+      "depth": "12 for ordinary actions; 20 for CodeShow Sequence"
+    },
+    "documented_exit_codes": {
+      "0": "success",
+      "2": "partial or incomplete trust",
+      "3": "not_implemented action or Collect mode",
+      "4": "invalid_input and selectors",
+      "5": "unavailable or exception"
+    },
+    "side_effect_policy": "Only CodeSave with explicit -ApprovePersist may write CES-owned .codex/ces metadata; source Git/index and existing issues remain unchanged.",
+    "not_implemented": "Other action families, ProposedPR, staged AI handoff, CI, Quality, FindingSave/Show, Report, Knowledge, Issue, Delivery, Cycle have no handler in this CLI."
+  },
+  "binding_notes": [
+    "A source branch with a handler is not proof that a given CLI invocation succeeds in PowerShell.",
+    "Modes are case-insensitive in the listed dispatch comparisons; CodeShow -Mode must be explicitly supplied.",
+    "Inspect has no mode branch. Passing -Mode is not guaranteed to be rejected; treat it as irrelevant rather than a distinct mode.",
+    "CodeShow is read-only over CES stored history; its results never establish current defects or chronological fixes.",
+    "The saved source baseline is an R150 fingerprint, not refreshed or silently overwritten by EC-152."
+  ],
+  "smoke_inventory": [
+    {
+      "file": "tests/CodeCompare.Smoke.ps1",
+      "status": "NOT_RUN"
+    },
+    {
+      "file": "tests/CodeFindings.Smoke.ps1",
+      "status": "NOT_RUN"
+    },
+    {
+      "file": "tests/CodeOverview.Smoke.ps1",
+      "status": "NOT_RUN"
+    },
+    {
+      "file": "tests/CodePrepare.Smoke.ps1",
+      "status": "NOT_RUN"
+    },
+    {
+      "file": "tests/CodeRecurrence.Smoke.ps1",
+      "status": "NOT_RUN"
+    },
+    {
+      "file": "tests/CodeSave.Smoke.ps1",
+      "status": "NOT_RUN"
+    },
+    {
+      "file": "tests/CodeSequence.Smoke.ps1",
+      "status": "NOT_RUN"
+    },
+    {
+      "file": "tests/CodeShow.Smoke.ps1",
+      "status": "NOT_RUN"
+    },
+    {
+      "file": "tests/CodeTrace.Smoke.ps1",
+      "status": "NOT_RUN"
+    },
+    {
+      "file": "tests/CodeTriage.Smoke.ps1",
+      "status": "NOT_RUN"
+    },
+    {
+      "file": "tests/CodeValidate.Smoke.ps1",
+      "status": "NOT_RUN"
+    },
+    {
+      "file": "tests/Collect.Smoke.ps1",
+      "status": "NOT_RUN"
+    },
+    {
+      "file": "tests/DeliveredTarget.Smoke.ps1",
+      "status": "NOT_RUN"
+    },
+    {
+      "file": "tests/Inspect.Smoke.ps1",
+      "status": "NOT_RUN"
+    },
+    {
+      "file": "tests/Reconcile.Smoke.ps1",
+      "status": "NOT_RUN"
+    }
+  ],
+  "routes": [
+    {
+      "id": "Inspect",
+      "action": "Inspect",
+      "mode": null,
+      "mode_activation": "无模式：-Action Inspect，可省略 -Action；-Mode 与 Inspect 无关",
+      "handler": {
+        "file": "scripts/ces.ps1",
+        "symbol": "Inspect-Repository",
+        "line": 1123
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1899,
+        "callee": "Inspect-Repository"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath"
+        ],
+        "optional": []
+      },
+      "success_reason_codes": [
+        "INSPECT_OK"
+      ],
+      "example_payload_fields": [
+        "source_root",
+        "stable_project_root",
+        "stable_root_verified",
+        "worktree_kind",
+        "head"
+      ],
+      "sample_non_success_reason_codes": [
+        "STABLE_ROOT_UNVERIFIED",
+        "HEAD_UNVERIFIED"
+      ],
+      "effect": "READ_ONLY",
+      "source_scope": "只读 Git 仓根、worktree、HEAD 与可信持久根识别；不能作为当前源安全写入许可。",
+      "cross_module_calls": [],
+      "tests": {
+        "primary_smoke": "tests/Inspect.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "-Mode 对 Inspect 没有路由意义，当前源码也未因显式的无关 Mode 而拒绝。",
+        "只有可信根验证通过才可视为相应成功；linked/unverified 仅 partial。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action Inspect -RepoPath <repo> -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY"
+    },
+    {
+      "id": "Collect:WorkingTree",
+      "action": "Collect",
+      "mode": "WorkingTree",
+      "mode_activation": "默认 WorkingTree 或显式 -Mode WorkingTree",
+      "handler": {
+        "file": "scripts/collect.ps1",
+        "symbol": "Collect-WorkingTree",
+        "line": 293
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1911,
+        "callee": "Collect-WorkingTree"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath"
+        ],
+        "optional": [
+          "Mode (default WorkingTree)",
+          "IncludePatches",
+          "IncludeUntrackedContent"
+        ]
+      },
+      "success_reason_codes": [
+        "COLLECT_OK"
+      ],
+      "example_payload_fields": [
+        "subject.source_mode",
+        "snapshot",
+        "staged",
+        "unstaged",
+        "untracked",
+        "limits"
+      ],
+      "sample_non_success_reason_codes": [
+        "COLLECT_UNSTABLE",
+        "COLLECT_PARTIAL"
+      ],
+      "effect": "READ_ONLY",
+      "source_scope": "HEAD/Index/Worktree/Untracked 多层局部Git快照；patch和未跟踪内容需要显式披露请求。",
+      "cross_module_calls": [
+        {
+          "file": "scripts/ces.ps1",
+          "symbol": "Inspect-Repository",
+          "line": 1123
+        }
+      ],
+      "tests": {
+        "primary_smoke": "tests/Collect.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "工作树观测非原子；收集时刻与随后变化不可混淆。",
+        "不保证涵盖被排除的大文件、敏感文件和未披露的patch内容。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action Collect -Mode WorkingTree -RepoPath <repo> -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY"
+    },
+    {
+      "id": "Collect:DeliveredTarget",
+      "action": "Collect",
+      "mode": "DeliveredTarget",
+      "mode_activation": "显式 -Mode DeliveredTarget",
+      "handler": {
+        "file": "scripts/delivered.ps1",
+        "symbol": "Collect-DeliveredTarget",
+        "line": 84
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1913,
+        "callee": "Collect-DeliveredTarget"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode",
+          "BaseSha",
+          "TargetSha",
+          "TargetRef"
+        ],
+        "optional": [
+          "IncludePatches"
+        ]
+      },
+      "success_reason_codes": [
+        "COLLECT_DELIVERED_TARGET_OK"
+      ],
+      "example_payload_fields": [
+        "subject.source_mode",
+        "subject.base_sha",
+        "subject.target_sha",
+        "subject.target_ref",
+        "snapshot",
+        "changes"
+      ],
+      "sample_non_success_reason_codes": [
+        "FULL_COMMIT_IDS_REQUIRED",
+        "INVALID_TARGET_REF",
+        "TARGET_REF_MISMATCH",
+        "COLLECT_TARGET_UNSTABLE"
+      ],
+      "effect": "READ_ONLY",
+      "source_scope": "仅绑定本地 target ref 和完整提交 SHA 的固定提交范围差异；不是实际远程交付或部署回执。",
+      "cross_module_calls": [
+        {
+          "file": "scripts/ces.ps1",
+          "symbol": "Inspect-Repository",
+          "line": 1123
+        }
+      ],
+      "tests": {
+        "primary_smoke": "tests/DeliveredTarget.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "完整 BaseSha 与 TargetSha 必须是同哈希格式的真实提交，TargetRef 必须为完整本地引用。",
+        "-IncludeUntrackedContent 对此模式无意义并被拒绝；PR身份、远程发布、CI均不校验。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action Collect -Mode DeliveredTarget -RepoPath <repo> -BaseSha <full-base-sha> -TargetSha <full-target-sha> -TargetRef refs/heads/main -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY"
+    },
+    {
+      "id": "Reconcile:Snapshot",
+      "action": "Reconcile",
+      "mode": "Snapshot",
+      "mode_activation": "省略 -Mode 时执行 Snapshot；显式指定时必须等于 Snapshot",
+      "handler": {
+        "file": "scripts/reconcile.ps1",
+        "symbol": "Reconcile-Snapshot",
+        "line": 302
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1901,
+        "callee": "Reconcile-Snapshot"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "EvidencePath"
+        ],
+        "optional": [
+          "Mode (Snapshot, optional)"
+        ]
+      },
+      "success_reason_codes": [
+        "RECONCILE_MATCHED"
+      ],
+      "example_payload_fields": [
+        "verdict",
+        "previous_snapshot",
+        "current_snapshot",
+        "comparison"
+      ],
+      "sample_non_success_reason_codes": [
+        "EVIDENCE_INVALID",
+        "EVIDENCE_REPO_MISMATCH",
+        "RECONCILE_CHANGED",
+        "RECONCILE_INDETERMINATE"
+      ],
+      "effect": "READ_ONLY",
+      "source_scope": "复读用户保存的 Collect JSON，核对本地Git来源/范围与当前观测；支持工作树与指定目标快照。",
+      "cross_module_calls": [
+        {
+          "file": "scripts/ces.ps1",
+          "symbol": "Inspect-Repository",
+          "line": 1123
+        },
+        {
+          "file": "scripts/collect.ps1",
+          "symbol": "Collect-WorkingTree",
+          "line": 293
+        },
+        {
+          "file": "scripts/delivered.ps1",
+          "symbol": "Collect-DeliveredTarget",
+          "line": 84
+        }
+      ],
+      "tests": {
+        "primary_smoke": "tests/Reconcile.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "对两个非原子局部采样做有边界的一致性判定，不认证已保存快照作者。",
+        "-Mode 显式传入只允许 Snapshot；不传时仍调用Snapshot处理器（顶层默认字符串仍为 WorkingTree）。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action Reconcile -Mode Snapshot -RepoPath <repo> -EvidencePath <saved-collect.json> -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY"
+    },
+    {
+      "id": "CodePrepare:Snapshot",
+      "action": "CodePrepare",
+      "mode": "Snapshot",
+      "mode_activation": "省略 -Mode 时执行 Snapshot；显式指定时必须等于 Snapshot",
+      "handler": {
+        "file": "scripts/codeprepare.ps1",
+        "symbol": "CodePrepare-Snapshot",
+        "line": 117
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1903,
+        "callee": "CodePrepare-Snapshot"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "EvidencePath"
+        ],
+        "optional": [
+          "Mode (Snapshot, optional)",
+          "IncludePatches",
+          "IncludeUntrackedContent"
+        ]
+      },
+      "success_reason_codes": [
+        "CODE_PREPARE_READY",
+        "CODE_PREPARE_EMPTY"
+      ],
+      "example_payload_fields": [
+        "prepared",
+        "preparation.missing_requirements",
+        "packet_sha256",
+        "review_packet"
+      ],
+      "sample_non_success_reason_codes": [
+        "EVIDENCE_PATH_REQUIRED",
+        "CODE_PREPARE_CONTENT_REQUIRED",
+        "CODE_PREPARE_EVIDENCE_MOVED"
+      ],
+      "effect": "READ_ONLY",
+      "source_scope": "先Reconcile再组装本地Snapshot代码包；内容放行受显式patch与untracked披露开关限制。",
+      "cross_module_calls": [
+        {
+          "file": "scripts/reconcile.ps1",
+          "symbol": "Reconcile-Snapshot",
+          "line": 302
+        }
+      ],
+      "tests": {
+        "primary_smoke": "tests/CodePrepare.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "当仍有变化但未显式披露所需内容时返回 partial，而不是返回缺内容的已准备包。",
+        "prepared=true只代表可交给人工/模型研读，未实际执行AI审查、没有持久化。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action CodePrepare -Mode Snapshot -RepoPath <repo> -EvidencePath <saved-collect.json> -IncludePatches -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY"
+    },
+    {
+      "id": "CodeValidate:Snapshot",
+      "action": "CodeValidate",
+      "mode": "Snapshot",
+      "mode_activation": "省略 -Mode 时执行 Snapshot；显式指定时必须等于 Snapshot",
+      "handler": {
+        "file": "scripts/codevalidate.ps1",
+        "symbol": "CodeValidate-Snapshot",
+        "line": 222
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1905,
+        "callee": "CodeValidate-Snapshot"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "EvidencePath",
+          "InputPath"
+        ],
+        "optional": [
+          "Mode (Snapshot, optional)",
+          "IncludePatches",
+          "IncludeUntrackedContent"
+        ]
+      },
+      "success_reason_codes": [
+        "CODE_VALIDATE_OK"
+      ],
+      "example_payload_fields": [
+        "validated",
+        "packet_bound",
+        "checked_findings",
+        "source_mode",
+        "draft_sha256",
+        "packet_sha256"
+      ],
+      "sample_non_success_reason_codes": [
+        "INPUT_PATH_REQUIRED",
+        "CODE_VALIDATE_DRAFT_INVALID",
+        "CODE_VALIDATE_PACKET_MISMATCH",
+        "CODE_VALIDATE_EVIDENCE_UNBOUND",
+        "CODE_VALIDATE_INPUT_CHANGED"
+      ],
+      "effect": "READ_ONLY",
+      "source_scope": "解析草稿JSON并执行CodePrepare来源重建、精确pathspec+quote字面量锚定和再次Reconcile；不自动保存。",
+      "cross_module_calls": [
+        {
+          "file": "scripts/codeprepare.ps1",
+          "symbol": "CodePrepare-Snapshot",
+          "line": 117
+        },
+        {
+          "file": "scripts/reconcile.ps1",
+          "symbol": "Reconcile-Snapshot",
+          "line": 302
+        }
+      ],
+      "tests": {
+        "primary_smoke": "tests/CodeValidate.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "校验来源/引文的存在，不验证模型语义、行号、作者身份、远程交付、CI或修复真伪。",
+        "-InputPath 指向模型编写的JSON草稿；输入中 validated=true 不被信任。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action CodeValidate -Mode Snapshot -RepoPath <repo> -EvidencePath <saved-collect.json> -InputPath <draft.json> -IncludePatches -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY"
+    },
+    {
+      "id": "CodeSave:Snapshot",
+      "action": "CodeSave",
+      "mode": "Snapshot",
+      "mode_activation": "省略 -Mode 时执行 Snapshot；显式指定时必须等于 Snapshot",
+      "handler": {
+        "file": "scripts/codesave.ps1",
+        "symbol": "CodeSave-Snapshot",
+        "line": 247
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1909,
+        "callee": "CodeSave-Snapshot"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "EvidencePath",
+          "InputPath",
+          "ApprovePersist"
+        ],
+        "optional": [
+          "Mode (Snapshot, optional)",
+          "IncludePatches",
+          "IncludeUntrackedContent"
+        ]
+      },
+      "success_reason_codes": [
+        "CODE_SAVE_OK",
+        "CODE_SAVE_ALREADY_PRESENT"
+      ],
+      "example_payload_fields": [
+        "persisted",
+        "created",
+        "record_id",
+        "record_path",
+        "source_mode",
+        "business_source_modified"
+      ],
+      "sample_non_success_reason_codes": [
+        "CODE_SAVE_AUTHORIZATION_REQUIRED",
+        "CODE_SAVE_VALIDATION_FAILED",
+        "CODE_SAVE_MAIN_WORKTREE_REQUIRED",
+        "CODE_SAVE_SOURCE_CHANGED",
+        "CODE_SAVE_STORE_UNSAFE_OR_UNAVAILABLE"
+      ],
+      "effect": "LOCAL_CES_METADATA_WRITE_WITH_EXPLICIT_AUTHORIZATION",
+      "source_scope": "收到显式ApprovePersist后重新执行CodeValidate链，再次核验Source+Draft，仅向CES自有元数据目录原子写入内容寻址记录。",
+      "cross_module_calls": [
+        {
+          "file": "scripts/codevalidate.ps1",
+          "symbol": "CodeValidate-Snapshot",
+          "line": 222
+        },
+        {
+          "file": "scripts/reconcile.ps1",
+          "symbol": "Reconcile-Snapshot",
+          "line": 302
+        }
+      ],
+      "tests": {
+        "primary_smoke": "tests/CodeSave.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "此Action的read_only=false不代表已成功写入；依 persisted 与返回码区分。",
+        "仅在经独立核验的main worktree写CES元数据；绝不因此授权业务源码或Git索引变动。",
+        "对内容已存在的ID幂等返回ALREADY_PRESENT，不覆盖。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action CodeSave -Mode Snapshot -RepoPath <repo> -EvidencePath <saved-collect.json> -InputPath <draft.json> -IncludePatches -ApprovePersist -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY"
+    },
+    {
+      "id": "CodeShow:List",
+      "action": "CodeShow",
+      "mode": "List",
+      "mode_activation": "必须显式 -Mode List",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode"
+        ],
+        "optional": [
+          "Limit 1..100 (default 50)",
+          "AfterRecordId"
+        ]
+      },
+      "success_reason_codes": [
+        "CODE_SHOW_OK",
+        "CODE_SHOW_EMPTY"
+      ],
+      "example_payload_fields": [
+        "mode",
+        "records",
+        "record_count",
+        "returned_count",
+        "next_after_record_id"
+      ],
+      "sample_non_success_reason_codes": [
+        "CODE_SHOW_MAIN_WORKTREE_REQUIRED",
+        "CODE_SHOW_RECORD_INVALID_OR_CHANGED"
+      ],
+      "effect": "READ_ONLY",
+      "source_scope": "元数据级分页列出存储记录；不输出完整findings。",
+      "cross_module_calls": [
+        {
+          "file": "scripts/ces.ps1",
+          "symbol": "Inspect-Repository",
+          "line": 1123
+        },
+        {
+          "file": "scripts/codeshow.ps1",
+          "symbol": "Get-CodeShowStore",
+          "line": 263
+        }
+      ],
+      "tests": {
+        "primary_smoke": "tests/CodeShow.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "非主worktree不能读取CES存储历史；默认每页50条。",
+        "全部为经校验的CES已保存报告历史，不等同于当前真实缺陷、修复或时间顺序。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action CodeShow -Mode List -RepoPath <repo> -Limit 25 -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY"
+    },
+    {
+      "id": "CodeShow:Detail",
+      "action": "CodeShow",
+      "mode": "Detail",
+      "mode_activation": "必须显式 -Mode Detail",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode",
+          "RecordId"
+        ],
+        "optional": []
+      },
+      "success_reason_codes": [
+        "CODE_SHOW_OK"
+      ],
+      "example_payload_fields": [
+        "mode",
+        "record_id",
+        "record_sha256",
+        "record"
+      ],
+      "sample_non_success_reason_codes": [
+        "CODE_SHOW_NOT_FOUND"
+      ],
+      "effect": "READ_ONLY",
+      "source_scope": "验证并读取一条已保存完整CodeInsight记录。",
+      "cross_module_calls": [
+        {
+          "file": "scripts/ces.ps1",
+          "symbol": "Inspect-Repository",
+          "line": 1123
+        },
+        {
+          "file": "scripts/codeshow.ps1",
+          "symbol": "Get-CodeShowStore",
+          "line": 263
+        }
+      ],
+      "tests": {
+        "primary_smoke": "tests/CodeShow.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "RecordId需要可寻址且完整的 ci-<sha256>，存储不存在时返回NOT_FOUND。",
+        "全部为经校验的CES已保存报告历史，不等同于当前真实缺陷、修复或时间顺序。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action CodeShow -Mode Detail -RepoPath <repo> -RecordId <ci-id> -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY"
+    },
+    {
+      "id": "CodeShow:Findings",
+      "action": "CodeShow",
+      "mode": "Findings",
+      "mode_activation": "必须显式 -Mode Findings",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode"
+        ],
+        "optional": [
+          "Limit 1..100",
+          "AfterFindingCursor",
+          "FindingsRecordIds",
+          "FindingSeverity",
+          "FindingLayer",
+          "FindingPath",
+          "FindingSourceMode"
+        ]
+      },
+      "success_reason_codes": [
+        "CODE_SHOW_OK",
+        "CODE_SHOW_EMPTY",
+        "CODE_SHOW_NO_MATCHES"
+      ],
+      "example_payload_fields": [
+        "mode",
+        "findings",
+        "returned_count",
+        "selection_scope",
+        "next_after_finding_cursor"
+      ],
+      "sample_non_success_reason_codes": [
+        "CODE_SHOW_FINDINGS_SELECTION_CONFLICT",
+        "CODE_SHOW_FINDING_CURSOR_MISMATCH"
+      ],
+      "effect": "READ_ONLY",
+      "source_scope": "按筛选器分页读取保存的Finding；支持显式record ID集合模式。",
+      "cross_module_calls": [
+        {
+          "file": "scripts/ces.ps1",
+          "symbol": "Inspect-Repository",
+          "line": 1123
+        },
+        {
+          "file": "scripts/codeshow.ps1",
+          "symbol": "Get-CodeShowStore",
+          "line": 263
+        }
+      ],
+      "tests": {
+        "primary_smoke": "tests/CodeFindings.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "显式FindingsRecordIds与AfterFindingCursor互斥（即使光标是空值）。",
+        "返回数量只适用于本次筛选/扫描窗口。",
+        "全部为经校验的CES已保存报告历史，不等同于当前真实缺陷、修复或时间顺序。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action CodeShow -Mode Findings -RepoPath <repo> -FindingSeverity high -Limit 25 -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY",
+      "submode_handler": {
+        "invocation": {
+          "file": "scripts/codeshow.ps1",
+          "line": 1006,
+          "callee": "Get-CodeShowFindingsPage"
+        },
+        "definition": {
+          "file": "scripts/codefindings.ps1",
+          "symbol": "Get-CodeShowFindingsPage",
+          "line": 104
+        }
+      }
+    },
+    {
+      "id": "CodeShow:Compare",
+      "action": "CodeShow",
+      "mode": "Compare",
+      "mode_activation": "必须显式 -Mode Compare",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode",
+          "LeftRecordId",
+          "RightRecordId"
+        ],
+        "optional": []
+      },
+      "success_reason_codes": [
+        "CODE_SHOW_OK"
+      ],
+      "example_payload_fields": [
+        "mode",
+        "comparable",
+        "left_record",
+        "right_record",
+        "comparison_basis"
+      ],
+      "sample_non_success_reason_codes": [
+        "CODE_SHOW_COMPARE_IDS_REQUIRED",
+        "CODE_SHOW_COMPARE_SCOPE_MISMATCH"
+      ],
+      "effect": "READ_ONLY",
+      "source_scope": "两条历史报告的精确quote锚点对比，不能判定语义等价或已修复。",
+      "cross_module_calls": [
+        {
+          "file": "scripts/ces.ps1",
+          "symbol": "Inspect-Repository",
+          "line": 1123
+        },
+        {
+          "file": "scripts/codeshow.ps1",
+          "symbol": "Get-CodeShowStore",
+          "line": 263
+        }
+      ],
+      "tests": {
+        "primary_smoke": "tests/CodeCompare.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "来源模式不同时返回partial CODE_SHOW_COMPARE_SCOPE_MISMATCH，禁止错误缺陷消失推断。",
+        "全部为经校验的CES已保存报告历史，不等同于当前真实缺陷、修复或时间顺序。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action CodeShow -Mode Compare -RepoPath <repo> -LeftRecordId <ci-left> -RightRecordId <ci-right> -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY",
+      "submode_handler": {
+        "invocation": {
+          "file": "scripts/codeshow.ps1",
+          "line": 1004,
+          "callee": "Get-CodeShowCompare"
+        },
+        "definition": {
+          "file": "scripts/codecompare.ps1",
+          "symbol": "Get-CodeShowCompare",
+          "line": 90
+        }
+      }
+    },
+    {
+      "id": "CodeShow:Trace",
+      "action": "CodeShow",
+      "mode": "Trace",
+      "mode_activation": "必须显式 -Mode Trace",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode",
+          "RecordId",
+          "FindingId"
+        ],
+        "optional": [
+          "TraceRecordIds",
+          "AfterTraceCursor",
+          "Limit 1..100"
+        ]
+      },
+      "success_reason_codes": [
+        "CODE_SHOW_OK",
+        "CODE_SHOW_NO_MATCHES"
+      ],
+      "example_payload_fields": [
+        "mode",
+        "seed",
+        "anchor",
+        "matches",
+        "returned_record_count",
+        "selection_scope"
+      ],
+      "sample_non_success_reason_codes": [
+        "CODE_SHOW_TRACE_SELECTORS_REQUIRED",
+        "CODE_SHOW_TRACE_SELECTION_SEED_REQUIRED"
+      ],
+      "effect": "READ_ONLY",
+      "source_scope": "围绕一条已保存Finding精确锚点向其它历史报告检索；可限定明确的记录集合。",
+      "cross_module_calls": [
+        {
+          "file": "scripts/ces.ps1",
+          "symbol": "Inspect-Repository",
+          "line": 1123
+        },
+        {
+          "file": "scripts/codeshow.ps1",
+          "symbol": "Get-CodeShowStore",
+          "line": 263
+        }
+      ],
+      "tests": {
+        "primary_smoke": "tests/CodeTrace.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "显式记录集合必须包含seed RecordId；与分页cursor有互斥规则。",
+        "哈希ID顺序不能解释为时间先后。",
+        "全部为经校验的CES已保存报告历史，不等同于当前真实缺陷、修复或时间顺序。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action CodeShow -Mode Trace -RepoPath <repo> -RecordId <ci-id> -FindingId F1 -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY",
+      "submode_handler": {
+        "invocation": {
+          "file": "scripts/codeshow.ps1",
+          "line": 1000,
+          "callee": "Get-CodeShowTracePage"
+        },
+        "definition": {
+          "file": "scripts/codetrace.ps1",
+          "symbol": "Get-CodeShowTracePage",
+          "line": 85
+        }
+      }
+    },
+    {
+      "id": "CodeShow:Overview",
+      "action": "CodeShow",
+      "mode": "Overview",
+      "mode_activation": "必须显式 -Mode Overview",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode"
+        ],
+        "optional": [
+          "OverviewSourceMode",
+          "OverviewRecordIds",
+          "AfterOverviewCursor",
+          "Limit 1..100"
+        ]
+      },
+      "success_reason_codes": [
+        "CODE_SHOW_OK",
+        "CODE_SHOW_EMPTY",
+        "CODE_SHOW_NO_MATCHES"
+      ],
+      "example_payload_fields": [
+        "mode",
+        "selection_scope",
+        "counts",
+        "included_record_count",
+        "scanned_record_count"
+      ],
+      "sample_non_success_reason_codes": [
+        "CODE_SHOW_OVERVIEW_SELECTION_CONFLICT"
+      ],
+      "effect": "READ_ONLY",
+      "source_scope": "已保存报告的指定源模式聚合计数/枚举；计数受扫描窗口或显式选集限制。",
+      "cross_module_calls": [
+        {
+          "file": "scripts/ces.ps1",
+          "symbol": "Inspect-Repository",
+          "line": 1123
+        },
+        {
+          "file": "scripts/codeshow.ps1",
+          "symbol": "Get-CodeShowStore",
+          "line": 263
+        }
+      ],
+      "tests": {
+        "primary_smoke": "tests/CodeOverview.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "显式记录集合与扫描cursor互斥，统计不覆盖仓库全历史。",
+        "全部为经校验的CES已保存报告历史，不等同于当前真实缺陷、修复或时间顺序。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action CodeShow -Mode Overview -RepoPath <repo> -OverviewSourceMode working_tree_diff -Limit 10 -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY",
+      "submode_handler": {
+        "invocation": {
+          "file": "scripts/codeshow.ps1",
+          "line": 996,
+          "callee": "Get-CodeShowOverviewPage"
+        },
+        "definition": {
+          "file": "scripts/codeoverview.ps1",
+          "symbol": "Get-CodeShowOverviewPage",
+          "line": 148
+        }
+      }
+    },
+    {
+      "id": "CodeShow:Triage",
+      "action": "CodeShow",
+      "mode": "Triage",
+      "mode_activation": "必须显式 -Mode Triage",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode"
+        ],
+        "optional": [
+          "TriageSourceMode",
+          "TriageRecordIds",
+          "AfterTriageCursor",
+          "TriageTop",
+          "Limit 1..100"
+        ]
+      },
+      "success_reason_codes": [
+        "CODE_SHOW_OK",
+        "CODE_SHOW_EMPTY",
+        "CODE_SHOW_NO_MATCHES"
+      ],
+      "example_payload_fields": [
+        "mode",
+        "selection_scope",
+        "path_groups",
+        "returned_group_count",
+        "scanned_record_count"
+      ],
+      "sample_non_success_reason_codes": [
+        "CODE_SHOW_TRIAGE_SELECTION_CONFLICT"
+      ],
+      "effect": "READ_ONLY",
+      "source_scope": "对已保存报告中路径陈述分组和排序；排序不是当前漏洞风险评分。",
+      "cross_module_calls": [
+        {
+          "file": "scripts/ces.ps1",
+          "symbol": "Inspect-Repository",
+          "line": 1123
+        },
+        {
+          "file": "scripts/codeshow.ps1",
+          "symbol": "Get-CodeShowStore",
+          "line": 263
+        }
+      ],
+      "tests": {
+        "primary_smoke": "tests/CodeTriage.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "同一查询页统计并非全历史风险；跨记录选集受到真实性边界限制。",
+        "全部为经校验的CES已保存报告历史，不等同于当前真实缺陷、修复或时间顺序。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action CodeShow -Mode Triage -RepoPath <repo> -TriageSourceMode working_tree_diff -TriageTop 15 -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY",
+      "submode_handler": {
+        "invocation": {
+          "file": "scripts/codeshow.ps1",
+          "line": 992,
+          "callee": "Get-CodeShowTriagePage"
+        },
+        "definition": {
+          "file": "scripts/codetriage.ps1",
+          "symbol": "Get-CodeShowTriagePage",
+          "line": 183
+        }
+      }
+    },
+    {
+      "id": "CodeShow:Recurrence",
+      "action": "CodeShow",
+      "mode": "Recurrence",
+      "mode_activation": "必须显式 -Mode Recurrence",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode"
+        ],
+        "optional": [
+          "RecurrenceSourceMode",
+          "RecurrenceRecordIds",
+          "AfterRecurrenceCursor",
+          "RecurrencePath",
+          "RecurrenceMinRecords",
+          "RecurrenceTop",
+          "Limit 1..100"
+        ]
+      },
+      "success_reason_codes": [
+        "CODE_SHOW_OK",
+        "CODE_SHOW_EMPTY",
+        "CODE_SHOW_NO_MATCHES"
+      ],
+      "example_payload_fields": [
+        "mode",
+        "selection_scope",
+        "anchors",
+        "returned_anchor_count",
+        "eligible_anchor_count"
+      ],
+      "sample_non_success_reason_codes": [
+        "CODE_SHOW_RECURRENCE_SELECTION_CONFLICT"
+      ],
+      "effect": "READ_ONLY",
+      "source_scope": "汇集在至少N条已保存报告中反复出现的完全一致锚点，不代表多起独立缺陷。",
+      "cross_module_calls": [
+        {
+          "file": "scripts/ces.ps1",
+          "symbol": "Inspect-Repository",
+          "line": 1123
+        },
+        {
+          "file": "scripts/codeshow.ps1",
+          "symbol": "Get-CodeShowStore",
+          "line": 263
+        }
+      ],
+      "tests": {
+        "primary_smoke": "tests/CodeRecurrence.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "重复报告并不认证问题的存在、修复状态或时间先后。",
+        "全部为经校验的CES已保存报告历史，不等同于当前真实缺陷、修复或时间顺序。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action CodeShow -Mode Recurrence -RepoPath <repo> -RecurrenceMinRecords 2 -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY",
+      "submode_handler": {
+        "invocation": {
+          "file": "scripts/codeshow.ps1",
+          "line": 986,
+          "callee": "Get-CodeShowRecurrencePage"
+        },
+        "definition": {
+          "file": "scripts/coderecurrence.ps1",
+          "symbol": "Get-CodeShowRecurrencePage",
+          "line": 141
+        }
+      }
+    },
+    {
+      "id": "CodeShow:Sequence",
+      "action": "CodeShow",
+      "mode": "Sequence",
+      "mode_activation": "必须显式 -Mode Sequence",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode",
+          "SequenceRecordIds (2..12个不同完整ci ID)"
+        ],
+        "optional": [
+          "SequenceTop 1..20",
+          "SequencePath",
+          "SequenceFindingRecordId + SequenceFindingId",
+          "SequenceAnchorIndex",
+          "SequencePairIndex",
+          "SequencePairOverviewIndex + 进阶索引"
+        ]
+      },
+      "success_reason_codes": [
+        "CODE_SHOW_OK"
+      ],
+      "example_payload_fields": [
+        "mode",
+        "sequence_record_ids",
+        "steps",
+        "anchor_trajectory",
+        "baseline_drift",
+        "pairwise_profile",
+        "selected_pair_overview"
+      ],
+      "sample_non_success_reason_codes": [
+        "CODE_SHOW_SEQUENCE_RECORD_IDS_INVALID",
+        "CODE_SHOW_SEQUENCE_TOP_INVALID",
+        "CODE_SHOW_SEQUENCE_SCOPE_MISMATCH"
+      ],
+      "effect": "READ_ONLY",
+      "source_scope": "调用者指定顺序的2至12份本地历史报告组合分析，保留既有至k56原始SCC边扩阶而不增加新阶数。",
+      "cross_module_calls": [
+        {
+          "file": "scripts/ces.ps1",
+          "symbol": "Inspect-Repository",
+          "line": 1123
+        },
+        {
+          "file": "scripts/codeshow.ps1",
+          "symbol": "Get-CodeShowStore",
+          "line": 263
+        }
+      ],
+      "tests": {
+        "primary_smoke": "tests/CodeSequence.Smoke.ps1",
+        "status": "PRESENT_NOT_RUN",
+        "claim": "Smokes are associated by literal invocation and assertions; no runtime coverage is proven."
+      },
+      "limitations": [
+        "这是重型只读高阶功能，真实性和性能尚未在原生环境验收。",
+        "传入的记录顺序只代表用户指定顺序，不能推导真实时间顺序。",
+        "自定义Sequence路径/成对/锚点/Findings各层索引需要满足互斥和父子约束。",
+        "全部为经校验的CES已保存报告历史，不等同于当前真实缺陷、修复或时间顺序。"
+      ],
+      "example_powershell": "pwsh -NoProfile -File ./scripts/ces.ps1 -Action CodeShow -Mode Sequence -RepoPath <repo> -SequenceRecordIds \"<ci-first>,<ci-second>\" -SequenceTop 10 -Json",
+      "evidence_confidence": "STATIC_SOURCE_AND_EXISTING_SMOKE_REFERENCES_ONLY",
+      "submode_handler": {
+        "invocation": {
+          "file": "scripts/codeshow.ps1",
+          "line": 973,
+          "callee": "Get-CodeShowSequence"
+        },
+        "definition": {
+          "file": "scripts/codesequence.ps1",
+          "symbol": "Get-CodeShowSequence",
+          "line": 2409
+        }
+      }
+    }
+  ],
+  "runtime_validation": {
+    "powershell7": "NOT_RUN",
+    "existing_15_smoke": "NOT_RUN",
+    "windows_git": "NOT_RUN",
+    "performance_E63_E66": "NOT_RUN",
+    "final_user_assisted": "NOT_STARTED"
+  },
+  "source_fingerprints": {
+    "scripts/ces.ps1": "e31634b15b437c109778feca946a678e34e504278c28c1fe252128afd7230ab9",
+    "scripts/codecompare.ps1": "dae00219123c94be8394ec3cfc22579f41777005ae5c0e231cfec6484bb84c1f",
+    "scripts/codefindings.ps1": "65be5362565a51cf0e0ec3a4349eaf7a5b741c2fa33212df6b27e120e60ae14b",
+    "scripts/codeoverview.ps1": "f5a910327b5a479ac43f8749fc3bb97290a0427ad89b9574789a44f98ed53339",
+    "scripts/codeprepare.ps1": "90b0ef24ed79528c862a8dd976399514eabfd15d160aacb2329319c4abd3502a",
+    "scripts/coderecurrence.ps1": "0f6df19eed74d7ab522d2aa71beeaf8486bf851025cd76d3621e65c8d06aa459",
+    "scripts/codesave.ps1": "4c66ef33c0bf5a4ab181a2bcee9b7248149cbd17fb9b0f48431ab88db980542e",
+    "scripts/codesequence.ps1": "aa79447bd7190a1098fa5330538f7b96676e7e4bec15819a579c6146d61942fc",
+    "scripts/codeshow.ps1": "03c4d1148421f5187cd37603ba2a587774b0f34739a94de659e352854715c23f",
+    "scripts/codetrace.ps1": "9acf06db57641a42348e2027ad445fdb9066e300b7b94e300fd11c5a4ac13889",
+    "scripts/codetriage.ps1": "78dfac26f58f1b45c7cd2dedf1c8fb4b431a2f37961617e64a529dd4c87917ee",
+    "scripts/codevalidate.ps1": "bacecc4758f5eab429329add9b0ec624b9b7215ee29306ba7b22c247b6020395",
+    "scripts/collect.ps1": "1ae7d44fca8057e276a1c8442d9cf7882275937d48bc734077ecc3bec8322fc9",
+    "scripts/delivered.ps1": "a607485e7cc6d61102ad5b83170fafe1d4793fdf187166d6848c02cb8006d709",
+    "scripts/reconcile.ps1": "a5a9037229347fe986d9a6a08b5b0b04fc0afd2caaf4d816b02fcee258f7ea5c",
+    "tests/CodeCompare.Smoke.ps1": "b6a89c27befdbab6d5f8edbb414ad5e9a22dafbae428b9cb7434d0a2d316e38e",
+    "tests/CodeFindings.Smoke.ps1": "5590a095d991e7b7e7eb4d2918025ed92f5aad2b7fe969ef1dee1332b73449ec",
+    "tests/CodeOverview.Smoke.ps1": "1fa38dee647903162c79975fffeecb04a60095b56494016810141f498bf93c37",
+    "tests/CodePrepare.Smoke.ps1": "99a39ccb24d5237a42ec4ed2ac37b6022c971a681bab71baf867367074ef3159",
+    "tests/CodeRecurrence.Smoke.ps1": "4d8933e44104f0a7ba7c4b1f7f5d46a9e12acfc3804c6eac6fdde06a85607ed3",
+    "tests/CodeSave.Smoke.ps1": "08f0efe48c5abfffa25f75227713f646691b4d014ec458177be6291c5da9eee7",
+    "tests/CodeSequence.Smoke.ps1": "95fce2e58598963901eb66b47d7e557a628c4c11b58eb13270cb7f231693aea0",
+    "tests/CodeShow.Smoke.ps1": "28577235deab484e13578453072d0d934b374a12b5f29c116cf158dae70c1cda",
+    "tests/CodeTrace.Smoke.ps1": "8df622bcf715049dccc8ce3e2e59d7b0a5f95d3cf283c4ecffb406ec7ed39975",
+    "tests/CodeTriage.Smoke.ps1": "79377ad6527538e485274d26314f3b17a154da3569a458e54714348ce8f35bf7",
+    "tests/CodeValidate.Smoke.ps1": "0319d802a275d0eff48e3354c6c94104fb90335a8e3ffba5e2f266e0119414f2",
+    "tests/Collect.Smoke.ps1": "884486de8576025feea4a1a6d3b72aceb80a889f1c82264e54c6b4bb0880fcec",
+    "tests/DeliveredTarget.Smoke.ps1": "57874d0714549a982368ca425be08c3451e82890f1732888804bd60a4c05db9a",
+    "tests/Inspect.Smoke.ps1": "7707d8b03a2dae06137d62501d2692b89a90a67d487e1eddf8eae4fdd2bfd9f9",
+    "tests/Reconcile.Smoke.ps1": "ae641659eac141cefd97f4478fae2f35457a70dcb446ac139ebd00e97df53fed"
+  }
+}

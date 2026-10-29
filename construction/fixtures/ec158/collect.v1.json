@@ -1,0 +1,83 @@
+{
+  "schema_version": "ces.cli.v1",
+  "product_version": "1.0.0",
+  "build": "1.0.0",
+  "action": "Collect",
+  "status": "partial",
+  "reason_code": "COLLECT_PARTIAL_SYNTHETIC",
+  "next_step": "none",
+  "message": "SYNTHETIC EXAMPLE ONLY. No CES/Git/PowerShell action ran.",
+  "supported_actions": [
+    "Inspect",
+    "Collect",
+    "Reconcile",
+    "CodePrepare",
+    "CodeValidate",
+    "CodeSave",
+    "CodeShow"
+  ],
+  "supported_collect_modes": [
+    "WorkingTree",
+    "DeliveredTarget"
+  ],
+  "supported_codeshow_modes": [
+    "List",
+    "Detail",
+    "Findings",
+    "Compare",
+    "Trace",
+    "Overview",
+    "Triage",
+    "Recurrence",
+    "Sequence"
+  ],
+  "read_only": true,
+  "data": {
+    "subject": {
+      "kind": "code",
+      "source_mode": "working_tree_diff"
+    },
+    "snapshot": {
+      "atomic": false
+    },
+    "can_persist_ces_state": false,
+    "source_root": "/synthetic/fixture/root"
+  },
+  "coverage": {
+    "repository_checked": true,
+    "worktree_checked": true,
+    "stable_root_verified": false,
+    "head_checked": true,
+    "index_or_worktree_changes_checked": false,
+    "remote_or_ci_checked": false,
+    "staged_paths_checked": false,
+    "unstaged_paths_checked": false,
+    "untracked_paths_checked": false,
+    "staged_patch_checked": false,
+    "unstaged_patch_checked": false,
+    "untracked_content_checked": false,
+    "consistency_checked": false,
+    "target_ref_checked": false,
+    "base_commit_checked": false,
+    "target_commit_checked": false,
+    "ancestry_checked": false,
+    "delivered_paths_checked": false,
+    "delivered_patch_checked": false,
+    "snapshot_file_checked": false,
+    "snapshot_file_stable": false,
+    "source_bound": false,
+    "compared_inventory": false,
+    "compared_content": false,
+    "content_release_authorized": false,
+    "code_packet_built": false,
+    "code_draft_checked": false,
+    "code_findings_anchored": false,
+    "code_result_persisted": false,
+    "code_store_checked": false,
+    "code_records_integrity_checked": false
+  },
+  "warnings": [
+    "ILLUSTRATIVE_NOT_EXECUTED"
+  ],
+  "evidence": []
+}

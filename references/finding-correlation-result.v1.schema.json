@@ -1,0 +1,711 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schema/finding-correlation-result.v1.schema.json",
+  "title": "CES EC180 read-only conservative Finding/CodeInsight relation graph",
+  "description": "Strong local HMAC provenance for scoped Finding declarations; CodeInsight is separately authorized offline v1 byte integrity only, not native source authority. All edges assert no semantic equivalence, duplicate defect, fix, current Git, actor, CI execution or objective testing.",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_edge_count",
+        "codeinsight_coverage",
+        "cursor_expires_at_utc",
+        "edge_count",
+        "edges",
+        "effects",
+        "exit_code",
+        "graph_sha256",
+        "limitations",
+        "next_cursor",
+        "node_count",
+        "nodes",
+        "pair_counts",
+        "query_sha256",
+        "reason_code",
+        "returned_count",
+        "schema",
+        "scope_coverage",
+        "status",
+        "store_revision_sha256",
+        "trust_boundary"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ces.finding_correlation_result.v1"
+        },
+        "status": {
+          "const": "partial"
+        },
+        "exit_code": {
+          "const": 2
+        },
+        "reason_code": {
+          "const": "FINDINGCORRELATE_DECLARATION_RELATIONSHIPS_NOT_DEFECT_DUPLICATES"
+        },
+        "store_revision_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "query_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "graph_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "nodes": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "assessment_state",
+              "batch_sequence",
+              "codeinsight_record_id",
+              "coverage_complete_for_selected_source",
+              "expired_at_query_time",
+              "finding_id",
+              "historical_proposal_only",
+              "kind",
+              "node_id",
+              "path_index_state",
+              "scope",
+              "semantic_equivalence_proven",
+              "severity_claim",
+              "source_mode"
+            ],
+            "properties": {
+              "node_id": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "kind": {
+                "enum": [
+                  "FINDING_HMAC",
+                  "CODEINSIGHT_V1_OFFLINE"
+                ]
+              },
+              "scope": {
+                "enum": [
+                  "F0",
+                  "F1",
+                  "F2",
+                  "F3",
+                  "CI"
+                ]
+              },
+              "finding_id": {
+                "type": "string",
+                "pattern": "^(?:[0-9a-f]{64}|[A-Za-z][A-Za-z0-9_-]{0,31})$"
+              },
+              "batch_sequence": {
+                "oneOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 128
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "codeinsight_record_id": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^ci-[0-9a-f]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "source_mode": {
+                "enum": [
+                  "WorkingTree",
+                  "DeliveredTarget",
+                  "ProposedPR"
+                ]
+              },
+              "assessment_state": {
+                "enum": [
+                  "UNVERIFIED",
+                  "REVIEWED",
+                  "REJECTED",
+                  "INCONCLUSIVE"
+                ]
+              },
+              "severity_claim": {
+                "enum": [
+                  "info",
+                  "low",
+                  "medium",
+                  "high",
+                  "critical"
+                ]
+              },
+              "path_index_state": {
+                "enum": [
+                  "LEGACY_V1_UNAVAILABLE",
+                  "PARTIAL_OR_UNPATHED",
+                  "COMPLETE",
+                  "OFFLINE_DECLARED_PATH"
+                ]
+              },
+              "historical_proposal_only": {
+                "type": "boolean"
+              },
+              "expired_at_query_time": {
+                "type": "boolean"
+              },
+              "coverage_complete_for_selected_source": {
+                "type": "boolean"
+              },
+              "semantic_equivalence_proven": {
+                "const": false
+              }
+            }
+          }
+        },
+        "node_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "edges": {
+          "type": "array",
+          "maxItems": 25,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "actual_test_or_ci_proven",
+              "basis",
+              "cautions",
+              "duplicate_bug_proven",
+              "fixed_or_regressed_proven",
+              "left",
+              "relation_state",
+              "right",
+              "same_real_defect_proven",
+              "signals"
+            ],
+            "properties": {
+              "left": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "right": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "relation_state": {
+                "enum": [
+                  "EQUIVALENT_DECLARATION",
+                  "CANDIDATE_SIMILARITY",
+                  "UNKNOWN",
+                  "INELIGIBLE"
+                ]
+              },
+              "basis": {
+                "enum": [
+                  "EXPIRED_LOCAL_DECLARATION",
+                  "REJECTED_LOCAL_CLAIM",
+                  "DIFFERENT_SOURCE_MODE_NO_CROSS_REVISION_WITNESS",
+                  "HISTORICAL_PROPOSAL_NOT_CURRENT_DELIVERED_WITNESS",
+                  "SAME_LOCALLY_PINNED_FINDING_ID_NOT_SAME_DEFECT",
+                  "SAME_LOCAL_ASSERTION_AND_ANCHORS_NOT_SAME_DEFECT",
+                  "MULTIPLE_LOCAL_EVIDENCE_SIGNALS_ONLY",
+                  "WEAK_SINGLE_SIGNAL_ONLY",
+                  "NO_COMPARABLE_POSITIVE_EVIDENCE_NOT_DISJOINTNESS"
+                ]
+              },
+              "signals": {
+                "type": "array",
+                "maxItems": 6,
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "SAME_EC177_LOCAL_ID",
+                    "SAME_ASSERTION_AND_ANCHOR_DIGESTS_IN_ONE_SOURCE",
+                    "SHARED_SEALED_ANCHOR_DIGEST",
+                    "SHARED_PATH_AND_QUOTE_DIGEST_SAME_ANCHOR",
+                    "SHARED_PATH_DIGEST_ONLY",
+                    "SHARED_QUOTE_DIGEST"
+                  ]
+                }
+              },
+              "cautions": {
+                "type": "array",
+                "maxItems": 5,
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "CODEINSIGHT_BYTES_HASHED_NOT_NATIVE_SOURCE_AUTHENTICATED",
+                    "PATH_INDEX_UNAVAILABLE_OR_PARTIAL_CANNOT_PROVE_NEGATIVE",
+                    "SELECTED_SOURCE_COVERAGE_INCOMPLETE_OR_UNVERIFIED",
+                    "COUNTER_EVIDENCE_PRESENT_NOT_SEMANTICALLY_RESOLVED",
+                    "SUBJECTIVE_REVIEW_NOT_BOTH_REVIEWED"
+                  ]
+                }
+              },
+              "same_real_defect_proven": {
+                "const": false
+              },
+              "duplicate_bug_proven": {
+                "const": false
+              },
+              "fixed_or_regressed_proven": {
+                "const": false
+              },
+              "actual_test_or_ci_proven": {
+                "const": false
+              }
+            }
+          }
+        },
+        "edge_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2016
+        },
+        "candidate_edge_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2016
+        },
+        "pair_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "CANDIDATE_SIMILARITY",
+            "EQUIVALENT_DECLARATION",
+            "INELIGIBLE",
+            "UNKNOWN"
+          ],
+          "properties": {
+            "EQUIVALENT_DECLARATION": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2016
+            },
+            "CANDIDATE_SIMILARITY": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2016
+            },
+            "UNKNOWN": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2016
+            },
+            "INELIGIBLE": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2016
+            }
+          }
+        },
+        "returned_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 25
+        },
+        "next_cursor": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 4096,
+              "pattern": "^[A-Za-z0-9_-]{16,3900}\\.[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cursor_expires_at_utc": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scope_coverage": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "excluded_by_explicit_finding_id_allowlist",
+              "expired_hidden",
+              "historical_source_possible",
+              "legacy_v1_unindexed",
+              "partial_v2_path_index",
+              "scope",
+              "selected_findings",
+              "source_mode",
+              "whole_source_defect_absence_proven"
+            ],
+            "properties": {
+              "scope": {
+                "enum": [
+                  "F0",
+                  "F1",
+                  "F2",
+                  "F3"
+                ]
+              },
+              "source_mode": {
+                "enum": [
+                  "WorkingTree",
+                  "DeliveredTarget",
+                  "ProposedPR"
+                ]
+              },
+              "selected_findings": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 512
+              },
+              "expired_hidden": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 512
+              },
+              "excluded_by_explicit_finding_id_allowlist": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 512
+              },
+              "legacy_v1_unindexed": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 512
+              },
+              "partial_v2_path_index": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 512
+              },
+              "whole_source_defect_absence_proven": {
+                "const": false
+              },
+              "historical_source_possible": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "codeinsight_coverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "checked_finding_count",
+            "checked_record_count",
+            "ci_reader_state",
+            "ci_test_observations_available",
+            "mode",
+            "native_store_or_git_authenticated"
+          ],
+          "properties": {
+            "mode": {
+              "enum": [
+                "OFFLINE_V1_BYTES_HASH_AND_SCHEMA_ONLY",
+                "NOT_PROVIDED_NO_CODEINSIGHT_CLAIM"
+              ]
+            },
+            "checked_record_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4
+            },
+            "checked_finding_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 160
+            },
+            "native_store_or_git_authenticated": {
+              "const": false
+            },
+            "ci_test_observations_available": {
+              "const": false
+            },
+            "ci_reader_state": {
+              "const": "NOT_IMPLEMENTED_UNTIL_LATER_EC"
+            }
+          }
+        },
+        "limitations": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "codeinsight_offline_bytes_are_not_native_codeshow_verification",
+            "cross_store_snapshot_atomicity_proven",
+            "graph_relations_are_not_semantic_bug_deduplication",
+            "hmac_does_not_authenticate_human_or_source_currentness",
+            "legacy_unindexed_or_partial_paths_never_negative_proof",
+            "no_edge_does_not_prove_different_or_fixed",
+            "real_ci_witness_not_available_in_ec180"
+          ],
+          "properties": {
+            "graph_relations_are_not_semantic_bug_deduplication": {
+              "const": true
+            },
+            "no_edge_does_not_prove_different_or_fixed": {
+              "const": true
+            },
+            "hmac_does_not_authenticate_human_or_source_currentness": {
+              "const": true
+            },
+            "legacy_unindexed_or_partial_paths_never_negative_proof": {
+              "const": true
+            },
+            "codeinsight_offline_bytes_are_not_native_codeshow_verification": {
+              "const": true
+            },
+            "real_ci_witness_not_available_in_ec180": {
+              "const": true
+            },
+            "cross_store_snapshot_atomicity_proven": {
+              "const": false
+            }
+          }
+        },
+        "effects": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "business_repository_written",
+            "ces_records_written",
+            "ci_or_actual_test_verified",
+            "current_git_verified",
+            "defect_or_duplicate_semantically_verified",
+            "fix_verified",
+            "git_or_issue_written",
+            "human_identity_authenticated",
+            "network_or_provider_accessed",
+            "raw_text_released",
+            "source_code_or_tests_executed"
+          ],
+          "properties": {
+            "ces_records_written": {
+              "const": false
+            },
+            "business_repository_written": {
+              "const": false
+            },
+            "git_or_issue_written": {
+              "const": false
+            },
+            "source_code_or_tests_executed": {
+              "const": false
+            },
+            "network_or_provider_accessed": {
+              "const": false
+            },
+            "raw_text_released": {
+              "const": false
+            },
+            "defect_or_duplicate_semantically_verified": {
+              "const": false
+            },
+            "fix_verified": {
+              "const": false
+            },
+            "current_git_verified": {
+              "const": false
+            },
+            "ci_or_actual_test_verified": {
+              "const": false
+            },
+            "human_identity_authenticated": {
+              "const": false
+            }
+          }
+        },
+        "trust_boundary": {
+          "const": "LOCAL_HMAC_FINDING_DECLARATIONS_AND_OPTIONAL_UNAUTHENTICATED_OFFLINE_CODEINSIGHT_BYTES_NOT_SAME_DEFECT_FIX_CI_GIT_OR_HUMAN_PROOF"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_edge_count",
+        "codeinsight_coverage",
+        "cursor_expires_at_utc",
+        "edge_count",
+        "edges",
+        "effects",
+        "exit_code",
+        "graph_sha256",
+        "next_cursor",
+        "node_count",
+        "nodes",
+        "pair_counts",
+        "query_sha256",
+        "reason_code",
+        "returned_count",
+        "schema",
+        "scope_coverage",
+        "status",
+        "store_revision_sha256",
+        "trust_boundary"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ces.finding_correlation_result.v1"
+        },
+        "status": {
+          "enum": [
+            "invalid_input",
+            "unavailable"
+          ]
+        },
+        "exit_code": {
+          "enum": [
+            4,
+            5
+          ]
+        },
+        "reason_code": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]{4,127}$"
+        },
+        "store_revision_sha256": {
+          "type": "null"
+        },
+        "query_sha256": {
+          "type": "null"
+        },
+        "graph_sha256": {
+          "type": "null"
+        },
+        "nodes": {
+          "const": []
+        },
+        "node_count": {
+          "const": 0
+        },
+        "edges": {
+          "const": []
+        },
+        "edge_count": {
+          "const": 0
+        },
+        "candidate_edge_count": {
+          "const": 0
+        },
+        "pair_counts": {
+          "type": "null"
+        },
+        "returned_count": {
+          "const": 0
+        },
+        "next_cursor": {
+          "type": "null"
+        },
+        "cursor_expires_at_utc": {
+          "type": "null"
+        },
+        "scope_coverage": {
+          "const": []
+        },
+        "codeinsight_coverage": {
+          "type": "null"
+        },
+        "effects": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "business_repository_written",
+            "ces_records_written",
+            "ci_or_actual_test_verified",
+            "current_git_verified",
+            "defect_or_duplicate_semantically_verified",
+            "fix_verified",
+            "git_or_issue_written",
+            "human_identity_authenticated",
+            "network_or_provider_accessed",
+            "raw_text_released",
+            "source_code_or_tests_executed"
+          ],
+          "properties": {
+            "ces_records_written": {
+              "const": false
+            },
+            "business_repository_written": {
+              "const": false
+            },
+            "git_or_issue_written": {
+              "const": false
+            },
+            "source_code_or_tests_executed": {
+              "const": false
+            },
+            "network_or_provider_accessed": {
+              "const": false
+            },
+            "raw_text_released": {
+              "const": false
+            },
+            "defect_or_duplicate_semantically_verified": {
+              "const": false
+            },
+            "fix_verified": {
+              "const": false
+            },
+            "current_git_verified": {
+              "const": false
+            },
+            "ci_or_actual_test_verified": {
+              "const": false
+            },
+            "human_identity_authenticated": {
+              "const": false
+            }
+          }
+        },
+        "trust_boundary": {
+          "const": "LOCAL_HMAC_FINDING_DECLARATIONS_AND_OPTIONAL_UNAUTHENTICATED_OFFLINE_CODEINSIGHT_BYTES_NOT_SAME_DEFECT_FIX_CI_GIT_OR_HUMAN_PROOF"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "invalid_input"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "exit_code": {
+                "const": 4
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "exit_code": {
+                "const": 5
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

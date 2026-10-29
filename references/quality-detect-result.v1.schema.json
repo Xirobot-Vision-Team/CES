@@ -1,0 +1,523 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/quality-detect-result.v1.schema.json",
+  "title": "CES EC181 QualityDetect bounded local config observation (no execution)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "source",
+    "files",
+    "languages",
+    "tools",
+    "profile_hints",
+    "coverage",
+    "inventory_sha256",
+    "effects",
+    "trust_boundary"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.quality_detect.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^QUALITYDETECT_[A-Z0-9_]{3,100}$",
+      "maxLength": 130
+    },
+    "source": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/source"
+        }
+      ]
+    },
+    "files": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/file"
+      }
+    },
+    "languages": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/language"
+      }
+    },
+    "tools": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/tool"
+      }
+    },
+    "profile_hints": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/profile"
+      }
+    },
+    "coverage": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/coverage"
+        }
+      ]
+    },
+    "inventory_sha256": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/hash"
+        }
+      ]
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "executed_commands",
+        "read_only",
+        "network_access",
+        "writes_performed"
+      ],
+      "properties": {
+        "executed_commands": {
+          "const": false
+        },
+        "read_only": {
+          "const": true
+        },
+        "network_access": {
+          "const": false
+        },
+        "writes_performed": {
+          "const": false
+        }
+      }
+    },
+    "trust_boundary": {
+      "const": "LOCAL_CONFIG_ONLY_NO_GIT_CI_TEST_RUN_OR_COMMAND_AVAILABILITY"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "source": {
+            "$ref": "#/$defs/source"
+          },
+          "coverage": {
+            "$ref": "#/$defs/coverage"
+          },
+          "inventory_sha256": {
+            "$ref": "#/$defs/hash"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "invalid_input",
+              "unavailable"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "type": "null"
+          },
+          "coverage": {
+            "type": "null"
+          },
+          "inventory_sha256": {
+            "type": "null"
+          },
+          "files": {
+            "maxItems": 0
+          },
+          "languages": {
+            "maxItems": 0
+          },
+          "tools": {
+            "maxItems": 0
+          },
+          "profile_hints": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 320,
+      "pattern": "^[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+){0,3}$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_mode",
+        "local_root_pin_sha256",
+        "root_identity_matched_on_scan",
+        "root_observed_at_utc",
+        "scanned_at_utc",
+        "root_path_redacted"
+      ],
+      "properties": {
+        "source_mode": {
+          "const": "WorkingTree"
+        },
+        "local_root_pin_sha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "root_identity_matched_on_scan": {
+          "const": true
+        },
+        "root_observed_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "scanned_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "root_path_redacted": {
+          "const": true
+        }
+      }
+    },
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "state",
+        "bytes",
+        "sha256",
+        "parse_state",
+        "declared_script_keys"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/path"
+        },
+        "state": {
+          "enum": [
+            "PRESENT",
+            "ABSENT"
+          ]
+        },
+        "bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 134217728
+        },
+        "sha256": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/hash"
+            }
+          ]
+        },
+        "parse_state": {
+          "enum": [
+            "NOT_AVAILABLE",
+            "METADATA_ONLY_NOT_EXECUTED_OR_PARSED",
+            "PARSED",
+            "PARSER_UNAVAILABLE",
+            "MALFORMED_CONFIG"
+          ]
+        },
+        "declared_script_keys": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 6,
+          "items": {
+            "enum": [
+              "test",
+              "build",
+              "lint",
+              "typecheck",
+              "check",
+              "format"
+            ]
+          }
+        }
+      }
+    },
+    "language": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "language",
+        "evidence_paths",
+        "finding"
+      ],
+      "properties": {
+        "language": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36
+        },
+        "evidence_paths": {
+          "$ref": "#/$defs/paths"
+        },
+        "finding": {
+          "const": "CONFIG_FILE_EVIDENCE_ONLY"
+        }
+      }
+    },
+    "paths": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/path"
+      }
+    },
+    "tool": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tool_family",
+        "role",
+        "evidence_paths",
+        "discovery_state",
+        "installed",
+        "command_usable",
+        "executed"
+      ],
+      "properties": {
+        "tool_family": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{1,64}$"
+        },
+        "role": {
+          "type": "string",
+          "maxLength": 36
+        },
+        "evidence_paths": {
+          "$ref": "#/$defs/paths"
+        },
+        "discovery_state": {
+          "const": "CONFIG_DECLARATION_ONLY"
+        },
+        "installed": {
+          "const": "NOT_CHECKED"
+        },
+        "command_usable": {
+          "const": "NOT_CHECKED"
+        },
+        "executed": {
+          "const": false
+        }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_id",
+        "based_on_tool",
+        "execution_state",
+        "runnable_command_provided"
+      ],
+      "properties": {
+        "profile_id": {
+          "type": "string",
+          "pattern": "^[a-z]+\\.[a-z]+$"
+        },
+        "based_on_tool": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]{1,64}$"
+        },
+        "execution_state": {
+          "const": "NOT_RUN_AND_NOT_AUTHORIZED"
+        },
+        "runnable_command_provided": {
+          "const": false
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selected_paths",
+        "present_paths",
+        "absent_selected_paths",
+        "parsed_configs",
+        "unparsed_or_malformed_configs",
+        "read_config_bytes",
+        "inventory_complete_for_explicit_allowlist",
+        "repository_wide_inventory_complete",
+        "git_sha_authenticated",
+        "source_currentness_proven",
+        "cross_file_atomic_snapshot_proven",
+        "dependencies_installed_verified",
+        "commands_usable_verified",
+        "tests_executed",
+        "ci_results_read",
+        "profile_execution_permitted"
+      ],
+      "properties": {
+        "selected_paths": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        },
+        "present_paths": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "absent_selected_paths": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "parsed_configs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "unparsed_or_malformed_configs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "read_config_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1048576
+        },
+        "inventory_complete_for_explicit_allowlist": {
+          "const": true
+        },
+        "repository_wide_inventory_complete": {
+          "const": false
+        },
+        "git_sha_authenticated": {
+          "const": false
+        },
+        "source_currentness_proven": {
+          "const": false
+        },
+        "cross_file_atomic_snapshot_proven": {
+          "const": false
+        },
+        "dependencies_installed_verified": {
+          "const": false
+        },
+        "commands_usable_verified": {
+          "const": false
+        },
+        "tests_executed": {
+          "const": false
+        },
+        "ci_results_read": {
+          "const": false
+        },
+        "profile_execution_permitted": {
+          "const": false
+        }
+      }
+    }
+  }
+}

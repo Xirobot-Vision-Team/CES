@@ -1,0 +1,5 @@
+[
+  {"step_id":"step_prepare","action":"CodePrepare","mode":"Snapshot","depends_on":[]},
+  {"step_id":"step_validate","action":"CodeValidate","mode":"Snapshot","depends_on":["step_prepare"]},
+  {"step_id":"step_save","action":"CodeSave","mode":"Snapshot","depends_on":["step_validate"]}
+]

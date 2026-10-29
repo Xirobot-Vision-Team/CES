@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schema/delivery-reconcile-result.v1.schema.json",
+  "title": "EC227 private local delivery audit and bounded reconciliation (never authorizes a resend)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "status", "exit_code", "reason_code", "operation_id", "delivery_state", "last_historical_attested_state", "last_provider_state", "audit_event_count", "audit_head_hmac_sha256", "audit_chain_verified", "status_network_requested", "fresh_independent_status_evidence_verified", "conflicting_historical_evidence", "incomplete_prior_observation", "original_operation_retry_allowed", "new_delivery_authorized", "resent", "published", "effects"],
+  "properties": {
+    "schema": {"const": "ces.delivery_reconcile.v1"},
+    "status": {"enum": ["partial", "blocked", "invalid_input", "unavailable"]},
+    "exit_code": {"enum": [2, 4, 5]},
+    "reason_code": {"type": "string", "pattern": "^DELIVERY_RECONCILE_[A-Z0-9_]+$", "maxLength": 180},
+    "operation_id": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^[a-f0-9]{64}$"}]},
+    "delivery_state": {"enum": ["UNKNOWN_UNCONFIRMED", "ACCEPTED_PROVIDER_ATTESTED", "DELIVERED_INBOX_OBSERVED", "PROVIDER_REJECTION_ATTESTED", "PROVIDER_FAILURE_ATTESTED"]},
+    "last_historical_attested_state": {"oneOf": [{"type": "null"}, {"enum": ["ACCEPTED_PROVIDER_ATTESTED", "DELIVERED_INBOX_OBSERVED", "PROVIDER_REJECTION_ATTESTED", "PROVIDER_FAILURE_ATTESTED"]}]},
+    "last_provider_state": {"oneOf": [{"type": "null"}, {"enum": ["ACCEPTED", "DELIVERED", "REJECTED", "FAILED"]}]},
+    "audit_event_count": {"type": "integer", "minimum": 0, "maximum": 64},
+    "audit_head_hmac_sha256": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^[a-f0-9]{64}$"}]},
+    "audit_chain_verified": {"type": "boolean"},
+    "status_network_requested": {"type": "boolean"},
+    "fresh_independent_status_evidence_verified": {"type": "boolean"},
+    "conflicting_historical_evidence": {"type": "boolean"},
+    "incomplete_prior_observation": {"type": "boolean"},
+    "original_operation_retry_allowed": {"const": false},
+    "new_delivery_authorized": {"const": false},
+    "resent": {"const": false},
+    "published": {"const": false},
+    "effects": {
+      "type": "object", "additionalProperties": false,
+      "required": ["provider_submit_requested", "external_status_network_requested", "recipient_contacted_by_reconciler", "git_or_business_files_written", "ces_business_records_written", "local_audit_records_written"],
+      "properties": {
+        "provider_submit_requested": {"const": false},
+        "external_status_network_requested": {"type": "boolean"},
+        "recipient_contacted_by_reconciler": {"const": false},
+        "git_or_business_files_written": {"const": false},
+        "ces_business_records_written": {"const": false},
+        "local_audit_records_written": {"type": "boolean"}
+      }
+    }
+  },
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "partial"}}}, "then": {"properties": {"exit_code": {"const": 2}, "audit_chain_verified": {"const": true}, "operation_id": {"type": "string"}}}, "else": {"properties": {"exit_code": {"enum": [4,5]}, "delivery_state": {"const": "UNKNOWN_UNCONFIRMED"}, "fresh_independent_status_evidence_verified": {"const": false}}}},
+    {"if": {"properties": {"status": {"const": "invalid_input"}}}, "then": {"properties": {"exit_code": {"const": 4}}}},
+    {"if": {"properties": {"status": {"enum": ["blocked", "unavailable"]}}}, "then": {"properties": {"exit_code": {"const": 5}}}},
+    {"if": {"properties": {"delivery_state": {"enum": ["ACCEPTED_PROVIDER_ATTESTED", "DELIVERED_INBOX_OBSERVED", "PROVIDER_REJECTION_ATTESTED", "PROVIDER_FAILURE_ATTESTED"]}}}, "then": {"properties": {"fresh_independent_status_evidence_verified": {"const": true}, "status_network_requested": {"const": true}, "conflicting_historical_evidence": {"const": false}}}},
+    {"if": {"properties": {"audit_event_count": {"const": 0}}}, "then": {"properties": {"audit_head_hmac_sha256": {"const": null}}}},
+    {"if": {"properties": {"fresh_independent_status_evidence_verified": {"const": true}}}, "then": {"properties": {"status_network_requested": {"const": true}, "audit_chain_verified": {"const": true}}}},
+    {"if": {"properties": {"status_network_requested": {"const": true}}}, "then": {"properties": {"effects": {"properties": {"external_status_network_requested": {"const": true}}}}}, "else": {"properties": {"effects": {"properties": {"external_status_network_requested": {"const": false}}}}}}
+  ]
+}

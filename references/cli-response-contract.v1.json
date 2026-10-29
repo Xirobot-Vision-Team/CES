@@ -1,0 +1,315 @@
+{
+  "contract_id": "ces.cli.v1.response",
+  "contract_release": "1.0.0",
+  "origin": "CES_1_0_LOCAL_BASELINE",
+  "wire_schema_version": "ces.cli.v1",
+  "source": {
+    "entry": "scripts/ces.ps1",
+    "entry_sha256": "e31634b15b437c109778feca946a678e34e504278c28c1fe252128afd7230ab9",
+    "action_registry": "references/cli-action-mode-registry.json",
+    "registry_sha256": "bfe3e18a5fca3c7aee6ee0d72c7d4b1a7a30ef90253468258afcf8ffce617163",
+    "product_version": "1.0.0",
+    "build": "1.0.0",
+    "entry_envelope_function": "New-Envelope",
+    "entry_output_function": "Finish",
+    "handler_routes": "seven authored Action families / 16 routes; see action registry",
+    "runtime_validation": "SEE_VALIDATION_REPORT",
+    "handler_sha256": {
+      "scripts/collect.ps1": "1ae7d44fca8057e276a1c8442d9cf7882275937d48bc734077ecc3bec8322fc9",
+      "scripts/delivered.ps1": "a607485e7cc6d61102ad5b83170fafe1d4793fdf187166d6848c02cb8006d709",
+      "scripts/reconcile.ps1": "a5a9037229347fe986d9a6a08b5b0b04fc0afd2caaf4d816b02fcee258f7ea5c",
+      "scripts/codeprepare.ps1": "90b0ef24ed79528c862a8dd976399514eabfd15d160aacb2329319c4abd3502a",
+      "scripts/codevalidate.ps1": "bacecc4758f5eab429329add9b0ec624b9b7215ee29306ba7b22c247b6020395",
+      "scripts/codesave.ps1": "4c66ef33c0bf5a4ab181a2bcee9b7248149cbd17fb9b0f48431ab88db980542e",
+      "scripts/codeshow.ps1": "03c4d1148421f5187cd37603ba2a587774b0f34739a94de659e352854715c23f"
+    },
+    "shared_path_identity_source": "scripts/pathidentity.ps1",
+    "shared_path_identity_sha256": "e7ddc101e03ec39c6dbc067c24ed7a4c8d960324d170d9c20130a529d940b5ae",
+    "last_source_review": "1.0.0"
+  },
+  "required_fields": {
+    "schema_version": "string",
+    "product_version": "string",
+    "build": "string",
+    "action": "string",
+    "status": "string",
+    "reason_code": "string",
+    "next_step": "string",
+    "message": "string",
+    "supported_actions": "array",
+    "supported_collect_modes": "array",
+    "supported_codeshow_modes": "array",
+    "read_only": "boolean",
+    "data": "object_or_null",
+    "coverage": "object",
+    "warnings": "array",
+    "evidence": "array"
+  },
+  "statuses": {
+    "success": {
+      "exit_code": 0,
+      "consumer_disposition": "reported_success_unverified",
+      "summary": "Action reports success, not exhaustive evidence coverage"
+    },
+    "partial": {
+      "exit_code": 2,
+      "consumer_disposition": "partial_keep_coverage_gaps",
+      "summary": "Some result may be usable, but explicit partiality must be retained"
+    },
+    "not_implemented": {
+      "exit_code": 3,
+      "consumer_disposition": "unsupported_no_handler",
+      "summary": "No implemented route; never imply invocation succeeded"
+    },
+    "invalid_input": {
+      "exit_code": 4,
+      "consumer_disposition": "reject_input_no_execution",
+      "summary": "Invalid, denied or conflicting inputs; do not auto-correct silently"
+    },
+    "unavailable": {
+      "exit_code": 5,
+      "consumer_disposition": "environment_or_dependency_unavailable",
+      "summary": "Insufficient evidence, external prerequisite, or handler exception"
+    }
+  },
+  "exit_code_semantics": {
+    "scope": "Process exit from scripts/ces.ps1 Finish, not this Python consumer's exit",
+    "expected_codes": [
+      0,
+      2,
+      3,
+      4,
+      5
+    ],
+    "binding_or_host_failures": "PowerShell binding or host errors before Finish may lack an envelope or use other exit codes",
+    "consumer_tool_exit_codes": {
+      "0": "wire shape and supplied exit code consistent",
+      "1": "wire contract inconsistency",
+      "2": "I/O, JSON parse, or consumer tool error"
+    }
+  },
+  "json_text_difference": {
+    "json_switch": "-Json",
+    "json_stdout": "R150 Finish intends one compressed JSON object; handlers/native PowerShell not run here",
+    "default_json_depth": 12,
+    "codeshow_sequence_json_depth": 20,
+    "text_stdout": "human-readable summary; no machine-readable coverage/evidence guarantee",
+    "text_not_equivalent_to_json": true,
+    "object_member_order_not_a_business_contract": true,
+    "important": "Some failures before script execution may be native PowerShell errors, not a CES envelope"
+  },
+  "identity_semantics": {
+    "action": "request Action string (not an action handler receipt)",
+    "product_version": "runtime CLI embedded version, not construction ZIP version",
+    "build": "runtime CLI embedded build, not construction R156",
+    "next_step": "R150 New-Envelope initializes 'none' and authored handlers do not assign another value; not a Cycle scheduler",
+    "read_only": "false on CodeSave merely identifies a potentially writing handler; does not prove persistence or authorization",
+    "reason_code": "handler/branch-specific diagnostic; never infer success from a reason prefix",
+    "data": "opaque per-action payload; preserve nested CodeShow Sequence k1..56 unchanged",
+    "evidence": "raw handler-supplied entries, no independent verification by contract consumer",
+    "warnings": "array of human-facing diagnostic strings, not a substitute for reason/status"
+  },
+  "coverage": {
+    "fields": [
+      "repository_checked",
+      "worktree_checked",
+      "stable_root_verified",
+      "head_checked",
+      "index_or_worktree_changes_checked",
+      "remote_or_ci_checked",
+      "staged_paths_checked",
+      "unstaged_paths_checked",
+      "untracked_paths_checked",
+      "staged_patch_checked",
+      "unstaged_patch_checked",
+      "untracked_content_checked",
+      "consistency_checked",
+      "target_ref_checked",
+      "base_commit_checked",
+      "target_commit_checked",
+      "ancestry_checked",
+      "delivered_paths_checked",
+      "delivered_patch_checked",
+      "snapshot_file_checked",
+      "snapshot_file_stable",
+      "source_bound",
+      "compared_inventory",
+      "compared_content",
+      "content_release_authorized",
+      "code_packet_built",
+      "code_draft_checked",
+      "code_findings_anchored",
+      "code_result_persisted",
+      "code_store_checked",
+      "code_records_integrity_checked"
+    ],
+    "field_semantics": {
+      "repository_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "worktree_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "stable_root_verified": {
+        "kind": "verified_condition",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "head_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "index_or_worktree_changes_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "remote_or_ci_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "staged_paths_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "unstaged_paths_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "untracked_paths_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "staged_patch_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "unstaged_patch_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "untracked_content_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "consistency_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "target_ref_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "base_commit_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "target_commit_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "ancestry_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "delivered_paths_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "delivered_patch_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "snapshot_file_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "snapshot_file_stable": {
+        "kind": "verified_condition",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "source_bound": {
+        "kind": "verified_condition",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "compared_inventory": {
+        "kind": "comparison_performed",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "compared_content": {
+        "kind": "comparison_performed",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "content_release_authorized": {
+        "kind": "authorization_state",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "code_packet_built": {
+        "kind": "result_created",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "code_draft_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "code_findings_anchored": {
+        "kind": "result_checked",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "code_result_persisted": {
+        "kind": "persistence_reported",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "code_store_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      },
+      "code_records_integrity_checked": {
+        "kind": "check_attempt_or_completion",
+        "false_interpretation": "not established by this response; may be not applicable, skipped, incomplete, or failed"
+      }
+    },
+    "defaults": "all false in New-Envelope",
+    "all_true_required_for_success": false,
+    "false_means_no_changes": false,
+    "false_means_check_failed": false,
+    "true_is_independent_proof": false,
+    "summary": "Flags describe only what the response asserts was checked/verified/authorized/materialized; mix of probes and outcome bits. Never use count of true fields as quality or completeness score.",
+    "extra_flags": "allow JSON boolean extensions but explicitly label unrecognized",
+    "missing_baseline_field": "contract violation for this R150-derived envelope"
+  },
+  "compatibility": {
+    "unknown_top_level_members": "allowed and not reprinted by default",
+    "missing_fields": "invalid for R150 -Json response",
+    "code_show_sequence": "data is opaque; consumer does not flatten/limit/modify deep JSON",
+    "planned_actions": "source registry's 29 planned capabilities remain NOT_IMPLEMENTED",
+    "no_power_shell_source_modifications_in_ec156": true
+  },
+  "fixture_policy": {
+    "samples_path": "construction/fixtures/ec156/",
+    "synthetic": true,
+    "represent_actual_repo_or_git_results": false,
+    "represent_executed_cli": false,
+    "sample_messages_explicitly_label_simulation": true
+  },
+  "authored_actions": [
+    "Inspect",
+    "Collect",
+    "Reconcile",
+    "CodePrepare",
+    "CodeValidate",
+    "CodeSave",
+    "CodeShow"
+  ],
+  "authored_codeshow_modes": [
+    "List",
+    "Detail",
+    "Findings",
+    "Compare",
+    "Trace",
+    "Overview",
+    "Triage",
+    "Recurrence",
+    "Sequence"
+  ]
+}

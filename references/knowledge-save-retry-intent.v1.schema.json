@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ces.local/knowledge-save-retry-intent.v1.schema.json",
+  "title": "knowledge-save-retry-intent.v1",
+  "description": "Observed exact EC208 parent/head receipt and independently reviewed explicit retry intent; user assertion is not independent human identity verification.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "purpose",
+    "original_request_binding_sha256",
+    "observed_head_version_id",
+    "observed_head_content_sha256",
+    "observed_target_section_sha256",
+    "observed_intervening_version_ids",
+    "new_save_key",
+    "new_save_permission_receipt_sha256",
+    "new_review_summary",
+    "review_acknowledgement"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_save_retry_intent.v1"
+    },
+    "purpose": {
+      "const": "prepare_reviewed_disjoint_metadata_retry_request_only"
+    },
+    "original_request_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "observed_head_version_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "observed_head_content_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "observed_target_section_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "observed_intervening_version_ids": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      },
+      "uniqueItems": true
+    },
+    "new_save_key": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._-]{2,63}$"
+    },
+    "new_save_permission_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "new_review_summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "review_acknowledgement": {
+      "const": "I_REVIEWED_INTERVENING_VERSION_RECEIPTS_AND_REQUIRE_NEW_APPROVALS"
+    }
+  }
+}

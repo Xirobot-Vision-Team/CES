@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/knowledge-target-read-policy.v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "request_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "scope_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "repository_root_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "knowledge_root_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "git_root_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "target_config_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "issuer_registry_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "bootstrap_read_policy_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "read_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "schema": {
+      "const": "ces.knowledge_target_read_policy.v1"
+    },
+    "purpose": {
+      "const": "knowledge_target_git_read_only"
+    },
+    "repository_ref": {
+      "type": "string",
+      "pattern": "^cesrepo1:[0-9a-f]{64}$"
+    },
+    "knowledge_space_key": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "period_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "source_policy_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "permit_target_read": {
+      "type": "boolean"
+    },
+    "permit_delivery_signature_verification": {
+      "type": "boolean"
+    },
+    "permit_git_object_read": {
+      "type": "boolean"
+    },
+    "permit_source_blob_compare": {
+      "type": "boolean"
+    },
+    "permit_knowledge_manifest_bind": {
+      "type": "boolean"
+    },
+    "permit_target_oid_projection": {
+      "type": "boolean"
+    },
+    "permit_source_digest_projection": {
+      "type": "boolean"
+    },
+    "permit_repository_write": {
+      "const": false
+    },
+    "permit_knowledge_write": {
+      "const": false
+    },
+    "permit_business_source_write": {
+      "const": false
+    },
+    "permit_issue_write": {
+      "const": false
+    },
+    "permit_publish": {
+      "const": false
+    },
+    "source_grants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "source_key": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+          },
+          "source_binding_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "permit_git_blob_compare": {
+            "type": "boolean"
+          },
+          "read_receipt_sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "source_key",
+          "source_binding_sha256",
+          "permit_git_blob_compare",
+          "read_receipt_sha256"
+        ]
+      },
+      "maxItems": 32
+    }
+  },
+  "required": [
+    "request_binding_sha256",
+    "scope_binding_sha256",
+    "repository_root_binding_sha256",
+    "knowledge_root_binding_sha256",
+    "git_root_binding_sha256",
+    "target_config_binding_sha256",
+    "issuer_registry_binding_sha256",
+    "bootstrap_read_policy_binding_sha256",
+    "read_receipt_sha256",
+    "schema",
+    "purpose",
+    "repository_ref",
+    "knowledge_space_key",
+    "period_id",
+    "source_policy_revision",
+    "permit_target_read",
+    "permit_delivery_signature_verification",
+    "permit_git_object_read",
+    "permit_source_blob_compare",
+    "permit_knowledge_manifest_bind",
+    "permit_target_oid_projection",
+    "permit_source_digest_projection",
+    "permit_repository_write",
+    "permit_knowledge_write",
+    "permit_business_source_write",
+    "permit_issue_write",
+    "permit_publish",
+    "source_grants"
+  ]
+}

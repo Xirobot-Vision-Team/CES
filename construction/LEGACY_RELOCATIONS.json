@@ -1,0 +1,1115 @@
+{
+  "plan_revision": "PLAN-REV-001",
+  "approach": "archive-not-delete; no unproven redundant source deletion",
+  "relocated_count": 156,
+  "preserved_powerShell_scripts": 124,
+  "preserved_existing_smoke_scripts": 15,
+  "deleted_source_files": 0,
+  "deleted_history_provenance": 0,
+  "relocations": [
+    {
+      "from": "EC-002.md",
+      "to": "history/legacy-rounds/EC-002.md",
+      "sha256": "0b42cbfb8ba71d45e148085962d2341ae613e7f38b2aefe8f868572f0523f86d",
+      "bytes": 3325,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-003.md",
+      "to": "history/legacy-rounds/EC-003.md",
+      "sha256": "489579587cd3142bf30c06e6a726b7600ba3b495606e7c564cb413709a0e693e",
+      "bytes": 4718,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-004.md",
+      "to": "history/legacy-rounds/EC-004.md",
+      "sha256": "4e23d1684bcab3029ff7fbf9e8dd50c6813809a78cd05f591bbb80e0fe48b8d6",
+      "bytes": 5657,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-005.md",
+      "to": "history/legacy-rounds/EC-005.md",
+      "sha256": "a98c15301b11c8bb2634e6e25d208947beb93f367eac450f87df83ff69557114",
+      "bytes": 6515,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-006.md",
+      "to": "history/legacy-rounds/EC-006.md",
+      "sha256": "5d0a51f8cc958103838b04f9f21f5f3c35a25b43894f344beaf1907dda9b8d84",
+      "bytes": 6648,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-007.md",
+      "to": "history/legacy-rounds/EC-007.md",
+      "sha256": "bbb794d1e662d706a97c7f3cfbddbd884c65e49fbd51cbb4940304b9994e3096",
+      "bytes": 7519,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-008.md",
+      "to": "history/legacy-rounds/EC-008.md",
+      "sha256": "03654be88f5640f5daa9f8c840e64d88f3ef4ccdd1dc185452c65639c4a2520f",
+      "bytes": 6988,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-009.md",
+      "to": "history/legacy-rounds/EC-009.md",
+      "sha256": "2cf720ec6e6567116db808c463e992040ad052d966965cf1d5bbdb16dad016eb",
+      "bytes": 5759,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-010.md",
+      "to": "history/legacy-rounds/EC-010.md",
+      "sha256": "8d72bc3e57be77d97a1b97875c0dffdd58a96f64b677ef0cabfaa40ef16b6af8",
+      "bytes": 6383,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-011.md",
+      "to": "history/legacy-rounds/EC-011.md",
+      "sha256": "208f73a8edbc1fbca4164eff7cf29742c12a9698b41cf1103027cf5e5f2ee4d9",
+      "bytes": 6011,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-012.md",
+      "to": "history/legacy-rounds/EC-012.md",
+      "sha256": "6844866daab32da8d49082c103fd67a55e4df228302fb21f47503530d8d7c37c",
+      "bytes": 4204,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-013.md",
+      "to": "history/legacy-rounds/EC-013.md",
+      "sha256": "decdb6009e18c4e53de30ada725888483b0c636a86c23c85b0905f4a503b7538",
+      "bytes": 4984,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-014.md",
+      "to": "history/legacy-rounds/EC-014.md",
+      "sha256": "e638cea056e075ae01aacd0a971e5e0616ebe50a209d4a83eaa3bab3c5f3a919",
+      "bytes": 4426,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-015.md",
+      "to": "history/legacy-rounds/EC-015.md",
+      "sha256": "a4e66f36abb69b864c32822456d6ae48fa4f86a4cc1512dd1c3fae4c0ecb264d",
+      "bytes": 4508,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-016.md",
+      "to": "history/legacy-rounds/EC-016.md",
+      "sha256": "3ed29693b811c97176202c977ed97df64dcd072c3e0388e396d19ba30fcd5859",
+      "bytes": 5256,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-017.md",
+      "to": "history/legacy-rounds/EC-017.md",
+      "sha256": "bf5e3f013de6d98691c47e35b9d7ce793fe13a549829e6feb526499fcf94d6b6",
+      "bytes": 5141,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-018.md",
+      "to": "history/legacy-rounds/EC-018.md",
+      "sha256": "9df0cfc384c6f690dd4b30b90c09301e90d36c66b578af83f19e035d0efbf8c2",
+      "bytes": 5928,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-019.md",
+      "to": "history/legacy-rounds/EC-019.md",
+      "sha256": "20c8cde0cbe6da765e9ebc780f99589aa969c3cc65f23f81628c24232330ebd8",
+      "bytes": 5197,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-020.md",
+      "to": "history/legacy-rounds/EC-020.md",
+      "sha256": "ace5b77e0b4825db7645669cedd0a5a6de9e9b8230445c8a131624a60733d139",
+      "bytes": 6010,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-021.md",
+      "to": "history/legacy-rounds/EC-021.md",
+      "sha256": "d42cd5c5bf2527b331e0947705c7a4818406bf72afadbeb8a634f689ec991b31",
+      "bytes": 6015,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-022.md",
+      "to": "history/legacy-rounds/EC-022.md",
+      "sha256": "622b04789a334cd116d19057c476c69096dd594a7b51698012416968f7c23177",
+      "bytes": 4885,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-023.md",
+      "to": "history/legacy-rounds/EC-023.md",
+      "sha256": "0b6bca4dfc9c4c481499142170ded2f017834c276a37679ab407a8aa3677692f",
+      "bytes": 4376,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-024.md",
+      "to": "history/legacy-rounds/EC-024.md",
+      "sha256": "c83e325daa49e05bac79a8cf1ee922b4adf39e48c22bc79302322a1548a7c4a1",
+      "bytes": 5276,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-025.md",
+      "to": "history/legacy-rounds/EC-025.md",
+      "sha256": "40554b0d146e7e438911b9a1508f34fe057c85b75679cf1f28b8c08ee5784e03",
+      "bytes": 5421,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-026.md",
+      "to": "history/legacy-rounds/EC-026.md",
+      "sha256": "de964b5df5daaa3097aad56b9f0cae6f8757a217e646003c592ec076a6384993",
+      "bytes": 6613,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-027.md",
+      "to": "history/legacy-rounds/EC-027.md",
+      "sha256": "ac86f79b3d8156d63fed9bce1fd68cc1bc45160ba5d073877e88e42b6005efdf",
+      "bytes": 5908,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-028.md",
+      "to": "history/legacy-rounds/EC-028.md",
+      "sha256": "eddab5890ac7b2ba613438b6bd748833326f4c5e2c9351fd56c4da11d1a11e81",
+      "bytes": 6587,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-029.md",
+      "to": "history/legacy-rounds/EC-029.md",
+      "sha256": "da2e1e21942f77e3dcd59a35375814c661ce89fbe108d148704cdd7b5b7bbe47",
+      "bytes": 6293,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-030.md",
+      "to": "history/legacy-rounds/EC-030.md",
+      "sha256": "6225ee15b698cccd3ab7e774215fd42b17611bba04720173fb4becd7b8764853",
+      "bytes": 6877,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-031.md",
+      "to": "history/legacy-rounds/EC-031.md",
+      "sha256": "987db912f1919618dcdad755cd263bd0c9a8875fd67373f9f08642a817ca591a",
+      "bytes": 7272,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-032.md",
+      "to": "history/legacy-rounds/EC-032.md",
+      "sha256": "895113065ce55ba8b73a2c7528ab26d0d03d6ce06a153b2c09d943265556f7f0",
+      "bytes": 7957,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-033.md",
+      "to": "history/legacy-rounds/EC-033.md",
+      "sha256": "c503f0642890cab93884ef0d247e1bc1c92d9d6c7eb3689bb066e0f8b91c91ef",
+      "bytes": 7430,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-034.md",
+      "to": "history/legacy-rounds/EC-034.md",
+      "sha256": "662d2deeb4a581f4261772f4882379f1f66397bc739b2409a82ae96d238f42b9",
+      "bytes": 7093,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-035.md",
+      "to": "history/legacy-rounds/EC-035.md",
+      "sha256": "f16aad4eea1fda5176f45af45bc8215544be6858fd98ab8fce210269ed07b44b",
+      "bytes": 6387,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-036.md",
+      "to": "history/legacy-rounds/EC-036.md",
+      "sha256": "b535f3a784f1f78d5f4e51d277193d105fd3093e26f1c4a45112de5b2f12999b",
+      "bytes": 6564,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-037.md",
+      "to": "history/legacy-rounds/EC-037.md",
+      "sha256": "9a90ab401d02cd26317bbf1dc75e3fafeca6833ff9593df3bfc9865efde06797",
+      "bytes": 5743,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-038.md",
+      "to": "history/legacy-rounds/EC-038.md",
+      "sha256": "72f12813d83ba012e5e33c89998b0b32b328d0fc467008b97e8b7a99ddc423a4",
+      "bytes": 6091,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-039.md",
+      "to": "history/legacy-rounds/EC-039.md",
+      "sha256": "636d8609f6b55fe8e22ff2f4d54a9cb9beb8fdf474404a53780f8cfdfb8e1fd1",
+      "bytes": 5617,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-040.md",
+      "to": "history/legacy-rounds/EC-040.md",
+      "sha256": "32f7bb29a641dd8b5f7cf68e2922772baefe45e4f5f5683c274293bc3b5db188",
+      "bytes": 7014,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-041.md",
+      "to": "history/legacy-rounds/EC-041.md",
+      "sha256": "0bb7acff4f2cc39b62e016835eeced78d033374c6bbee51ff8437afec770f54a",
+      "bytes": 7184,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-042.md",
+      "to": "history/legacy-rounds/EC-042.md",
+      "sha256": "f067912b3c50e40673dafb3ac9355b45366090231875f47c457f1f194f1adccb",
+      "bytes": 7364,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-043.md",
+      "to": "history/legacy-rounds/EC-043.md",
+      "sha256": "a60b8ab11089abaff38754114afef51d43177f375f7a378de231044bb69eee78",
+      "bytes": 8541,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-044.md",
+      "to": "history/legacy-rounds/EC-044.md",
+      "sha256": "fcdb52cb1890c403099945667d12dbbef694ceafc9baafc183919e6ee418537f",
+      "bytes": 8381,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-045.md",
+      "to": "history/legacy-rounds/EC-045.md",
+      "sha256": "61664dc062eab0ea12aa383a26e4f206eaf215ea13eee1234eb082be81647807",
+      "bytes": 6788,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-046.md",
+      "to": "history/legacy-rounds/EC-046.md",
+      "sha256": "2eb23332f374b1d748a2d1fa0a3af6d61462290af8795c971c46a8b8388ebc96",
+      "bytes": 5832,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-047.md",
+      "to": "history/legacy-rounds/EC-047.md",
+      "sha256": "c17b2f8f44f3e751d0fab396b732f512b73f786d8c09a8b193e722db382edd74",
+      "bytes": 6319,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-048.md",
+      "to": "history/legacy-rounds/EC-048.md",
+      "sha256": "8dfc0ab747ff2e316ffac28ced1a69b76302d94a9d9112024d9448e512e887d1",
+      "bytes": 5934,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-049.md",
+      "to": "history/legacy-rounds/EC-049.md",
+      "sha256": "2cb6e1346b4722e5ba6df24c1de512fb405390280038c73a8cf9750fbe82c074",
+      "bytes": 7839,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-050.md",
+      "to": "history/legacy-rounds/EC-050.md",
+      "sha256": "0223f4a92a2cd57788064c9533d7825555f740574040c0d5048a8700fa553a13",
+      "bytes": 7919,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-051.md",
+      "to": "history/legacy-rounds/EC-051.md",
+      "sha256": "233a326eb6ecc6e2b5c8005af5d3f03009befd2e0fc8dd6eb17abc740becfbd2",
+      "bytes": 7487,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-052.md",
+      "to": "history/legacy-rounds/EC-052.md",
+      "sha256": "9d861e53d70d4ccde0eb2e3dfca584d03e43b80f6aba4ce0a3673a526b451dd9",
+      "bytes": 7874,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-053.md",
+      "to": "history/legacy-rounds/EC-053.md",
+      "sha256": "87d030aa6a7cc4fcf31cece374a0dec314c737b968b8398b370017bc7b4a77af",
+      "bytes": 7633,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-054.md",
+      "to": "history/legacy-rounds/EC-054.md",
+      "sha256": "4e1d13fc1256d1ce59a577cb56badda0dddeb447bb9856225bb967d4eafe62b8",
+      "bytes": 8156,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-055.md",
+      "to": "history/legacy-rounds/EC-055.md",
+      "sha256": "54b169d55c6da67e1cce4001d7f0d80d1f942d9a123c1faf82a119e88384d09e",
+      "bytes": 7054,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-056.md",
+      "to": "history/legacy-rounds/EC-056.md",
+      "sha256": "41d152eb2599073d4f437f4da76095fb0de84071ddfc6aa615cc649d55eb3e07",
+      "bytes": 7958,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-057.md",
+      "to": "history/legacy-rounds/EC-057.md",
+      "sha256": "061a5afd9d2df1615b4e504071c3846d1a395df12f8aad50beb998120cd77b9f",
+      "bytes": 7770,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-058.md",
+      "to": "history/legacy-rounds/EC-058.md",
+      "sha256": "1f5b5985e36cb81adeccdff2caf1fbb05c86191345fefcbe8f6835a8ac622434",
+      "bytes": 8433,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-059.md",
+      "to": "history/legacy-rounds/EC-059.md",
+      "sha256": "c9ca37bb77be5d11a3ebcb7a607e1b395ea2195cb9b6d208f7a3218d0ea91f18",
+      "bytes": 7399,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-060.md",
+      "to": "history/legacy-rounds/EC-060.md",
+      "sha256": "7ce0baaf8b8afe441a4309546fc7ab077f8b0f2dde99e587e84da804ecaa5f9f",
+      "bytes": 7729,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-061.md",
+      "to": "history/legacy-rounds/EC-061.md",
+      "sha256": "ba4cbd55f68a9bf3b9a2f57ae1fd95ac118e19c4f316705cc8c38798be56be5e",
+      "bytes": 8056,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-062.md",
+      "to": "history/legacy-rounds/EC-062.md",
+      "sha256": "9889b02d7ac41bac6472164bee92fc771b06e2996a34506b630facb5395abfd5",
+      "bytes": 7903,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-063.md",
+      "to": "history/legacy-rounds/EC-063.md",
+      "sha256": "14e6ca9788361206364718597420eb286bf2ed37a5a4490e05eb2b793afac1f1",
+      "bytes": 7203,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-064.md",
+      "to": "history/legacy-rounds/EC-064.md",
+      "sha256": "95048715903c0e4dbc0f0e56f7b5e7417194ba6a33cd47650059ec8c32693c1c",
+      "bytes": 7428,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-065.md",
+      "to": "history/legacy-rounds/EC-065.md",
+      "sha256": "a6c41bf0e8eaa6f7a632796502af234cca49e44c3ee63b5e5174d39151e20706",
+      "bytes": 7365,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-066.md",
+      "to": "history/legacy-rounds/EC-066.md",
+      "sha256": "17ae60444c9c5a923b57a0cc41df7e3cdf2015600794cc2f47eafa535f50f53c",
+      "bytes": 7772,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-067.md",
+      "to": "history/legacy-rounds/EC-067.md",
+      "sha256": "de46a7bf3abdf32436a7f3ff122d70d483316fcb8c455db2ea5c306ffe1ec90b",
+      "bytes": 7453,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-068.md",
+      "to": "history/legacy-rounds/EC-068.md",
+      "sha256": "e6cec1b6b1e0adbe1bada877bae616db0461fa4ab2735c485a845141acb3932d",
+      "bytes": 8094,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-069.md",
+      "to": "history/legacy-rounds/EC-069.md",
+      "sha256": "e55b731a300fb15b01264f9c5a4295e6f1d87d7b5c9e3801a21f69f92c7423f9",
+      "bytes": 7441,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-070.md",
+      "to": "history/legacy-rounds/EC-070.md",
+      "sha256": "476e75fa4fea3a17cf6a5173092c6a88ca2a1e72fcf6dbaaf956f822afeb9e85",
+      "bytes": 8479,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-071.md",
+      "to": "history/legacy-rounds/EC-071.md",
+      "sha256": "8020252dd1a075098ce932d9799b12575972234a1fa2fb9d778174b15b61c1f9",
+      "bytes": 8055,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-072.md",
+      "to": "history/legacy-rounds/EC-072.md",
+      "sha256": "ef6e23096e52edd92664547f3d9e4d67b13b3e3557036fdadf79977036161d56",
+      "bytes": 7371,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-073.md",
+      "to": "history/legacy-rounds/EC-073.md",
+      "sha256": "7bd5b634415a48d94298bb98e88967f617e4d1777d83b7aadcfc87584e13d8d1",
+      "bytes": 7221,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-074.md",
+      "to": "history/legacy-rounds/EC-074.md",
+      "sha256": "af52bbf57083d97b65ae28960d46a05b2aa0c3e9fd361df2e3fce8dd30a1f715",
+      "bytes": 8041,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-075.md",
+      "to": "history/legacy-rounds/EC-075.md",
+      "sha256": "cb39d849b4e2106711e2ae56a1bd425ef0a685162807e6a691b2973c2fbbf92f",
+      "bytes": 8161,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-076.md",
+      "to": "history/legacy-rounds/EC-076.md",
+      "sha256": "4a036adeaf9d441bb071ed122b013490d5662b3b249296ed2907a10d3f43f513",
+      "bytes": 8189,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-077.md",
+      "to": "history/legacy-rounds/EC-077.md",
+      "sha256": "28b1038f7a64432b2a27425ff6baa2d0a651e2740771a25102815341b2f58e39",
+      "bytes": 8688,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-078.md",
+      "to": "history/legacy-rounds/EC-078.md",
+      "sha256": "691a69de0ced1dd6ea2c575d5b6505afea48488e47b0c57df1ba408f29797dde",
+      "bytes": 8755,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-079.md",
+      "to": "history/legacy-rounds/EC-079.md",
+      "sha256": "3ba963a86e9d1fbe5b8b1346c80473e1815f3c519f214423642e7f731aca9c96",
+      "bytes": 7681,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-080.md",
+      "to": "history/legacy-rounds/EC-080.md",
+      "sha256": "38ff962969ebf0e162c58d5a82fbbc7c1f841fa0a57f0ee482907407628728ac",
+      "bytes": 8243,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-081.md",
+      "to": "history/legacy-rounds/EC-081.md",
+      "sha256": "60e2a7c75b9ae9245aef46dfe3dde1a5fc71f8f14b66251875aa5057dcc940f0",
+      "bytes": 7150,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-082.md",
+      "to": "history/legacy-rounds/EC-082.md",
+      "sha256": "aff8d509c2387ebe6eebeedac61bde3259d232e288790f7c76ce6e81a98d79f8",
+      "bytes": 7324,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-083.md",
+      "to": "history/legacy-rounds/EC-083.md",
+      "sha256": "6102782053594635be89e6913a0e056484454d7ece8fca241bc1d90002f5ab6a",
+      "bytes": 7694,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-084.md",
+      "to": "history/legacy-rounds/EC-084.md",
+      "sha256": "7bd2afc89a4999eb6a96d4d1e6f4b293e4dca920f65d52075d5f45df8a27f31d",
+      "bytes": 6267,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-085.md",
+      "to": "history/legacy-rounds/EC-085.md",
+      "sha256": "0677fa02a3947c053017aedd9689d92bcd45e2981c8ddfed3facb5362aaa7aa3",
+      "bytes": 6519,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-086.md",
+      "to": "history/legacy-rounds/EC-086.md",
+      "sha256": "544c87dbcbb18a1421b42960810aa13146281f7e73d2cb9b7f7bfd41f1e4a89a",
+      "bytes": 5549,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-087.md",
+      "to": "history/legacy-rounds/EC-087.md",
+      "sha256": "0bfca3e06efa1c2756622687313b159c82cfce281c733059603e5b95ecf2beb9",
+      "bytes": 5099,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-088.md",
+      "to": "history/legacy-rounds/EC-088.md",
+      "sha256": "549ff6bae8fd84d913955208913e7ada918ca00deb6faceb713e7c697a74f20a",
+      "bytes": 6205,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-089.md",
+      "to": "history/legacy-rounds/EC-089.md",
+      "sha256": "a84587622fcad9842c60d1ed52ccd98053fd539aaf299d14f6e58e981f6b9486",
+      "bytes": 6731,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-090.md",
+      "to": "history/legacy-rounds/EC-090.md",
+      "sha256": "d36d7e44b8654c8c607d4555d4dc7e89b99a33e0c2d1ad897504b11d46bb520b",
+      "bytes": 6668,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-091.md",
+      "to": "history/legacy-rounds/EC-091.md",
+      "sha256": "0421d77a4cfc67d3a37b6640a0ce3b37292b90255d25ca6603a4201b5de881bf",
+      "bytes": 6914,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-092.md",
+      "to": "history/legacy-rounds/EC-092.md",
+      "sha256": "2d5361cebbe982203f32f2f37521873db1e61dc77b9bd7bc23b4ad6ffaabd41c",
+      "bytes": 8041,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-093.md",
+      "to": "history/legacy-rounds/EC-093.md",
+      "sha256": "dc426e385f4f5a26794d97c5436385436713e99a17d0a7043a3a9d0dd790a017",
+      "bytes": 7753,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-094.md",
+      "to": "history/legacy-rounds/EC-094.md",
+      "sha256": "bb12681fa48fceb78d62202857e29be592d0555b00a5837af3a6f42cfc45fa31",
+      "bytes": 7986,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-095.md",
+      "to": "history/legacy-rounds/EC-095.md",
+      "sha256": "b1387ce89c926d6f9974f98c15c9942464b4ea8acf8dfb5bb7ded6f90e317227",
+      "bytes": 7783,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-096.md",
+      "to": "history/legacy-rounds/EC-096.md",
+      "sha256": "a27a34ecc974c9e73fbe24fc7046bb5e7481c3568022410d04920fc7a37a382f",
+      "bytes": 7454,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-097.md",
+      "to": "history/legacy-rounds/EC-097.md",
+      "sha256": "aed680c0e0a2d37ae3884b68e3605d98357c32dd8d5fc3399859d3292ddcf075",
+      "bytes": 7591,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-098.md",
+      "to": "history/legacy-rounds/EC-098.md",
+      "sha256": "e9e519cc38c66c10ab6ad89d7738142ea7577b7aaad5268ccf21298a568dec84",
+      "bytes": 7528,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-099.md",
+      "to": "history/legacy-rounds/EC-099.md",
+      "sha256": "1d4c6d44e2d38b74b7e16e721b18a42572e7c6b3b3ab7b4cf1ef997ad74e8820",
+      "bytes": 6322,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-100.md",
+      "to": "history/legacy-rounds/EC-100.md",
+      "sha256": "1f84f9b3a2ce0433beedc16bad51b0e495b39aa61e54bab866b7218be629f57a",
+      "bytes": 7898,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-101.md",
+      "to": "history/legacy-rounds/EC-101.md",
+      "sha256": "28756da1d5556311ae4b01b17db9ad467ee962d608804287b0cac642b37039ae",
+      "bytes": 7854,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-102.md",
+      "to": "history/legacy-rounds/EC-102.md",
+      "sha256": "ac280abb6f60fd2e0c29d742466b5228090e721b9c9f4e80c27e9f58f855cbe2",
+      "bytes": 8456,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-103.md",
+      "to": "history/legacy-rounds/EC-103.md",
+      "sha256": "9e474e325c81117bd3ac20fc135657da864a6f661b3162473c918a10406876b1",
+      "bytes": 8779,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-104.md",
+      "to": "history/legacy-rounds/EC-104.md",
+      "sha256": "2a92e58e901803323aede8d0697474251bc721d5dcd90e376cf78b486b714c46",
+      "bytes": 7252,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-105.md",
+      "to": "history/legacy-rounds/EC-105.md",
+      "sha256": "a00f5f188e5e2ee6fac1e6a2a1d6b9bad92ebab1068eb3e58aa504a0822ded24",
+      "bytes": 8129,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-106.md",
+      "to": "history/legacy-rounds/EC-106.md",
+      "sha256": "16717eb8af104b07836803a4ba08c9fdff2f94787e49b978afdeb64c3ce0d89f",
+      "bytes": 7635,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-107.md",
+      "to": "history/legacy-rounds/EC-107.md",
+      "sha256": "4925415d613e84f4a3d881960e870600ffd361a30a99673df0b0338f48e00528",
+      "bytes": 7579,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-108.md",
+      "to": "history/legacy-rounds/EC-108.md",
+      "sha256": "bce7473aa1ec8b33e40a6ddf7eff01189defb8bf052ec4b088cca5e3e34073f7",
+      "bytes": 7643,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-109.md",
+      "to": "history/legacy-rounds/EC-109.md",
+      "sha256": "0cf418de03cf48e3bcc5f462484b88fd5f2e72bd9bd9ddc94f7c94a36aef91eb",
+      "bytes": 7227,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-110.md",
+      "to": "history/legacy-rounds/EC-110.md",
+      "sha256": "43b83850ddf7bc6df15ca80281faeb7f7b881527014a06e2bc509f960a8efbf0",
+      "bytes": 7152,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-111.md",
+      "to": "history/legacy-rounds/EC-111.md",
+      "sha256": "4a100593ead004f5120d22b56c6cea182f446adedab703b4879b59d540312b24",
+      "bytes": 7787,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-112.md",
+      "to": "history/legacy-rounds/EC-112.md",
+      "sha256": "0a0708c4e063beb848a4e6dc7b7efc2d63b3568c12af5c566cdde117904b39e8",
+      "bytes": 7645,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-113.md",
+      "to": "history/legacy-rounds/EC-113.md",
+      "sha256": "3b4ee0bdeb1a5e999e6bc292f6440cd8cc045b81c12e23c77f08f59e45989586",
+      "bytes": 7745,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-114.md",
+      "to": "history/legacy-rounds/EC-114.md",
+      "sha256": "9978affb5de6ff2458baaf29166d8c156cee326867f773242864339597136d11",
+      "bytes": 8388,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-115.md",
+      "to": "history/legacy-rounds/EC-115.md",
+      "sha256": "56ac0f18a9ff22f599a54bcd4b5f1af07d1a04cfda57a5dfa37ac929a881aeaf",
+      "bytes": 5958,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-116.md",
+      "to": "history/legacy-rounds/EC-116.md",
+      "sha256": "b2fb01d81c510bf9e1090075a71e2a31c16adc46315869a92a37cf5615c1ed56",
+      "bytes": 5329,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-117.md",
+      "to": "history/legacy-rounds/EC-117.md",
+      "sha256": "1bad1e097ef19b148ff59f6ad3e9eee4aa66013b94a02b611d262292f0326bbc",
+      "bytes": 5639,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-118.md",
+      "to": "history/legacy-rounds/EC-118.md",
+      "sha256": "8055d6bb838606dc0bd2fb85bb23f323ed01922bf01d4b0fc6aa4bc6dd34fdae",
+      "bytes": 5708,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-119.md",
+      "to": "history/legacy-rounds/EC-119.md",
+      "sha256": "afb4b10173a9713e6f379c35d72ae5978b069a54d922f8e48923f2947e6041a5",
+      "bytes": 5745,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-120.md",
+      "to": "history/legacy-rounds/EC-120.md",
+      "sha256": "af30e9f9a047c5e0f3950b4c44f17dae82e53527de684fce46dd272f58c8a4f9",
+      "bytes": 7861,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-121.md",
+      "to": "history/legacy-rounds/EC-121.md",
+      "sha256": "57ed88797f337facd229a79ebff2999f5832618ba3c9e877da311eac88c04ff6",
+      "bytes": 7185,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-122.md",
+      "to": "history/legacy-rounds/EC-122.md",
+      "sha256": "8a635f2abfd786bd24837f043673bfdf3afffbbd93f851b55a093dc648948c2c",
+      "bytes": 6747,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-123.md",
+      "to": "history/legacy-rounds/EC-123.md",
+      "sha256": "240b35dcd7ba860cdb896ef29bc554d1cd38d46408e04930cdaa251afb84c80a",
+      "bytes": 7225,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-124.md",
+      "to": "history/legacy-rounds/EC-124.md",
+      "sha256": "75f7f52fc990c616eb959059b72a32b9a0863382fa64e04a1a019f2ba7ee799f",
+      "bytes": 6980,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-125.md",
+      "to": "history/legacy-rounds/EC-125.md",
+      "sha256": "d05e483b061c4afdd7b06dd3517962a0ee7120c65554c9462a553b3d3445c854",
+      "bytes": 7849,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-126.md",
+      "to": "history/legacy-rounds/EC-126.md",
+      "sha256": "cbfdb62bd98462bd4fb5fd302265dcce79fb43cf81402b40f7dc0007f9be08d5",
+      "bytes": 8395,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-127.md",
+      "to": "history/legacy-rounds/EC-127.md",
+      "sha256": "42baac36eb92134b11a09a2cbff2396eb34f93d900ca6ed9f138d8cb0c6c930d",
+      "bytes": 7101,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-128.md",
+      "to": "history/legacy-rounds/EC-128.md",
+      "sha256": "379d2c59e6bc8d63a1369b15243df96bda098199761d11a1a346faee96cc8ba1",
+      "bytes": 6474,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-129.md",
+      "to": "history/legacy-rounds/EC-129.md",
+      "sha256": "205fe19d29616097058e93f66124ca39bf0f72a0662fdf13dac04895deff2e46",
+      "bytes": 7609,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-130.md",
+      "to": "history/legacy-rounds/EC-130.md",
+      "sha256": "666529e2b45d2b5384a8d681bdd88a911588b430ae925c47f5659f9e8821bd15",
+      "bytes": 8112,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-131.md",
+      "to": "history/legacy-rounds/EC-131.md",
+      "sha256": "c4dff5f066739607827c423c3a88010f3f86da655e9c8e0ace1fd9cbdf7b10dd",
+      "bytes": 8970,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-132.md",
+      "to": "history/legacy-rounds/EC-132.md",
+      "sha256": "f9c811fb7ebfe5adbc5e63aceea83b82ea4fa2b9bc32e2b82a3829ce8cd515e2",
+      "bytes": 9042,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-133.md",
+      "to": "history/legacy-rounds/EC-133.md",
+      "sha256": "c515c08e848d015750e0d71a1118c841ae025e1295b512f42bbbceda03672d4e",
+      "bytes": 5356,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-134.md",
+      "to": "history/legacy-rounds/EC-134.md",
+      "sha256": "58f3c7ad198ca2919b7b065149e9943894f911062478c36ff0e6d69c9b8553fd",
+      "bytes": 6087,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-135.md",
+      "to": "history/legacy-rounds/EC-135.md",
+      "sha256": "bbbdb1e663501187a6a4d6cf0a32f095076db9ad78aa4a05808959fd43b6701a",
+      "bytes": 5370,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-136.md",
+      "to": "history/legacy-rounds/EC-136.md",
+      "sha256": "071bd88a7e7ae1578b16cab19a2023e28bf178079d570ad2b8ce301da4e6ecec",
+      "bytes": 6160,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-137.md",
+      "to": "history/legacy-rounds/EC-137.md",
+      "sha256": "62431fdd52fd946b732ea238f5472cb6f76e09c3f95be3825342592ab58e14a2",
+      "bytes": 6166,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-138.md",
+      "to": "history/legacy-rounds/EC-138.md",
+      "sha256": "db1468eef4209a09437a0a1c4ed0a8f603b383e45d8a491d25ed12d37db944e1",
+      "bytes": 6091,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-139.md",
+      "to": "history/legacy-rounds/EC-139.md",
+      "sha256": "77fa2c3cc7d8d4e14d2865251a7c528a85a3f081e3a4b6ce2d9a7063084e5b68",
+      "bytes": 5381,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-140.md",
+      "to": "history/legacy-rounds/EC-140.md",
+      "sha256": "e8cf28d7a187f3967fab92764423dcafc26abb2b2f616cd36c69b5dec7f9c208",
+      "bytes": 5895,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-141.md",
+      "to": "history/legacy-rounds/EC-141.md",
+      "sha256": "b9c9523b4d6099496224ea860cd9fdae78ae21dbc7c4a215d92d1981a113e41f",
+      "bytes": 6300,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-142.md",
+      "to": "history/legacy-rounds/EC-142.md",
+      "sha256": "dcbe0c760607ad1570cfc1490eba62e0308b704047067f21eeede5e92530b967",
+      "bytes": 6353,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-143.md",
+      "to": "history/legacy-rounds/EC-143.md",
+      "sha256": "065b0c0057c08ed0f2c5c087739b8348a61a9748e807c410f4c5c7fc39a2acf7",
+      "bytes": 6920,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-144.md",
+      "to": "history/legacy-rounds/EC-144.md",
+      "sha256": "22ab6f3ed2d571685cc2971e217173e192da18820c3cd9a7bf7ad4592784dd61",
+      "bytes": 5601,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-145.md",
+      "to": "history/legacy-rounds/EC-145.md",
+      "sha256": "7fa6c49fdbd90abac5dcf94fa784f4184eb97ab1b16139c257113dcc9d84bb73",
+      "bytes": 7707,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-146.md",
+      "to": "history/legacy-rounds/EC-146.md",
+      "sha256": "f2ed664cfe8520aff1b01847c61ceb4c6f3d4cd95af6b8546fd5368fddfcb1a7",
+      "bytes": 6044,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-147.md",
+      "to": "history/legacy-rounds/EC-147.md",
+      "sha256": "fb787d6084395ba31a54a2dd801e10f3a5f56d90a06909c5b8ed7f50437e5973",
+      "bytes": 7372,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-148.md",
+      "to": "history/legacy-rounds/EC-148.md",
+      "sha256": "854e6cde47f65aeee964ec707360d527cdaaf59d3f5c28c18c83bad5450599f1",
+      "bytes": 7415,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-149.md",
+      "to": "history/legacy-rounds/EC-149.md",
+      "sha256": "3fcb5310da825922a20d4d3cb3d599ed47bdbaf1d7579e23fd5343335132e875",
+      "bytes": 6858,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "EC-150.md",
+      "to": "history/legacy-rounds/EC-150.md",
+      "sha256": "1ab6373fc3cbe26e9b718013be6fcec8063c0999ab0963481c05fa27c8a84a09",
+      "bytes": 9064,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "SKILL.md",
+      "to": "history/legacy-docs/SKILL-R150.md",
+      "sha256": "e9a3266b0ec1660e891e1f93696b430723c27b0567b840e662d516c63749a125",
+      "bytes": 199804,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "README.md",
+      "to": "history/legacy-docs/README-R150.md",
+      "sha256": "a2cf11ebac20e05ed58fcd6848c06b7e83bca390c76fa5626f71c049bedd43de",
+      "bytes": 358876,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "BUILD_STATE.json",
+      "to": "history/legacy-docs/BUILD_STATE-R150.json",
+      "sha256": "e1060136d987bf50559eb026fb175887e62b3135af5145c5a8c5c66f8751418d",
+      "bytes": 432219,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "CHANGELOG.md",
+      "to": "history/legacy-docs/CHANGELOG-R150.md",
+      "sha256": "59c993275a092eee829c5394aeeff00b2a68f67237bcbd5d9ed3dc6e473436e0",
+      "bytes": 336645,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "agents/openai.yaml",
+      "to": "history/legacy-docs/openai-R150.yaml",
+      "sha256": "740b8ae2ac122177e8f1505932bbeb1f30edfd3cec8af637f4815e6d3cd996aa",
+      "bytes": 23244,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "references/code-sequence.md",
+      "to": "history/legacy-docs/code-sequence-R150.md",
+      "sha256": "6eff3d96d38e39fa5fb71c3cb7249160f8da9e71b0a29644570176b800f60f27",
+      "bytes": 393418,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    },
+    {
+      "from": "references/orchestration.md",
+      "to": "history/legacy-docs/orchestration-R150.md",
+      "sha256": "8cd270b77d63a974765a76fd7cb0d39cea5465f9475849bbd43b25fd2b09f8b4",
+      "bytes": 29710,
+      "reason": "历史施工记录移出活动入口；留存原文，非无效事实判定"
+    }
+  ],
+  "not_proven_invalid": [
+    "Any existing PowerShell source module",
+    "Any original Smoke test",
+    "Any original EC record"
+  ],
+  "changes_to_root": [
+    "SKILL.md and README.md rewritten to focused active entrypoints",
+    "BUILD_STATE.json now concise active checkpoint, full former state archived",
+    "CHANGELOG.md now active-only, full former history archived",
+    "agents/openai.yaml simplified",
+    "references/code-sequence.md and orchestration.md rewritten, originals archived"
+  ]
+}

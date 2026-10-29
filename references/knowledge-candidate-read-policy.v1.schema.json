@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_candidate_read_policy.v1"
+    },
+    "purpose": {
+      "const": "read_private_candidate_only"
+    },
+    "store_instance_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "store_scope_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "candidate_key": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._-]{2,63}$"
+    },
+    "candidate_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "authorization_scope_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permission_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permit_candidate_metadata_read": {
+      "type": "boolean"
+    },
+    "permit_provenance_read": {
+      "type": "boolean"
+    },
+    "permit_restricted_provenance_read": {
+      "type": "boolean"
+    },
+    "permit_claim_content_read": {
+      "type": "boolean"
+    },
+    "permit_restricted_claim_read": {
+      "type": "boolean"
+    },
+    "permit_repository_write": {
+      "const": false
+    },
+    "permit_authoritative_knowledge_write": {
+      "const": false
+    },
+    "permit_publish": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema",
+    "purpose",
+    "store_instance_id",
+    "store_scope_binding_sha256",
+    "candidate_key",
+    "candidate_binding_sha256",
+    "authorization_scope_sha256",
+    "permission_receipt_sha256",
+    "permit_candidate_metadata_read",
+    "permit_provenance_read",
+    "permit_restricted_provenance_read",
+    "permit_claim_content_read",
+    "permit_restricted_claim_read",
+    "permit_repository_write",
+    "permit_authoritative_knowledge_write",
+    "permit_publish"
+  ]
+}

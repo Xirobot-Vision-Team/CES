@@ -1,0 +1,100 @@
+{
+  "schema": "ces.proposed_pr_evidence_store.v1",
+  "introduced": "EC-169 / V4.79 / R169",
+  "implementation": "construction/proposed_pr_evidence_store.py",
+  "authority": "STANDALONE_SCOPED_POSIX_LOCAL_APPEND_ONLY_RECEIPT_NOT_NATIVE_CLI_ACTION",
+  "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+  "source_schema_allowlist": [
+    "ces.proposed_pr_reconcile.v1",
+    "ces.proposed_pr_merge.v1",
+    "ces.proposed_pr_linear.v1"
+  ],
+  "source_states": {
+    "ec166": ["FRESH_OBSERVATION", "STALE_BY_DRIFT", "UNAVAILABLE_UNKNOWN"],
+    "ec167": ["LOCAL_MERGE_GRAPH_VERIFIED", "UNAVAILABLE_UNKNOWN"],
+    "ec168": ["LOCAL_GITLAB_SQUASH_TREE_VERIFIED", "LOCAL_SINGLE_COMMIT_NET_TREE_VERIFIED_METHOD_UNKNOWN", "LOCAL_EXACT_HEAD_GRAPH_VERIFIED_METHOD_UNKNOWN", "LOCAL_MERGE_GRAPH_VERIFIED", "UNAVAILABLE_UNKNOWN"]
+  },
+  "operations": {
+    "init": "Existing empty private root + --allow-init; creates manifest/lock/records once; does not authorize receipts",
+    "preview": "Strict input projection/history scan, read-only approval scope calculation; no implicit permission",
+    "commit": "--allow-evidence-write AND matching preview authorization digest; one no-overwrite append or explicit unavailable/unknown",
+    "history": "Read-only tamper-checked per-subject revision state and TTL view"
+  },
+  "permissions": {
+    "network": "NEVER_ACCESSED",
+    "local_git": "NEVER_ACCESSED",
+    "remote_write": "NEVER",
+    "git_ref_index_or_worktree_write": "NEVER",
+    "local_init": "EXPLICIT_ALLOW_INIT_DISTINCT_FROM_RECEIPT_WRITE",
+    "local_append": "EXPLICIT_ALLOW_EVIDENCE_WRITE_AND_PREVIEW_SCOPE_DIGEST_PER_DISTINCT_APPEND",
+    "approval_digest_authenticated_human_consent": false,
+    "provider_or_local_positive_evidence_grants_append": false
+  },
+  "path_policy": {
+    "store_root": "Preexisting empty exact absolute owner-private directory, no symlink ancestors",
+    "store_id": "ASCII slug [a-z][a-z0-9_-]{2,47}",
+    "manifest_root_and_instance_bound": true,
+    "record_filename": "<keyed-HMAC-subject-hex>.<revision-6-digits>.json",
+    "open": "POSIX dirfd O_NOFOLLOW O_DIRECTORY, private permissions; flock on fixed transaction lock",
+    "write": "Exclusive private temp O_CREAT|O_EXCL, fsync, hard-link-to-fixed-name no-clobber, unlink own temp, directory fsync",
+    "symlink_traversal_allowed": false,
+    "arbitrary_parent_directory_creation": false,
+    "old_receipt_rewrite": false,
+    "orphan_auto_removal": false,
+    "windows_unverified_fallback_writer": false
+  },
+  "receipt_schema": "ces.proposed_pr_evidence_receipt.v1",
+  "store_manifest_schema": "ces.proposed_pr_evidence_store_manifest.v1",
+  "disclosure_profile": "MINIMAL_SOURCE_LABELS_NO_PATHS_BODIES_OR_OIDS_V1",
+  "disallowed_persisted_content": ["raw Provider JSON", "PR body/title", "access tokens and HTTP headers", "source file paths", "patch/diff content", "Git worktree path", "raw commit/tree/blob OIDs", "raw repository locator/request number"],
+  "identity_integrity": {
+    "subject": "Store-keyed HMAC of provider, repository locator, number, immutable proposal and target IDs",
+    "pin": "Store-keyed HMAC of original unauthenticated EC162 pin fingerprint",
+    "evidence": "Store-keyed HMAC of exact input JSON",
+    "receipt_id": "SHA256 domain-separated canonical record body",
+    "record_hmac": "Per-store HMAC of receipt body + ID; internal tamper detection only, key stored with manifest",
+    "actor_authenticated": false,
+    "provider_authenticated": false,
+    "target_repo_membership_authenticated": false,
+    "remote_merge_or_delivery_proven": false,
+    "deployment_proven": false
+  },
+  "ttl": {
+    "min_seconds": 60,
+    "max_seconds": 3600,
+    "default_seconds": 900,
+    "input_observation_max_age_seconds": 900,
+    "future_skew_max_seconds": 60,
+    "no_provider_observation_unknown_ttl_max_seconds": 300,
+    "expiry_basis": "Earliest available new source observation time, not later persistence time",
+    "duplicate_same_input": "Read-only DUPLICATE_NO_WRITE while still active",
+    "duplicate_expired": "UNAVAILABLE_REOBSERVE_WITH_NEW_SOURCE_NO_REAUTH_RENEWAL",
+    "new_revision": "Requires fresh source evidence, newer provider-observed time where comparable, separate scoped write consent",
+    "prior_revision_state": ["NONE", "ACTIVE", "EXPIRED"],
+    "stale_pin_changes_recorded": true
+  },
+  "limits": {
+    "input_json_max_bytes": 131072,
+    "receipt_max_bytes": 8192,
+    "store_max_receipts": 2048,
+    "subject_max_revisions": 128,
+    "store_root_path_max_chars": 1024
+  },
+  "response": {
+    "schema": "ces.proposed_pr_evidence_store.v1",
+    "status": ["partial", "unavailable", "invalid_input"],
+    "exit_code": {"partial": 2, "unavailable": 5, "invalid_input": 4},
+    "positive_gates": ["STORE_INITIALIZED", "PREVIEW_READY_NO_PERMISSION_GRANTED", "APPEND_ONLY_RECEIPT_PERSISTED", "DUPLICATE_NO_WRITE", "HISTORY_READ_ONLY"],
+    "success_0_supported": false,
+    "always_false": ["provider_write_performed", "git_ref_index_or_worktree_write_performed", "provider_actor_verified", "target_repository_membership_authenticated", "provider_merge_or_delivery_proven", "deployment_proven", "native_cli_action_registered", "source_result_authenticated", "store_hmac_is_external_authority"]
+  },
+  "migration_writer": "NOT_IMPLEMENTED_NO_REWRITE_V1_TO_FUTURE_VERSION",
+  "native_collect_proposed_pr_and_remote_reconcile": "NOT_IMPLEMENTED",
+  "offline_development_scenarios": 25,
+  "offline_real_temporary_git_synthetic_upstream_scenarios": 3,
+  "live_provider": "NOT_RUN",
+  "native_powershell_and_15_smoke": "NOT_RUN",
+  "windows_macos_cross_os": "NOT_RUN",
+  "external_end_to_end": "NOT_RUN",
+  "final_user_assisted_acceptance": "NOT_STARTED"
+}

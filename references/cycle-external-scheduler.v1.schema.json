@@ -1,0 +1,1436 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/cycle-external-scheduler.v1.schema.json",
+  "title": "EC239 External Scheduler Invocation Boundary (not job installation or business execution)",
+  "description": "Strict read-only EC237 invocation envelope; all host scheduler/trigger claims remain unauthenticated.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.cycle_external_scheduler_boundary.v1"
+    },
+    "operation": {
+      "type": "string",
+      "enum": [
+        "plan",
+        "invoke"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "INSTRUCTIONS_ONLY",
+        "CONFIG_CLAIM_ONLY",
+        "CHECK_OBSERVED_ONLY",
+        "CHECK_BLOCKED",
+        "PLAN_REJECTED",
+        "TRIGGER_REJECTED",
+        "UNKNOWN_BLOCKED"
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{2,63}$"
+    },
+    "run_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^run_v1_[0-9a-f]{48}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "record_binding": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "record_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "action_set_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "input_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "record_sha256",
+            "action_set_sha256",
+            "input_sha256"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "scheduler": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "cron",
+                "windows_task",
+                "orchestrator"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "schedule_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9._:-]{2,71}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "host_state_claim": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "absent",
+                "claimed_configured"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "external_installation_verified": {
+          "const": false
+        },
+        "external_cadence_verified": {
+          "const": false
+        },
+        "external_trigger_authenticated": {
+          "const": false
+        },
+        "scheduled_job_created": {
+          "const": false
+        }
+      },
+      "required": [
+        "kind",
+        "schedule_id",
+        "host_state_claim",
+        "external_installation_verified",
+        "external_cadence_verified",
+        "external_trigger_authenticated",
+        "scheduled_job_created"
+      ]
+    },
+    "cadence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "hourly",
+                "daily",
+                "weekly"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "timezone": {
+          "const": "UTC"
+        },
+        "cron_utc_reference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "0 * * * *",
+                "0 0 * * *",
+                "0 0 * * 1"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scheduled_for_utc_claim": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$",
+              "maxLength": 27
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tick_alignment_checked": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "kind",
+        "timezone",
+        "cron_utc_reference",
+        "scheduled_for_utc_claim",
+        "tick_alignment_checked"
+      ]
+    },
+    "trigger": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "event_id_claim": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^evt_[A-Za-z0-9_-]{12,80}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "supplied_by_caller": {
+          "type": "boolean"
+        },
+        "execution_on_schedule_proven": {
+          "const": false
+        },
+        "deduplication_checked": {
+          "const": false
+        }
+      },
+      "required": [
+        "event_id_claim",
+        "supplied_by_caller",
+        "execution_on_schedule_proven",
+        "deduplication_checked"
+      ]
+    },
+    "invocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "command_argv_template": {
+          "type": "array",
+          "maxItems": 28,
+          "items": {
+            "type": "string",
+            "maxLength": 4096
+          }
+        },
+        "host_setup_required": {
+          "const": true
+        },
+        "command_executed_by_this_module": {
+          "const": false
+        },
+        "shell_used_by_this_module": {
+          "const": false
+        }
+      },
+      "required": [
+        "command_argv_template",
+        "host_setup_required",
+        "command_executed_by_this_module",
+        "shell_used_by_this_module"
+      ]
+    },
+    "preconditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "existing_private_ec231_run_read": {
+          "type": "boolean"
+        },
+        "three_caller_sha_pins_match_local_record": {
+          "type": "boolean"
+        },
+        "external_scheduler_authority_verified": {
+          "const": false
+        },
+        "actor_authenticated": {
+          "const": false
+        },
+        "business_input_source_authenticated": {
+          "const": false
+        },
+        "independent_permission_granted": {
+          "const": false
+        }
+      },
+      "required": [
+        "existing_private_ec231_run_read",
+        "three_caller_sha_pins_match_local_record",
+        "external_scheduler_authority_verified",
+        "actor_authenticated",
+        "business_input_source_authenticated",
+        "independent_permission_granted"
+      ]
+    },
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "cycle_summary"
+        },
+        "called": {
+          "type": "boolean"
+        },
+        "summary_status": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "NOT_STARTED",
+                "AWAIT_PERMISSION_NO_CHECKPOINT",
+                "PAUSED_PERMISSION_REQUIRED",
+                "OPERATOR_HANDOFF_REQUIRED",
+                "UNVERIFIED_PROGRESS_BLOCKED",
+                "BLOCKED_NO_HANDLER",
+                "BLOCKED_DAG_CYCLE",
+                "UNKNOWN_BLOCKED"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "summary": {
+          "anyOf": [
+            {
+              "type": "object",
+              "required": [
+                "schema",
+                "run_id",
+                "status",
+                "reason_code",
+                "overall_success_proven",
+                "record_binding",
+                "checks",
+                "steps",
+                "counts",
+                "cost",
+                "trust",
+                "effects"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "schema": {
+                  "const": "ces.cycle_summary.v1"
+                },
+                "run_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^run_v1_[0-9a-f]{48}$",
+                      "minLength": 55,
+                      "maxLength": 55
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "status": {
+                  "enum": [
+                    "NOT_STARTED",
+                    "AWAIT_PERMISSION_NO_CHECKPOINT",
+                    "PAUSED_PERMISSION_REQUIRED",
+                    "OPERATOR_HANDOFF_REQUIRED",
+                    "UNVERIFIED_PROGRESS_BLOCKED",
+                    "BLOCKED_NO_HANDLER",
+                    "BLOCKED_DAG_CYCLE",
+                    "UNKNOWN_BLOCKED"
+                  ]
+                },
+                "reason_code": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_]{2,63}$",
+                  "minLength": 3,
+                  "maxLength": 64
+                },
+                "overall_success_proven": {
+                  "const": false
+                },
+                "record_binding": {
+                  "type": "object",
+                  "required": [
+                    "record_sha256",
+                    "action_set_sha256",
+                    "input_sha256",
+                    "graph_sha256",
+                    "proposal_sha256",
+                    "pause_sha256"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "record_sha256": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "action_set_sha256": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "input_sha256": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "graph_sha256": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "proposal_sha256": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "pause_sha256": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "checks": {
+                  "type": "object",
+                  "required": [
+                    "record_valid",
+                    "dag_valid",
+                    "route_source_checked",
+                    "pause_present",
+                    "pause_valid",
+                    "double_read_stable",
+                    "independent_pins_provided"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "record_valid": {
+                      "type": "boolean"
+                    },
+                    "dag_valid": {
+                      "type": "boolean"
+                    },
+                    "route_source_checked": {
+                      "type": "boolean"
+                    },
+                    "pause_present": {
+                      "type": "boolean"
+                    },
+                    "pause_valid": {
+                      "type": "boolean"
+                    },
+                    "double_read_stable": {
+                      "type": "boolean"
+                    },
+                    "independent_pins_provided": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "steps": {
+                  "type": "array",
+                  "maxItems": 32,
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "step_id",
+                      "action",
+                      "mode",
+                      "depends_on",
+                      "blocked_by_unproven_dependencies",
+                      "metadata_state",
+                      "report_state",
+                      "reason_code",
+                      "declared_evidence_sha256",
+                      "declared_observed_at_utc",
+                      "declared_handoff_id",
+                      "execution_verified",
+                      "success_verified",
+                      "failure_verified"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "step_id": {
+                        "type": "string",
+                        "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$",
+                        "minLength": 6,
+                        "maxLength": 53
+                      },
+                      "action": {
+                        "type": "string",
+                        "pattern": "^[A-Z][A-Za-z0-9]{0,47}$",
+                        "minLength": 1,
+                        "maxLength": 48
+                      },
+                      "mode": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "pattern": "^[A-Z][A-Za-z0-9]{0,31}$",
+                            "minLength": 1,
+                            "maxLength": 32
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "depends_on": {
+                        "type": "array",
+                        "maxItems": 32,
+                        "uniqueItems": true,
+                        "items": {
+                          "type": "string",
+                          "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$",
+                          "minLength": 6,
+                          "maxLength": 53
+                        }
+                      },
+                      "blocked_by_unproven_dependencies": {
+                        "type": "array",
+                        "maxItems": 32,
+                        "uniqueItems": true,
+                        "items": {
+                          "type": "string",
+                          "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$",
+                          "minLength": 6,
+                          "maxLength": 53
+                        }
+                      },
+                      "metadata_state": {
+                        "enum": [
+                          "NOT_STARTED",
+                          "DECLARED_PARTIAL",
+                          "UNKNOWN"
+                        ]
+                      },
+                      "report_state": {
+                        "enum": [
+                          "NOT_STARTED_UNEXECUTED",
+                          "DEPENDENCY_UNPROVEN",
+                          "AWAITING_PERMISSION_UNEXECUTED",
+                          "PAUSED_DENY_UNEXECUTED",
+                          "OPERATOR_HANDOFF_UNEXECUTED",
+                          "DECLARED_PARTIAL_UNVERIFIED",
+                          "UNKNOWN_UNVERIFIED"
+                        ]
+                      },
+                      "reason_code": {
+                        "type": "string",
+                        "pattern": "^[A-Z][A-Z0-9_]{2,63}$",
+                        "minLength": 3,
+                        "maxLength": 64
+                      },
+                      "declared_evidence_sha256": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{64}$"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "declared_observed_at_utc": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "declared_handoff_id": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "pattern": "^handoff_v1_[0-9a-f]{48}$"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "execution_verified": {
+                        "const": false
+                      },
+                      "success_verified": {
+                        "const": false
+                      },
+                      "failure_verified": {
+                        "const": false
+                      }
+                    },
+                    "allOf": [
+                      {
+                        "if": {
+                          "properties": {
+                            "metadata_state": {
+                              "const": "DECLARED_PARTIAL"
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "report_state": {
+                              "const": "DECLARED_PARTIAL_UNVERIFIED"
+                            },
+                            "declared_evidence_sha256": {
+                              "type": "string",
+                              "pattern": "^[0-9a-f]{64}$"
+                            },
+                            "declared_observed_at_utc": {
+                              "type": "string",
+                              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "if": {
+                          "properties": {
+                            "metadata_state": {
+                              "const": "UNKNOWN"
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "report_state": {
+                              "const": "UNKNOWN_UNVERIFIED"
+                            },
+                            "declared_evidence_sha256": {
+                              "type": "null"
+                            },
+                            "declared_observed_at_utc": {
+                              "type": "null"
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "if": {
+                          "properties": {
+                            "metadata_state": {
+                              "const": "NOT_STARTED"
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "declared_evidence_sha256": {
+                              "type": "null"
+                            },
+                            "declared_handoff_id": {
+                              "type": "null"
+                            },
+                            "declared_observed_at_utc": {
+                              "type": "null"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "counts": {
+                  "type": "object",
+                  "required": [
+                    "total_steps",
+                    "not_started",
+                    "declared_partial",
+                    "unknown",
+                    "dependency_blocked",
+                    "permission_blocked",
+                    "verified_success",
+                    "verified_failure"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "total_steps": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 32
+                    },
+                    "not_started": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 32
+                    },
+                    "declared_partial": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 32
+                    },
+                    "unknown": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 32
+                    },
+                    "dependency_blocked": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 32
+                    },
+                    "permission_blocked": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 32
+                    },
+                    "verified_success": {
+                      "const": 0
+                    },
+                    "verified_failure": {
+                      "const": 0
+                    }
+                  }
+                },
+                "cost": {
+                  "type": "object",
+                  "required": [
+                    "capture_input_bytes",
+                    "capture_declared_usage",
+                    "capture_budget_limits",
+                    "persisted_pause_budget_observation",
+                    "execution_wall_ms",
+                    "execution_cpu_ms",
+                    "execution_evidence_bytes",
+                    "external_cost_usd",
+                    "accounting_scope"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "capture_input_bytes": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 1048576
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "capture_declared_usage": {
+                      "type": "object",
+                      "required": [
+                        "steps",
+                        "wall_ms",
+                        "input_bytes",
+                        "evidence_bytes",
+                        "output_bytes"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "steps": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 86400000
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "wall_ms": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 86400000
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "input_bytes": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 86400000
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "evidence_bytes": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 86400000
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "output_bytes": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 86400000
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "capture_budget_limits": {
+                      "type": "object",
+                      "required": [
+                        "max_steps",
+                        "wall_ms",
+                        "input_bytes",
+                        "evidence_bytes",
+                        "output_bytes"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "max_steps": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 86400000
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "wall_ms": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 86400000
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "input_bytes": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 86400000
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "evidence_bytes": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 86400000
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "output_bytes": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 86400000
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "persisted_pause_budget_observation": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "admitted_inspections",
+                            "output_bytes",
+                            "independently_attested"
+                          ],
+                          "additionalProperties": false,
+                          "properties": {
+                            "admitted_inspections": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 32
+                            },
+                            "output_bytes": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 8388608
+                            },
+                            "independently_attested": {
+                              "const": false
+                            }
+                          }
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "execution_wall_ms": {
+                      "type": "null"
+                    },
+                    "execution_cpu_ms": {
+                      "type": "null"
+                    },
+                    "execution_evidence_bytes": {
+                      "type": "null"
+                    },
+                    "external_cost_usd": {
+                      "type": "null"
+                    },
+                    "accounting_scope": {
+                      "const": "EC231_DECLARATIONS_ONLY_NO_EXECUTION_METER"
+                    }
+                  }
+                },
+                "trust": {
+                  "type": "object",
+                  "required": [
+                    "record_authenticated",
+                    "input_source_authenticated",
+                    "actor_authenticated",
+                    "declared_evidence_authenticated",
+                    "execution_verified",
+                    "failure_verified",
+                    "external_cost_verified",
+                    "permission_granted",
+                    "handler_runtime_verified",
+                    "entire_cycle_success_verified"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "record_authenticated": {
+                      "const": false
+                    },
+                    "input_source_authenticated": {
+                      "const": false
+                    },
+                    "actor_authenticated": {
+                      "const": false
+                    },
+                    "declared_evidence_authenticated": {
+                      "const": false
+                    },
+                    "execution_verified": {
+                      "const": false
+                    },
+                    "failure_verified": {
+                      "const": false
+                    },
+                    "external_cost_verified": {
+                      "const": false
+                    },
+                    "permission_granted": {
+                      "const": false
+                    },
+                    "handler_runtime_verified": {
+                      "const": false
+                    },
+                    "entire_cycle_success_verified": {
+                      "const": false
+                    }
+                  }
+                },
+                "effects": {
+                  "type": "object",
+                  "required": [
+                    "metadata_written",
+                    "pause_written",
+                    "handler_invoked",
+                    "steps_executed",
+                    "dependencies_advanced",
+                    "write_authorized",
+                    "can_dispatch",
+                    "can_resume",
+                    "native_cycle_action_registered",
+                    "billing_record_created"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "metadata_written": {
+                      "const": false
+                    },
+                    "pause_written": {
+                      "const": false
+                    },
+                    "handler_invoked": {
+                      "const": false
+                    },
+                    "steps_executed": {
+                      "const": false
+                    },
+                    "dependencies_advanced": {
+                      "const": false
+                    },
+                    "write_authorized": {
+                      "const": false
+                    },
+                    "can_dispatch": {
+                      "const": false
+                    },
+                    "can_resume": {
+                      "const": false
+                    },
+                    "native_cycle_action_registered": {
+                      "const": false
+                    },
+                    "billing_record_created": {
+                      "const": false
+                    }
+                  }
+                }
+              },
+              "title": "EC237 read-only Cycle Summary, no proven task success",
+              "description": "Strict output shape. Python validate_result enforces counts, unproven dependencies, result provenance and max canonical output bytes. Unsigned EC231 and EC235 hashes never authenticate source/actor or authorize execution.",
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "status": {
+                        "const": "UNKNOWN_BLOCKED"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "steps": {
+                        "maxItems": 0
+                      },
+                      "checks": {
+                        "properties": {
+                          "record_valid": {
+                            "const": false
+                          }
+                        }
+                      },
+                      "counts": {
+                        "properties": {
+                          "total_steps": {
+                            "const": 0
+                          }
+                        }
+                      },
+                      "cost": {
+                        "properties": {
+                          "capture_input_bytes": {
+                            "type": "null"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "status": {
+                        "const": "PAUSED_PERMISSION_REQUIRED"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "checks": {
+                        "properties": {
+                          "record_valid": {
+                            "const": true
+                          },
+                          "pause_present": {
+                            "const": true
+                          },
+                          "pause_valid": {
+                            "const": true
+                          }
+                        }
+                      },
+                      "counts": {
+                        "properties": {
+                          "permission_blocked": {
+                            "const": 1
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "called",
+        "summary_status",
+        "summary"
+      ]
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "local_read_only_summary_observed": {
+          "type": "boolean"
+        },
+        "native_action_dispatched": {
+          "const": false
+        },
+        "cycle_steps_executed": {
+          "const": false
+        },
+        "business_writes_performed": {
+          "const": false
+        },
+        "local_records_written": {
+          "const": false
+        },
+        "scheduler_installed": {
+          "const": false
+        },
+        "permission_granted": {
+          "const": false
+        },
+        "business_success_proven": {
+          "const": false
+        },
+        "external_delivery_proven": {
+          "const": false
+        },
+        "duplicate_or_overlap_prevented": {
+          "const": false
+        }
+      },
+      "required": [
+        "local_read_only_summary_observed",
+        "native_action_dispatched",
+        "cycle_steps_executed",
+        "business_writes_performed",
+        "local_records_written",
+        "scheduler_installed",
+        "permission_granted",
+        "business_success_proven",
+        "external_delivery_proven",
+        "duplicate_or_overlap_prevented"
+      ]
+    },
+    "outstanding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "scheduler_host_installation": {
+          "const": "NOT_VERIFIED"
+        },
+        "trigger_origin_and_clock": {
+          "const": "UNVERIFIED_CALLER_CLAIMS"
+        },
+        "duplicate_concurrent_delivery": {
+          "const": "NOT_IMPLEMENTED_EC240"
+        },
+        "native_cycle_routing": {
+          "const": "NOT_IMPLEMENTED_EC241"
+        }
+      },
+      "required": [
+        "scheduler_host_installation",
+        "trigger_origin_and_clock",
+        "duplicate_concurrent_delivery",
+        "native_cycle_routing"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "operation",
+    "status",
+    "reason_code",
+    "run_id",
+    "record_binding",
+    "scheduler",
+    "cadence",
+    "trigger",
+    "invocation",
+    "preconditions",
+    "check",
+    "effects",
+    "outstanding"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "operation": {
+            "const": "plan"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "trigger": {
+            "properties": {
+              "supplied_by_caller": {
+                "const": false
+              },
+              "event_id_claim": {
+                "type": "null"
+              }
+            }
+          },
+          "cadence": {
+            "properties": {
+              "scheduled_for_utc_claim": {
+                "type": "null"
+              },
+              "tick_alignment_checked": {
+                "const": false
+              }
+            }
+          },
+          "check": {
+            "properties": {
+              "called": {
+                "const": false
+              },
+              "summary": {
+                "type": "null"
+              },
+              "summary_status": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "CHECK_OBSERVED_ONLY",
+              "CHECK_BLOCKED"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "operation": {
+            "const": "invoke"
+          },
+          "record_binding": {
+            "type": "object"
+          },
+          "check": {
+            "properties": {
+              "called": {
+                "const": true
+              },
+              "summary": {
+                "type": "object"
+              }
+            }
+          },
+          "trigger": {
+            "properties": {
+              "supplied_by_caller": {
+                "const": true
+              }
+            }
+          },
+          "effects": {
+            "properties": {
+              "local_read_only_summary_observed": {
+                "const": true
+              }
+            }
+          },
+          "cadence": {
+            "properties": {
+              "tick_alignment_checked": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "PLAN_REJECTED",
+        "TRIGGER_REJECTED",
+              "UNKNOWN_BLOCKED"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "run_id": {
+            "type": "null"
+          },
+          "record_binding": {
+            "type": "null"
+          },
+          "check": {
+            "properties": {
+              "called": {
+                "const": false
+              },
+              "summary": {
+                "type": "null"
+              },
+              "summary_status": {
+                "type": "null"
+              }
+            }
+          },
+          "effects": {
+            "properties": {
+              "local_read_only_summary_observed": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "INSTRUCTIONS_ONLY",
+              "CONFIG_CLAIM_ONLY"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "record_binding": {
+            "type": "object"
+          },
+          "preconditions": {
+            "properties": {
+              "existing_private_ec231_run_read": {
+                "const": true
+              },
+              "three_caller_sha_pins_match_local_record": {
+                "const": true
+              }
+            }
+          },
+          "invocation": {
+            "properties": {
+              "command_argv_template": {
+                "minItems": 15
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

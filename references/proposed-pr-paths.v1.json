@@ -1,0 +1,143 @@
+{
+  "schema": "ces.proposed_pr_paths.v1",
+  "implemented_ec": "EC-163",
+  "construction_release": "V4.73/R163",
+  "entry": "construction/proposed_pr_paths.py",
+  "native_cli_action": "NOT_REGISTERED",
+  "native_collect_proposed_pr": "NOT_IMPLEMENTED",
+  "dependencies": {
+    "EC161": "construction/proposed_pr_source.py (metadata and optional exact changed-file count)",
+    "EC162": "construction/proposed_pr_identity.py (exact prior pin contract, immutable identity and OID drift check)",
+    "required_prior": "Complete previous ces.proposed_pr_identity.v1 JSON with a valid pin and fingerprint, <=64KiB",
+    "pre_post_observations": 2,
+    "files_page_reads": "1..30 (bounded) only if the first metadata observation matches the prior pin",
+    "provider_count_consistency": "post-read changed-files count and quality must equal pre-read count and quality"
+  },
+  "endpoint": {
+    "github": {
+      "method": "GET",
+      "path": "/repos/{owner}/{repo}/pulls/{number}/files?page=N&per_page=M",
+      "changed_files_count": "EC161 GitHub metadata changed_files int; null/missing is not complete",
+      "pagination": "Validated Link relation on fixed endpoint; never follow arbitrary header URL",
+      "hard_provider_limit": "GitHub returns at most 3000 file entries; at or beyond 3000 never classify complete",
+      "statuses": [
+        "added",
+        "removed",
+        "modified",
+        "renamed",
+        "copied",
+        "changed"
+      ],
+      "old_path_for_rename": "previous_filename",
+      "new_path": "filename",
+      "line_stats": "additions/deletions/changes must be nonnegative ints, changes = additions + deletions"
+    },
+    "gitlab": {
+      "method": "GET",
+      "path": "/api/v4/projects/{encoded_project}/merge_requests/{iid}/diffs?page=N&per_page=M",
+      "choice": "Uses current list-diffs endpoint, NOT deprecated /changes or raw_diffs",
+      "changed_files_count": "EC161 MR metadata changes_count exact decimal string or unknown/empty/1000+",
+      "pagination": "Validate X-Next-Page, X-Page, X-Per-Page, X-Total and same-endpoint Link if present",
+      "statuses": "added/removed/renamed/modified derived from mutually consistent new_file/deleted_file/renamed_file flags",
+      "old_path": "old_path",
+      "new_path": "new_path",
+      "line_stats": "null; /diffs does not provide additions/deletions as separate numeric fields",
+      "patch_limit_flags": [
+        "collapsed",
+        "too_large"
+      ],
+      "response_limitation": "GitLab /diffs JSON includes diff strings even when caller only wants paths; discard them in-memory, never emit or save; no opt-in patch return"
+    }
+  },
+  "security": {
+    "network_default": "OFF",
+    "network_opt_in": "--allow-network",
+    "credentials": "CES_GITHUB_TOKEN or CES_GITLAB_TOKEN via runtime environment; never bundled or sent to arbitrary URLs",
+    "requests": "HTTPS GET only; TLS verification, proxy inheritance disabled, no redirects/retries",
+    "timeout_seconds": "1..30 per GET",
+    "body_limit_each_file_page_bytes": 2097152,
+    "total_file_page_response_budget_bytes": 12582912,
+    "max_pages": 30,
+    "per_page": "1..100",
+    "max_file_rows": 3000,
+    "file_path": "exact relative POSIX metadata, NFC UTF-8 <=1024 bytes, <=128 components, <=255 bytes/component; reject traversal, absolute/Windows aliases, controls and ambiguous casefold duplicates",
+    "local_filesystem_paths_joined": false,
+    "patch_content_emitted": false,
+    "raw_api_data_or_error_emitted": false,
+    "mutates_git_or_issue_or_repo": false,
+    "write_authorized": false,
+    "pin_fingerprint_authenticates_provider": false
+  },
+  "coverage": {
+    "state_values": [
+      "NOT_COLLECTED",
+      "COMPLETE",
+      "INCOMPLETE",
+      "UNKNOWN"
+    ],
+    "complete_only_when": "exact Provider-reported file count equals all safe, unique file records AND deterministic pagination terminated AND EC162 pin matched before/after AND count unchanged AND below GitHub's 3000 cap AND available pagination total agrees",
+    "synthetic_result": "May show COMPLETE as an in-fixture path-coverage shape only, but top-level status remains partial/2 and synthetic=true",
+    "incomplete_when": [
+      "page/file/byte budget",
+      "GitHub 3000 ceiling",
+      "GitLab 1000+ count cap",
+      "pagination end with fewer entries than exact Provider count"
+    ],
+    "unknown_when": "Provider change count missing or async not populated",
+    "unavailable_when": "metadata pin drift, count changed, wrong path, duplicate paths/casefold collision, malformed pagination/payload/status/stat, token/permission/read failure; discard all files",
+    "provider_count_is_not_a_signature": true,
+    "diff_snapshot_proven": false,
+    "race_free_pagination_proven": false
+  },
+  "result": {
+    "schema": "ces.proposed_pr_paths.v1",
+    "top_level_keys": [
+      "schema",
+      "status",
+      "reason_code",
+      "exit_code",
+      "message",
+      "pin",
+      "pin_fingerprint",
+      "files",
+      "coverage",
+      "line_stats",
+      "metadata_observations_utc",
+      "synthetic",
+      "native_cli_action_registered",
+      "path_metadata_collected",
+      "patch_content_collected",
+      "diff_snapshot_proven",
+      "provider_actor_verified",
+      "delivery_or_merge_proven",
+      "write_authorized"
+    ],
+    "file_keys": [
+      "status",
+      "old_path",
+      "new_path",
+      "additions",
+      "deletions",
+      "changes",
+      "stats_available",
+      "provider_patch_limited (GitLab only)"
+    ],
+    "exit_codes": {
+      "success": 0,
+      "partial": 2,
+      "invalid_input": 4,
+      "unavailable": 5
+    },
+    "live_success_meaning": "Complete read-only PATH LIST within bounded metadata claims, not stable diff snapshot, patch content, provider authorization, merger, delivery, identity attestation, or local write permission",
+    "status_partial_meaning": "Known partial/unknown coverage or any synthetic payload, never silently an empty verified list",
+    "status_unavailable_meaning": "Reject path acquisition and suppress all path metadata"
+  },
+  "out_of_scope": {
+    "EC164": "explicit patch-sensitive content opt-in",
+    "EC165": "provider diff version/snapshot, atomic pagination and robust consistency semantics",
+    "EC166": "remote Reconcile",
+    "native_collect": "not yet implemented",
+    "remote_writes": "never",
+    "final_native_and_online_acceptance": "NOT_RUN"
+  }
+}

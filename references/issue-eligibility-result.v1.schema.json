@@ -1,0 +1,325 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schema/issue-eligibility-result.v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "eligibility",
+    "authorization",
+    "safe_next_step",
+    "evaluation_sha256",
+    "issue_match_receipt_sha256",
+    "issue_match_selection_state",
+    "selected_issues_observed",
+    "source_mode",
+    "source_coverage",
+    "review_signature_cryptographically_valid",
+    "finding_or_match_truth_independently_verified",
+    "unknown_missing_issue_inventory",
+    "eligibility_is_authorization",
+    "issue_create_authorized",
+    "issue_created",
+    "provider_or_existing_issue_written",
+    "business_git_or_knowledge_written",
+    "report_or_issue_content_published",
+    "title_or_body_generated",
+    "raw_finding_or_issue_content_disclosed",
+    "provider_repository_issue_inventory_complete",
+    "duplicate_confirmed",
+    "no_duplicate_confirmed",
+    "original_finding_replayed",
+    "source_git_byte_evidence_reverified",
+    "ci_execution_independently_verified",
+    "match_receipt_source_authenticated",
+    "reviewer_organizational_role_or_revocation_authenticated",
+    "native_powershell_issue_route_registered"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.issue_eligibility.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "unavailable",
+        "invalid_input"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^ISSUE_ELIGIBILITY_[A-Z0-9_]+$"
+    },
+    "eligibility": {
+      "enum": [
+        "ELIGIBLE_TO_PROPOSE",
+        "NEEDS_REVIEW",
+        "BLOCKED",
+        "UNKNOWN",
+        "INVALID_INPUT"
+      ]
+    },
+    "authorization": {
+      "const": "NOT_GRANTED"
+    },
+    "safe_next_step": {
+      "enum": [
+        "LOCAL_REDACTED_DRAFT_REVIEW_ONLY",
+        "HUMAN_REVIEW_REQUIRED",
+        "DO_NOT_PROPOSE"
+      ]
+    },
+    "evaluation_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "issue_match_receipt_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "issue_match_selection_state": {
+      "enum": [
+        "UNKNOWN",
+        "SYNTHETIC_NEEDS_REVIEW",
+        "CANDIDATE_NEEDS_REVIEW",
+        "WITHHELD_NEEDS_REVIEW",
+        "SELECTED_NO_POSITIVE_HINT"
+      ]
+    },
+    "selected_issues_observed": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    },
+    "source_mode": {
+      "anyOf": [
+        {
+          "enum": [
+            "DeliveredTarget",
+            "WorkingTree",
+            "ProposedPR"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source_coverage": {
+      "enum": [
+        "UNKNOWN",
+        "COMPLETE_SELECTED",
+        "PARTIAL_SELECTED"
+      ]
+    },
+    "review_signature_cryptographically_valid": {
+      "type": "boolean"
+    },
+    "finding_or_match_truth_independently_verified": {
+      "const": false
+    },
+    "unknown_missing_issue_inventory": {
+      "const": true
+    },
+    "eligibility_is_authorization": {
+      "const": false
+    },
+    "issue_create_authorized": {
+      "const": false
+    },
+    "issue_created": {
+      "const": false
+    },
+    "provider_or_existing_issue_written": {
+      "const": false
+    },
+    "business_git_or_knowledge_written": {
+      "const": false
+    },
+    "report_or_issue_content_published": {
+      "const": false
+    },
+    "title_or_body_generated": {
+      "const": false
+    },
+    "raw_finding_or_issue_content_disclosed": {
+      "const": false
+    },
+    "provider_repository_issue_inventory_complete": {
+      "const": false
+    },
+    "duplicate_confirmed": {
+      "const": false
+    },
+    "no_duplicate_confirmed": {
+      "const": false
+    },
+    "original_finding_replayed": {
+      "const": false
+    },
+    "source_git_byte_evidence_reverified": {
+      "const": false
+    },
+    "ci_execution_independently_verified": {
+      "const": false
+    },
+    "match_receipt_source_authenticated": {
+      "const": false
+    },
+    "reviewer_organizational_role_or_revocation_authenticated": {
+      "const": false
+    },
+    "native_powershell_issue_route_registered": {
+      "const": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "eligibility": {
+            "const": "ELIGIBLE_TO_PROPOSE"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          },
+          "exit_code": {
+            "const": 2
+          },
+          "safe_next_step": {
+            "const": "LOCAL_REDACTED_DRAFT_REVIEW_ONLY"
+          },
+          "review_signature_cryptographically_valid": {
+            "const": true
+          },
+          "issue_match_selection_state": {
+            "const": "SELECTED_NO_POSITIVE_HINT"
+          },
+          "source_coverage": {
+            "const": "COMPLETE_SELECTED"
+          },
+          "source_mode": {
+            "const": "DeliveredTarget"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "eligibility": {
+            "const": "NEEDS_REVIEW"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          },
+          "exit_code": {
+            "const": 2
+          },
+          "safe_next_step": {
+            "const": "HUMAN_REVIEW_REQUIRED"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "eligibility": {
+            "const": "BLOCKED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          },
+          "exit_code": {
+            "const": 2
+          },
+          "safe_next_step": {
+            "const": "DO_NOT_PROPOSE"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "eligibility": {
+            "const": "UNKNOWN"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          },
+          "exit_code": {
+            "const": 5
+          },
+          "safe_next_step": {
+            "const": "DO_NOT_PROPOSE"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "eligibility": {
+            "const": "INVALID_INPUT"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          },
+          "exit_code": {
+            "const": 4
+          },
+          "safe_next_step": {
+            "const": "DO_NOT_PROPOSE"
+          }
+        }
+      }
+    }
+  ],
+  "description": "Read-only EC215 local proposal gate; no claim of IssueCreate authorization or absence/duplicate proof, no Issue/Git/knowledge/external side effects."
+}

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ces.local/knowledge-save-retry-policy.v1.schema.json",
+  "title": "knowledge-save-retry-policy.v1",
+  "description": "Standalone no-write EC209 proposal construction grant; never grants EC208 append, publication, merge, Git or source changes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "purpose",
+    "store_instance_id",
+    "store_scope_binding_sha256",
+    "retry_authorization_scope_sha256",
+    "retry_permission_receipt_sha256",
+    "permit_disjoint_retry_request_prepare",
+    "permit_retry_proposed_text_return",
+    "permit_restricted_retry_proposed_text_return",
+    "permit_automatic_target_content_merge",
+    "permit_automatic_version_append",
+    "permit_source_knowledge_overwrite",
+    "permit_business_repository_write",
+    "permit_issue_or_provider_write",
+    "permit_publish"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_save_retry_policy.v1"
+    },
+    "purpose": {
+      "const": "prepare_reviewed_disjoint_metadata_retry_request_only"
+    },
+    "store_instance_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "store_scope_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "retry_authorization_scope_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "retry_permission_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permit_disjoint_retry_request_prepare": {
+      "const": true
+    },
+    "permit_retry_proposed_text_return": {
+      "const": true
+    },
+    "permit_restricted_retry_proposed_text_return": {
+      "type": "boolean"
+    },
+    "permit_automatic_target_content_merge": {
+      "const": false
+    },
+    "permit_automatic_version_append": {
+      "const": false
+    },
+    "permit_source_knowledge_overwrite": {
+      "const": false
+    },
+    "permit_business_repository_write": {
+      "const": false
+    },
+    "permit_issue_or_provider_write": {
+      "const": false
+    },
+    "permit_publish": {
+      "const": false
+    }
+  }
+}

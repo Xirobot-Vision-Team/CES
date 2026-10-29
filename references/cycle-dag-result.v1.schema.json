@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schemas/cycle-dag-result.v1.schema.json",
+  "title": "CES EC232 read-only Cycle DAG inspection",
+  "description": "Graph-only observation of an already-persisted, internally self-consistent EC231 run. Never authorizes dispatch, writes, resumption or claims source authentication.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "run_id", "status", "reason_code", "record_sha256",
+    "action_set_sha256", "input_sha256", "graph_sha256", "source_ref",
+    "actor_origin", "actor_subject", "input_completeness",
+    "metadata_run_state", "metadata_dependency_resolution", "step_count",
+    "dependency_edge_count", "topological_order", "topological_layers",
+    "cycle_components", "cycle_witness", "blocked_step_ids", "trust", "effects"
+  ],
+  "$defs": {
+    "runId": {"type": "string", "pattern": "^run_v1_[0-9a-f]{48}$"},
+    "stepId": {"type": "string", "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$"},
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "maybeSha": {"oneOf": [{"$ref": "#/$defs/sha"}, {"type": "null"}]},
+    "stepIds": {"type": "array", "items": {"$ref": "#/$defs/stepId"}, "maxItems": 32, "uniqueItems": true},
+    "layeredIds": {"type": "array", "maxItems": 32, "items": {"$ref": "#/$defs/layer"}},
+    "layer": {"type": "array", "minItems": 1, "maxItems": 32, "uniqueItems": true,
+              "items": {"$ref": "#/$defs/stepId"}}
+  },
+  "properties": {
+    "schema": {"const": "ces.cycle_dag_result.v1"},
+    "run_id": {"oneOf": [{"$ref": "#/$defs/runId"}, {"type": "null"}]},
+    "status": {"enum": ["DAG_VALID_NO_EXECUTION", "DAG_CYCLE_BLOCKED", "UNKNOWN_BLOCKED"]},
+    "reason_code": {"type": "string", "pattern": "^CYCLE_[A-Z0-9_]{3,80}$"},
+    "record_sha256": {"$ref": "#/$defs/maybeSha"},
+    "action_set_sha256": {"$ref": "#/$defs/maybeSha"},
+    "input_sha256": {"$ref": "#/$defs/maybeSha"},
+    "graph_sha256": {"$ref": "#/$defs/maybeSha"},
+    "source_ref": {"type": ["string", "null"], "maxLength": 128},
+    "actor_origin": {"enum": ["human", "service", "external", null]},
+    "actor_subject": {"type": ["string", "null"], "maxLength": 128},
+    "input_completeness": {"enum": ["UNKNOWN", "DECLARED_PARTIAL", "DECLARED_COMPLETE", null]},
+    "metadata_run_state": {"enum": ["NOT_STARTED", "PARTIAL", "UNKNOWN", null]},
+    "metadata_dependency_resolution": {"enum": ["NOT_EVALUATED_EC232", null]},
+    "step_count": {"type": ["integer", "null"], "minimum": 1, "maximum": 32},
+    "dependency_edge_count": {"type": ["integer", "null"], "minimum": 0, "maximum": 992},
+    "topological_order": {"$ref": "#/$defs/stepIds"},
+    "topological_layers": {"$ref": "#/$defs/layeredIds"},
+    "cycle_components": {"$ref": "#/$defs/layeredIds"},
+    "cycle_witness": {"type": "array", "items": {"$ref": "#/$defs/stepId"}, "maxItems": 33},
+    "blocked_step_ids": {"$ref": "#/$defs/stepIds"},
+    "trust": {
+      "type": "object", "additionalProperties": false,
+      "required": ["metadata_integrity", "input_authenticated", "actor_verified", "permissions_granted"],
+      "properties": {
+        "metadata_integrity": {"const": "UNSIGNED_LOCAL_SELF_HASH_ONLY"},
+        "input_authenticated": {"const": false},
+        "actor_verified": {"const": false},
+        "permissions_granted": {"const": false}
+      }
+    },
+    "effects": {
+      "type": "object", "additionalProperties": false,
+      "required": ["steps_executed", "can_dispatch", "can_resume", "write_authorized", "native_cycle_action_registered"],
+      "properties": {
+        "steps_executed": {"const": false},
+        "can_dispatch": {"const": false},
+        "can_resume": {"const": false},
+        "write_authorized": {"const": false},
+        "native_cycle_action_registered": {"const": false}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "DAG_VALID_NO_EXECUTION"}}},
+      "then": {
+        "properties": {
+          "reason_code": {"const": "CYCLE_DAG_ACYCLIC"},
+          "record_sha256": {"$ref": "#/$defs/sha"},
+          "action_set_sha256": {"$ref": "#/$defs/sha"},
+          "input_sha256": {"$ref": "#/$defs/sha"},
+          "graph_sha256": {"$ref": "#/$defs/sha"},
+          "step_count": {"type": "integer"},
+          "dependency_edge_count": {"type": "integer"},
+          "topological_order": {"minItems": 1},
+          "topological_layers": {"minItems": 1},
+          "cycle_components": {"maxItems": 0},
+          "cycle_witness": {"maxItems": 0},
+          "blocked_step_ids": {"maxItems": 0}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "DAG_CYCLE_BLOCKED"}}},
+      "then": {
+        "properties": {
+          "reason_code": {"const": "CYCLE_DAG_CYCLE_DETECTED"},
+          "record_sha256": {"$ref": "#/$defs/sha"},
+          "action_set_sha256": {"$ref": "#/$defs/sha"},
+          "input_sha256": {"$ref": "#/$defs/sha"},
+          "graph_sha256": {"$ref": "#/$defs/sha"},
+          "step_count": {"type": "integer"},
+          "dependency_edge_count": {"type": "integer"},
+          "topological_order": {"maxItems": 0},
+          "topological_layers": {"maxItems": 0},
+          "cycle_components": {"minItems": 1},
+          "cycle_witness": {"minItems": 3},
+          "blocked_step_ids": {"minItems": 2}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "UNKNOWN_BLOCKED"}}},
+      "then": {
+        "properties": {
+          "record_sha256": {"type": "null"},
+          "action_set_sha256": {"type": "null"},
+          "input_sha256": {"type": "null"},
+          "graph_sha256": {"type": "null"},
+          "source_ref": {"type": "null"},
+          "actor_origin": {"type": "null"},
+          "actor_subject": {"type": "null"},
+          "input_completeness": {"type": "null"},
+          "metadata_run_state": {"type": "null"},
+          "metadata_dependency_resolution": {"type": "null"},
+          "step_count": {"type": "null"},
+          "dependency_edge_count": {"type": "null"},
+          "topological_order": {"maxItems": 0},
+          "topological_layers": {"maxItems": 0},
+          "cycle_components": {"maxItems": 0},
+          "cycle_witness": {"maxItems": 0},
+          "blocked_step_ids": {"maxItems": 0}
+        }
+      }
+    }
+  ]
+}

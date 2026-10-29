@@ -1,0 +1,20 @@
+{
+  "_ces_fixture": "SYNTHETIC_ONLY_NEVER_LIVE_OR_VERIFIED",
+  "id": 101,
+  "number": 8,
+  "state": "open",
+  "merged": false,
+  "draft": true,
+  "title": "SYNTHETIC: must not be emitted",
+  "body": "SYNTHETIC: must not be emitted",
+  "base": {
+    "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "ref": "test-base-not-identity",
+    "repo": {"id": 404, "full_name": "example/repo"}
+  },
+  "head": {
+    "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "ref": "test-head-not-identity",
+    "repo": {"id": 405, "full_name": "fork/repo"}
+  }
+}

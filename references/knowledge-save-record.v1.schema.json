@@ -1,0 +1,595 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ces.local/knowledge-save-record.v1.schema.json",
+  "title": "knowledge-save-record",
+  "description": "Immutable complete Markdown version with HMAC and independently signed approval ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "sequence",
+    "version_id",
+    "body",
+    "local_mac_sha256"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "ces.knowledge_version_record.v1"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 64
+    },
+    "version_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "body": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "store_scope_binding_sha256",
+        "snapshot_version",
+        "snapshot_manifest_sha256",
+        "snapshot_chapter_sha256",
+        "chapter_path",
+        "save_key",
+        "request_binding_sha256",
+        "authorization_scope_sha256",
+        "parent_version_id",
+        "previous_content_sha256",
+        "content_sha256",
+        "content_base64",
+        "section_index",
+        "before_section_sha256",
+        "after_section_sha256",
+        "section_ref",
+        "save_request",
+        "ec207_selection_binding_sha256",
+        "ec207_ai_input_sha256",
+        "candidate_keys",
+        "candidate_record_ids",
+        "review_summary",
+        "approvals",
+        "permission_receipt_sha256",
+        "saved_at_utc"
+      ],
+      "properties": {
+        "store_scope_binding_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "snapshot_version": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+        },
+        "snapshot_manifest_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "snapshot_chapter_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "chapter_path": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 256,
+          "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.?/)[A-Za-z0-9_][A-Za-z0-9._/-]*\\.(?:md|markdown)$"
+        },
+        "save_key": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]{2,63}$"
+        },
+        "request_binding_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "authorization_scope_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "parent_version_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "previous_content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "content_base64": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9+/]+={0,2}$",
+          "minLength": 4,
+          "maxLength": 21848
+        },
+        "section_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 63
+        },
+        "before_section_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "after_section_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "section_ref": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^cesksection1:[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ec207_selection_binding_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "ec207_ai_input_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "candidate_keys": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9._-]{2,63}$"
+          },
+          "uniqueItems": true
+        },
+        "candidate_record_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "review_summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "approvals": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "$id": "https://schemas.ces.local/knowledge-save-approvals.v1.schema.json",
+          "title": "knowledge-save-approvals",
+          "description": "Exactly two independent Ed25519 signatures; distinct keys and public bytes validated in code",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "statements"
+          ],
+          "properties": {
+            "schema": {
+              "type": "string",
+              "const": "ces.knowledge_save_approvals.v1"
+            },
+            "statements": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "prefixItems": [
+                {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "statement",
+                        "signature_base64"
+                      ],
+                      "properties": {
+                        "statement": {
+                          "$schema": "https://json-schema.org/draft/2020-12/schema",
+                          "$id": "https://schemas.ces.local/knowledge-save-approval-statement.v1.schema.json",
+                          "title": "knowledge-save-approval-statement",
+                          "description": "Exact scope Ed25519 reviewer or owner statement: sign domain bytes plus canonical JSON",
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "schema",
+                            "purpose",
+                            "signer_key_id",
+                            "role",
+                            "authorization_scope_sha256",
+                            "review_state",
+                            "issued_at_utc",
+                            "expires_at_utc"
+                          ],
+                          "properties": {
+                            "schema": {
+                              "type": "string",
+                              "const": "ces.knowledge_save_approval_statement.v1"
+                            },
+                            "purpose": {
+                              "type": "string",
+                              "const": "approve_exact_local_ces_knowledge_metadata_version"
+                            },
+                            "signer_key_id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+                            },
+                            "role": {
+                              "enum": [
+                                "independent_reviewer",
+                                "knowledge_owner"
+                              ]
+                            },
+                            "authorization_scope_sha256": {
+                              "type": "string",
+                              "pattern": "^[0-9a-f]{64}$"
+                            },
+                            "review_state": {
+                              "type": "string",
+                              "const": "REVIEWED_APPROVED_FOR_THIS_VERSION_ONLY"
+                            },
+                            "issued_at_utc": {
+                              "type": "string",
+                              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+                            },
+                            "expires_at_utc": {
+                              "type": "string",
+                              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+                            }
+                          }
+                        },
+                        "signature_base64": {
+                          "type": "string",
+                          "minLength": 88,
+                          "maxLength": 88
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "statement": {
+                          "properties": {
+                            "role": {
+                              "type": "string",
+                              "const": "independent_reviewer"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "statement",
+                        "signature_base64"
+                      ],
+                      "properties": {
+                        "statement": {
+                          "$schema": "https://json-schema.org/draft/2020-12/schema",
+                          "$id": "https://schemas.ces.local/knowledge-save-approval-statement.v1.schema.json",
+                          "title": "knowledge-save-approval-statement",
+                          "description": "Exact scope Ed25519 reviewer or owner statement: sign domain bytes plus canonical JSON",
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "schema",
+                            "purpose",
+                            "signer_key_id",
+                            "role",
+                            "authorization_scope_sha256",
+                            "review_state",
+                            "issued_at_utc",
+                            "expires_at_utc"
+                          ],
+                          "properties": {
+                            "schema": {
+                              "type": "string",
+                              "const": "ces.knowledge_save_approval_statement.v1"
+                            },
+                            "purpose": {
+                              "type": "string",
+                              "const": "approve_exact_local_ces_knowledge_metadata_version"
+                            },
+                            "signer_key_id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+                            },
+                            "role": {
+                              "enum": [
+                                "independent_reviewer",
+                                "knowledge_owner"
+                              ]
+                            },
+                            "authorization_scope_sha256": {
+                              "type": "string",
+                              "pattern": "^[0-9a-f]{64}$"
+                            },
+                            "review_state": {
+                              "type": "string",
+                              "const": "REVIEWED_APPROVED_FOR_THIS_VERSION_ONLY"
+                            },
+                            "issued_at_utc": {
+                              "type": "string",
+                              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+                            },
+                            "expires_at_utc": {
+                              "type": "string",
+                              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+                            }
+                          }
+                        },
+                        "signature_base64": {
+                          "type": "string",
+                          "minLength": 88,
+                          "maxLength": 88
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "statement": {
+                          "properties": {
+                            "role": {
+                              "type": "string",
+                              "const": "knowledge_owner"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "items": false
+            }
+          }
+        },
+        "permission_receipt_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "saved_at_utc": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "save_request": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "$id": "https://schemas.ces.local/knowledge-save-request.v1.schema.json",
+          "title": "knowledge-save-request",
+          "description": "EC208 one-section byte-exact human reviewed draft pinned to EC207 and current metadata parent",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "operation",
+            "save_key",
+            "repository_ref",
+            "knowledge_space_key",
+            "period_id",
+            "source_policy_revision",
+            "chapter_path",
+            "expected_snapshot_version",
+            "expected_manifest_sha256",
+            "expected_baseline_chapter_sha256",
+            "expected_parent_version_id",
+            "expected_parent_content_sha256",
+            "section_index",
+            "expected_section_sha256",
+            "section_ref",
+            "ec202_knowledge_source_binding_sha256",
+            "save_permission_receipt_sha256",
+            "replacement_section_base64",
+            "replacement_section_sha256",
+            "expected_new_chapter_sha256",
+            "selection_binding_sha256",
+            "ai_input_sha256",
+            "candidate_keys",
+            "candidate_record_ids",
+            "review_summary"
+          ],
+          "properties": {
+            "schema": {
+              "type": "string",
+              "const": "ces.knowledge_save_request.v1"
+            },
+            "operation": {
+              "type": "string",
+              "const": "knowledge.save.metadata_version"
+            },
+            "save_key": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9._-]{2,63}$"
+            },
+            "repository_ref": {
+              "type": "string",
+              "pattern": "^cesrepo1:[0-9a-f]{64}$"
+            },
+            "knowledge_space_key": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+            },
+            "period_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+            },
+            "source_policy_revision": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+            },
+            "chapter_path": {
+              "type": "string",
+              "minLength": 4,
+              "maxLength": 256,
+              "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.?/)[A-Za-z0-9_][A-Za-z0-9._/-]*\\.(?:md|markdown)$"
+            },
+            "expected_snapshot_version": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+            },
+            "expected_manifest_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "expected_baseline_chapter_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "expected_parent_version_id": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "expected_parent_content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "section_index": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 63
+            },
+            "expected_section_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "section_ref": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^cesksection1:[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "ec202_knowledge_source_binding_sha256": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "save_permission_receipt_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "replacement_section_base64": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9+/]+={0,2}$",
+              "minLength": 4,
+              "maxLength": 21848
+            },
+            "replacement_section_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "expected_new_chapter_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "selection_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "ai_input_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "candidate_keys": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 8,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9._-]{2,63}$"
+              }
+            },
+            "candidate_record_ids": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 8,
+              "items": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "review_summary": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "section_ref": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "section_ref"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "ec202_knowledge_source_binding_sha256": {
+                    "type": "null"
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "ec202_knowledge_source_binding_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "local_mac_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

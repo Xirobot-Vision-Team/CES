@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ces.local/knowledge-lifecycle-version-evidence.v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "versions"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_lifecycle_version_evidence.v1"
+    },
+    "versions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "version_id",
+          "handoff_request_json",
+          "handoff_policy_json",
+          "candidate_read_policies_json"
+        ],
+        "properties": {
+          "version_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "handoff_request_json": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 16384
+          },
+          "handoff_policy_json": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 32768
+          },
+          "candidate_read_policies_json": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 131072
+          }
+        }
+      }
+    }
+  }
+}

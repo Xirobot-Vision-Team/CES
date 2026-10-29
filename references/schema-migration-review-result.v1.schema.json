@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ces:schema-migration-review-result:v1",
+  "title": "EC242 pinned offline schema read/deny/migration plan; never business proof",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "version", "build", "mode", "domain", "status", "reason_code",
+    "exit_code", "disposition", "source_contract", "source_schema_marker",
+    "observed_content_sha256", "structural_validation", "schema_pin_checked",
+    "source_authority_verified", "business_authorization_verified",
+    "identity_or_record_authentication_verified", "original_bytes_rewritten",
+    "migration_executed", "external_network_used", "data", "limitations"
+  ],
+  "properties": {
+    "schema": {"const": "ces.schema_migration_review.v1"},
+    "version": {"const": "V5.52"},
+    "build": {"const": "R242"},
+    "mode": {"type": "string", "minLength": 1, "maxLength": 32},
+    "domain": {"anyOf": [{"type": "null"}, {"enum": [
+      "CodeInsight", "Finding", "Quality", "Report", "Knowledge", "Issue",
+      "Delivery", "Cycle", "Infrastructure"]}]},
+    "status": {"enum": ["inventory_only", "review_required", "audited", "readable", "rejected", "unavailable"]},
+    "reason_code": {"type": "string", "pattern": "^[A-Z0-9_]{3,128}$"},
+    "exit_code": {"enum": [0, 2, 3, 4, 5]},
+    "disposition": {"type": "string", "pattern": "^[A-Z0-9_]{3,128}$"},
+    "source_contract": {"type": ["string", "null"], "maxLength": 128},
+    "source_schema_marker": {"type": ["string", "null"], "maxLength": 128},
+    "observed_content_sha256": {"anyOf": [{"type": "null"}, {"type": "string", "pattern": "^[0-9a-f]{64}$"}]},
+    "structural_validation": {"type": "boolean"},
+    "schema_pin_checked": {"type": "boolean"},
+    "source_authority_verified": {"const": false},
+    "business_authorization_verified": {"const": false},
+    "identity_or_record_authentication_verified": {"const": false},
+    "original_bytes_rewritten": {"const": false},
+    "migration_executed": {"const": false},
+    "external_network_used": {"const": false},
+    "data": {"type": ["object", "null"], "maxProperties": 30},
+    "limitations": {"type": "string", "minLength": 10, "maxLength": 250}
+  }
+}

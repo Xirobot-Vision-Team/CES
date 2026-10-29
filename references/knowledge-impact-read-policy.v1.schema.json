@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/knowledge-impact-read-policy.v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_impact_read_policy.v1"
+    },
+    "purpose": {
+      "const": "knowledge_impact_read_only"
+    },
+    "repository_ref": {
+      "type": "string",
+      "pattern": "^cesrepo1:[0-9a-f]{64}$"
+    },
+    "knowledge_space_key": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "period_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "source_policy_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "request_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "scope_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "repository_root_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "knowledge_root_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "git_root_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "target_config_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "issuer_registry_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "baseline_issuer_registry_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "bootstrap_read_policy_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "target_read_policy_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "target_statement_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "read_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permit_impact_read": {
+      "type": "boolean"
+    },
+    "permit_baseline_signature_verification": {
+      "type": "boolean"
+    },
+    "permit_baseline_git_read": {
+      "type": "boolean"
+    },
+    "permit_selected_path_compare": {
+      "type": "boolean"
+    },
+    "permit_change_digest_projection": {
+      "type": "boolean"
+    },
+    "permit_repository_write": {
+      "const": false
+    },
+    "permit_knowledge_write": {
+      "const": false
+    },
+    "permit_business_source_write": {
+      "const": false
+    },
+    "permit_issue_write": {
+      "const": false
+    },
+    "permit_publish": {
+      "const": false
+    },
+    "source_grants": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "source_key": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+          },
+          "source_binding_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "permit_baseline_path_compare": {
+            "type": "boolean"
+          },
+          "read_receipt_sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "source_key",
+          "source_binding_sha256",
+          "permit_baseline_path_compare",
+          "read_receipt_sha256"
+        ]
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "purpose",
+    "repository_ref",
+    "knowledge_space_key",
+    "period_id",
+    "source_policy_revision",
+    "request_binding_sha256",
+    "scope_binding_sha256",
+    "repository_root_binding_sha256",
+    "knowledge_root_binding_sha256",
+    "git_root_binding_sha256",
+    "target_config_binding_sha256",
+    "issuer_registry_binding_sha256",
+    "baseline_issuer_registry_binding_sha256",
+    "bootstrap_read_policy_binding_sha256",
+    "target_read_policy_binding_sha256",
+    "target_statement_binding_sha256",
+    "read_receipt_sha256",
+    "permit_impact_read",
+    "permit_baseline_signature_verification",
+    "permit_baseline_git_read",
+    "permit_selected_path_compare",
+    "permit_change_digest_projection",
+    "permit_repository_write",
+    "permit_knowledge_write",
+    "permit_business_source_write",
+    "permit_issue_write",
+    "permit_publish",
+    "source_grants"
+  ]
+}

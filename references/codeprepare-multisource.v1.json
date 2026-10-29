@@ -1,0 +1,127 @@
+{
+  "schema": "ces.code_prepare_multisource.v1",
+  "introduced": "EC-170 / V4.80 / R170",
+  "implementation": "construction/codeprepare_multisource.py",
+  "context_schema": "ces.ai_code_context.v1",
+  "authority": "STANDALONE_READ_ONLY_SOURCE_EXPLICIT_CONTEXT_BUILDER_NOT_NATIVE_CLI_ACTION",
+  "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+  "source_modes": {
+    "WorkingTree": {
+      "required_input": "successful native CodePrepare:Snapshot ces.cli.v1 result",
+      "native_source_mode": "working_tree_diff",
+      "currentness": "native Reconcile completed when the supplied packet was prepared; not re-proven at EC170 consume time"
+    },
+    "DeliveredTarget": {
+      "required_input": "successful native CodePrepare:Snapshot ces.cli.v1 result",
+      "native_source_mode": "delivered_target_diff",
+      "currentness": "native Reconcile completed when the supplied packet was prepared; remote delivery remains unproven"
+    },
+    "ProposedPR": {
+      "required_input": "internally consistent ces.proposed_pr_snapshot.v1 (EC165)",
+      "optional_input": "matching ces.proposed_pr_reconcile.v1 (EC166)",
+      "currentness": "historical bounded non-atomic observation; EC166 FRESH rechecks metadata only, STALE blocks raw EC165 content"
+    }
+  },
+  "selection": {
+    "explicit_source_mode_required": true,
+    "source_mode_inference": false,
+    "multiple_source_inputs_in_one_context": false,
+    "proposal_candidate_and_delivered_target_fact_mixing": false
+  },
+  "content_permission": {
+    "default": "NO_RAW_SOURCE_CONTENT",
+    "grant_argument": "--allow-content-for <WorkingTree|DeliveredTarget|ProposedPR>",
+    "must_exactly_match_selected_source": true,
+    "inherited_from_native_snapshot": false,
+    "inherited_from_ec164_or_ec165": false,
+    "inherited_from_ec169_receipt": false,
+    "maximum_content_bytes_default": 524288,
+    "maximum_content_bytes_hard": 2097152,
+    "maximum_paths_default": 512,
+    "maximum_paths_hard": 4096,
+    "budget_behavior": "withhold all raw content rather than silently truncate code"
+  },
+  "local_snapshot_compatibility": {
+    "native_route_replaced": false,
+    "native_codeprepare_snapshot_preserved": true,
+    "accepted_success_reasons": [
+      "CODE_PREPARE_READY",
+      "CODE_PREPARE_EMPTY"
+    ],
+    "requires_stable_root": true,
+    "requires_native_reconcile_boundary": true,
+    "requires_remote_proof_flags_false": true,
+    "local_raw_root_disclosed_to_context": false,
+    "derived_local_scope_key_is_global_repository_identity": false
+  },
+  "proposed_pr_boundary": {
+    "ec165_offline_internal_consistency_required": true,
+    "provider_authenticity_established": false,
+    "provider_atomic_diff_established": false,
+    "ec166_fresh_upgrades_old_pages_or_patches_to_current": false,
+    "ec166_stale_allows_ec165_raw_content": false,
+    "complete_path_coverage_required_for_content_release": true,
+    "safe_relative_paths_required": true
+  },
+  "ec169_historical_receipt": {
+    "optional": true,
+    "accepted_source_schema": "ces.proposed_pr_reconcile.v1",
+    "ec167_or_ec168_delivery_association_receipts_accepted": false,
+    "integrity_reverified_without_store_key": false,
+    "bound_to_context_identity": false,
+    "grants_content_permission": false,
+    "proves_current_source": false,
+    "proves_delivery": false
+  },
+  "writes": {
+    "business_repository": false,
+    "git_refs_index_worktree": false,
+    "provider": false,
+    "ces_store": false,
+    "ec169_store": false,
+    "stdout_json_only": true
+  },
+  "always_false": [
+    "provider_actor_verified",
+    "remote_delivery_proven",
+    "deployment_proven",
+    "write_authorized",
+    "writes_performed",
+    "native_cli_multisource_registered"
+  ],
+  "native_routes": {
+    "CodePrepare:Snapshot": "EXISTING_NATIVE_ROUTE_PRESERVED",
+    "CodePrepare:MultiSource": "NOT_REGISTERED_NATIVE_POWERSHELL_ROUTE",
+    "Collect:ProposedPR": "NOT_IMPLEMENTED_NATIVE",
+    "Reconcile:Remote/DeliveryAssociation": "NOT_IMPLEMENTED_NATIVE"
+  },
+  "response": {
+    "schema": "ces.code_prepare_multisource.v1",
+    "status": [
+      "success",
+      "partial",
+      "invalid_input",
+      "unavailable"
+    ],
+    "exit_code": {
+      "success": 0,
+      "partial": 2,
+      "invalid_input": 4,
+      "unavailable": 5
+    },
+    "context_schema": "ces.ai_code_context.v1",
+    "context_hash": "SHA256 domain-separated canonical JSON of returned context"
+  },
+  "development_validation": {
+    "ec170_focused_offline_cases": 31,
+    "ec165_inherited_cases_rerun": 33,
+    "ec166_inherited_cases_rerun": 25,
+    "combined_rerun": "89_PASSED",
+    "native_powershell7": "NOT_RUN",
+    "original_15_smoke": "NOT_RUN",
+    "live_github_gitlab": "NOT_RUN",
+    "cross_os": "NOT_RUN",
+    "performance_E63_E66": "NOT_RUN",
+    "final_user_assisted_acceptance": "NOT_STARTED"
+  }
+}

@@ -1,0 +1,677 @@
+{
+  "$id": "https://ces.local/schemas/knowledge-bootstrap-result.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "canonical_json": {
+      "anyOf": [
+        {
+          "maxLength": 2000000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ],
+      "type": "integer"
+    },
+    "limitations": {
+      "additionalProperties": false,
+      "properties": {
+        "any_business_git_issue_provider_or_file_write_performed": {
+          "const": false
+        },
+        "candidate_promoted_to_current": {
+          "const": false
+        },
+        "current_architecture_verified": {
+          "const": false
+        },
+        "delivered_source_authenticated": {
+          "const": false
+        },
+        "knowledge_impact_save_or_publication_performed": {
+          "const": false
+        },
+        "knowledge_manifest_semantics_authenticated": {
+          "const": false
+        },
+        "native_powershell_knowledge_bootstrap_registered": {
+          "const": false
+        },
+        "repository_root_organizational_identity_authenticated": {
+          "const": false
+        },
+        "source_or_permission_receipts_cryptographically_authenticated": {
+          "const": false
+        },
+        "target_git_oid_or_branch_authenticated": {
+          "const": false
+        }
+      },
+      "required": [
+        "target_git_oid_or_branch_authenticated",
+        "delivered_source_authenticated",
+        "repository_root_organizational_identity_authenticated",
+        "source_or_permission_receipts_cryptographically_authenticated",
+        "knowledge_manifest_semantics_authenticated",
+        "current_architecture_verified",
+        "candidate_promoted_to_current",
+        "knowledge_impact_save_or_publication_performed",
+        "any_business_git_issue_provider_or_file_write_performed",
+        "native_powershell_knowledge_bootstrap_registered"
+      ],
+      "type": "object"
+    },
+    "reason_code": {
+      "pattern": "^KNOWLEDGE_BOOTSTRAP_[A-Z][A-Z0-9_]*$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "ces.knowledge_bootstrap.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ],
+      "type": "string"
+    },
+    "subject": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "knowledge_root_binding_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "repository_root_binding_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "request_binding_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "scope_binding_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "source_bindings": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "source_binding_sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "type": "string"
+                  },
+                  "source_key": {
+                    "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "source_key",
+                  "source_binding_sha256"
+                ],
+                "type": "object"
+              },
+              "maxItems": 32,
+              "type": "array"
+            }
+          },
+          "required": [
+            "request_binding_sha256",
+            "scope_binding_sha256",
+            "repository_root_binding_sha256",
+            "knowledge_root_binding_sha256",
+            "source_bindings"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "coverage_gaps": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "gap_code": {
+                    "pattern": "^[A-Z][A-Z0-9_]*$",
+                    "type": "string"
+                  },
+                  "source_key": {
+                    "anyOf": [
+                      {
+                        "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "source_key",
+                  "gap_code"
+                ],
+                "type": "object"
+              },
+              "maxItems": 40,
+              "type": "array"
+            },
+            "current_architecture_state": {
+              "const": "UNKNOWN_NOT_AUTHENTICATED"
+            },
+            "knowledge_manifest": {
+              "additionalProperties": false,
+              "properties": {
+                "captured_at_utc": {
+                  "anyOf": [
+                    {
+                      "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$",
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "declared_coverage": {
+                  "enum": [
+                    "complete_declared",
+                    "partial_declared",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                "declared_entries": {
+                  "anyOf": [
+                    {
+                      "maximum": 32,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "empty_initialization_proposal": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "captured_at_utc": {
+                          "anyOf": [
+                            {
+                              "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$",
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "coverage": {
+                          "enum": [
+                            "complete_declared",
+                            "partial_declared",
+                            "unknown"
+                          ],
+                          "type": "string"
+                        },
+                        "entries": {
+                          "items": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "relative_path": {
+                                "maxLength": 256,
+                                "pattern": "^[A-Za-z0-9_][A-Za-z0-9._-]{0,63}(/[A-Za-z0-9_][A-Za-z0-9._-]{0,63})*$",
+                                "type": "string"
+                              },
+                              "sha256": {
+                                "pattern": "^[0-9a-f]{64}$",
+                                "type": "string"
+                              },
+                              "size_bytes": {
+                                "maximum": 16384,
+                                "minimum": 0,
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "relative_path",
+                              "sha256",
+                              "size_bytes"
+                            ],
+                            "type": "object"
+                          },
+                          "maxItems": 32,
+                          "type": "array"
+                        },
+                        "knowledge_space_key": {
+                          "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+                          "type": "string"
+                        },
+                        "repository_ref": {
+                          "pattern": "^cesrepo1:[0-9a-f]{64}$",
+                          "type": "string"
+                        },
+                        "schema": {
+                          "const": "ces.knowledge_snapshot_manifest.v1"
+                        },
+                        "snapshot_version": {
+                          "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+                          "type": "string"
+                        },
+                        "source_policy_revision": {
+                          "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "schema",
+                        "repository_ref",
+                        "knowledge_space_key",
+                        "source_policy_revision",
+                        "snapshot_version",
+                        "captured_at_utc",
+                        "coverage",
+                        "entries"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "manifest_sha256": {
+                  "anyOf": [
+                    {
+                      "pattern": "^[0-9a-f]{64}$",
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "period_relation": {
+                  "enum": [
+                    "UNKNOWN",
+                    "BEFORE_PERIOD",
+                    "WITHIN_DECLARED_PERIOD",
+                    "AFTER_PERIOD"
+                  ],
+                  "type": "string"
+                },
+                "snapshot_version": {
+                  "anyOf": [
+                    {
+                      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "state": {
+                  "pattern": "^[A-Z][A-Z0-9_]*$",
+                  "type": "string"
+                },
+                "unselected_entries": {
+                  "anyOf": [
+                    {
+                      "maximum": 32,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "state",
+                "manifest_sha256",
+                "snapshot_version",
+                "captured_at_utc",
+                "period_relation",
+                "declared_coverage",
+                "declared_entries",
+                "unselected_entries",
+                "empty_initialization_proposal"
+              ],
+              "type": "object"
+            },
+            "knowledge_space_key": {
+              "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+              "type": "string"
+            },
+            "model_revision": {
+              "const": "EC202_LOCAL_SOURCE_BOOTSTRAP_ONLY"
+            },
+            "next_unimplemented": {
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            },
+            "no_write_actions_performed": {
+              "const": true
+            },
+            "period_id": {
+              "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+              "type": "string"
+            },
+            "read_policy_binding_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "repository_ref": {
+              "pattern": "^cesrepo1:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "request_binding_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "root_bindings": {
+              "additionalProperties": false,
+              "properties": {
+                "ces_knowledge": {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "repository": {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "repository",
+                "ces_knowledge"
+              ],
+              "type": "object"
+            },
+            "scope_binding_sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "source_policy_revision": {
+              "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "content_base64": {
+                    "anyOf": [
+                      {
+                        "maxLength": 21848,
+                        "pattern": "^[A-Za-z0-9+/]*={0,2}$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "coverage": {
+                    "enum": [
+                      "complete_declared",
+                      "partial_declared",
+                      "unknown"
+                    ],
+                    "type": "string"
+                  },
+                  "expected_sha256": {
+                    "anyOf": [
+                      {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "kind": {
+                    "enum": [
+                      "repository",
+                      "ces_knowledge"
+                    ],
+                    "type": "string"
+                  },
+                  "manifest_entry_match": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "observed_sha256": {
+                    "anyOf": [
+                      {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "relative_path": {
+                    "maxLength": 256,
+                    "pattern": "^[A-Za-z0-9_][A-Za-z0-9._-]{0,63}(/[A-Za-z0-9_][A-Za-z0-9._-]{0,63})*$",
+                    "type": "string"
+                  },
+                  "size_bytes": {
+                    "anyOf": [
+                      {
+                        "maximum": 16384,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "source_binding_sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "type": "string"
+                  },
+                  "source_classification": {
+                    "enum": [
+                      "LOCAL_REPOSITORY_BYTES_NOT_DELIVERED_PROOF",
+                      "CES_SNAPSHOT_BYTES_NOT_CURRENT_PROOF"
+                    ],
+                    "type": "string"
+                  },
+                  "source_key": {
+                    "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+                    "type": "string"
+                  },
+                  "source_ref": {
+                    "anyOf": [
+                      {
+                        "pattern": "^ceskbootstrap1:[0-9a-f]{64}$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "state": {
+                    "pattern": "^[A-Z][A-Z0-9_]*$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "source_key",
+                  "source_binding_sha256",
+                  "kind",
+                  "relative_path",
+                  "source_classification",
+                  "state",
+                  "coverage",
+                  "expected_sha256",
+                  "observed_sha256",
+                  "size_bytes",
+                  "source_ref",
+                  "content_base64",
+                  "manifest_entry_match"
+                ],
+                "type": "object"
+              },
+              "maxItems": 32,
+              "type": "array"
+            },
+            "summary": {
+              "additionalProperties": false,
+              "properties": {
+                "authenticated_delivered_facts": {
+                  "const": 0
+                },
+                "declared_manifest_entries": {
+                  "anyOf": [
+                    {
+                      "maximum": 32,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "knowledge_sources_read": {
+                  "maximum": 32,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "repository_sources_read": {
+                  "maximum": 32,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "requested_sources": {
+                  "maximum": 32,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "selected_source_bytes_read": {
+                  "maximum": 262144,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "sources_with_gaps": {
+                  "maximum": 32,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "requested_sources",
+                "repository_sources_read",
+                "knowledge_sources_read",
+                "sources_with_gaps",
+                "selected_source_bytes_read",
+                "declared_manifest_entries",
+                "authenticated_delivered_facts"
+              ],
+              "type": "object"
+            },
+            "target_revision": {
+              "anyOf": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "algorithm": {
+                      "enum": [
+                        "sha1",
+                        "sha256"
+                      ],
+                      "type": "string"
+                    },
+                    "oid": {
+                      "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "algorithm",
+                    "oid"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "verified_delivered_facts": {
+              "const": []
+            }
+          },
+          "required": [
+            "model_revision",
+            "repository_ref",
+            "knowledge_space_key",
+            "period_id",
+            "source_policy_revision",
+            "request_binding_sha256",
+            "scope_binding_sha256",
+            "root_bindings",
+            "read_policy_binding_sha256",
+            "target_revision",
+            "knowledge_manifest",
+            "sources",
+            "coverage_gaps",
+            "summary",
+            "current_architecture_state",
+            "verified_delivered_facts",
+            "no_write_actions_performed",
+            "next_unimplemented"
+          ],
+          "type": "object"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "subject",
+    "canonical_json",
+    "limitations"
+  ],
+  "title": "knowledge-bootstrap-result.v1",
+  "type": "object"
+}

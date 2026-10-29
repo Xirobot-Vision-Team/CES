@@ -1,0 +1,520 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "read_state",
+    "coverage",
+    "synthetic",
+    "scope",
+    "candidate_count",
+    "observed_count",
+    "unknown_count",
+    "review_candidate_count",
+    "entries",
+    "provider_read_invocations",
+    "maximum_possible_provider_gets",
+    "potential_duplicate_confirmed",
+    "no_duplicate_confirmed",
+    "full_repository_inventory",
+    "snapshot_atomic",
+    "evidence_anchors_provider_authenticated",
+    "organizational_grant_authenticated",
+    "provider_account_ownership_authenticated",
+    "title_or_description_disclosed",
+    "raw_issue_content_persisted",
+    "external_ai_or_embedding_service_used",
+    "native_issue_action_registered",
+    "issue_created",
+    "issue_or_provider_written",
+    "business_repository_written",
+    "knowledge_source_written",
+    "external_cache_mutated"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.issue_match.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "unavailable",
+        "invalid_input"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^ISSUE_MATCH_[A-Z0-9_]+$"
+    },
+    "read_state": {
+      "enum": [
+        "UNKNOWN",
+        "SYNTHETIC_OBSERVED",
+        "PROVIDER_OBSERVED"
+      ]
+    },
+    "coverage": {
+      "enum": [
+        "UNKNOWN",
+        "COMPLETE_EXPLICIT_SELECTION_NONATOMIC",
+        "PARTIAL_EXPLICIT_SELECTION_UNKNOWN"
+      ]
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "scope": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/scope"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "candidate_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    },
+    "observed_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    },
+    "unknown_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    },
+    "review_candidate_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    },
+    "entries": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/unknown"
+          },
+          {
+            "$ref": "#/$defs/observed"
+          }
+        ]
+      }
+    },
+    "provider_read_invocations": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    },
+    "maximum_possible_provider_gets": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 24
+    },
+    "potential_duplicate_confirmed": {
+      "const": false
+    },
+    "no_duplicate_confirmed": {
+      "const": false
+    },
+    "full_repository_inventory": {
+      "const": false
+    },
+    "snapshot_atomic": {
+      "const": false
+    },
+    "evidence_anchors_provider_authenticated": {
+      "const": false
+    },
+    "organizational_grant_authenticated": {
+      "const": false
+    },
+    "provider_account_ownership_authenticated": {
+      "const": false
+    },
+    "title_or_description_disclosed": {
+      "const": false
+    },
+    "raw_issue_content_persisted": {
+      "const": false
+    },
+    "external_ai_or_embedding_service_used": {
+      "const": false
+    },
+    "native_issue_action_registered": {
+      "const": false
+    },
+    "issue_created": {
+      "const": false
+    },
+    "issue_or_provider_written": {
+      "const": false
+    },
+    "business_repository_written": {
+      "const": false
+    },
+    "knowledge_source_written": {
+      "const": false
+    },
+    "external_cache_mutated": {
+      "const": false
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schema/issue-match-result.v1.schema.json",
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identity_sha256",
+        "snapshot_sha256",
+        "provider_state",
+        "provider_updated_at_utc",
+        "observed_at_utc",
+        "origin"
+      ],
+      "properties": {
+        "identity_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "snapshot_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "provider_state": {
+          "enum": [
+            "OPEN",
+            "CLOSED"
+          ]
+        },
+        "provider_updated_at_utc": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+        },
+        "observed_at_utc": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+        },
+        "origin": {
+          "enum": [
+            "SYNTHETIC_INJECTED_TRANSPORT_OR_CLOCK",
+            "FIXED_PROVIDER_HTTPS_VIA_EC211"
+          ]
+        }
+      }
+    },
+    "unknown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "number",
+        "expected_provider_issue_id",
+        "state",
+        "reason_code",
+        "review_hint",
+        "anchor_matches",
+        "title_similarity_hint",
+        "provider_confidentiality",
+        "source",
+        "confirmed_duplicate"
+      ],
+      "properties": {
+        "number": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "expected_provider_issue_id": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,18}$"
+        },
+        "state": {
+          "const": "UNKNOWN"
+        },
+        "reason_code": {
+          "type": "string",
+          "pattern": "^ISSUE_MATCH_[A-Z0-9_]+$"
+        },
+        "review_hint": {
+          "const": "UNKNOWN"
+        },
+        "anchor_matches": {
+          "type": "null"
+        },
+        "title_similarity_hint": {
+          "const": "UNKNOWN"
+        },
+        "provider_confidentiality": {
+          "type": "null"
+        },
+        "source": {
+          "type": "null"
+        },
+        "confirmed_duplicate": {
+          "const": false
+        }
+      }
+    },
+    "observed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "number",
+        "expected_provider_issue_id",
+        "state",
+        "reason_code",
+        "review_hint",
+        "anchor_matches",
+        "title_similarity_hint",
+        "provider_confidentiality",
+        "source",
+        "confirmed_duplicate"
+      ],
+      "properties": {
+        "number": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "expected_provider_issue_id": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,18}$"
+        },
+        "state": {
+          "const": "OBSERVED_SELECTED_METADATA"
+        },
+        "reason_code": {
+          "const": "ISSUE_MATCH_REVIEW_HINT_ONLY"
+        },
+        "review_hint": {
+          "enum": [
+            "REVIEW_CANDIDATE",
+            "NO_POSITIVE_SIGNAL"
+          ]
+        },
+        "anchor_matches": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16
+        },
+        "title_similarity_hint": {
+          "enum": [
+            "NOT_REQUESTED",
+            "WITHHELD_BY_PRIVACY_POLICY",
+            "UNAVAILABLE",
+            "HIGH_LEXICAL_OVERLAP",
+            "SOME_LEXICAL_OVERLAP",
+            "LOW_LEXICAL_OVERLAP",
+            "INSUFFICIENT_LEXICAL_SIGNAL"
+          ]
+        },
+        "provider_confidentiality": {
+          "type": "string",
+          "enum": [
+            "STANDARD",
+            "NOT_REPORTED",
+            "CONFIDENTIAL"
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "confirmed_duplicate": {
+          "const": false
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "api_host",
+        "repository",
+        "expected_repository_id",
+        "candidate_pins",
+        "title_policy",
+        "title_privacies",
+        "max_observation_age_seconds"
+      ],
+      "properties": {
+        "provider": {
+          "enum": [
+            "github",
+            "gitlab"
+          ]
+        },
+        "api_host": {
+          "enum": [
+            "api.github.com",
+            "gitlab.com"
+          ]
+        },
+        "repository": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 240,
+          "pattern": "^[A-Za-z0-9_][A-Za-z0-9_.-]{0,99}(?:/[A-Za-z0-9_][A-Za-z0-9_.-]{0,99}){1,11}$"
+        },
+        "expected_repository_id": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,18}$"
+        },
+        "candidate_pins": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "$ref": "#/$defs/pinstring"
+          }
+        },
+        "title_policy": {
+          "enum": [
+            "DISABLED",
+            "AUTHORIZED"
+          ]
+        },
+        "title_privacies": {
+          "type": "array",
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "STANDARD",
+              "NOT_REPORTED",
+              "CONFIDENTIAL"
+            ]
+          }
+        },
+        "max_observation_age_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 120
+        }
+      }
+    },
+    "pinstring": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "number",
+        "expected_provider_issue_id"
+      ],
+      "properties": {
+        "number": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "expected_provider_issue_id": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,18}$"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "scope": {
+            "$ref": "#/$defs/scope"
+          },
+          "read_state": {
+            "enum": [
+              "SYNTHETIC_OBSERVED",
+              "PROVIDER_OBSERVED"
+            ]
+          },
+          "observed_count": {
+            "minimum": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          },
+          "read_state": {
+            "enum": [
+              "UNKNOWN"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          },
+          "scope": {
+            "type": "null"
+          },
+          "entries": {
+            "maxItems": 0
+          },
+          "read_state": {
+            "const": "UNKNOWN"
+          }
+        }
+      }
+    }
+  ]
+}

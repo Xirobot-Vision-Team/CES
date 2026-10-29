@@ -1,0 +1,6 @@
+# EC179 focused synthetic FindingShow scenarios
+
+- Run from CES root: `python construction/test_finding_show.py -q`; using only disposable local private POSIX fixture stores.
+- Actual functionality tested: independent store-read/query grants, exact all-field source scope, real EC178 full HMAC chain validation, refusal on tampering/poison/pin drift, strict typed AND filters and no path strings, v2 authenticated positive-anchor path digest lookup, v2 unpathable anchors and legacy v1 explicitly unindexed, exact Finding ID/review state/coverage, no raw text/digest detail gate, historical proposal and expired-record flags, stable signed pagination and token tampering/revocation/TTL/store-revision invalidation, legitimate v1 replay and mixed v1/v2 HMAC chain, Draft 2020-12 output schema.
+- Negative results are `partial/2` for no match (not objective proof of absence), `invalid_input/4` or `unavailable/5` on rejected requests; signed reviews represent key-holder declarations, not human/CI/test/semantic/Git truth.
+- Excluded from tests: actual reviewed code, authenticated human actor, real Git/current PR/Provider/CI, original PowerShell native CLI and 15 Smoke, production cross-OS/hostile same-UID/fsync power loss, scale E63..E66, final user-assisted acceptance.

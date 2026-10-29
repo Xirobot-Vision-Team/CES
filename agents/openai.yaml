@@ -1,0 +1,6 @@
+interface:
+  display_name: "CES"
+  short_description: "Repository daily analysis, period reports, Issues and docs"
+  default_prompt: "使用 $ces 执行仓库每日分析；也支持仓库周总结、仓库月总结和仓库年报告。"
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,1042 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schemas/cycle-budget-result.v1.schema.json",
+  "title": "CES EC234 bounded, non-executing Cycle Next local inspection result",
+  "description": "All steps are unperformed; per-object counters not authoritative execution or multi-process enforcement. Output bytes include the one trailing newline and all previous messages from this guard.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "run_id",
+    "status",
+    "reason_code",
+    "record_sha256",
+    "remaining_known",
+    "remaining_step_ids",
+    "unperformed_count",
+    "next_proposal",
+    "budget_limits",
+    "usage",
+    "rate_scope",
+    "enforcement_scope",
+    "trust",
+    "effects"
+  ],
+  "$defs": {
+    "nextResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "run_id",
+        "status",
+        "next_kind",
+        "reason_code",
+        "record_sha256",
+        "action_set_sha256",
+        "input_sha256",
+        "graph_sha256",
+        "proposal_sha256",
+        "metadata_run_state",
+        "ready_root_step_ids",
+        "unproven_step_ids",
+        "blocked_by_step_ids",
+        "next_step",
+        "trust",
+        "effects"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ces.cycle_next_result.v1"
+        },
+        "run_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/next_runId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "NEXT_PROPOSED_NO_EXECUTION",
+            "OPERATOR_HANDOFF_REQUIRED",
+            "BLOCKED_NO_NEXT",
+            "UNKNOWN_BLOCKED"
+          ]
+        },
+        "next_kind": {
+          "enum": [
+            "cli_action",
+            "ai_handoff",
+            "await_permission",
+            "none"
+          ]
+        },
+        "reason_code": {
+          "type": "string",
+          "pattern": "^CYCLE_[A-Z0-9_]{3,80}$"
+        },
+        "record_sha256": {
+          "$ref": "#/$defs/next_maybeSha"
+        },
+        "action_set_sha256": {
+          "$ref": "#/$defs/next_maybeSha"
+        },
+        "input_sha256": {
+          "$ref": "#/$defs/next_maybeSha"
+        },
+        "graph_sha256": {
+          "$ref": "#/$defs/next_maybeSha"
+        },
+        "proposal_sha256": {
+          "$ref": "#/$defs/next_maybeSha"
+        },
+        "metadata_run_state": {
+          "enum": [
+            "NOT_STARTED",
+            "PARTIAL",
+            "UNKNOWN",
+            null
+          ]
+        },
+        "ready_root_step_ids": {
+          "$ref": "#/$defs/next_steps"
+        },
+        "unproven_step_ids": {
+          "$ref": "#/$defs/next_steps"
+        },
+        "blocked_by_step_ids": {
+          "$ref": "#/$defs/next_steps"
+        },
+        "next_step": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/next_nextStep"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "trust": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "metadata_integrity",
+            "source_authenticated",
+            "actor_verified",
+            "handler_runtime_verified",
+            "permissions_granted",
+            "dependencies_satisfied_by_execution"
+          ],
+          "properties": {
+            "metadata_integrity": {
+              "const": "UNSIGNED_LOCAL_SELF_HASH_ONLY"
+            },
+            "source_authenticated": {
+              "const": false
+            },
+            "actor_verified": {
+              "const": false
+            },
+            "handler_runtime_verified": {
+              "const": false
+            },
+            "permissions_granted": {
+              "const": false
+            },
+            "dependencies_satisfied_by_execution": {
+              "const": false
+            }
+          }
+        },
+        "effects": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "steps_executed",
+            "handler_invoked",
+            "can_dispatch",
+            "can_resume",
+            "permission_pause_persisted",
+            "write_authorized",
+            "native_cycle_action_registered"
+          ],
+          "properties": {
+            "steps_executed": {
+              "const": false
+            },
+            "handler_invoked": {
+              "const": false
+            },
+            "can_dispatch": {
+              "const": false
+            },
+            "can_resume": {
+              "const": false
+            },
+            "permission_pause_persisted": {
+              "const": false
+            },
+            "write_authorized": {
+              "const": false
+            },
+            "native_cycle_action_registered": {
+              "const": false
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "NEXT_PROPOSED_NO_EXECUTION"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "next_kind": {
+                "const": "cli_action"
+              },
+              "reason_code": {
+                "const": "CYCLE_NEXT_READ_ONLY_HANDLER_PROPOSED"
+              },
+              "next_step": {
+                "$ref": "#/$defs/next_nextStep",
+                "properties": {
+                  "handler": {
+                    "properties": {
+                      "read_only": {
+                        "const": true
+                      }
+                    }
+                  }
+                }
+              },
+              "proposal_sha256": {
+                "$ref": "#/$defs/next_sha"
+              },
+              "metadata_run_state": {
+                "const": "NOT_STARTED"
+              },
+              "ready_root_step_ids": {
+                "minItems": 1
+              },
+              "unproven_step_ids": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "OPERATOR_HANDOFF_REQUIRED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "next_kind": {
+                "enum": [
+                  "ai_handoff",
+                  "await_permission"
+                ]
+              },
+              "reason_code": {
+                "enum": [
+                  "CYCLE_NEXT_AI_HANDOFF_ONLY",
+                  "CYCLE_NEXT_PERSIST_PERMISSION_REQUIRED"
+                ]
+              },
+              "next_step": {
+                "$ref": "#/$defs/next_nextStep"
+              },
+              "proposal_sha256": {
+                "$ref": "#/$defs/next_sha"
+              },
+              "metadata_run_state": {
+                "const": "NOT_STARTED"
+              },
+              "ready_root_step_ids": {
+                "minItems": 1
+              },
+              "unproven_step_ids": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "BLOCKED_NO_NEXT"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "next_kind": {
+                "const": "none"
+              },
+              "next_step": {
+                "type": "null"
+              },
+              "proposal_sha256": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "UNKNOWN_BLOCKED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "next_kind": {
+                "const": "none"
+              },
+              "next_step": {
+                "type": "null"
+              },
+              "record_sha256": {
+                "type": "null"
+              },
+              "action_set_sha256": {
+                "type": "null"
+              },
+              "input_sha256": {
+                "type": "null"
+              },
+              "graph_sha256": {
+                "type": "null"
+              },
+              "proposal_sha256": {
+                "type": "null"
+              },
+              "metadata_run_state": {
+                "type": "null"
+              },
+              "ready_root_step_ids": {
+                "maxItems": 0
+              },
+              "unproven_step_ids": {
+                "maxItems": 0
+              },
+              "blocked_by_step_ids": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "next_kind": {
+                "const": "cli_action"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "NEXT_PROPOSED_NO_EXECUTION"
+              },
+              "next_step": {
+                "$ref": "#/$defs/next_nextStep",
+                "properties": {
+                  "handler": {
+                    "properties": {
+                      "implementation": {
+                        "const": "NATIVE_R150_POWERSHELL_SOURCE_AUTHORED_UNVERIFIED"
+                      },
+                      "read_only": {
+                        "const": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "next_kind": {
+                "const": "ai_handoff"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "OPERATOR_HANDOFF_REQUIRED"
+              },
+              "reason_code": {
+                "const": "CYCLE_NEXT_AI_HANDOFF_ONLY"
+              },
+              "next_step": {
+                "$ref": "#/$defs/next_nextStep",
+                "properties": {
+                  "action": {
+                    "const": "AIHandoff"
+                  },
+                  "effective_mode": {
+                    "const": "CodeAnalysis"
+                  },
+                  "handler": {
+                    "properties": {
+                      "implementation": {
+                        "const": "EC174_PYTHON_SOURCE_BACKED_UNVERIFIED"
+                      },
+                      "route_id": {
+                        "const": "ces.route.code_analysis.v1"
+                      },
+                      "handler_symbol": {
+                        "const": "HandoffRouter.route"
+                      },
+                      "handler_file": {
+                        "const": "construction/ai_handoff_router.py"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "next_kind": {
+                "const": "await_permission"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "OPERATOR_HANDOFF_REQUIRED"
+              },
+              "reason_code": {
+                "const": "CYCLE_NEXT_PERSIST_PERMISSION_REQUIRED"
+              },
+              "next_step": {
+                "$ref": "#/$defs/next_nextStep",
+                "properties": {
+                  "action": {
+                    "const": "CodeSave"
+                  },
+                  "effective_mode": {
+                    "const": "Snapshot"
+                  },
+                  "handler": {
+                    "properties": {
+                      "implementation": {
+                        "const": "NATIVE_R150_POWERSHELL_SOURCE_AUTHORED_UNVERIFIED"
+                      },
+                      "route_id": {
+                        "const": "CodeSave:Snapshot"
+                      },
+                      "read_only": {
+                        "const": false
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "next_kind": {
+                "const": "none"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "BLOCKED_NO_NEXT",
+                  "UNKNOWN_BLOCKED"
+                ]
+              },
+              "next_step": {
+                "type": "null"
+              },
+              "proposal_sha256": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "next_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "next_maybeSha": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/next_sha"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "next_runId": {
+      "type": "string",
+      "pattern": "^run_v1_[0-9a-f]{48}$"
+    },
+    "next_stepId": {
+      "type": "string",
+      "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$"
+    },
+    "next_steps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/next_stepId"
+      },
+      "maxItems": 32,
+      "uniqueItems": true
+    },
+    "next_sourcePath": {
+      "type": "string",
+      "pattern": "^(scripts/[A-Za-z0-9_-]+\\.ps1|construction/[A-Za-z0-9_-]+\\.py)$"
+    },
+    "next_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "implementation",
+        "route_id",
+        "entrypoint",
+        "handler_file",
+        "handler_symbol",
+        "handler_sha256",
+        "entrypoint_sha256",
+        "runtime_verified",
+        "read_only",
+        "operator_parameters_required",
+        "operator_parameters_optional",
+        "ec152_primary_smoke"
+      ],
+      "properties": {
+        "implementation": {
+          "enum": [
+            "NATIVE_R150_POWERSHELL_SOURCE_AUTHORED_UNVERIFIED",
+            "EC174_PYTHON_SOURCE_BACKED_UNVERIFIED"
+          ]
+        },
+        "route_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "entrypoint": {
+          "$ref": "#/$defs/next_sourcePath"
+        },
+        "handler_file": {
+          "$ref": "#/$defs/next_sourcePath"
+        },
+        "handler_symbol": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+        },
+        "handler_sha256": {
+          "$ref": "#/$defs/next_sha"
+        },
+        "entrypoint_sha256": {
+          "$ref": "#/$defs/next_sha"
+        },
+        "runtime_verified": {
+          "const": false
+        },
+        "read_only": {
+          "type": "boolean"
+        },
+        "operator_parameters_required": {
+          "type": "array",
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 90
+          }
+        },
+        "operator_parameters_optional": {
+          "type": "array",
+          "maxItems": 24,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        "ec152_primary_smoke": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^tests/[A-Za-z0-9._-]+\\.Smoke\\.ps1$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "next_nextStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "step_id",
+        "action",
+        "declared_mode",
+        "effective_mode",
+        "depends_on",
+        "handler"
+      ],
+      "properties": {
+        "step_id": {
+          "$ref": "#/$defs/next_stepId"
+        },
+        "action": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Za-z0-9]{0,47}$"
+        },
+        "declared_mode": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 32
+        },
+        "effective_mode": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 32
+        },
+        "depends_on": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "handler": {
+          "$ref": "#/$defs/next_target"
+        }
+      }
+    }
+  },
+  "properties": {
+    "schema": {
+      "const": "ces.cycle_budget_result.v1"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^run_v1_[0-9a-f]{48}$"
+    },
+    "status": {
+      "enum": [
+        "NO_EXECUTION_PROPOSAL",
+        "AWAIT_OPERATOR_ONLY",
+        "NO_EXECUTION_BLOCKED",
+        "UNKNOWN_BLOCKED",
+        "STOPPED_BUDGET"
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^CYCLE_BUDGET_[A-Z0-9_]{3,80}$"
+    },
+    "record_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "remaining_known": {
+      "type": "boolean"
+    },
+    "remaining_step_ids": {
+      "type": "array",
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$"
+      }
+    },
+    "unperformed_count": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 32
+    },
+    "next_proposal": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/nextResult"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "budget_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_step_inspections",
+        "wall_ms",
+        "cpu_ms",
+        "input_bytes",
+        "evidence_bytes",
+        "output_bytes",
+        "material_bytes",
+        "rate_max_calls",
+        "rate_window_ms"
+      ],
+      "properties": {
+        "max_step_inspections": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "wall_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 86400000
+        },
+        "cpu_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 86400000
+        },
+        "input_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1048576
+        },
+        "evidence_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8388608
+        },
+        "output_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8388608
+        },
+        "material_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 17825792
+        },
+        "rate_max_calls": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "rate_window_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60000
+        }
+      }
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inspection_attempts",
+        "admitted_inspections",
+        "rate_window_calls",
+        "wall_ms",
+        "cpu_ms",
+        "input_bytes",
+        "evidence_bytes",
+        "output_bytes",
+        "material_bytes"
+      ],
+      "properties": {
+        "inspection_attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "admitted_inspections": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32
+        },
+        "rate_window_calls": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32
+        },
+        "wall_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "cpu_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "input_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1048576
+        },
+        "evidence_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8388608
+        },
+        "output_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8388608
+        },
+        "material_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 17825792
+        }
+      }
+    },
+    "rate_scope": {
+      "const": "SINGLE_CONTROLLER_PROCESS_ONLY"
+    },
+    "enforcement_scope": {
+      "const": "READ_ONLY_NEXT_INSPECTION_AND_OWN_SERIALIZED_BYTES_ONLY"
+    },
+    "trust": {
+      "type": "object",
+      "required": [
+        "actor_verified",
+        "input_authenticated",
+        "execution_verified",
+        "global_rate_enforced",
+        "external_hard_limits_armed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "actor_verified": {
+          "const": false
+        },
+        "input_authenticated": {
+          "const": false
+        },
+        "execution_verified": {
+          "const": false
+        },
+        "global_rate_enforced": {
+          "const": false
+        },
+        "external_hard_limits_armed": {
+          "const": false
+        }
+      }
+    },
+    "effects": {
+      "type": "object",
+      "required": [
+        "steps_executed",
+        "handler_invoked",
+        "permission_granted",
+        "write_authorized",
+        "can_resume",
+        "pause_persisted",
+        "native_cycle_registered"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "steps_executed": {
+          "const": false
+        },
+        "handler_invoked": {
+          "const": false
+        },
+        "permission_granted": {
+          "const": false
+        },
+        "write_authorized": {
+          "const": false
+        },
+        "can_resume": {
+          "const": false
+        },
+        "pause_persisted": {
+          "const": false
+        },
+        "native_cycle_registered": {
+          "const": false
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "remaining_known": {
+            "const": false
+          }
+        },
+        "required": [
+          "remaining_known"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "UNKNOWN_BLOCKED"
+          },
+          "remaining_step_ids": {
+            "maxItems": 0
+          },
+          "unperformed_count": {
+            "type": "null"
+          },
+          "next_proposal": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "remaining_known": {
+            "const": true
+          }
+        },
+        "required": [
+          "remaining_known"
+        ]
+      },
+      "then": {
+        "properties": {
+          "remaining_step_ids": {
+            "minItems": 1
+          },
+          "unperformed_count": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "NO_EXECUTION_PROPOSAL"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "remaining_known": {
+            "const": true
+          },
+          "next_proposal": {
+            "$ref": "#/$defs/nextResult",
+            "properties": {
+              "status": {
+                "const": "NEXT_PROPOSED_NO_EXECUTION"
+              },
+              "next_kind": {
+                "const": "cli_action"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "AWAIT_OPERATOR_ONLY"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "remaining_known": {
+            "const": true
+          },
+          "next_proposal": {
+            "$ref": "#/$defs/nextResult",
+            "properties": {
+              "status": {
+                "const": "OPERATOR_HANDOFF_REQUIRED"
+              },
+              "next_kind": {
+                "enum": [
+                  "ai_handoff",
+                  "await_permission"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "NO_EXECUTION_BLOCKED",
+              "STOPPED_BUDGET",
+              "UNKNOWN_BLOCKED"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "next_proposal": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

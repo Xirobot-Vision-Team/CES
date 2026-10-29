@@ -1,0 +1,14 @@
+{
+  "schema": "ces.public_source_release.v1",
+  "operator_version": "1.7.0",
+  "license": "Apache-2.0",
+  "prepared_at": "2026-10-29T02:38:45.674298+00:00",
+  "project_data_included": false,
+  "git_history_included": false,
+  "protected_legacy_bytes_preserved": true,
+  "omitted_paths": [
+    "docs/validation.json"
+  ],
+  "normalization": "LF for maintained files; protected scripts/construction/references unchanged",
+  "historical_validation": "deployment path-bearing JSON omitted; human-readable historical summary retained with its known failures"
+}

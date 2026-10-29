@@ -1,0 +1,89 @@
+{
+  "schema": "ces.proposed_pr_snapshot.v1",
+  "introduced": "EC-165 / V4.75 / R165",
+  "entry": "construction/proposed_pr_snapshot.py",
+  "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+  "native_collect_proposed_pr": "NOT_IMPLEMENTED",
+  "providers": ["github.com", "gitlab.com"],
+  "execution": "Opt-in, standalone Python read-only provider observer, default offline; no writes",
+  "preconditions": [
+    "Valid prior ces.proposed_pr_identity.v1 JSON pin from exact provider/repository/number",
+    "EC163 pre+post pin and count consistency",
+    "EC163 validated bounded file pages, safe status and filenames",
+    "EC164 three-way permission gate and exact selection when include_patch_content=true",
+    "EC163 COMPLETE page coverage before any patch output",
+    "At most five exact paths for optional local single-file version lookup"
+  ],
+  "receipt": {
+    "material_schema": "ces.proposed_pr_snapshot_material.v1",
+    "fingerprint_algorithm": "sha256(domain separator + canonical ASCII JSON material)",
+    "canonical_json": "json.dumps(sort_keys=True, separators=(',', ':'), ensure_ascii=True, allow_nan=False).encode('ascii')",
+    "domain_hex": "4345532d45433136352d524541444f4e4c592d4f42534552564154494f4e2d524543454950542d763100",
+    "fingerprint_not_a_signature": true,
+    "output_keys": [
+      "schema", "status", "exit_code", "reason_code", "message",
+      "observation_ref", "evidence_material", "patch_evidence",
+      "version_consistency", "synthetic", "native_cli_action_registered",
+      "diff_snapshot_proven", "provider_actor_verified",
+      "delivery_or_merge_proven", "write_authorized"
+    ],
+    "material_keys": [
+      "schema", "pin", "pin_fingerprint", "synthetic",
+      "observed_metadata_utc", "path_coverage", "ordered_files_digest",
+      "ordered_pages", "request_budgets", "patch_disclosure",
+      "selected_file_versions", "version_consistency"
+    ],
+    "page_record_keys": [
+      "page", "entries", "sanitized_paths_digest", "response_bytes_observed",
+      "next_page", "etag_kind", "etag_claim_digest",
+      "last_modified_claim_present", "raw_response_digest_disclosed"
+    ],
+    "body_sha_exposed": false,
+    "unselected_patch_sha_exposed": false,
+    "etag_value_exposed": false,
+    "local_git_path_exposed": false,
+    "meaning": "Bounded internally-recomputable read-observation reference; no provider signature, transaction proof or user authorization"
+  },
+  "recheck_pages": {
+    "default": false,
+    "requires_coverage": "COMPLETE",
+    "compares": [
+      "identical EC162 pin and EC163 coverage",
+      "ordered sanitized path metadata per page, counts and paging",
+      "ETag digest/strength, Last-Modified presence and response byte count",
+      "raw HTTP JSON body digest in memory if transport supplies it",
+      "explicitly selected EC164 approved patch text SHA and refusal classification"
+    ],
+    "failure": "unavailable/5; no initial page list, content or reference released",
+    "two_matching_reads_prove_atomicity": false,
+    "max_page_requests_when_enabled": 60,
+    "max_body_bytes_across_two_passes": 25165824,
+    "max_metadata_requests_when_enabled": 4
+  },
+  "single_file_version": {
+    "github_claim": "Selected GH file sha is provider-declared blob OID, not proof that it belongs to pinned head",
+    "gitlab_blob_claim": "NOT_AVAILABLE_FROM_DIFFS_ENDPOINT",
+    "optional_local_git": "git ls-tree on exact pinned head SHA with literal path, ordinary blob files only, no fetch/checkout/refs",
+    "local_scope": "LOCAL_OBJECT_DATABASE_NOT_PROVIDER_ATTESTATION",
+    "blob_mismatch": "unavailable/5 and suppress all observations",
+    "deleted_file_head_blob": "NOT_APPLICABLE"
+  },
+  "coverage": {
+    "COMPLETE": "Only EC163 provider-reported changed-path enumeration; NOT an atomic snapshot",
+    "INCOMPLETE": "Limited prefix or capped provider, never infer no unlisted change",
+    "UNKNOWN": "No defensible exact provider count or pagination guarantee",
+    "missing_http_validator": "UNKNOWN provider version, no upgrade of coverage"
+  },
+  "always_false": [
+    "native_cli_action_registered", "diff_snapshot_proven",
+    "version_consistency.provider_atomic_snapshot", "provider_actor_verified",
+    "delivery_or_merge_proven", "write_authorized"
+  ],
+  "status_to_exit_code": {"partial": 2, "invalid_input": 4, "unavailable": 5},
+  "success_status_is_unreachable_without_external_atomic_version": true,
+  "offline_verify_status": "INTERNALLY_CONSISTENT_ONLY (not source authentication)",
+  "development_fixtures": "construction/test_proposed_pr_snapshot.py",
+  "online_provider_validation": "NOT_RUN",
+  "native_powershell_validation": "NOT_RUN",
+  "final_user_assisted_acceptance": "NOT_STARTED"
+}

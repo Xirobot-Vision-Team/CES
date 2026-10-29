@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ces.local/knowledge-save-manifest.v1.schema.json",
+  "title": "knowledge-save-manifest",
+  "description": "Owner-private single chapter store manifest, protected by root/registry/source pins and calculated scope digest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "store_id",
+    "instance_id",
+    "root_path",
+    "repository_ref",
+    "knowledge_space_key",
+    "period_id",
+    "source_policy_revision",
+    "repository_root_identity",
+    "knowledge_root_identity",
+    "metadata_root_identity",
+    "candidate_store_instance_id",
+    "candidate_store_scope_binding_sha256",
+    "chapter_path",
+    "baseline_snapshot_version",
+    "baseline_manifest_sha256",
+    "baseline_chapter_sha256",
+    "baseline_chapter_size",
+    "approver_registry_sha256",
+    "store_scope_binding_sha256",
+    "local_integrity_key_hex"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "ces.knowledge_version_manifest.v1"
+    },
+    "store_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]{2,47}$"
+    },
+    "instance_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "root_path": {
+      "type": "string",
+      "minLength": 2
+    },
+    "repository_ref": {
+      "type": "string",
+      "pattern": "^cesrepo1:[0-9a-f]{64}$"
+    },
+    "knowledge_space_key": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "period_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "source_policy_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "repository_root_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dev",
+        "ino"
+      ],
+      "properties": {
+        "dev": {
+          "type": "integer"
+        },
+        "ino": {
+          "type": "integer"
+        }
+      }
+    },
+    "knowledge_root_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dev",
+        "ino"
+      ],
+      "properties": {
+        "dev": {
+          "type": "integer"
+        },
+        "ino": {
+          "type": "integer"
+        }
+      }
+    },
+    "metadata_root_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dev",
+        "ino"
+      ],
+      "properties": {
+        "dev": {
+          "type": "integer"
+        },
+        "ino": {
+          "type": "integer"
+        }
+      }
+    },
+    "candidate_store_instance_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "candidate_store_scope_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "chapter_path": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 256,
+      "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.?/)[A-Za-z0-9_][A-Za-z0-9._/-]*\\.(?:md|markdown)$"
+    },
+    "baseline_snapshot_version": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "baseline_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "baseline_chapter_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "baseline_chapter_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 16384
+    },
+    "approver_registry_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "store_scope_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "local_integrity_key_hex": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

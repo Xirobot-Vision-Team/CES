@@ -1,0 +1,243 @@
+{
+  "schema_version": "ces.security_boundary.v1",
+  "ec": "EC-157",
+  "package": "V4.67/R157",
+  "runtime_cli_identity": "V4.60/R150 (embedded wire identity, reviewed EC-157 source deltas)",
+  "source_review": "SOURCE_BACKED_NOT_NATIVE_RUN",
+  "reviewed_files": [
+    "scripts/ces.ps1",
+    "scripts/collect.ps1",
+    "scripts/delivered.ps1",
+    "scripts/reconcile.ps1",
+    "scripts/codeprepare.ps1",
+    "scripts/codevalidate.ps1",
+    "scripts/codesave.ps1",
+    "scripts/codeshow.ps1"
+  ],
+  "permission_and_evidence_levels": [
+    {
+      "level": "OBSERVABLE",
+      "granted_by": "Inspect, Collect, Reconcile, CodeShow in existing read-only handlers",
+      "not_equivalent_to": "verified immutable snapshot, authority to write, fact of remote delivery"
+    },
+    {
+      "level": "PREPARED",
+      "granted_by": "CodePrepare successful packet anchored to current Reconcile observation",
+      "not_equivalent_to": "semantically verified finding, permission to persist"
+    },
+    {
+      "level": "REVIEWED",
+      "granted_by": "CodeValidate source-scoped literal matching and shape check",
+      "not_equivalent_to": "AI provenance verified, finding fact established, permission to persist"
+    },
+    {
+      "level": "AUTHORIZED_TO_ATTEMPT",
+      "granted_by": "Explicit -ApprovePersist:$true on CodeSave AND handler-level checked validation; main root and store gates must still succeed",
+      "not_equivalent_to": "a record was written or remote side effect approved"
+    },
+    {
+      "level": "CONFIRMED_LOCAL_PERSISTENCE",
+      "granted_by": "CodeSave successfully matches durable CES record bytes and returns persisted:true plus code_result_persisted:true",
+      "not_equivalent_to": "record newly created (already-present possible), business files modified, publication"
+    }
+  ],
+  "action_classes": [
+    {
+      "action": "Inspect",
+      "modes": [
+        "(none)"
+      ],
+      "boundary": "READ_ONLY_REPOSITORY_METADATA",
+      "authorization": "NONE_FOR_WRITE",
+      "handler": "scripts/ces.ps1::Inspect-Repository",
+      "writes_by_authored_handler": false
+    },
+    {
+      "action": "Collect",
+      "modes": [
+        "WorkingTree",
+        "DeliveredTarget"
+      ],
+      "boundary": "READ_ONLY_LOCAL_GIT_SOURCE; optional source excerpts require opt-in",
+      "authorization": "NONE_FOR_WRITE",
+      "handler": "scripts/collect.ps1::Collect-WorkingTree; scripts/delivered.ps1::Collect-DeliveredTarget",
+      "writes_by_authored_handler": false
+    },
+    {
+      "action": "Reconcile",
+      "modes": [
+        "Snapshot"
+      ],
+      "boundary": "READ_ONLY_USER_PROVIDED_OBSERVATION_PLUS_CURRENT_GIT",
+      "authorization": "NONE_FOR_WRITE",
+      "handler": "scripts/reconcile.ps1::Reconcile-Snapshot",
+      "writes_by_authored_handler": false
+    },
+    {
+      "action": "CodePrepare",
+      "modes": [
+        "Snapshot"
+      ],
+      "boundary": "READ_ONLY_EVIDENCE_VERIFICATION_AND_REVIEW_PACKET",
+      "authorization": "NONE_FOR_WRITE",
+      "handler": "scripts/codeprepare.ps1::CodePrepare-Snapshot",
+      "writes_by_authored_handler": false
+    },
+    {
+      "action": "CodeValidate",
+      "modes": [
+        "Snapshot"
+      ],
+      "boundary": "READ_ONLY_UNTRUSTED_DRAFT_LITERAL_EVIDENCE_CHECK",
+      "authorization": "NONE_FOR_WRITE",
+      "handler": "scripts/codevalidate.ps1::CodeValidate-Snapshot",
+      "writes_by_authored_handler": false
+    },
+    {
+      "action": "CodeSave",
+      "modes": [
+        "Snapshot"
+      ],
+      "boundary": "POTENTIAL_LOCAL_CES_METADATA_WRITE_ONLY",
+      "authorization": "CLI_AND_HANDLER_EXPLICIT_APPROVE_PERSIST",
+      "handler": "scripts/codesave.ps1::CodeSave-Snapshot",
+      "writes_by_authored_handler": true,
+      "only_target": "<verified main repo root>/.codex/ces/{owner.json,code-insights/ci-<sha256>.json}",
+      "never_authorized": "working-tree business code, Git index, HEAD, existing remote Issue, remote sending"
+    },
+    {
+      "action": "CodeShow",
+      "modes": [
+        "List",
+        "Detail",
+        "Findings",
+        "Compare",
+        "Trace",
+        "Overview",
+        "Triage",
+        "Recurrence",
+        "Sequence"
+      ],
+      "boundary": "READ_ONLY_LOCAL_CES_RECORDS",
+      "authorization": "NONE_FOR_WRITE",
+      "handler": "scripts/codeshow.ps1::CodeShow-Local",
+      "writes_by_authored_handler": false
+    }
+  ],
+  "inputs_and_barriers": [
+    {
+      "input": "PowerShell source/package modules",
+      "untrusted_aspect": "Running tampered package can execute arbitrary code",
+      "barrier": "Caller must trust authentic complete package; R150 hashes retained and reviewed EC157 deltas recorded; NO binary signature/remote attestation",
+      "source": "scripts/ces.ps1"
+    },
+    {
+      "input": "Action/Mode/ApprovePersist CLI parameters",
+      "untrusted_aspect": "Unknown future routes or forged permission flags",
+      "barrier": "7 registered families/16 routes; other actions NOT_IMPLEMENTED; CodeSave CLI denial before Git lookup and secondary handler denial; other Actions reject irrelevant approval",
+      "source": "scripts/ces.ps1:1416-1445; scripts/codesave.ps1::CodeSave-Snapshot"
+    },
+    {
+      "input": "RepoPath",
+      "untrusted_aspect": "user-controlled worktree selection, symlinked parent, linked worktrees",
+      "barrier": "explicit path; lexical Normalize-FullPath; multi-probe independent main-worktree root, additional store ancestor reparse checks",
+      "source": "scripts/ces.ps1::Inspect-Repository; scripts/codesave.ps1::Initialize-CodeSaveStore"
+    },
+    {
+      "input": "git binary and Git environment",
+      "untrusted_aspect": "PATH-selected executable or inherited configuration/redirects",
+      "barrier": "Application command resolution; ArgumentList; selected GIT_* routing cleared; EC157 clears all inherited GIT_CONFIG* env; git commands constrained to authored read-only arguments",
+      "source": "scripts/ces.ps1::Invoke-ReadOnlyGit,Git-In"
+    },
+    {
+      "input": "Git tracked path inventories",
+      "untrusted_aspect": "Git pathspec case vs host filesystem case; Git state changes during checks",
+      "barrier": "index+HEAD+pinned target collision checks; EC157 extends case-insensitive full scan to macOS; rechecks before record creation",
+      "source": "scripts/codesave.ps1::Assert-CodeSaveGitBoundary"
+    },
+    {
+      "input": "EvidencePath JSON",
+      "untrusted_aspect": "self-authored/untrusted saved Collect; symlink/racing input",
+      "barrier": "regular-file and bounded-byte checks; hash/shape and fresh Git reconciliation, no cryptographic source authentication",
+      "source": "scripts/reconcile.ps1::Read-ReconcileSnapshotFile,Reconcile-Snapshot"
+    },
+    {
+      "input": "InputPath JSON",
+      "untrusted_aspect": "model-authored draft may invent findings and prove neither identity nor semantics",
+      "barrier": "bounded JSON, duplicate-key rejection, controlled keys, anchored excerpt verification, subsequent draft hash recheck",
+      "source": "scripts/codevalidate.ps1::Read-CodeValidateDraft,CodeValidate-Snapshot"
+    },
+    {
+      "input": "CES local storage",
+      "untrusted_aspect": "pre-existing owner marker, reparse/junction, untracked/tracked path collision",
+      "barrier": "fixed leaf names and owner bytes, regular path checks, no-clobber temp move, EC157 early optional-child preflight, direct content/hash recheck",
+      "source": "scripts/codesave.ps1::Initialize-CodeSaveStore,Write-CodeSaveAtomicNewFile"
+    },
+    {
+      "input": "CodeShow record IDs",
+      "untrusted_aspect": "attacker-written local file named like an ID",
+      "barrier": "strict ci-hex ID; owner marker and record SHA; JSON schema validation; repeated byte read",
+      "source": "scripts/codeshow.ps1::Read-CodeShowRecord,Get-CodeShowStore"
+    },
+    {
+      "input": "Python contract/registry utilities",
+      "untrusted_aspect": "misreading JSON contract as execution or authorization",
+      "barrier": "offline diagnostics only; no native side effects or permission elevation",
+      "source": "construction/action_registry.py; construction/response_contract.py"
+    }
+  ],
+  "recorded_risks": [
+    {
+      "id": "S157-01",
+      "classification": "MITIGATED_IN_SOURCE_NOT_RUNTIME_VERIFIED",
+      "summary": "Without -ApprovePersist, CLI could consult PATH/git before handler-based denial; now CLI refuses immediately after envelope creation.",
+      "evidence": "scripts/ces.ps1::New-Envelope preflight and scripts/codesave.ps1::CodeSave-Snapshot"
+    },
+    {
+      "id": "S157-02",
+      "classification": "MITIGATED_IN_SOURCE_NOT_RUNTIME_VERIFIED",
+      "summary": "Inherited GIT_CONFIG_GLOBAL/SYSTEM or future GIT_CONFIG_* overrides were not scrubbed; now remove all inherited GIT_CONFIG* keys.",
+      "evidence": "scripts/ces.ps1::Invoke-ReadOnlyGit"
+    },
+    {
+      "id": "S157-03",
+      "classification": "MITIGATED_IN_SOURCE_NOT_RUNTIME_VERIFIED",
+      "summary": "Previously case-alias protected by full tracked-path inventory only on Windows; macOS may use case-insensitive volumes. EC157 adds macOS.",
+      "evidence": "scripts/codesave.ps1::Assert-CodeSaveGitBoundary"
+    },
+    {
+      "id": "S157-04",
+      "classification": "MITIGATED_IN_SOURCE_NOT_RUNTIME_VERIFIED",
+      "summary": "Store preflight used Test-Path for optional nodes and validated records after creating owner marker; now probes items with Get-Item and checks existing records node first.",
+      "evidence": "scripts/codesave.ps1::Initialize-CodeSaveStore"
+    },
+    {
+      "id": "S157-05",
+      "classification": "RESIDUAL_RISK",
+      "summary": "Time-of-check/time-of-use swaps across Git probes and filesystem paths cannot be excluded without OS handle-relative operations; Source, HEAD or index may mutate mid-operation.",
+      "follow_up": "Final native adversarial safe-fixture tests; avoid claiming atomic security."
+    },
+    {
+      "id": "S157-06",
+      "classification": "RESIDUAL_RISK",
+      "summary": "Git resolved by PATH, repository-local configuration is consumed, and uncommon case-folding Linux mounts not automatically detected; malicious local host may defeat guarantees.",
+      "follow_up": "Final trusted-host/Git binary and cross-filesystem acceptance."
+    },
+    {
+      "id": "S157-07",
+      "classification": "RESIDUAL_RISK",
+      "summary": "Raw source snippets and user-supplied JSON may contain sensitive information despite conservative filename filters; no general DLP guarantee.",
+      "follow_up": "Treat output/captured JSON as sensitive; examine data handling during final acceptance."
+    },
+    {
+      "id": "S157-08",
+      "classification": "PROVENANCE_GAP",
+      "summary": "V3.10 frozen spec and original ROUNDS.json remain missing, 15 PS Smoke, pwsh, Windows/Git, providers and final end-to-end are NOT_RUN.",
+      "follow_up": "Retain B-001/B-002/B-003 and finalize with user-assisted acceptance."
+    }
+  ],
+  "security_native_cases": "tests/CodeSecurity.EC157.ps1",
+  "native_cases_status": "NOT_RUN_NO_PWSH_IN_BUILDER",
+  "external_effect_status": "NOT_IMPLEMENTED; no remote Issue/PR/send/delivery action added",
+  "historical_baseline_rewritten": false
+}

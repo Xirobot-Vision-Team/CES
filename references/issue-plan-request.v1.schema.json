@@ -1,0 +1,290 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schema/issue-plan-request.v1.schema.json",
+  "description": "EC216 proposal intent: bound to original EC215/EC214 inputs and independent host-trusted review. Real Python API inputs (EC215 request/result, EC214 request/receipt, review keys) are additional and NEVER derived from this caller-owned JSON intent.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "target_provider",
+    "target_repository",
+    "expected_repository_id",
+    "target_visibility",
+    "expected_evaluation_sha256",
+    "expected_match_receipt_sha256",
+    "expected_eligibility_result_sha256",
+    "expected_review_receipt_sha256",
+    "finding_record_sha256",
+    "source_binding_sha256",
+    "evidence_anchor_set_sha256",
+    "policy_revision_sha256",
+    "source_mode",
+    "source_revision",
+    "topic",
+    "concern",
+    "selected_sources"
+  ],
+  "properties": {
+    "target_provider": {
+      "enum": [
+        "github",
+        "gitlab"
+      ]
+    },
+    "target_repository": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 240,
+      "pattern": "^[A-Za-z0-9_][A-Za-z0-9_.-]{0,99}(?:/[A-Za-z0-9_][A-Za-z0-9_.-]{0,99}){1,11}$"
+    },
+    "expected_repository_id": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775807
+    },
+    "target_visibility": {
+      "enum": [
+        "PUBLIC",
+        "PRIVATE"
+      ]
+    },
+    "expected_evaluation_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "expected_match_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "expected_eligibility_result_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "expected_review_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "finding_record_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evidence_anchor_set_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "policy_revision_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_mode": {
+      "enum": [
+        "DeliveredTarget",
+        "WorkingTree",
+        "ProposedPR"
+      ]
+    },
+    "source_revision": {
+      "type": "string",
+      "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"
+    },
+    "topic": {
+      "enum": [
+        "CORRECTNESS",
+        "RELIABILITY",
+        "PERFORMANCE",
+        "ACCESS_CONTROL",
+        "TESTING",
+        "DOCUMENTATION"
+      ]
+    },
+    "concern": {
+      "enum": [
+        "AMBIGUOUS_BEHAVIOR",
+        "ASSERTION_GAP",
+        "BOUNDARY_CHECK",
+        "CONTRACT_DRIFT",
+        "COVERAGE_GAP",
+        "DATA_EXPOSURE",
+        "EDGE_CASE",
+        "ERROR_HANDLING",
+        "INCONSISTENT_STATE",
+        "INCORRECT_RESULT",
+        "LATENCY",
+        "MISSING_GUIDANCE",
+        "NONDETERMINISM",
+        "PERMISSION_CHECK",
+        "RECOVERY",
+        "REGRESSION_RISK",
+        "RESOURCE_USAGE",
+        "SCALABILITY"
+      ]
+    },
+    "selected_sources": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "anchor_index",
+          "expected_anchor_sha256"
+        ],
+        "properties": {
+          "anchor_index": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 15
+          },
+          "expected_anchor_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "topic": {
+            "const": "CORRECTNESS"
+          }
+        },
+        "required": [
+          "topic"
+        ]
+      },
+      "then": {
+        "properties": {
+          "concern": {
+            "enum": [
+              "INCORRECT_RESULT",
+              "EDGE_CASE",
+              "INCONSISTENT_STATE"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "topic": {
+            "const": "RELIABILITY"
+          }
+        },
+        "required": [
+          "topic"
+        ]
+      },
+      "then": {
+        "properties": {
+          "concern": {
+            "enum": [
+              "ERROR_HANDLING",
+              "RECOVERY",
+              "NONDETERMINISM"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "topic": {
+            "const": "PERFORMANCE"
+          }
+        },
+        "required": [
+          "topic"
+        ]
+      },
+      "then": {
+        "properties": {
+          "concern": {
+            "enum": [
+              "LATENCY",
+              "RESOURCE_USAGE",
+              "SCALABILITY"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "topic": {
+            "const": "ACCESS_CONTROL"
+          }
+        },
+        "required": [
+          "topic"
+        ]
+      },
+      "then": {
+        "properties": {
+          "concern": {
+            "enum": [
+              "PERMISSION_CHECK",
+              "BOUNDARY_CHECK",
+              "DATA_EXPOSURE"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "topic": {
+            "const": "TESTING"
+          }
+        },
+        "required": [
+          "topic"
+        ]
+      },
+      "then": {
+        "properties": {
+          "concern": {
+            "enum": [
+              "COVERAGE_GAP",
+              "REGRESSION_RISK",
+              "ASSERTION_GAP"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "topic": {
+            "const": "DOCUMENTATION"
+          }
+        },
+        "required": [
+          "topic"
+        ]
+      },
+      "then": {
+        "properties": {
+          "concern": {
+            "enum": [
+              "CONTRACT_DRIFT",
+              "MISSING_GUIDANCE",
+              "AMBIGUOUS_BEHAVIOR"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

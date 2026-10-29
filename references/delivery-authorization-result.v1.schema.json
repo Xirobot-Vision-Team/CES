@@ -1,0 +1,359 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schema/delivery-authorization-result.v1.schema.json",
+  "title": "EC224 exact-content exact-single-target signed LOCAL approval; never send",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "authorization_receipt_id",
+    "authorization",
+    "delivery_state",
+    "effects"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.delivery_authorization.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "blocked",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^DELIVERY_AUTHORIZATION_[A-Z0-9_]+$",
+      "maxLength": 170
+    },
+    "authorization_receipt_id": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^cesda1:[a-f0-9]{64}$"
+        }
+      ]
+    },
+    "authorization": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "authorization_receipt_id",
+            "identity_verification_id",
+            "preview_id",
+            "review_id",
+            "identity_trust_anchor_binding_sha256",
+            "authorization_trust_anchor_binding_sha256",
+            "project_binding_sha256",
+            "destination_binding_sha256",
+            "route_sha256",
+            "identity_revocation_checkpoint_sha256",
+            "source_set_sha256",
+            "redacted_markdown_sha256",
+            "payload_bytes_sha256",
+            "policy_revision_sha256",
+            "approval_code_revision_sha256",
+            "organization_entitlement_sha256",
+            "approver_exact_grant_sha256",
+            "organization_revocation_checkpoint_sha256",
+            "exact_content_and_single_target_approved_under_host_roots",
+            "independent_organization_entitlement_verified",
+            "independent_approver_signature_verified",
+            "fresh_signed_grant_revocation_checked",
+            "verified_organization_or_human_in_the_real_world",
+            "live_provider_recipient_permission_verified",
+            "organizational_declassification_granted",
+            "durable_single_use_or_replay_prevention",
+            "cross_source_atomic_snapshot",
+            "ready_to_send",
+            "message_sent",
+            "published",
+            "payload_size_bytes",
+            "payload_media_type",
+            "effective_minimum_privacy_class",
+            "expires_at"
+          ],
+          "properties": {
+            "authorization_receipt_id": {
+              "type": "string",
+              "pattern": "^cesda1:[a-f0-9]{64}$"
+            },
+            "identity_verification_id": {
+              "type": "string",
+              "pattern": "^cesdi1:[a-f0-9]{64}$"
+            },
+            "preview_id": {
+              "type": "string",
+              "pattern": "^cesdp1:[a-f0-9]{64}$"
+            },
+            "review_id": {
+              "type": "string",
+              "pattern": "^cesdr1:[a-f0-9]{64}$"
+            },
+            "identity_trust_anchor_binding_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "authorization_trust_anchor_binding_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "project_binding_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "destination_binding_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "route_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "identity_revocation_checkpoint_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "source_set_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "redacted_markdown_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "payload_bytes_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "policy_revision_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "approval_code_revision_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "organization_entitlement_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "approver_exact_grant_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "organization_revocation_checkpoint_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "exact_content_and_single_target_approved_under_host_roots": {
+              "const": true
+            },
+            "independent_organization_entitlement_verified": {
+              "const": true
+            },
+            "independent_approver_signature_verified": {
+              "const": true
+            },
+            "fresh_signed_grant_revocation_checked": {
+              "const": true
+            },
+            "verified_organization_or_human_in_the_real_world": {
+              "const": false
+            },
+            "live_provider_recipient_permission_verified": {
+              "const": false
+            },
+            "organizational_declassification_granted": {
+              "const": false
+            },
+            "durable_single_use_or_replay_prevention": {
+              "const": false
+            },
+            "cross_source_atomic_snapshot": {
+              "const": false
+            },
+            "ready_to_send": {
+              "const": false
+            },
+            "message_sent": {
+              "const": false
+            },
+            "published": {
+              "const": false
+            },
+            "payload_size_bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8192
+            },
+            "payload_media_type": {
+              "const": "text/markdown; charset=utf-8"
+            },
+            "effective_minimum_privacy_class": {
+              "enum": [
+                "INTERNAL",
+                "CONFIDENTIAL",
+                "RESTRICTED"
+              ]
+            },
+            "expires_at": {
+              "type": "integer",
+              "minimum": 946684800,
+              "maximum": 4102444800
+            }
+          }
+        }
+      ]
+    },
+    "delivery_state": {
+      "const": "NO_DELIVERY_OR_PUBLICATION"
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "external_network_requested",
+        "recipient_contacted",
+        "message_sent",
+        "delivery_accepted",
+        "delivered",
+        "published",
+        "issue_or_pr_created_or_modified",
+        "git_or_business_files_written",
+        "ces_records_written",
+        "external_ai_invoked",
+        "source_content_disclosed_in_preview",
+        "recipient_identity_verified",
+        "delivery_authorized"
+      ],
+      "properties": {
+        "external_network_requested": {
+          "const": false
+        },
+        "recipient_contacted": {
+          "const": false
+        },
+        "message_sent": {
+          "const": false
+        },
+        "delivery_accepted": {
+          "const": false
+        },
+        "delivered": {
+          "const": false
+        },
+        "published": {
+          "const": false
+        },
+        "issue_or_pr_created_or_modified": {
+          "const": false
+        },
+        "git_or_business_files_written": {
+          "const": false
+        },
+        "ces_records_written": {
+          "const": false
+        },
+        "external_ai_invoked": {
+          "const": false
+        },
+        "source_content_disclosed_in_preview": {
+          "const": false
+        },
+        "recipient_identity_verified": {
+          "type": "boolean"
+        },
+        "delivery_authorized": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "reason_code": {
+            "const": "DELIVERY_AUTHORIZATION_LOCAL_EXACT_APPROVAL_ONLY"
+          },
+          "authorization_receipt_id": {
+            "type": "string"
+          },
+          "authorization": {
+            "type": "object"
+          },
+          "effects": {
+            "properties": {
+              "recipient_identity_verified": {
+                "const": true
+              },
+              "delivery_authorized": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "exit_code": {
+            "enum": [
+              4,
+              5
+            ]
+          },
+          "authorization_receipt_id": {
+            "type": "null"
+          },
+          "authorization": {
+            "type": "null"
+          },
+          "effects": {
+            "properties": {
+              "recipient_identity_verified": {
+                "const": false
+              },
+              "delivery_authorized": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

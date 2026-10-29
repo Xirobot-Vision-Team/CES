@@ -1,0 +1,341 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ces.local/knowledge-save-retry-result.v1.schema.json",
+  "title": "knowledge-save-retry-result.v1",
+  "description": "Read-only conflict and two-step retry planning receipts. No source/metadata writes, approvals or authority claims.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "subject",
+    "retry_request_prepared",
+    "local_version_metadata_written",
+    "source_knowledge_file_written",
+    "business_repository_written",
+    "existing_version_overwritten",
+    "issue_or_provider_written",
+    "published",
+    "old_approvals_reused",
+    "new_approvals_created_or_verified",
+    "new_write_permission_granted",
+    "auto_merge_or_auto_retry_performed",
+    "organizational_signer_identity_authenticated",
+    "current_architecture_or_delivery_verified",
+    "native_knowledge_route_registered"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_save_retry.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^KNOWLEDGE_RETRY_[A-Z0-9_]+$"
+    },
+    "subject": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "store_instance_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "store_scope_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "original_request_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "save_key": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9._-]{2,63}$"
+            },
+            "expected_parent_version_id": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "expected_parent_content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "observed_head_version_id": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "observed_head_content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "target_section_index": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 63
+            },
+            "expected_target_section_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "observed_target_section_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "intervening_version_receipts": {
+              "type": "array",
+              "maxItems": 64,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "sequence",
+                  "version_id",
+                  "parent_version_id",
+                  "content_sha256",
+                  "modified_section_index"
+                ],
+                "properties": {
+                  "sequence": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 64
+                  },
+                  "version_id": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "parent_version_id": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "content_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "modified_section_index": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 63
+                  }
+                }
+              }
+            },
+            "retry_eligible_after_independent_permission": {
+              "type": "boolean"
+            },
+            "old_review_and_signature_valid_for_new_parent": {
+              "const": false
+            },
+            "new_ec208_scope_and_two_new_signatures_required": {
+              "const": true
+            },
+            "result_is_local_metadata_not_live_source_truth": {
+              "const": true
+            },
+            "state": {
+              "enum": [
+                "ALREADY_RECORDED_NO_RETRY",
+                "CURRENT_PARENT_VALID_NO_RETRY_NEEDED",
+                "CONFLICT_TARGET_SHA_CHANGED_REQUIRES_MANUAL_MERGE",
+                "CONFLICT_TARGET_ABA_TOUCHED_REQUIRES_MANUAL_MERGE",
+                "DISJOINT_PARENT_MOVED_RE_REVIEW_REQUIRED"
+              ]
+            },
+            "retry_authorization_scope_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "new_save_key": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9._-]{2,63}$"
+            },
+            "rebased_request_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "rebased_ec208_authorization_scope_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "rebased_new_chapter_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "rebased_request_bytes_disclosed": {
+              "type": "boolean"
+            },
+            "fresh_ec208_permission_receipt_required": {
+              "const": true
+            },
+            "fresh_two_independent_ed25519_signatures_required": {
+              "const": true
+            },
+            "restricted_candidate_selection": {
+              "type": "boolean"
+            },
+            "rebased_request_json": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32768
+            }
+          },
+          "required": [
+            "store_instance_id",
+            "store_scope_binding_sha256",
+            "original_request_binding_sha256",
+            "save_key",
+            "expected_parent_version_id",
+            "expected_parent_content_sha256",
+            "observed_head_version_id",
+            "observed_head_content_sha256",
+            "target_section_index",
+            "expected_target_section_sha256",
+            "observed_target_section_sha256",
+            "intervening_version_receipts",
+            "retry_eligible_after_independent_permission",
+            "old_review_and_signature_valid_for_new_parent",
+            "new_ec208_scope_and_two_new_signatures_required",
+            "result_is_local_metadata_not_live_source_truth",
+            "state"
+          ]
+        }
+      ]
+    },
+    "retry_request_prepared": {
+      "type": "boolean"
+    },
+    "local_version_metadata_written": {
+      "const": false
+    },
+    "source_knowledge_file_written": {
+      "const": false
+    },
+    "business_repository_written": {
+      "const": false
+    },
+    "existing_version_overwritten": {
+      "const": false
+    },
+    "issue_or_provider_written": {
+      "const": false
+    },
+    "published": {
+      "const": false
+    },
+    "old_approvals_reused": {
+      "const": false
+    },
+    "new_approvals_created_or_verified": {
+      "const": false
+    },
+    "new_write_permission_granted": {
+      "const": false
+    },
+    "auto_merge_or_auto_retry_performed": {
+      "const": false
+    },
+    "organizational_signer_identity_authenticated": {
+      "const": false
+    },
+    "current_architecture_or_delivery_verified": {
+      "const": false
+    },
+    "native_knowledge_route_registered": {
+      "const": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "retry_request_prepared": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "subject": {
+            "type": "object",
+            "required": [
+              "rebased_request_json",
+              "retry_authorization_scope_sha256",
+              "rebased_ec208_authorization_scope_sha256",
+              "rebased_request_binding_sha256"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "retry_request_prepared": {
+            "const": false
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "subject": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "not": {
+                  "required": [
+                    "rebased_request_json"
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

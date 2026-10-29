@@ -1,0 +1,91 @@
+{
+  "schema": "ces.operator_workflow.v1",
+  "repository_path": "/absolute/path/to/your-repository",
+  "ces_root": "/absolute/path/to/ces",
+  "output_root": "/absolute/path/to/ces-data/your-repository/artifacts",
+  "cache_root": "/absolute/path/to/ces-data/your-repository/cache",
+  "state_root": "/absolute/path/to/ces-data/operator",
+  "utc_offset": "+08:00",
+  "github": {
+    "repository": "owner/repository",
+    "repository_id": 0,
+    "account_id": 0,
+    "allow_create": false,
+    "allow_improvements": false,
+    "max_new_issues_per_run": 3
+  },
+  "notifications": {
+    "channel": "github_mentions",
+    "cc_recipients": [],
+    "allow_publish": false,
+    "weekly_permission": "push",
+    "account_task_assignment": true
+  },
+  "repository_docs": {
+    "relative_directory": "docs/ces",
+    "allow_write": false,
+    "allow_git_stage": false,
+    "allow_git_commit": false,
+    "allow_git_push": false
+  },
+  "knowledge": {
+    "sources": [
+      "README.md"
+    ]
+  },
+  "review": {
+    "base_ref": "HEAD^"
+  },
+  "testing": {
+    "enabled": false,
+    "allow_execute": false,
+    "allow_publish": false,
+    "project_owners": [],
+    "test_maintainers": [],
+    "ownership": [],
+    "entries": []
+  },
+  "authorization": {
+    "schedule_enabled": false,
+    "note": "Example only. Configuration is not human authorization."
+  },
+  "build_validation": {
+    "enabled": false,
+    "steps": [],
+    "note": "Explicit repository-specific commands only. Each configured step uses name, kind (build/test), argv (argument list), cwd and timeout_seconds. No command is guessed or executed from this template."
+  },
+  "issue_tracking": {
+    "enabled": false,
+    "max_issues": 100,
+    "include_numbers": [],
+    "stale_days": 7,
+    "reminder_cooldown_days": 7,
+    "allow_reminders": false,
+    "allow_test_execution": false,
+    "required_test_steps": [],
+    "review_max_age_days": 7,
+    "allow_auto_close": false,
+    "allow_auto_reopen": false
+  },
+  "repository_sync": {
+    "enabled": false,
+    "allow_pull": false,
+    "remote": "origin",
+    "branch": "main",
+    "strategy": "ff_only",
+    "before_analysis": false
+  },
+  "execution_policy": {
+    "build_before_analysis": false,
+    "run_runtime_tests": false,
+    "launch_application": false
+  },
+  "repository_push": {
+    "allow": false,
+    "automatic_after_document_write": false,
+    "commit_message": "docs: update CES reports and project knowledge"
+  },
+  "audit": {
+    "exclude_ces_generated_documents": false
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema": "ces.release_scan_exceptions.v1",
+  "policy": "Exact reviewed path, line, rule and SHA-256 only; no broad test-directory exemptions.",
+  "entries": [
+    {
+      "path": "construction/test_ai_handoff_router.py",
+      "line": 351,
+      "rule": "private_key_marker",
+      "line_sha256": "5b523e9b15f8c15bdfd1cff564cf20d8f5b6650d5fbbdb5d7f691719c7a5a603",
+      "reason": "Literal marker with example suffix in a secret-rejection negative test; no key body."
+    },
+    {
+      "path": "construction/test_codevalidate_staged.py",
+      "line": 498,
+      "rule": "private_key_marker",
+      "line_sha256": "8d95cea4a496cc7fdeb07e99e4e71fcb69d5645d221f49a966788ba937763c54",
+      "reason": "Literal marker in a rejected manual-review fixture; no key body."
+    },
+    {
+      "path": "construction/test_finding_schema.py",
+      "line": 250,
+      "rule": "private_key_marker",
+      "line_sha256": "35c0f35f59d29083ebacc68190d85e50a98f2827e98d02fde657971979ecc1c7",
+      "reason": "Literal marker testing counter-evidence secret rejection; no key body."
+    },
+    {
+      "path": "construction/test_knowledge_update_handoff.py",
+      "line": 289,
+      "rule": "private_key_marker",
+      "line_sha256": "37fec80f209ad263709e5ddbe1e15bb3001e81fa4d4ed1147a7dea7b55785813",
+      "reason": "Literal key header negative fixture without encoded key data."
+    },
+    {
+      "path": "construction/test_proposed_pr_patch.py",
+      "line": 206,
+      "rule": "credential_token",
+      "line_sha256": "02830271707daf2ac81ee9ead688869389e3288ae78af72949a8d5992b91f9e6",
+      "reason": "Synthetic alphabet-only access-key pattern in a blocked patch fixture, not a credential."
+    },
+    {
+      "path": "construction/test_proposed_pr_patch.py",
+      "line": 208,
+      "rule": "private_key_marker",
+      "line_sha256": "eee26c02021197073620e720ddd04890642bd781e01776f47b7f7c53e80a7163",
+      "reason": "Header-only private-key negative fixture, not a private key."
+    },
+    {
+      "path": "construction/ec317_original_rebinding/rebinding.py",
+      "line": 112,
+      "rule": "private_key_marker",
+      "line_sha256": "253db53fcf8487b49b0797e066ea599fd4bf42cee70dcb2a850e104ea06eca7a",
+      "reason": "Detection-code literal used to refuse private keys in transfers."
+    },
+    {
+      "path": "construction/ec317_original_rebinding/rebinding.py",
+      "line": 113,
+      "rule": "private_key_marker",
+      "line_sha256": "6f8a4a069f0c6e64f0cfe73acd2a5afb8a0f3c721e6ec7155af4c1792dca3c73",
+      "reason": "Detection-code literal used to refuse OpenSSH private keys in transfers."
+    }
+  ]
+}

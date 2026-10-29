@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schema/delivery-reconcile-audit.v1.schema.json",
+  "title": "EC227 minimal local HMAC-chained append-only audit event (no recipient or payload bytes)",
+  "type": "object", "additionalProperties": false,
+  "required": ["entry", "hmac_sha256"],
+  "properties": {
+    "hmac_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "entry": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema", "sequence", "kind", "operation_id", "provider_target_binding_sha256", "approver_exact_grant_sha256", "payload_sha256", "read_grant_sha256", "read_nonce_sha256", "recorded_at", "delivery_state", "provider_state", "provider_message_id_sha256", "provider_evidence_verified", "inbox_evidence_verified", "previous_hmac_sha256"],
+      "properties": {
+        "schema": {"const": "ces.delivery_reconcile.audit_entry.v1"},
+        "sequence": {"type": "integer", "minimum": 1, "maximum": 64},
+        "kind": {"enum": ["LOOKUP_STARTED", "LOOKUP_RESULT"]},
+        "operation_id": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "provider_target_binding_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "approver_exact_grant_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "payload_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "read_grant_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "read_nonce_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "recorded_at": {"type": "integer", "minimum": 946684800, "maximum": 4102444800},
+        "delivery_state": {"enum": ["UNKNOWN_UNCONFIRMED", "ACCEPTED_PROVIDER_ATTESTED", "DELIVERED_INBOX_OBSERVED", "PROVIDER_REJECTION_ATTESTED", "PROVIDER_FAILURE_ATTESTED"]},
+        "provider_state": {"oneOf": [{"type": "null"}, {"enum": ["UNKNOWN", "PENDING", "ACCEPTED", "DELIVERED", "REJECTED", "FAILED"]}]},
+        "provider_message_id_sha256": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^[a-f0-9]{64}$"}]},
+        "provider_evidence_verified": {"type": "boolean"},
+        "inbox_evidence_verified": {"type": "boolean"},
+        "previous_hmac_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "allOf": [
+        {"if": {"properties": {"kind": {"const": "LOOKUP_STARTED"}}}, "then": {"properties": {"delivery_state": {"const": "UNKNOWN_UNCONFIRMED"}, "provider_state": {"const": null}, "provider_message_id_sha256": {"const": null}, "provider_evidence_verified": {"const": false}, "inbox_evidence_verified": {"const": false}}}},
+        {"if": {"properties": {"provider_evidence_verified": {"const": false}}}, "then": {"properties": {"delivery_state": {"const": "UNKNOWN_UNCONFIRMED"}, "provider_state": {"const": null}, "provider_message_id_sha256": {"const": null}, "inbox_evidence_verified": {"const": false}}}},
+        {"if": {"properties": {"delivery_state": {"const": "DELIVERED_INBOX_OBSERVED"}}}, "then": {"properties": {"kind": {"const": "LOOKUP_RESULT"}, "provider_state": {"const": "DELIVERED"}, "provider_evidence_verified": {"const": true}, "inbox_evidence_verified": {"const": true}}}},
+        {"if": {"properties": {"delivery_state": {"const": "ACCEPTED_PROVIDER_ATTESTED"}}}, "then": {"properties": {"provider_state": {"enum": ["ACCEPTED", "DELIVERED"]}, "provider_evidence_verified": {"const": true}, "inbox_evidence_verified": {"const": false}}}}
+      ]
+    }
+  }
+}

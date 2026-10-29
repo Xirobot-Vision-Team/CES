@@ -1,0 +1,1434 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/quality-show-result.v1.schema.json",
+  "title": "CES EC188 read-only QualityShow, source-scoped claims with HMAC pagination and no quality PASS proof",
+  "description": "This document constrains external observable shape; code performs cross-field and HMAC verification. All supplied receipts are non-authenticating claims.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "counts",
+    "coverage",
+    "cursor_expires_at_utc",
+    "effects",
+    "entries",
+    "exit_code",
+    "next_cursor",
+    "order",
+    "page_size",
+    "proof",
+    "query_sha256",
+    "reason_code",
+    "revision_sha256",
+    "schema",
+    "scope",
+    "status",
+    "trust_boundary"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.quality_show.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^QUALITYSHOW_[A-Z0-9_]{3,150}$",
+      "maxLength": 196
+    },
+    "scope": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "commit_sha_claim",
+            "proposed_pr_historical_only",
+            "provider",
+            "root_pin_sha256_claim",
+            "scope_sha256",
+            "source_identity_authenticated",
+            "source_mode"
+          ],
+          "properties": {
+            "source_mode": {
+              "enum": [
+                "WorkingTree",
+                "DeliveredTarget",
+                "ProposedPR"
+              ]
+            },
+            "scope_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "root_pin_sha256_claim": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "commit_sha_claim": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "provider": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "github",
+                    "gitlab"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "proposed_pr_historical_only": {
+              "type": "boolean"
+            },
+            "source_identity_authenticated": {
+              "const": false
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "query_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "revision_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "counts": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "matched",
+            "matched_by_kind",
+            "returned",
+            "supplied"
+          ],
+          "properties": {
+            "supplied": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 96
+            },
+            "matched": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 96
+            },
+            "returned": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 25
+            },
+            "matched_by_kind": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "ci_evidence",
+                "ci_metadata",
+                "config",
+                "observation",
+                "run_preflight",
+                "run_session",
+                "sha_binding"
+              ],
+              "properties": {
+                "ci_evidence": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 96
+                },
+                "ci_metadata": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 96
+                },
+                "config": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 96
+                },
+                "observation": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 96
+                },
+                "run_preflight": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 96
+                },
+                "run_session": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 96
+                },
+                "sha_binding": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 96
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "coverage": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "caller_linked_ec187_count",
+            "ci_pass_claim_count_not_verified",
+            "cross_source_mode_quality_equivalence_proven",
+            "filters_do_not_prove_absence_of_unmatched_evidence",
+            "gaps_in_supplied_evidence",
+            "git_object_bytes_hashed_by_ces",
+            "interrupted_ec187_count",
+            "missing_evidence_not_absence_proof",
+            "not_supplied_classes",
+            "output_truncated_ec187_count",
+            "performance_benchmark_measured",
+            "present_evidence_classes",
+            "provider_or_actor_independently_authenticated",
+            "quality_pass_independently_verified",
+            "query_is_read_only",
+            "repository_wide_config_covered",
+            "runner_isolation_independently_verified",
+            "scope_exactly_authorized",
+            "source_currentness_proven",
+            "source_mode_historical_proposal_only",
+            "supplied_batch_integrity_sha256_only",
+            "supplied_evidence_exhaustive"
+          ],
+          "properties": {
+            "scope_exactly_authorized": {
+              "const": true
+            },
+            "supplied_batch_integrity_sha256_only": {
+              "const": true
+            },
+            "supplied_evidence_exhaustive": {
+              "const": false
+            },
+            "missing_evidence_not_absence_proof": {
+              "const": true
+            },
+            "query_is_read_only": {
+              "const": true
+            },
+            "repository_wide_config_covered": {
+              "const": false
+            },
+            "source_currentness_proven": {
+              "const": false
+            },
+            "git_object_bytes_hashed_by_ces": {
+              "const": false
+            },
+            "provider_or_actor_independently_authenticated": {
+              "const": false
+            },
+            "runner_isolation_independently_verified": {
+              "const": false
+            },
+            "quality_pass_independently_verified": {
+              "const": false
+            },
+            "performance_benchmark_measured": {
+              "const": false
+            },
+            "cross_source_mode_quality_equivalence_proven": {
+              "const": false
+            },
+            "filters_do_not_prove_absence_of_unmatched_evidence": {
+              "const": true
+            },
+            "source_mode_historical_proposal_only": {
+              "type": "boolean"
+            },
+            "present_evidence_classes": {
+              "type": "array",
+              "uniqueItems": true,
+              "maxItems": 7,
+              "items": {
+                "enum": [
+                  "ci_evidence",
+                  "ci_metadata",
+                  "config",
+                  "observation",
+                  "run_preflight",
+                  "run_session",
+                  "sha_binding"
+                ]
+              }
+            },
+            "not_supplied_classes": {
+              "type": "array",
+              "uniqueItems": true,
+              "maxItems": 7,
+              "items": {
+                "enum": [
+                  "ci_evidence",
+                  "ci_metadata",
+                  "config",
+                  "observation",
+                  "run_preflight",
+                  "run_session",
+                  "sha_binding"
+                ]
+              }
+            },
+            "gaps_in_supplied_evidence": {
+              "type": "array",
+              "uniqueItems": true,
+              "maxItems": 20,
+              "items": {
+                "enum": [
+                  "CAPTURED_OUTPUT_PREFIX_ONLY",
+                  "CI_CLAIM_NOT_INDEPENDENT_TEST_PROOF",
+                  "CI_TEST_NOT_INDEPENDENTLY_VERIFIED",
+                  "CONFIG_IS_NOT_TEST_EXECUTION",
+                  "CROSS_REQUEST_ATOMICITY_NOT_PROVEN",
+                  "EC187_RESULT_HAS_NO_SOURCE_PIN_BINDING",
+                  "GIT_OBJECT_NOT_HASHED",
+                  "HOST_EXECUTION_AND_REAP_UNATTESTED",
+                  "INTERRUPTED_OR_UNCONFIRMED_TERMINATION",
+                  "ISOLATION_NOT_INDEPENDENTLY_PROVEN",
+                  "LOCAL_REMOTE_REVISION_NOT_CORRELATED",
+                  "NOT_REPOSITORY_WIDE",
+                  "NO_BENCHMARK_OR_ATTESTED_RUNNER",
+                  "NO_EC187_EXTERNAL_SESSION_STARTED",
+                  "NO_HOST_EXECUTION_FROM_EC186",
+                  "PROVIDER_CONTENT_CLAIM_NOT_INDEPENDENT_TEST_EXECUTION",
+                  "PROVIDER_FIELD_EQUALITY_NOT_GIT_OBJECT_BYTES",
+                  "REMOTE_ATOMIC_SNAPSHOT_NOT_PROVEN",
+                  "RUN_LEVEL_REPORT_NOT_EXACT_JOB",
+                  "SOURCE_MODE_NOT_IN_EC182_RECEIPT"
+                ]
+              }
+            },
+            "caller_linked_ec187_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 96
+            },
+            "interrupted_ec187_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 96
+            },
+            "output_truncated_ec187_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 96
+            },
+            "ci_pass_claim_count_not_verified": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 96
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "order": {
+      "enum": [
+        "RECORDED_AT_UTC_DESC_EVIDENCE_SHA256_ASC",
+        null
+      ]
+    },
+    "page_size": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 25
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "entries": {
+      "type": "array",
+      "maxItems": 25,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "binding_strength",
+          "classification",
+          "evidence_id",
+          "incompleteness",
+          "kind",
+          "recorded_at_utc",
+          "summary"
+        ],
+        "properties": {
+          "evidence_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "kind": {
+            "enum": [
+              "ci_evidence",
+              "ci_metadata",
+              "config",
+              "observation",
+              "run_preflight",
+              "run_session",
+              "sha_binding"
+            ]
+          },
+          "recorded_at_utc": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,6})?Z$"
+          },
+          "binding_strength": {
+            "enum": [
+              "EMBEDDED_SOURCE_EXACT_UNAUTHENTICATED",
+              "REMOTE_METADATA_SHA_MATCH_MODE_CALLER_SELECTED",
+              "CALLER_LINKED_NO_SOURCE_PIN_IN_EC187_RESULT"
+            ]
+          },
+          "classification": {
+            "enum": [
+              "fail",
+              "missing",
+              "not_applicable",
+              "not_run",
+              "partial",
+              "pass",
+              "unverified"
+            ]
+          },
+          "summary": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "category",
+              "quality_pass_verified"
+            ],
+            "properties": {
+              "category": {
+                "enum": [
+                  "ci_evidence",
+                  "ci_metadata",
+                  "config",
+                  "observation",
+                  "run_preflight",
+                  "run_session",
+                  "sha_binding"
+                ]
+              },
+              "quality_pass_verified": {
+                "const": false
+              },
+              "config_inventory_state": {
+                "const": "BOUNDED_SELECTED_PATHS_ONLY"
+              },
+              "selected_config_paths": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000000000
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "config_parse_gaps": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000000000
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "ci_run_state": {
+                "const": "PROVIDER_METADATA_ONLY"
+              },
+              "provider_run_state": {
+                "enum": [
+                  "canceled",
+                  "cancelled",
+                  "completed",
+                  "created",
+                  "failed",
+                  "failure",
+                  "in_progress",
+                  "manual",
+                  "pending",
+                  "preparing",
+                  "queued",
+                  "running",
+                  "scheduled",
+                  "skipped",
+                  "success",
+                  "unknown",
+                  "waiting_for_resource"
+                ]
+              },
+              "provider_run_conclusion": {
+                "enum": [
+                  "action_required",
+                  "canceled",
+                  "cancelled",
+                  "failed",
+                  "failure",
+                  "manual",
+                  "neutral",
+                  "skipped",
+                  "stale",
+                  "startup_failure",
+                  "success",
+                  "timed_out",
+                  "unknown"
+                ]
+              },
+              "provider_job_state": {
+                "enum": [
+                  "canceled",
+                  "cancelled",
+                  "completed",
+                  "created",
+                  "failed",
+                  "failure",
+                  "in_progress",
+                  "manual",
+                  "pending",
+                  "preparing",
+                  "queued",
+                  "running",
+                  "scheduled",
+                  "skipped",
+                  "success",
+                  "unknown",
+                  "waiting_for_resource"
+                ]
+              },
+              "provider_job_conclusion": {
+                "enum": [
+                  "action_required",
+                  "canceled",
+                  "cancelled",
+                  "failed",
+                  "failure",
+                  "manual",
+                  "neutral",
+                  "skipped",
+                  "stale",
+                  "startup_failure",
+                  "success",
+                  "timed_out",
+                  "unknown"
+                ]
+              },
+              "transport": {
+                "enum": [
+                  "LIVE_HTTPS",
+                  "SYNTHETIC",
+                  "UNTRUSTED_OR_UNAVAILABLE"
+                ]
+              },
+              "association": {
+                "const": "PROVIDER_FIELD_CLAIM_SHA_EQUAL"
+              },
+              "test_classification": {
+                "enum": [
+                  "missing",
+                  "not_run",
+                  "partial",
+                  "fail",
+                  "pass"
+                ]
+              },
+              "test_provenance": {
+                "enum": [
+                  "PROVIDER_LOG_OR_REPORT_CLAIM_NOT_CES_EXECUTED",
+                  "PROVIDER_PARSED_CLAIM_ONLY"
+                ]
+              },
+              "job_log_availability": {
+                "enum": [
+                  "present",
+                  "missing",
+                  "unavailable",
+                  "partial",
+                  "not_requested",
+                  "unknown"
+                ]
+              },
+              "report_state": {
+                "enum": [
+                  "measured",
+                  "partial",
+                  "missing",
+                  "not_requested",
+                  "pass",
+                  "fail",
+                  "not_run",
+                  "unknown"
+                ]
+              },
+              "report_scope": {
+                "enum": [
+                  "RUN_LEVEL_ARTIFACT",
+                  "EXACT_JOB_OR_NOT_REQUESTED"
+                ]
+              },
+              "provider_test_counts": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "failed",
+                  "passed",
+                  "skipped",
+                  "total"
+                ],
+                "properties": {
+                  "total": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 10000000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "passed": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 10000000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "failed": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 10000000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "skipped": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 10000000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                }
+              },
+              "provider_coverage_metrics": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "lines_covered",
+                  "lines_total",
+                  "percent"
+                ],
+                "properties": {
+                  "lines_total": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1000000000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "lines_covered": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1000000000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "percent": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 100
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                }
+              },
+              "observation_track": {
+                "enum": [
+                  "LOCAL_ONLY_EXTRACTED",
+                  "REMOTE_ONLY_EXTRACTED"
+                ]
+              },
+              "coverage_state": {
+                "enum": [
+                  "not_requested",
+                  "missing",
+                  "partial",
+                  "provider_reported",
+                  "unknown"
+                ]
+              },
+              "profile_id": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "python.pytest",
+                      "python.ruff"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "execution_state": {
+                "enum": [
+                  "NOT_EXECUTED_PREFLIGHT_ONLY",
+                  "NOT_STARTED_CANCELLED_BEFORE_BROKER",
+                  "exited_host_reported",
+                  "interrupted_or_unverified"
+                ]
+              },
+              "host_reported_exit_code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "host_reported_exit_zero_is_not_pass": {
+                "type": "boolean"
+              },
+              "output_truncated": {
+                "type": "boolean"
+              },
+              "output_complete_host_reported": {
+                "type": "boolean"
+              },
+              "captured_bytes": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10000000
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "discarded_bytes": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10000000
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "termination_requested": {
+                "type": "boolean"
+              },
+              "termination_reaped_host_reported": {
+                "type": "boolean"
+              }
+            }
+          },
+          "incompleteness": {
+            "type": "array",
+            "uniqueItems": true,
+            "maxItems": 20,
+            "items": {
+              "enum": [
+                "CAPTURED_OUTPUT_PREFIX_ONLY",
+                "CI_CLAIM_NOT_INDEPENDENT_TEST_PROOF",
+                "CI_TEST_NOT_INDEPENDENTLY_VERIFIED",
+                "CONFIG_IS_NOT_TEST_EXECUTION",
+                "CROSS_REQUEST_ATOMICITY_NOT_PROVEN",
+                "EC187_RESULT_HAS_NO_SOURCE_PIN_BINDING",
+                "GIT_OBJECT_NOT_HASHED",
+                "HOST_EXECUTION_AND_REAP_UNATTESTED",
+                "INTERRUPTED_OR_UNCONFIRMED_TERMINATION",
+                "ISOLATION_NOT_INDEPENDENTLY_PROVEN",
+                "LOCAL_REMOTE_REVISION_NOT_CORRELATED",
+                "NOT_REPOSITORY_WIDE",
+                "NO_BENCHMARK_OR_ATTESTED_RUNNER",
+                "NO_EC187_EXTERNAL_SESSION_STARTED",
+                "NO_HOST_EXECUTION_FROM_EC186",
+                "PROVIDER_CONTENT_CLAIM_NOT_INDEPENDENT_TEST_EXECUTION",
+                "PROVIDER_FIELD_EQUALITY_NOT_GIT_OBJECT_BYTES",
+                "REMOTE_ATOMIC_SNAPSHOT_NOT_PROVEN",
+                "RUN_LEVEL_REPORT_NOT_EXACT_JOB",
+                "SOURCE_MODE_NOT_IN_EC182_RECEIPT"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "next_cursor": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 2048,
+          "pattern": "^[A-Za-z0-9_-]+\\.[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "cursor_expires_at_utc": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,6})?Z$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "proof": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "authenticated_source_snapshot",
+            "cursor_is_permission_or_source_proof",
+            "host_claim_equivalent_to_independent_proof",
+            "receipt_checksum_is_authenticity_proof",
+            "tested_execution_confirmed",
+            "verified_quality_pass"
+          ],
+          "properties": {
+            "verified_quality_pass": {
+              "const": false
+            },
+            "authenticated_source_snapshot": {
+              "const": false
+            },
+            "tested_execution_confirmed": {
+              "const": false
+            },
+            "cursor_is_permission_or_source_proof": {
+              "const": false
+            },
+            "receipt_checksum_is_authenticity_proof": {
+              "const": false
+            },
+            "host_claim_equivalent_to_independent_proof": {
+              "const": false
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor_or_runner_authenticated",
+        "business_repository_written",
+        "ces_store_written",
+        "git_bytes_verified",
+        "provider_requests",
+        "quality_pass_verified",
+        "read_only",
+        "shell_or_tests_executed",
+        "stdout_or_source_disclosed"
+      ],
+      "properties": {
+        "read_only": {
+          "const": true
+        },
+        "ces_store_written": {
+          "const": false
+        },
+        "business_repository_written": {
+          "const": false
+        },
+        "provider_requests": {
+          "const": false
+        },
+        "shell_or_tests_executed": {
+          "const": false
+        },
+        "stdout_or_source_disclosed": {
+          "const": false
+        },
+        "actor_or_runner_authenticated": {
+          "const": false
+        },
+        "git_bytes_verified": {
+          "const": false
+        },
+        "quality_pass_verified": {
+          "const": false
+        }
+      }
+    },
+    "trust_boundary": {
+      "const": "CALLER_SUPPLIED_EC181_187_OUTPUT_CHECKSUMS_NOT_SIGNATURES; NO_GIT_BYTES_RUNNER_CI_PASS_BENCHMARK_OR_CROSS_SOURCE_PROOF"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "scope": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "commit_sha_claim",
+              "proposed_pr_historical_only",
+              "provider",
+              "root_pin_sha256_claim",
+              "scope_sha256",
+              "source_identity_authenticated",
+              "source_mode"
+            ],
+            "properties": {
+              "source_mode": {
+                "enum": [
+                  "WorkingTree",
+                  "DeliveredTarget",
+                  "ProposedPR"
+                ]
+              },
+              "scope_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "root_pin_sha256_claim": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "commit_sha_claim": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "provider": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "github",
+                      "gitlab"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "proposed_pr_historical_only": {
+                "type": "boolean"
+              },
+              "source_identity_authenticated": {
+                "const": false
+              }
+            }
+          },
+          "query_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "revision_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "counts": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "matched",
+              "matched_by_kind",
+              "returned",
+              "supplied"
+            ],
+            "properties": {
+              "supplied": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 96
+              },
+              "matched": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 96
+              },
+              "returned": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 25
+              },
+              "matched_by_kind": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "ci_evidence",
+                  "ci_metadata",
+                  "config",
+                  "observation",
+                  "run_preflight",
+                  "run_session",
+                  "sha_binding"
+                ],
+                "properties": {
+                  "ci_evidence": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 96
+                  },
+                  "ci_metadata": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 96
+                  },
+                  "config": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 96
+                  },
+                  "observation": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 96
+                  },
+                  "run_preflight": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 96
+                  },
+                  "run_session": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 96
+                  },
+                  "sha_binding": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 96
+                  }
+                }
+              }
+            }
+          },
+          "coverage": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "caller_linked_ec187_count",
+              "ci_pass_claim_count_not_verified",
+              "cross_source_mode_quality_equivalence_proven",
+              "filters_do_not_prove_absence_of_unmatched_evidence",
+              "gaps_in_supplied_evidence",
+              "git_object_bytes_hashed_by_ces",
+              "interrupted_ec187_count",
+              "missing_evidence_not_absence_proof",
+              "not_supplied_classes",
+              "output_truncated_ec187_count",
+              "performance_benchmark_measured",
+              "present_evidence_classes",
+              "provider_or_actor_independently_authenticated",
+              "quality_pass_independently_verified",
+              "query_is_read_only",
+              "repository_wide_config_covered",
+              "runner_isolation_independently_verified",
+              "scope_exactly_authorized",
+              "source_currentness_proven",
+              "source_mode_historical_proposal_only",
+              "supplied_batch_integrity_sha256_only",
+              "supplied_evidence_exhaustive"
+            ],
+            "properties": {
+              "scope_exactly_authorized": {
+                "const": true
+              },
+              "supplied_batch_integrity_sha256_only": {
+                "const": true
+              },
+              "supplied_evidence_exhaustive": {
+                "const": false
+              },
+              "missing_evidence_not_absence_proof": {
+                "const": true
+              },
+              "query_is_read_only": {
+                "const": true
+              },
+              "repository_wide_config_covered": {
+                "const": false
+              },
+              "source_currentness_proven": {
+                "const": false
+              },
+              "git_object_bytes_hashed_by_ces": {
+                "const": false
+              },
+              "provider_or_actor_independently_authenticated": {
+                "const": false
+              },
+              "runner_isolation_independently_verified": {
+                "const": false
+              },
+              "quality_pass_independently_verified": {
+                "const": false
+              },
+              "performance_benchmark_measured": {
+                "const": false
+              },
+              "cross_source_mode_quality_equivalence_proven": {
+                "const": false
+              },
+              "filters_do_not_prove_absence_of_unmatched_evidence": {
+                "const": true
+              },
+              "source_mode_historical_proposal_only": {
+                "type": "boolean"
+              },
+              "present_evidence_classes": {
+                "type": "array",
+                "uniqueItems": true,
+                "maxItems": 7,
+                "items": {
+                  "enum": [
+                    "ci_evidence",
+                    "ci_metadata",
+                    "config",
+                    "observation",
+                    "run_preflight",
+                    "run_session",
+                    "sha_binding"
+                  ]
+                }
+              },
+              "not_supplied_classes": {
+                "type": "array",
+                "uniqueItems": true,
+                "maxItems": 7,
+                "items": {
+                  "enum": [
+                    "ci_evidence",
+                    "ci_metadata",
+                    "config",
+                    "observation",
+                    "run_preflight",
+                    "run_session",
+                    "sha_binding"
+                  ]
+                }
+              },
+              "gaps_in_supplied_evidence": {
+                "type": "array",
+                "uniqueItems": true,
+                "maxItems": 20,
+                "items": {
+                  "enum": [
+                    "CAPTURED_OUTPUT_PREFIX_ONLY",
+                    "CI_CLAIM_NOT_INDEPENDENT_TEST_PROOF",
+                    "CI_TEST_NOT_INDEPENDENTLY_VERIFIED",
+                    "CONFIG_IS_NOT_TEST_EXECUTION",
+                    "CROSS_REQUEST_ATOMICITY_NOT_PROVEN",
+                    "EC187_RESULT_HAS_NO_SOURCE_PIN_BINDING",
+                    "GIT_OBJECT_NOT_HASHED",
+                    "HOST_EXECUTION_AND_REAP_UNATTESTED",
+                    "INTERRUPTED_OR_UNCONFIRMED_TERMINATION",
+                    "ISOLATION_NOT_INDEPENDENTLY_PROVEN",
+                    "LOCAL_REMOTE_REVISION_NOT_CORRELATED",
+                    "NOT_REPOSITORY_WIDE",
+                    "NO_BENCHMARK_OR_ATTESTED_RUNNER",
+                    "NO_EC187_EXTERNAL_SESSION_STARTED",
+                    "NO_HOST_EXECUTION_FROM_EC186",
+                    "PROVIDER_CONTENT_CLAIM_NOT_INDEPENDENT_TEST_EXECUTION",
+                    "PROVIDER_FIELD_EQUALITY_NOT_GIT_OBJECT_BYTES",
+                    "REMOTE_ATOMIC_SNAPSHOT_NOT_PROVEN",
+                    "RUN_LEVEL_REPORT_NOT_EXACT_JOB",
+                    "SOURCE_MODE_NOT_IN_EC182_RECEIPT"
+                  ]
+                }
+              },
+              "caller_linked_ec187_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 96
+              },
+              "interrupted_ec187_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 96
+              },
+              "output_truncated_ec187_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 96
+              },
+              "ci_pass_claim_count_not_verified": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 96
+              }
+            }
+          },
+          "page_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 25
+          },
+          "order": {
+            "const": "RECORDED_AT_UTC_DESC_EVIDENCE_SHA256_ASC"
+          },
+          "proof": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "authenticated_source_snapshot",
+              "cursor_is_permission_or_source_proof",
+              "host_claim_equivalent_to_independent_proof",
+              "receipt_checksum_is_authenticity_proof",
+              "tested_execution_confirmed",
+              "verified_quality_pass"
+            ],
+            "properties": {
+              "verified_quality_pass": {
+                "const": false
+              },
+              "authenticated_source_snapshot": {
+                "const": false
+              },
+              "tested_execution_confirmed": {
+                "const": false
+              },
+              "cursor_is_permission_or_source_proof": {
+                "const": false
+              },
+              "receipt_checksum_is_authenticity_proof": {
+                "const": false
+              },
+              "host_claim_equivalent_to_independent_proof": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "invalid_input",
+              "unavailable"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "scope": {
+            "const": null
+          },
+          "query_sha256": {
+            "const": null
+          },
+          "revision_sha256": {
+            "const": null
+          },
+          "counts": {
+            "const": null
+          },
+          "coverage": {
+            "const": null
+          },
+          "order": {
+            "const": null
+          },
+          "page_size": {
+            "const": null
+          },
+          "entries": {
+            "maxItems": 0
+          },
+          "next_cursor": {
+            "const": null
+          },
+          "cursor_expires_at_utc": {
+            "const": null
+          },
+          "proof": {
+            "const": null
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "invalid_input"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "exit_code": {
+                  "const": 4
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "exit_code": {
+                  "const": 5
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

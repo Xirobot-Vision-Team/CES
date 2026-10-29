@@ -1,0 +1,16 @@
+{
+  "_ces_fixture": "SYNTHETIC_ONLY_NEVER_LIVE_OR_VERIFIED",
+  "id": 202,
+  "iid": 8,
+  "target_project_id": 404,
+  "source_project_id": 405,
+  "state": "opened",
+  "title": "SYNTHETIC: must not be emitted",
+  "description": "SYNTHETIC: must not be emitted",
+  "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "diff_refs": {
+    "base_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "head_sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "start_sha": "cccccccccccccccccccccccccccccccccccccccc"
+  }
+}

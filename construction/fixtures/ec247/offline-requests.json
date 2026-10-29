@@ -1,0 +1,18 @@
+{
+  "schema": "ces.ec247.fixed_requests.v1",
+  "requests": [
+    {"schema":"ces.unified_action_router.request.v1","action":"Due","mode":"Evaluate","parameters":{"project_timezone":"UTC","cadence":"week","observed_at":"2026-10-24T12:00:00Z","never_processed":true}},
+    {"schema":"ces.unified_action_router.request.v1","action":"SchemaReview","mode":"Inventory","argv":[]},
+    {"schema":"ces.unified_action_router.request.v1","action":"SchemaReview","mode":"Audit","argv":[]},
+    {"schema":"ces.unified_action_router.request.v1","action":"IssueCreate","mode":"Eligibility","argv":[],"stdin_json":{}},
+    {"schema":"ces.unified_action_router.request.v1","action":"IssueCreate","mode":"Create"},
+    {"schema":"ces.unified_action_router.request.v1","action":"DeliveryPreview","mode":"Preview","parameters":{}},
+    {"schema":"ces.unified_action_router.request.v1","action":"DeliverySend","mode":"Send"},
+    {"schema":"ces.unified_action_router.request.v1","action":"DocsOnlyPublish","mode":"LocalSandbox"},
+    {"schema":"ces.unified_action_router.request.v1","action":"Collect","mode":"ProposedPR","argv":["--allow-network"]},
+    {"schema":"ces.unified_action_router.request.v1","action":"CodePrepare","mode":"MultiSource","argv":["--source-mode","WorkingTree"]},
+    {"schema":"ces.unified_action_router.request.v1","action":"CodeSave","mode":"Staged","argv":[]},
+    {"schema":"ces.unified_action_router.request.v1","action":"CodeSave","mode":"Snapshot"},
+    {"schema":"ces.unified_action_router.request.v1","action":"ReportPublish","mode":"PrivateTest"}
+  ]
+}

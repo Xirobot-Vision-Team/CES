@@ -1,0 +1,383 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/issue-create-write-result.v1.schema.json",
+  "title": "EC218 restricted NEW Issue provider write result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "all_existing_issues_enumerated",
+    "business_repository_written",
+    "comment_created",
+    "create_state",
+    "duplicate_absence_proven",
+    "durable_attempt_barrier_recorded",
+    "ec217_original_reservation_confirmed",
+    "exit_code",
+    "external_ai_called",
+    "external_final_text_may_have_been_disclosed",
+    "git_or_knowledge_written",
+    "issue_closed",
+    "issue_created",
+    "issue_edited",
+    "native_issue_action_registered",
+    "operation_sha256",
+    "organizational_authority_independently_authenticated_by_ces",
+    "permission_to_modify_existing_issues",
+    "provider_issue_identity_sha256",
+    "provider_post_invoked",
+    "provider_reported_created",
+    "provider_write_may_have_occurred",
+    "published_or_delivered",
+    "reason_code",
+    "remote_creation_independently_reread",
+    "safe_next_step",
+    "same_request_replay_blocked",
+    "schema",
+    "status",
+    "synthetic"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.issue_create_write.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "unavailable",
+        "invalid_input"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^ISSUE_CREATE_WRITE_[A-Z0-9_]{3,100}$"
+    },
+    "create_state": {
+      "enum": [
+        "INVALID_INPUT",
+        "BLOCKED",
+        "UNKNOWN",
+        "REJECTED_UNVERIFIED",
+        "PROVIDER_REPORTED_CREATED",
+        "SIMULATED_RESPONSE_MATCHED"
+      ]
+    },
+    "operation_sha256": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      ]
+    },
+    "provider_issue_identity_sha256": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      ]
+    },
+    "safe_next_step": {
+      "enum": [
+        "NO_AUTOMATIC_SECOND_POST",
+        "EC219_REMOTE_UNKNOWN_RECONCILIATION_NO_POST_RETRY"
+      ]
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "ec217_original_reservation_confirmed": {
+      "type": "boolean"
+    },
+    "durable_attempt_barrier_recorded": {
+      "type": "boolean"
+    },
+    "provider_post_invoked": {
+      "type": "boolean"
+    },
+    "same_request_replay_blocked": {
+      "type": "boolean"
+    },
+    "provider_reported_created": {
+      "type": "boolean"
+    },
+    "issue_created": {
+      "type": "boolean"
+    },
+    "remote_creation_independently_reread": {
+      "const": false
+    },
+    "provider_write_may_have_occurred": {
+      "type": "boolean"
+    },
+    "external_final_text_may_have_been_disclosed": {
+      "type": "boolean"
+    },
+    "permission_to_modify_existing_issues": {
+      "const": false
+    },
+    "issue_edited": {
+      "const": false
+    },
+    "issue_closed": {
+      "const": false
+    },
+    "comment_created": {
+      "const": false
+    },
+    "business_repository_written": {
+      "const": false
+    },
+    "git_or_knowledge_written": {
+      "const": false
+    },
+    "external_ai_called": {
+      "const": false
+    },
+    "published_or_delivered": {
+      "const": false
+    },
+    "native_issue_action_registered": {
+      "const": false
+    },
+    "all_existing_issues_enumerated": {
+      "const": false
+    },
+    "duplicate_absence_proven": {
+      "const": false
+    },
+    "organizational_authority_independently_authenticated_by_ces": {
+      "const": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "create_state": {
+            "const": "INVALID_INPUT"
+          }
+        },
+        "required": [
+          "create_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          },
+          "exit_code": {
+            "const": 4
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "create_state": {
+            "const": "UNKNOWN"
+          }
+        },
+        "required": [
+          "create_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          },
+          "exit_code": {
+            "const": 5
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "create_state": {
+            "enum": [
+              "BLOCKED",
+              "REJECTED_UNVERIFIED",
+              "PROVIDER_REPORTED_CREATED",
+              "SIMULATED_RESPONSE_MATCHED"
+            ]
+          }
+        },
+        "required": [
+          "create_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          },
+          "exit_code": {
+            "const": 2
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "create_state": {
+            "const": "PROVIDER_REPORTED_CREATED"
+          }
+        },
+        "required": [
+          "create_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "synthetic": {
+            "const": false
+          },
+          "issue_created": {
+            "const": true
+          },
+          "provider_reported_created": {
+            "const": true
+          },
+          "provider_post_invoked": {
+            "const": true
+          },
+          "durable_attempt_barrier_recorded": {
+            "const": true
+          },
+          "ec217_original_reservation_confirmed": {
+            "const": true
+          },
+          "provider_issue_identity_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "create_state": {
+            "const": "SIMULATED_RESPONSE_MATCHED"
+          }
+        },
+        "required": [
+          "create_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "synthetic": {
+            "const": true
+          },
+          "issue_created": {
+            "const": false
+          },
+          "provider_reported_created": {
+            "const": false
+          },
+          "provider_post_invoked": {
+            "const": true
+          },
+          "durable_attempt_barrier_recorded": {
+            "const": true
+          },
+          "ec217_original_reservation_confirmed": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "create_state": {
+            "not": {
+              "const": "PROVIDER_REPORTED_CREATED"
+            }
+          }
+        },
+        "required": [
+          "create_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "issue_created": {
+            "const": false
+          },
+          "provider_reported_created": {
+            "const": false
+          },
+          "provider_issue_identity_sha256": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "provider_post_invoked": {
+            "const": true
+          }
+        },
+        "required": [
+          "provider_post_invoked"
+        ]
+      },
+      "then": {
+        "properties": {
+          "durable_attempt_barrier_recorded": {
+            "const": true
+          },
+          "ec217_original_reservation_confirmed": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "durable_attempt_barrier_recorded": {
+            "const": true
+          }
+        },
+        "required": [
+          "durable_attempt_barrier_recorded"
+        ]
+      },
+      "then": {
+        "properties": {
+          "operation_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "ec217_original_reservation_confirmed": {
+            "const": true
+          }
+        }
+      }
+    }
+  ]
+}

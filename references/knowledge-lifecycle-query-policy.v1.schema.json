@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ces.local/knowledge-lifecycle-query-policy.v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "purpose",
+    "store_instance_id",
+    "store_scope_binding_sha256",
+    "query_authorization_scope_sha256",
+    "permission_receipt_sha256",
+    "permit_query_metadata",
+    "permit_source_snapshot_text",
+    "permit_private_version_text",
+    "permit_restricted_private_version_text",
+    "permit_term_search",
+    "permit_full_section_return",
+    "permit_source_knowledge_write",
+    "permit_local_metadata_append",
+    "permit_business_repository_write",
+    "permit_issue_or_provider_write",
+    "permit_docs_only_publish",
+    "permit_publish"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_lifecycle_query_policy.v1"
+    },
+    "purpose": {
+      "const": "knowledge_lifecycle_exact_local_read"
+    },
+    "store_instance_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "store_scope_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "query_authorization_scope_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permission_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permit_query_metadata": {
+      "const": true
+    },
+    "permit_source_snapshot_text": {
+      "type": "boolean"
+    },
+    "permit_private_version_text": {
+      "type": "boolean"
+    },
+    "permit_restricted_private_version_text": {
+      "type": "boolean"
+    },
+    "permit_term_search": {
+      "type": "boolean"
+    },
+    "permit_full_section_return": {
+      "type": "boolean"
+    },
+    "permit_source_knowledge_write": {
+      "const": false
+    },
+    "permit_local_metadata_append": {
+      "const": false
+    },
+    "permit_business_repository_write": {
+      "const": false
+    },
+    "permit_issue_or_provider_write": {
+      "const": false
+    },
+    "permit_docs_only_publish": {
+      "const": false
+    },
+    "permit_publish": {
+      "const": false
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schemas/publication-receipt-result.v1.schema.json",
+  "title": "CES EC230 independently permitted private receipt and local worktree cleanup",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "mode", "operation_id", "status", "exit_code", "reason_code", "receipt_state", "inspection_id", "observation_sha256", "evidence_kind", "historical_journal_present", "provider_receipt_read_attempted", "cleanup_attempted", "local_worktree_cleanup_confirmed", "public_or_production_published", "external_publication_confirmed", "original_post_or_push_retried", "remote_ref_or_provider_content_deleted", "original_journal_deleted", "original_source_or_index_modified"],
+  "properties": {
+    "schema": {"const": "ces.publication_receipt.v1"},
+    "mode": {"enum": ["EC228_PRIVATE_REPORT", "EC229_PRIVATE_DOCS"]},
+    "operation_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]},
+    "status": {"enum": ["partial", "blocked", "invalid_input", "unavailable"]},
+    "exit_code": {"enum": [2, 4, 5]},
+    "reason_code": {"type": "string", "pattern": "^PUBLICATION_RECEIPT_[A-Z0-9_]{4,160}$"},
+    "receipt_state": {"enum": ["UNKNOWN_UNCONFIRMED", "UNKNOWN_PRIVATE_REF_ABSENT", "UNKNOWN_PROVIDER_REPORTS_NOT_FOUND", "VERIFIED_PRIVATE_LOCAL_REF_ONLY", "SIGNED_PROVIDER_PRIVATE_TEST_RECORD_OBSERVED"]},
+    "inspection_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]},
+    "observation_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]},
+    "evidence_kind": {"enum": ["NONE", "LOCAL_GIT_PRIVATE_BARE_READBACK", "SIGNED_PROVIDER_PRIVATE_RECEIPT_READBACK"]},
+    "historical_journal_present": {"type": "boolean"},
+    "provider_receipt_read_attempted": {"type": "boolean"},
+    "cleanup_attempted": {"type": "boolean"},
+    "local_worktree_cleanup_confirmed": {"type": "boolean"},
+    "public_or_production_published": {"const": false},
+    "external_publication_confirmed": {"const": false},
+    "original_post_or_push_retried": {"const": false},
+    "remote_ref_or_provider_content_deleted": {"const": false},
+    "original_journal_deleted": {"const": false},
+    "original_source_or_index_modified": {"const": false}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "partial"}}}, "then": {"properties": {"exit_code": {"const": 2}}}},
+    {"if": {"properties": {"status": {"const": "blocked"}}}, "then": {"properties": {"exit_code": {"const": 4}}}},
+    {"if": {"properties": {"status": {"const": "invalid_input"}}}, "then": {"properties": {"exit_code": {"const": 4}}}},
+    {"if": {"properties": {"status": {"const": "unavailable"}}}, "then": {"properties": {"exit_code": {"const": 5}}}},
+    {"if": {"properties": {"local_worktree_cleanup_confirmed": {"const": true}}}, "then": {"properties": {"mode": {"const": "EC229_PRIVATE_DOCS"}, "cleanup_attempted": {"const": true}, "status": {"const": "partial"}, "receipt_state": {"const": "VERIFIED_PRIVATE_LOCAL_REF_ONLY"}}}}
+  ]
+}

@@ -1,0 +1,309 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/issue-unknown-recheck-result.v1.schema.json",
+  "title": "CES EC219 bounded remote Issue unknown-result recheck",
+  "description": "Only private digests and conservative state; never raw private text, issue number, path or credential. A sole exact match is NOT proof that EC218 created it.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.issue_unknown_recheck.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "unavailable",
+        "invalid_input"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^ISSUE_UNKNOWN_RECHECK_[A-Z0-9_]{3,128}$"
+    },
+    "recheck_state": {
+      "enum": [
+        "BLOCKED",
+        "INVALID_INPUT",
+        "UNKNOWN",
+        "SIMULATED_EXACT_CANDIDATE",
+        "REMOTE_EXACT_CANDIDATE_OBSERVED"
+      ]
+    },
+    "operation_sha256": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      ]
+    },
+    "provider_issue_identity_sha256": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      ]
+    },
+    "provider_get_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 13
+    },
+    "max_provider_get_count": {
+      "const": 13
+    },
+    "safe_next_step": {
+      "const": "NEVER_REPOST_OR_EDIT_FROM_RECHECK_RESULT"
+    },
+    "prior_ec218_attempt_confirmed": {
+      "type": "boolean"
+    },
+    "provider_get_attempted": {
+      "type": "boolean"
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "remote_exact_candidate_observed": {
+      "type": "boolean"
+    },
+    "remote_candidate_durable_recorded": {
+      "type": "boolean"
+    },
+    "issue_creation_attributed_to_ec218_attempt": {
+      "const": false
+    },
+    "issue_created": {
+      "const": false
+    },
+    "provider_post_invoked": {
+      "const": false
+    },
+    "issue_mutated": {
+      "const": false
+    },
+    "second_create_attempt_authorized": {
+      "const": false
+    },
+    "all_issues_enumerated": {
+      "const": false
+    },
+    "hidden_issues_ruled_out": {
+      "const": false
+    },
+    "duplicate_absence_proven": {
+      "const": false
+    },
+    "business_repository_written": {
+      "const": false
+    },
+    "git_or_knowledge_written": {
+      "const": false
+    },
+    "external_ai_called": {
+      "const": false
+    },
+    "published_or_delivered": {
+      "const": false
+    },
+    "native_issue_action_registered": {
+      "const": false
+    },
+    "organizational_authority_independently_authenticated_by_ces": {
+      "const": false
+    },
+    "provider_private_content_may_have_been_read": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "recheck_state",
+    "operation_sha256",
+    "provider_issue_identity_sha256",
+    "provider_get_count",
+    "max_provider_get_count",
+    "safe_next_step",
+    "prior_ec218_attempt_confirmed",
+    "provider_get_attempted",
+    "synthetic",
+    "remote_exact_candidate_observed",
+    "remote_candidate_durable_recorded",
+    "issue_creation_attributed_to_ec218_attempt",
+    "issue_created",
+    "provider_post_invoked",
+    "issue_mutated",
+    "second_create_attempt_authorized",
+    "all_issues_enumerated",
+    "hidden_issues_ruled_out",
+    "duplicate_absence_proven",
+    "business_repository_written",
+    "git_or_knowledge_written",
+    "external_ai_called",
+    "published_or_delivered",
+    "native_issue_action_registered",
+    "organizational_authority_independently_authenticated_by_ces",
+    "provider_private_content_may_have_been_read"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "recheck_state": {
+            "const": "REMOTE_EXACT_CANDIDATE_OBSERVED"
+          }
+        },
+        "required": [
+          "recheck_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          },
+          "exit_code": {
+            "const": 2
+          },
+          "synthetic": {
+            "const": false
+          },
+          "remote_exact_candidate_observed": {
+            "const": true
+          },
+          "remote_candidate_durable_recorded": {
+            "const": true
+          },
+          "prior_ec218_attempt_confirmed": {
+            "const": true
+          },
+          "provider_get_attempted": {
+            "const": true
+          },
+          "provider_issue_identity_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "remote_exact_candidate_observed": {
+            "const": false
+          },
+          "remote_candidate_durable_recorded": {
+            "const": false
+          },
+          "provider_issue_identity_sha256": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recheck_state": {
+            "const": "SIMULATED_EXACT_CANDIDATE"
+          }
+        },
+        "required": [
+          "recheck_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "synthetic": {
+            "const": true
+          },
+          "status": {
+            "const": "partial"
+          },
+          "exit_code": {
+            "const": 2
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recheck_state": {
+            "const": "UNKNOWN"
+          }
+        },
+        "required": [
+          "recheck_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          },
+          "exit_code": {
+            "const": 5
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recheck_state": {
+            "const": "INVALID_INPUT"
+          }
+        },
+        "required": [
+          "recheck_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          },
+          "exit_code": {
+            "const": 4
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "provider_get_count": {
+            "minimum": 1
+          }
+        },
+        "required": [
+          "provider_get_count"
+        ]
+      },
+      "then": {
+        "properties": {
+          "provider_get_attempted": {
+            "const": true
+          }
+        }
+      }
+    }
+  ]
+}

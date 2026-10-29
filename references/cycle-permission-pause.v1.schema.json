@@ -1,0 +1,409 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "record_kind",
+    "pause_id",
+    "run_id",
+    "step_id",
+    "status",
+    "reason_code",
+    "wait_reason",
+    "created_at_utc",
+    "clock_trust",
+    "metadata_binding",
+    "route_binding",
+    "budget_observation",
+    "permission_gate",
+    "remaining_step_ids",
+    "trust",
+    "effects",
+    "pause_sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.cycle_permission_pause.v1"
+    },
+    "record_kind": {
+      "const": "PERMISSION_DENIAL_CHECKPOINT_ONLY"
+    },
+    "pause_id": {
+      "type": "string",
+      "pattern": "^pause_v1_[0-9a-f]{48}$"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^run_v1_[0-9a-f]{48}$"
+    },
+    "step_id": {
+      "type": "string",
+      "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$"
+    },
+    "status": {
+      "enum": [
+        "PAUSED_AWAITING_PERMISSION",
+        "PAUSED_PERMISSION_DECLINED"
+      ]
+    },
+    "reason_code": {
+      "enum": [
+        "CYCLE_PAUSE_EXPLICIT_PERSIST_APPROVAL_REQUIRED",
+        "CYCLE_PAUSE_OPERATOR_DECLINED_NO_APPROVAL"
+      ]
+    },
+    "wait_reason": {
+      "enum": [
+        "EXPLICIT_CODE_SAVE_APPROVE_PERSIST_REQUIRED",
+        "OPERATOR_DECLINED_NO_DISPATCH"
+      ]
+    },
+    "created_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}Z$"
+    },
+    "clock_trust": {
+      "const": "UNVERIFIED_HOST_UTC"
+    },
+    "metadata_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_sha256",
+        "action_set_sha256",
+        "input_sha256",
+        "graph_sha256",
+        "proposal_sha256",
+        "source_ref",
+        "input_byte_length",
+        "actor_origin",
+        "actor_subject"
+      ],
+      "properties": {
+        "record_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "action_set_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "input_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "graph_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "proposal_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_ref": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+\\-]{0,127}$"
+        },
+        "input_byte_length": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1048576
+        },
+        "actor_origin": {
+          "enum": [
+            "human",
+            "service",
+            "external"
+          ]
+        },
+        "actor_subject": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/+\\-]{0,127}$"
+        }
+      }
+    },
+    "route_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action",
+        "declared_mode",
+        "effective_mode",
+        "route_id",
+        "entrypoint",
+        "entrypoint_sha256",
+        "handler_file",
+        "handler_symbol",
+        "handler_sha256",
+        "runtime_verified",
+        "read_only",
+        "required_switch"
+      ],
+      "properties": {
+        "action": {
+          "const": "CodeSave"
+        },
+        "declared_mode": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[Ss][Nn][Aa][Pp][Ss][Hh][Oo][Tt]$"
+            }
+          ]
+        },
+        "effective_mode": {
+          "const": "Snapshot"
+        },
+        "route_id": {
+          "const": "CodeSave:Snapshot"
+        },
+        "entrypoint": {
+          "const": "scripts/ces.ps1"
+        },
+        "entrypoint_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "handler_file": {
+          "const": "scripts/codesave.ps1"
+        },
+        "handler_symbol": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,120}$"
+        },
+        "handler_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "runtime_verified": {
+          "const": false
+        },
+        "read_only": {
+          "const": false
+        },
+        "required_switch": {
+          "const": "ApprovePersist"
+        }
+      }
+    },
+    "budget_observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inspection_result_schema",
+        "inspection_status",
+        "inspection_sha256",
+        "admitted_inspections",
+        "output_bytes",
+        "enforcement_scope"
+      ],
+      "properties": {
+        "inspection_result_schema": {
+          "const": "ces.cycle_budget_result.v1"
+        },
+        "inspection_status": {
+          "const": "AWAIT_OPERATOR_ONLY"
+        },
+        "inspection_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "admitted_inspections": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "output_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8388608
+        },
+        "enforcement_scope": {
+          "const": "READ_ONLY_NEXT_INSPECTION_AND_OWN_SERIALIZED_BYTES_ONLY"
+        }
+      }
+    },
+    "permission_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operator_response",
+        "observation_trust",
+        "requirement",
+        "independent_approval_verified",
+        "approval_token_issued",
+        "gate_result"
+      ],
+      "properties": {
+        "operator_response": {
+          "enum": [
+            "NOT_PROVIDED",
+            "DECLINED"
+          ]
+        },
+        "observation_trust": {
+          "const": "UNVERIFIED_OPERATOR_DECLARATION"
+        },
+        "requirement": {
+          "const": "INDEPENDENT_EXPLICIT_NATIVE_APPROVE_PERSIST"
+        },
+        "independent_approval_verified": {
+          "const": false
+        },
+        "approval_token_issued": {
+          "const": false
+        },
+        "gate_result": {
+          "const": "DENY"
+        }
+      }
+    },
+    "remaining_step_ids": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$"
+      }
+    },
+    "trust": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metadata_authenticated",
+        "input_authenticated",
+        "actor_verified",
+        "handler_runtime_verified",
+        "permission_verified",
+        "execution_verified"
+      ],
+      "properties": {
+        "metadata_authenticated": {
+          "const": false
+        },
+        "input_authenticated": {
+          "const": false
+        },
+        "actor_verified": {
+          "const": false
+        },
+        "handler_runtime_verified": {
+          "const": false
+        },
+        "permission_verified": {
+          "const": false
+        },
+        "execution_verified": {
+          "const": false
+        }
+      }
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pause_persisted",
+        "steps_executed",
+        "handler_invoked",
+        "permission_granted",
+        "write_authorized",
+        "can_resume",
+        "dependents_advanced",
+        "native_cycle_registered"
+      ],
+      "properties": {
+        "pause_persisted": {
+          "const": true
+        },
+        "steps_executed": {
+          "const": false
+        },
+        "handler_invoked": {
+          "const": false
+        },
+        "permission_granted": {
+          "const": false
+        },
+        "write_authorized": {
+          "const": false
+        },
+        "can_resume": {
+          "const": false
+        },
+        "dependents_advanced": {
+          "const": false
+        },
+        "native_cycle_registered": {
+          "const": false
+        }
+      }
+    },
+    "pause_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schemas/cycle-permission-pause.v1.schema.json",
+  "title": "CES EC235 immutable, private, denial-only Cycle permission pause",
+  "description": "Saved data cannot authorize CodeSave, resume, or dependency progress; actual storage and hash/source verification must be done by the Python implementation.",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "permission_gate": {
+            "properties": {
+              "operator_response": {
+                "const": "NOT_PROVIDED"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "PAUSED_AWAITING_PERMISSION"
+          },
+          "reason_code": {
+            "const": "CYCLE_PAUSE_EXPLICIT_PERSIST_APPROVAL_REQUIRED"
+          },
+          "wait_reason": {
+            "const": "EXPLICIT_CODE_SAVE_APPROVE_PERSIST_REQUIRED"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "permission_gate": {
+            "properties": {
+              "operator_response": {
+                "const": "DECLINED"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "PAUSED_PERMISSION_DECLINED"
+          },
+          "reason_code": {
+            "const": "CYCLE_PAUSE_OPERATOR_DECLINED_NO_APPROVAL"
+          },
+          "wait_reason": {
+            "const": "OPERATOR_DECLINED_NO_DISPATCH"
+          }
+        }
+      }
+    }
+  ]
+}

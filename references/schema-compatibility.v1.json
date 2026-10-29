@@ -1,0 +1,141 @@
+{
+  "schema_version": "ces.schema_compatibility_policy.v1",
+  "release": "EC-158",
+  "construction_package": "V4.68/R158",
+  "runtime_cli_embedded_identity": "V4.60/R150",
+  "policy_scope": "OFFLINE_READ_ONLY_INSPECTION_AND_UPGRADE_PREVIEW; NO_RUNTIME_SCHEMA_CHANGE",
+  "governing_runtime_sources": [
+    "scripts/ces.ps1::New-Envelope/Finish",
+    "scripts/reconcile.ps1::Assert-ReconcileSnapshot",
+    "scripts/codeprepare.ps1::CodePrepare-Snapshot",
+    "scripts/codevalidate.ps1::Assert-CodeValidateDraftShape",
+    "scripts/codesave.ps1::CodeSave-Snapshot",
+    "scripts/codeshow.ps1::Assert-CodeShowRecordShape/Read-CodeShowRecord",
+    "scripts/codesave.ps1::$script:CodeSaveOwnerJson"
+  ],
+  "schema_families": [
+    {
+      "family": "cli_response",
+      "version_field": "schema_version",
+      "version": "ces.cli.v1",
+      "source_placement": "top-level -Json CLI envelope (16 required keys; 31 known coverage flags)",
+      "unknown_field_policy": "top-level additions and data payload are opaque, known coverage typed, unknown coverage booleans retained but not trusted",
+      "field_absence_policy": "16 top-level keys required, including data whose explicit null is valid; no implicit missing-key defaults",
+      "reader": "construction/response_contract.py::evaluate",
+      "max_offline_bytes": 134217728,
+      "mutation_authorized": false
+    },
+    {
+      "family": "collect_snapshot",
+      "version_field": "schema_version",
+      "version": "ces.cli.v1",
+      "source_placement": "user-saved Collect success/partial envelope, NOT ces.collect.v1",
+      "unknown_field_policy": "response envelope/opaque data extension policy plus stricter source-mode and evidence checks by native Reconcile",
+      "field_absence_policy": "required evidence data.subject/snapshot, atomic=false; no fallback for selector or content hash",
+      "reader": "scripts/reconcile.ps1::Assert-ReconcileSnapshot (native authority); construction/schema_compat.py (offline shape subset)",
+      "max_offline_bytes": 4194304,
+      "mutation_authorized": false
+    },
+    {
+      "family": "code_packet",
+      "version_field": "schema_version",
+      "version": "ces.code_packet.v1",
+      "source_placement": "CodePrepare data.review_packet, not root CLI response version",
+      "unknown_field_policy": "fixed top-level packet keys; nested source excerpts opaque to offline probe",
+      "field_absence_policy": "all top-level packet keys required; packet hash is over native serialized review_packet text",
+      "reader": "scripts/codeprepare.ps1 / scripts/codevalidate.ps1 (native); offline shape subset",
+      "max_offline_bytes": 67108864,
+      "mutation_authorized": false
+    },
+    {
+      "family": "code_insight_draft",
+      "version_field": "schema_version",
+      "version": "ces.code_insight_draft.v1",
+      "source_placement": "user-authored CodeValidate input file (not a trusted saved record)",
+      "unknown_field_policy": "fixed root/finding keys; only line_start and line_end are jointly optional",
+      "field_absence_policy": "no default for hash, findings, summary, limitations; omitted line_start/end is allowed and not verification",
+      "reader": "scripts/codevalidate.ps1::Assert-CodeValidateDraftShape (native); offline shape subset",
+      "max_offline_bytes": 262144,
+      "mutation_authorized": false
+    },
+    {
+      "family": "code_insight_saved",
+      "version_field": "schema_version",
+      "version": "ces.code_insight_saved.v1",
+      "source_placement": "<verified main worktree>/.codex/ces/code-insights/ci-<raw SHA256>.json",
+      "unknown_field_policy": "reject unknown root/finding keys; no silently ignored provenance/proof fields",
+      "field_absence_policy": "all 18 record and all 15 checked-finding keys required; claimed-line pair fields must be explicitly null when absent; no schema defaults",
+      "reader": "scripts/codeshow.ps1::Read-CodeShowRecord (native authority); offline bounded raw-byte reader",
+      "record_identity": "sha256 of exact UTF-8 file bytes; filename ci-<64 lowercase hex>.json; JSON reserialization changes identity",
+      "max_offline_bytes": 524288,
+      "mutation_authorized": false
+    },
+    {
+      "family": "local_store_owner",
+      "version_field": "schema_version",
+      "version": "ces.local_store.v1",
+      "source_placement": "<verified main worktree>/.codex/ces/owner.json",
+      "unknown_field_policy": "fixed three fields and exact authored UTF-8 bytes; do not relax owner marker on read",
+      "field_absence_policy": "all marker fields required and bytes exact; no default or auto-repair",
+      "reader": "scripts/codeshow.ps1::Assert-CodeShowOwnerMarker; offline exact-bytes probe",
+      "max_offline_bytes": 512,
+      "mutation_authorized": false
+    }
+  ],
+  "embedded_not_independent_versions": [
+    {
+      "version": "ces.code_insight_checked.v1",
+      "source_placement": "CodeValidate ces.cli.v1 envelope data.output_schema",
+      "reason": "An internal ephemeral validated result; not a file-format selector or separate on-disk migration source"
+    },
+    {
+      "version": "ces.code_packet.v1",
+      "source_placement": "CodePrepare ces.cli.v1 envelope data.review_packet.schema_version",
+      "reason": "Nested versioned packet object, not an alternative outer wire-schema version."
+    },
+    {
+      "version": "ces.code_insight_saved.v1",
+      "source_placement": "CodeSave ces.cli.v1 envelope data.record_schema and corresponding record_id/record_sha256 receipt",
+      "reason": "An output reference to a separately saved v1 content-addressed file; the inline receipt is not the saved body itself."
+    },
+    {
+      "version": "ces.cli.v1",
+      "source_placement": "CodeShow Sequence/Details response envelope, including frozen k1..56 deep data",
+      "reason": "Never convert nested CodeShow data or mistake k levels for wire schema versions"
+    }
+  ],
+  "read_dispositions": {
+    "READ_COMPATIBLE_V1": "Exact known tag and family-compatible offline structure; does not attest source/root/author/semantic truth",
+    "REJECT_UNVERSIONED_OR_UNKNOWN": "Missing, mistyped or future schema tag; no implicit v1 or newest-version fallback",
+    "REJECT_INVALID_V1": "Known tag with wrong family, illegal field, identity mismatch, proof assertion, size or BOM",
+    "REJECT_UNREADABLE_INPUT": "Input inaccessible, unsafe path, UTF-8/JSON/duplicate/depth failure"
+  },
+  "versioning": {
+    "distinct_namespaces": "Use explicit family tag + .vN; construction package V4.68, embedded CLI product_version V4.60 and its build R150 are NOT schema versions",
+    "additive_changes": "Do not relax strict saved-record v1 parser; ship an opt-in declared new schema and explicit version-selected adapter",
+    "breaking_changes": "Use new version tag with documented typed defaults only for new reader-view fields; no reinterpretation of v1 persisted claims",
+    "unknown_future_version": "FAIL_CLOSED_NO_FALLBACK",
+    "unknown_fields": "Envelope extra properties only as opaque uninterpreted data; reject extras in v1 saved/draft/owner/packet fixed structures",
+    "no_version_tag": "FAIL_CLOSED; never infer from a filename, JSON shape or CLI product/build",
+    "normalization": "NO_PERSISTED_NORMALIZATION; never parse then reserialize an original ci- content-addressed record"
+  },
+  "migration": {
+    "implemented_transformations": [],
+    "identity_only": "Known validated v1 to same v1 = no-op, no writes",
+    "future_candidate": "Any v2 transition requires a separately reviewed version-specific transformation, stable input SHA/ID, opt-in preview and explicit write authorization; NONE exists in EC-158",
+    "destination_policy": "When authorized in a future EC, new immutable content-addressed object only, never replace prior owner or record; require distinct new ID and no-clobber placement",
+    "rollback_policy": "Retain original bytes and IDs. Rollback changes active selection/pointer only in a future separately authorized versioned mechanism; never silently delete/overwrite historical data",
+    "preconditions": [
+      "Re-evaluate SECURITY_BOUNDARIES.json permission and main-root/Git constraints",
+      "Verify exact original record bytes/ID and source-provenance limitations",
+      "Do not migrate existing business source/Git objects or publish to a remote service",
+      "Reject any unknown version/field/default rather than speculative conversion"
+    ]
+  },
+  "scope_limitations": [
+    "Offline tool does not invoke PowerShell, Git, CodeShow or CodeSave; it does not authenticate a repo, data origin or stable snapshots",
+    "Offline validation is a shape/identity subset; native Reconcile and CodeValidate include more source-dependent constraints",
+    "A matching SHA is ordinary corruption detection, not a signature or trusted timestamp",
+    "No Windows/macOS/PowerShell7 native, E63-E66 performance or remote/provider/end-to-end acceptance was performed"
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_update_handoff_policy.v1"
+    },
+    "purpose": {
+      "const": "prepare_local_knowledge_update_draft_only"
+    },
+    "store_instance_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "store_scope_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "selection_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "authorization_scope_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permission_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permit_handoff_draft_prepare": {
+      "type": "boolean"
+    },
+    "permit_selected_candidate_provenance_read": {
+      "type": "boolean"
+    },
+    "permit_selected_candidate_text_read": {
+      "type": "boolean"
+    },
+    "permit_restricted_local_draft": {
+      "type": "boolean"
+    },
+    "permit_multi_candidate_draft": {
+      "type": "boolean"
+    },
+    "permit_external_ai_transfer": {
+      "const": false
+    },
+    "permit_ai_execution": {
+      "const": false
+    },
+    "permit_knowledge_save": {
+      "const": false
+    },
+    "permit_authoritative_knowledge_write": {
+      "const": false
+    },
+    "permit_repository_or_issue_write": {
+      "const": false
+    },
+    "permit_publish": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema",
+    "purpose",
+    "store_instance_id",
+    "store_scope_binding_sha256",
+    "selection_binding_sha256",
+    "authorization_scope_sha256",
+    "permission_receipt_sha256",
+    "permit_handoff_draft_prepare",
+    "permit_selected_candidate_provenance_read",
+    "permit_selected_candidate_text_read",
+    "permit_restricted_local_draft",
+    "permit_multi_candidate_draft",
+    "permit_external_ai_transfer",
+    "permit_ai_execution",
+    "permit_knowledge_save",
+    "permit_authoritative_knowledge_write",
+    "permit_repository_or_issue_write",
+    "permit_publish"
+  ]
+}

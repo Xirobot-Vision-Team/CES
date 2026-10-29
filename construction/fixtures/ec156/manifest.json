@@ -1,0 +1,38 @@
+{
+  "status": "ILLUSTRATIVE_SYNTHETIC_FIXTURES_NOT_CLI_OUTPUT",
+  "generated_in_ec": "EC-156",
+  "shell_git_repo_run": false,
+  "scenarios": [
+    {
+      "file": "success.json",
+      "expected_process_exit_code": 0,
+      "status": "success"
+    },
+    {
+      "file": "partial.json",
+      "expected_process_exit_code": 2,
+      "status": "partial"
+    },
+    {
+      "file": "not_implemented.json",
+      "expected_process_exit_code": 3,
+      "status": "not_implemented"
+    },
+    {
+      "file": "invalid_input.json",
+      "expected_process_exit_code": 4,
+      "status": "invalid_input"
+    },
+    {
+      "file": "unavailable.json",
+      "expected_process_exit_code": 5,
+      "status": "unavailable"
+    },
+    {
+      "file": "codesave_denied.json",
+      "expected_process_exit_code": 4,
+      "status": "invalid_input"
+    }
+  ],
+  "warning": "Example fields are synthetic to exercise consumer behavior. They do not attest to a repository, Git operation, successful CLI invocation, or write authorization."
+}

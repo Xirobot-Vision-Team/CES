@@ -1,0 +1,2307 @@
+{
+  "plan_id": "CES-RECOVERY-100",
+  "plan_revision": "PLAN-REV-002",
+  "baseline": "V4.60/R150/EC-150",
+  "first": "EC-151",
+  "last": "EC-250",
+  "rule": "One EC per round; full skill ZIP; EC250 is limited implementation, not candidate freeze. Additional implementation rounds must be separately planned; acceptance after all functionality is genuinely complete.",
+  "unknown_original": "Original V3.10 and ROUNDS.json unavailable; NOT a reconstruction of their exact contents",
+  "phases": [
+    {
+      "id": "A",
+      "name": "基线订正与契约治理",
+      "range": "R151-R160",
+      "count": 10
+    },
+    {
+      "id": "B",
+      "name": "远程提议与实际交付证据",
+      "range": "R161-R170",
+      "count": 10
+    },
+    {
+      "id": "C",
+      "name": "AI交接与Finding闭环",
+      "range": "R171-R180",
+      "count": 10
+    },
+    {
+      "id": "D",
+      "name": "质量与CI",
+      "range": "R181-R190",
+      "count": 10
+    },
+    {
+      "id": "E",
+      "name": "定期报告",
+      "range": "R191-R200",
+      "count": 10
+    },
+    {
+      "id": "F",
+      "name": "知识库和架构影响",
+      "range": "R201-R210",
+      "count": 10
+    },
+    {
+      "id": "G",
+      "name": "Issue读取、匹配与新建",
+      "range": "R211-R220",
+      "count": 10
+    },
+    {
+      "id": "H",
+      "name": "交付与发布",
+      "range": "R221-R230",
+      "count": 10
+    },
+    {
+      "id": "I",
+      "name": "Cycle与断点续建",
+      "range": "R231-R240",
+      "count": 10
+    },
+    {
+      "id": "J",
+      "name": "全功能收口与最终验收移交",
+      "range": "R241-R250",
+      "count": 10
+    }
+  ],
+  "rounds": [
+    {
+      "round": 151,
+      "ec": "EC-151",
+      "phase": "A",
+      "phase_name": "基线订正与契约治理",
+      "title": "原包305路径与脚本依赖复核",
+      "scope": "形成原始文件证据清单，确认124个PS源码、15套Smoke未缺失",
+      "exit_gate": "静态路径与哈希对账完成；任何缺失记录为阻塞",
+      "depends_on": [
+        "EC-150 (provenance only; runtime acceptance unverified)"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_STATIC_AND_FIXTURE_ONLY; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation_artifacts": [
+        "construction/source_audit.py",
+        "construction/LEGACY_SOURCE_INVENTORY.json",
+        "construction/LEGACY_DEPENDENCY_MAP.json",
+        "EC-151.md"
+      ],
+      "development_result": "STATIC_AUDIT_PASS_NATIVE_RUNTIME_NOT_RUN"
+    },
+    {
+      "round": 152,
+      "ec": "EC-152",
+      "phase": "A",
+      "phase_name": "基线订正与契约治理",
+      "title": "现有7个CLI Action回溯映射",
+      "scope": "建立Inspect/Collect/Reconcile/CodePrepare/CodeValidate/CodeSave/CodeShow功能→代码→Smoke映射",
+      "exit_gate": "所有既有Action均有定位文件及限制条件",
+      "depends_on": [
+        "EC-151"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_STATIC_AND_FIXTURE_ONLY; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation_artifacts": [
+        "construction/ACTION_TRACE.json",
+        "construction/trace_actions.py",
+        "construction/test_trace_actions.py",
+        "EC-152.md"
+      ],
+      "development_result": "7_ACTIONS_16_SOURCE_ROUTES_15_SMOKE_REFERENCES_STATIC_PASS_NATIVE_RUNTIME_NOT_RUN"
+    },
+    {
+      "round": 153,
+      "ec": "EC-153",
+      "phase": "A",
+      "phase_name": "基线订正与契约治理",
+      "title": "V3.10/ROUNDS缺口专项登记",
+      "scope": "核对缺失的冻结规格与原ROUNDS.json；标注不可证明事项",
+      "exit_gate": "不得以新100轮规划冒充原冻结方案",
+      "depends_on": [
+        "EC-152"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_STATIC_AND_FIXTURE_ONLY; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation_artifacts": [
+        "construction/LEGACY_UPSTREAM_GAP.json",
+        "construction/upstream_gap.py",
+        "construction/test_upstream_gap.py",
+        "EC-153.md"
+      ],
+      "development_result": "UPSTREAM_ABSENCE_SCOPED_B001_OPEN_CANDIDATE_DIFF_TOOL_NATIVE_RUNTIME_NOT_RUN"
+    },
+    {
+      "round": 154,
+      "ec": "EC-154",
+      "phase": "A",
+      "phase_name": "基线订正与契约治理",
+      "title": "CodeShow膨胀分支依赖审计",
+      "scope": "确认Sequence及k1..56模块导入、递归依赖与兼容性边界",
+      "exit_gate": "冻结高阶扩阶；列出回归风险及性能风险",
+      "depends_on": [
+        "EC-153"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_STATIC_AND_FIXTURE_ONLY; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation_artifacts": [
+        "construction/sequence_audit.py",
+        "construction/LEGACY_SEQUENCE_AUDIT.json",
+        "construction/test_sequence_audit.py",
+        "EC-154.md"
+      ],
+      "development_result": "56_K_MODULES_19_DIRECT_PARENT_REPLAYS_PUBLIC_JSON_SHAPE_FROZEN_R150_SHA_MATCH_NATIVE_RUNTIME_NOT_RUN"
+    },
+    {
+      "round": 155,
+      "ec": "EC-155",
+      "phase": "A",
+      "phase_name": "基线订正与契约治理",
+      "title": "统一CLI Action/Mode注册契约",
+      "scope": "建立已实现/未实现Action及Mode机器可读注册表",
+      "exit_gate": "未知Action保留NOT_IMPLEMENTED；避免伪成功",
+      "depends_on": [
+        "EC-154"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_STATIC_AND_FIXTURE_ONLY; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation_artifacts": [
+        "references/cli-action-mode-registry.json",
+        "construction/action_registry.py",
+        "construction/test_action_registry.py",
+        "EC-155.md"
+      ],
+      "development_result": "7_ACTION_16_AUTHORED_ROUTES_29_PLANNED_BLOCKED_MODE_POLICY_RESOLUTION_STATIC_MATCH_NATIVE_RUNTIME_NOT_RUN"
+    },
+    {
+      "round": 156,
+      "ec": "EC-156",
+      "phase": "A",
+      "phase_name": "基线订正与契约治理",
+      "title": "JSON响应、退出码与覆盖率契约",
+      "scope": "整理status/reason_code/evidence/coverage与退出码0/2/3/4/5",
+      "exit_gate": "契约样例完整；不变更原有成功响应",
+      "depends_on": [
+        "EC-155"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_STATIC_AND_FIXTURE_ONLY; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED"
+    },
+    {
+      "round": 157,
+      "ec": "EC-157",
+      "phase": "A",
+      "phase_name": "基线订正与契约治理",
+      "title": "安全边界与授权场景检查",
+      "scope": "验证分析对象只读、CES元数据写入及外部写操作分离",
+      "exit_gate": "无授权写入路径一律阻断且有拒绝原因",
+      "depends_on": [
+        "EC-156"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_STATIC_AND_SOURCE_PATCH_ONLY; NATIVE_POWER_SHELL_SECURITY_CASES_NOT_RUN; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED"
+    },
+    {
+      "round": 158,
+      "ec": "EC-158",
+      "phase": "A",
+      "phase_name": "基线订正与契约治理",
+      "title": "数据Schema与向后兼容策略",
+      "scope": "规划schema_version、迁移、历史CodeInsight兼容与未知字段处理",
+      "exit_gate": "新Schema不会重写旧记录；提供升级/回退约束",
+      "depends_on": [
+        "EC-157"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_STATIC_AND_FIXTURE_ONLY; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implemented": {
+        "artifact": "EC-158.md",
+        "scope": "Offline v1 family recognition, read-only historic CodeInsight byte/field verification, fail-closed no-write upgrade preview and future rollback policy. No PowerShell changes or actual migration.",
+        "contract": "references/schema-compatibility.v1.json",
+        "native_runtime_validation": "NOT_RUN"
+      }
+    },
+    {
+      "round": 159,
+      "ec": "EC-159",
+      "phase": "A",
+      "phase_name": "基线订正与契约治理",
+      "title": "工作目录、身份与稳定路径通用库",
+      "scope": "统一RepoPath/actor_key/realpath/证据路径与日志脱敏工具",
+      "exit_gate": "跨模块一致校验，路径穿越与不稳定主体被拒绝",
+      "depends_on": [
+        "EC-158"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "SOURCE_REVIEW_AND_LIMITED_STATIC_CONTRACT_CHECKS; NATIVE_POWERSHELL_GIT_SYMLINK_TESTS_AND_FINAL_ASSISTED_ACCEPTANCE_NOT_RUN"
+    },
+    {
+      "round": 160,
+      "ec": "EC-160",
+      "phase": "A",
+      "phase_name": "基线订正与契约治理",
+      "title": "首阶段施工静态闸门",
+      "scope": "整合计划核查、版本对账、模块引用、文档连接、测试用例清单",
+      "exit_gate": "仅记录开发自检状态；不把它记为最终验收",
+      "depends_on": [
+        "EC-159"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_STATIC_GATE_IMPLEMENTED; FINAL_USER_ASSISTED_ACCEPTANCE_NOT_STARTED"
+    },
+    {
+      "round": 161,
+      "ec": "EC-161",
+      "phase": "B",
+      "phase_name": "远程提议与实际交付证据",
+      "title": "ProposedPR只读源适配器",
+      "scope": "定义托管服务PR只读接口和凭据注入，不内置密钥",
+      "exit_gate": "无授权或离线返回unavailable，不能伪造PR",
+      "depends_on": [
+        "EC-160"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "22_OFFLINE_SYNTHETIC_FIXTURES_PASSED; PROVIDER_LIVE_AND_NATIVE_COLLECT_NOT_RUN; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED"
+    },
+    {
+      "round": 162,
+      "ec": "EC-162",
+      "phase": "B",
+      "phase_name": "远程提议与实际交付证据",
+      "title": "PR身份与base/head事实确认",
+      "scope": "按仓库远程标识及不可变SHA锁定PR候选",
+      "exit_gate": "PR编号不能单独代表稳定diff",
+      "depends_on": [
+        "EC-161"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "27_EC162_OFFLINE_FOCUSED_TESTS_PASSED_INCLUDING_OPTIONAL_LOCAL_TEMP_GIT;22_EC161_INHERITED_OFFLINE_TESTS_PASSED;ACTUAL_PROVIDER_AND_NATIVE_POWERSHELL_NOT_RUN;FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED"
+    },
+    {
+      "round": 163,
+      "ec": "EC-163",
+      "phase": "B",
+      "phase_name": "远程提议与实际交付证据",
+      "title": "ProposedPR变更路径元数据",
+      "scope": "实现文件状态、改名两端、差异统计的保守采集",
+      "exit_gate": "完整/截断覆盖率可区分，路径安全",
+      "depends_on": [
+        "EC-162"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "29_OFFLINE_FOCUSED_DEV_CASES_PASS; LIVE_PROVIDERS_NATIVE_CLI_AND_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/proposed_pr_paths.py",
+        "construction/test_proposed_pr_paths.py",
+        "construction/fixtures/ec163/",
+        "references/proposed-pr-paths.v1.json",
+        "references/proposed-pr-paths.md",
+        "EC-163.md"
+      ],
+      "development_result": "BOUNDED_GITHUB_FILES_AND_GITLAB_DIFFS_PATH_METADATA; EC162_PRE_POST_PIN_DRIFT_GUARD; EXACT_COUNT_AND_PAGINATION_COVERAGE; PATCH_NOT_EMITTED; NO_NATIVE_COLLECT"
+    },
+    {
+      "round": 164,
+      "ec": "EC-164",
+      "phase": "B",
+      "phase_name": "远程提议与实际交付证据",
+      "title": "ProposedPR补丁敏感内容开关",
+      "scope": "提供受控patch读取与保密内容边界",
+      "exit_gate": "默认不暴露源代码，显式开启才返回限定内容",
+      "depends_on": [
+        "EC-163"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "33_OFFLINE_FOCUSED_PATCH_DEV_CASES_PASS; INHERITED_EC163_29_EC162_27_EC161_22_PASS; LIVE_PROVIDER_NATIVE_CLI_OS_AND_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/proposed_pr_patch.py",
+        "construction/proposed_pr_paths.py",
+        "construction/test_proposed_pr_patch.py",
+        "construction/fixtures/ec164/",
+        "references/proposed-pr-patch.v1.json",
+        "references/proposed-pr-patch.md",
+        "EC-164.md"
+      ],
+      "development_result": "DEFAULT_NO_PATCH; EXPLICIT_CONTENT_PERMISSION_NETWORK_BUDGET_EXACT_SELECTION; EC163_PIN_PRE_POST_AND_COMPLETE_PATH_COVERAGE; BOUNDED_PATCH_TEXT_WITHHELD_ON_SENSITIVE_OR_TRUNCATED; NO_ATOMIC_DIFF_OR_NATIVE_COLLECT_OR_WRITE"
+    },
+    {
+      "round": 165,
+      "ec": "EC-165",
+      "phase": "B",
+      "phase_name": "远程提议与实际交付证据",
+      "title": "ProposedPR证据快照绑定",
+      "scope": "对来源、SHA、分页、限额和快照散列建模",
+      "exit_gate": "分页不完整不得声称无其他变化",
+      "depends_on": [
+        "EC-164"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "33_OFFLINE_FOCUSED_SNAPSHOT_DEV_CASES_PASS; INHERITED_EC164_33_EC163_29_EC162_27_EC161_22_PASS; LIVE_PROVIDERS_NATIVE_CLI_PLATFORMS_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/proposed_pr_snapshot.py",
+        "construction/test_proposed_pr_snapshot.py",
+        "construction/fixtures/ec165/",
+        "references/proposed-pr-snapshot.v1.json",
+        "references/proposed-pr-snapshot.md",
+        "construction/proposed_pr_paths.py",
+        "construction/proposed_pr_patch.py",
+        "EC-165.md"
+      ],
+      "development_result": "NONAUTHENTICATING_RECOMPUTABLE_EC162_PIN_AND_EC163_PAGE_COVERAGE_RECEIPT; OPTIONAL_BOUNDED_TWO_READ_DRIFT_REJECTION; EC164_SELECTED_PATCH_DIGEST_ONLY_ON_EXPLICIT_PERMISSION; OPTIONAL_LOCAL_HEAD_BLOB_BINDING; ALWAYS_NONATOMIC_PARTIAL; NO_NATIVE_COLLECT_OR_WRITE"
+    },
+    {
+      "round": 166,
+      "ec": "EC-166",
+      "phase": "B",
+      "phase_name": "远程提议与实际交付证据",
+      "title": "远程Reconcile再核对",
+      "scope": "支持PR活跃状态及头尾SHA变化的失效判断",
+      "exit_gate": "旧证据发生变化时明确stale/partial",
+      "depends_on": [
+        "EC-165"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "25_OFFLINE_FOCUSED_REMOTE_RECONCILE_DEV_CASES_PASS; INHERITED_EC165_33_EC164_33_EC163_29_EC162_27_EC161_22_PASS; LIVE_PROVIDERS_NATIVE_CLI_PLATFORMS_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/proposed_pr_reconcile.py",
+        "construction/test_proposed_pr_reconcile.py",
+        "construction/fixtures/ec166/",
+        "references/proposed-pr-reconcile.v1.json",
+        "references/proposed-pr-reconcile.md",
+        "EC-166.md"
+      ],
+      "development_result": "ONE_NEW_READONLY_PROVIDER_METADATA_GET; PRIOR_EC162_OR_EC165_RECEIPT; EXACT_ID_SHA_STATE_MERGE_COUNT_QUALITY_DRIFT_AND_FIELD_DELTAS; THREE_RECONCILIATION_STATES; MATCHED_METADATA_NOT_EC165_CONTENT_FRESHNESS; NO_NATIVE_RECONCILE_OR_DELIVERY_OR_WRITE"
+    },
+    {
+      "round": 167,
+      "ec": "EC-167",
+      "phase": "B",
+      "phase_name": "远程提议与实际交付证据",
+      "title": "合并提交关联证明",
+      "scope": "针对merge commit验证目标树及关联来源",
+      "exit_gate": "只证明Git可核实事实，不猜测部署",
+      "depends_on": [
+        "EC-166"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "19_OFFLINE_EC167_SYNTHETIC_WITH_TEMPORARY_REAL_GIT_DEV_CASES_PASS; INHERITED_SUITE_AND_LIVE_PROVIDERS_NATIVE_CLI_PLATFORMS_FINAL_ACCEPTANCE_NOT_RUN_THIS_ROUND",
+      "implementation_artifacts": [
+        "construction/proposed_pr_merge.py",
+        "construction/proposed_pr_source.py",
+        "construction/test_proposed_pr_merge.py",
+        "construction/fixtures/ec167/",
+        "references/proposed-pr-merge.v1.json",
+        "references/proposed-pr-merge.md",
+        "EC-167.md"
+      ],
+      "development_result": "MERGED_PROVIDER_COMMIT_SHA_PLUS_FRESH_EC162_EC166_IDENTITY_COUNT_OIDS; INDEPENDENT_TWO_READ_PERMISSIONS; TWO_PARENT_LOCAL_GIT_TREE_AND_TARGET_LINEAGE_CHECK; NO_SQUASH_REBASE_EQUIVALENCE; NO_REMOTE_MEMBERSHIP_OR_DELIVERY_ATTESTATION"
+    },
+    {
+      "round": 168,
+      "ec": "EC-168",
+      "phase": "B",
+      "phase_name": "远程提议与实际交付证据",
+      "title": "squash/rebase交付核对",
+      "scope": "为非原样SHA路径建立可证明关联与未知状态",
+      "exit_gate": "证据不足时报告unknown而非自动匹配",
+      "depends_on": [
+        "EC-167"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "28_OFFLINE_EC168_SYNTHETIC_WITH_TEMPORARY_REAL_GIT_CASES_PASS_AND_19_EC167_REGRESSION_PASS; LIVE_PROVIDERS_NATIVE_CLI_CROSS_OS_AND_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/proposed_pr_linear.py",
+        "construction/test_proposed_pr_linear.py",
+        "construction/proposed_pr_source.py",
+        "construction/proposed_pr_merge.py",
+        "construction/fixtures/ec168/README.md",
+        "references/proposed-pr-linear.md",
+        "references/proposed-pr-linear.v1.json",
+        "EC-168.md"
+      ],
+      "development_result": "EXPLICIT_GITLAB_SQUASH_LOCAL_NET_MODE_BLOB_EQUALITY; OPTIONAL_SEPARATE_MERGE_TREE; GITHUB_SINGLE_COMMIT_METHOD_UNKNOWN; EXACT_HEAD_GRAPH_WEAKER_WITNESS; MULTI_REBASE_UNAVAILABLE_UNKNOWN; EC167_TWO_PARENT_PRESERVED; NO_REMOTE_REPOSITORY_IDENTITY_DELIVERY_DEPLOYMENT_OR_WRITE"
+    },
+    {
+      "round": 169,
+      "ec": "EC-169",
+      "phase": "B",
+      "phase_name": "远程提议与实际交付证据",
+      "title": "交付证据权限与持久化门禁",
+      "scope": "定义远程证据的显式授权保存、去重和刷新规则",
+      "exit_gate": "外部抓取不默许写存储，记录证据来源",
+      "depends_on": [
+        "EC-168"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "25_EC169_LOCAL_OFFLINE_SCENARIOS_PASS_INCLUDING_3_REAL_DISPOSABLE_GIT_SYNTHETIC_UPSTREAM_CALLS; REAL_PROVIDER_WINDOWS_MACOS_NATIVE_CLI_AND_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/proposed_pr_evidence_store.py",
+        "construction/test_proposed_pr_evidence_store.py",
+        "construction/fixtures/ec169/README.md",
+        "references/proposed-pr-evidence-store.v1.json",
+        "references/proposed-pr-evidence-store.md",
+        "EC-169.md"
+      ],
+      "development_result": "LOCAL_STORE_EXPLICIT_INIT_AND_EACH_APPEND_GRANT; MINIMAL_SOURCE_ALLOWLIST; PRIV_ROOT_NO_SYMLINK_POSIX_LOCK; IMMUTABLE_APPEND_NO_CLOBBER_HMAC_AND_REVISIONS; TTL_DUPLICATE_NO_RENEWAL_STALE_PIN_UNKNOWN_DENIAL; NO_PROVIDER_IDENTITY_REMOTE_DELIVERY_NATIVE_ROUTE_OR_GIT_SOURCE_WRITE"
+    },
+    {
+      "round": 170,
+      "ec": "EC-170",
+      "phase": "B",
+      "phase_name": "远程提议与实际交付证据",
+      "title": "多来源CodePrepare统一入口",
+      "scope": "连接WorkingTree/DeliveredTarget/ProposedPR到同一AI上下文",
+      "exit_gate": "不同来源模式不混用，既有Snapshot兼容",
+      "depends_on": [
+        "EC-169"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "31_EC170_FOCUSED_PLUS_33_EC165_AND_25_EC166_OFFLINE_CASES_PASS_89_TOTAL; NATIVE_POWERSHELL_LIVE_PROVIDER_CROSS_OS_PERFORMANCE_AND_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/codeprepare_multisource.py",
+        "construction/test_codeprepare_multisource.py",
+        "construction/fixtures/ec170/README.md",
+        "references/codeprepare-multisource.v1.json",
+        "references/codeprepare-multisource.md",
+        "EC-170.md"
+      ],
+      "development_result": "EXPLICIT_SINGLE_SOURCE_CONTEXT; WORKINGTREE_DELIVEREDTARGET_REUSE_NATIVE_SNAPSHOT_GATE; PROPOSEDPR_EC165_OPTIONAL_EC166; SOURCE_SCOPED_REAUTH_AND_BOUNDED_WITHHOLD; EC169_LABEL_ONLY; NO_MIXING_WRITE_CURRENT_ATOMIC_DIFF_PROVIDER_ACTOR_OR_REMOTE_DELIVERY; NATIVE_MULTISOURCE_ROUTE_UNREGISTERED"
+    },
+    {
+      "round": 171,
+      "ec": "EC-171",
+      "phase": "C",
+      "phase_name": "AI交接与Finding闭环",
+      "title": "RunId/HandoffId及状态模型",
+      "scope": "定义不可猜测可恢复的运行身份、任务身份和生命周期",
+      "exit_gate": "真实创建前无id；状态转换禁止跳级",
+      "depends_on": [
+        "EC-170"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "43_EC171_FOCUSED_OFFLINE_CASES_PASS; NATIVE_POWERSHELL_EXTERNAL_AI_PROVIDER_CROSS_OS_PERFORMANCE_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/handoff_lifecycle.py",
+        "construction/test_handoff_lifecycle.py",
+        "construction/fixtures/ec171/README.md",
+        "references/handoff-lifecycle.v1.json",
+        "references/handoff-lifecycle.md",
+        "EC-171.md"
+      ],
+      "development_result": "OS_CSPRNG_IDS_ONLY_AFTER_CREATION; EC170_SOURCE_HASH_BOUND; DECLARED_ACTOR_NOT_AUTHENTICATED; CAS_EVENT_CHAIN_LIFECYCLE; PARTIAL_UNAVAILABLE_AND_TERMINAL_NO_SKIP; CHECKPOINT_INSPECT_ONLY_NOT_RESUME; NO_NATIVE_AI_HANDOFF_OR_STORE_WRITE"
+    },
+    {
+      "round": 172,
+      "ec": "EC-172",
+      "phase": "C",
+      "phase_name": "AI交接与Finding闭环",
+      "title": "安全的CES任务暂存",
+      "scope": "实现CES专属staging、路径限制、过期及重入处理",
+      "exit_gate": "业务源码不受改动，拒绝符号链接越界",
+      "depends_on": [
+        "EC-171"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "30_EC172_FOCUSED_PLUS_43_INHERITED_EC171_OFFLINE_CASES_PASS; CROSS_OS_ACTUAL_CRASH_NATIVE_POWERSHELL_LIVE_AI_PERFORMANCE_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/task_staging.py",
+        "construction/test_task_staging.py",
+        "construction/fixtures/ec172/README.md",
+        "references/task-staging.v1.json",
+        "references/task-staging.md",
+        "EC-172.md"
+      ],
+      "development_result": "EXPLICIT_POSIX_OWNER_PRIVATE_CES_STAGE_AND_BUSINESS_REPO_SEPARATION; ROOT_INODE_PATH_HMAC_PIN; ATOMIC_NO_CLOBBER_REPLAY_AND_SOURCE_REVISION_TTL_BOUND; EXPIRED_OR_UNKNOWN_FAIL_CLOSED; READ_ONLY_REENTRY_NO_RESUME_OR_AI_INPUT_DISPATCH"
+    },
+    {
+      "round": 173,
+      "ec": "EC-173",
+      "phase": "C",
+      "phase_name": "AI交接与Finding闭环",
+      "title": "AI Handoff输入包",
+      "scope": "构建task_kind/subject/evidence_hash/input_path及覆盖信息",
+      "exit_gate": "AI只读绑定内容，来源可重现",
+      "depends_on": [
+        "EC-172"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "34_EC173_FOCUSED_PLUS_30_EC172_PLUS_43_EC171_OFFLINE_CASES_PASS_107_TOTAL; NATIVE_POWERSHELL_15_SMOKE_LIVE_AI_CROSS_OS_ACTUAL_CRASH_PERFORMANCE_FINAL_USER_ASSISTED_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/handoff_input.py",
+        "construction/task_staging.py",
+        "construction/test_handoff_input.py",
+        "construction/fixtures/ec173/",
+        "references/ai-handoff-input.v1.json",
+        "references/ai-handoff-input.md",
+        "EC-173.md",
+        "construction/EC173_DELIVERY_SHA256.json"
+      ],
+      "implementation_boundary": "IMMUTABLE_PRIVATE_POSIX_SOURCE_PINNED_INPUT_WITH_SEPARATE_CONTENT_GRANTS; NO_NATIVE_ROUTING_NO_AI_OUTPUT_NO_BUSINESS_REPO_WRITE"
+    },
+    {
+      "round": 174,
+      "ec": "EC-174",
+      "phase": "C",
+      "phase_name": "AI交接与Finding闭环",
+      "title": "AI Handoff路由与输出Schema",
+      "scope": "支持code_analysis/report_writing/knowledge_update/finding_analysis",
+      "exit_gate": "路由按task_kind而不是自然语言猜测",
+      "depends_on": [
+        "EC-173"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "28_EC174_SYNTHETIC_LOCAL_FUNCTIONAL_CASES_PASSED; LIVE_PROVIDER_NATIVE_CROSS_OS_AND_FINAL_USER_ASSISTED_NOT_RUN"
+    },
+    {
+      "round": 175,
+      "ec": "EC-175",
+      "phase": "C",
+      "phase_name": "AI交接与Finding闭环",
+      "title": "Staged CodeValidate模式",
+      "scope": "校验实际handoff和CodeInsight草稿及来源哈希",
+      "exit_gate": "非法草稿无法触发后续保存",
+      "depends_on": [
+        "EC-174"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "32_NEW_EC175_AND_28_EC174_FOCUSED_SYNTHETIC_LOCAL_PASS; LIVE_ACTORS_NATIVE_POWERSHELL_CI_AND_FINAL_ACCEPTANCE_NOT_RUN"
+    },
+    {
+      "round": 176,
+      "ec": "EC-176",
+      "phase": "C",
+      "phase_name": "AI交接与Finding闭环",
+      "title": "Staged CodeSave受控保存",
+      "scope": "连接RunId/HandoffId到现有CodeSave持久化契约",
+      "exit_gate": "保持无覆盖、内容寻址、显式授权",
+      "depends_on": [
+        "EC-175"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "26_NEW_EC176_32_EC175_28_EC174_FOCUSED_SYNTHETIC_LOCAL_PASS; POSIX_CES_HASH_ONLY_STORE_NATIVE_CLI_PROVIDER_REVIEWER_CI_AND_FINAL_ACCEPTANCE_NOT_RUN"
+    },
+    {
+      "round": 177,
+      "ec": "EC-177",
+      "phase": "C",
+      "phase_name": "AI交接与Finding闭环",
+      "title": "独立Finding Schema",
+      "scope": "引入Finding身份、严重度、置信度、反证及证据锚点",
+      "exit_gate": "语义判断不误报为客观已证实缺陷",
+      "depends_on": [
+        "EC-176"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "25_FOCUSED_PLUS_86_PREDECESSOR_REGRESSIONS_LOCAL_SYNTHETIC_CASES_PASS; JSON_SCHEMA_VALIDATED; NO_LIVE_GIT_CI_REAL_TEST_REVIEWER_PROVIDER_NATIVE_POWERSHELL_OR_FINAL_USER_ACCEPTANCE"
+    },
+    {
+      "round": 178,
+      "ec": "EC-178",
+      "phase": "C",
+      "phase_name": "AI交接与Finding闭环",
+      "title": "FindingSave动作",
+      "scope": "经过鉴权、证据校验和去重后写CES记录",
+      "exit_gate": "不修改业务源或已有Issue",
+      "depends_on": [
+        "EC-177"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "31_FOCUSED_LOCAL_SYNTHETIC_CASES_PASS_AND_DRAFT_2020_12_SIGNED_BATCH_SCHEMA_VALIDATED; ACTUAL_STANDALONE_POSIX_CES_HMAC_FINDING_DECLARATION_COMMIT; NATIVE_POWER_SHELL_FINDINGSAVE_AND_FINDINGSHOW_NOT_REGISTERED; NO_REAL_EXTERNAL_PROVIDER_CI_HUMAN_CURRENT_GIT_ACTUAL_TEST_OS_POWERLOSS_OR_FINAL_ACCEPTANCE"
+    },
+    {
+      "round": 179,
+      "ec": "EC-179",
+      "phase": "C",
+      "phase_name": "AI交接与Finding闭环",
+      "title": "FindingShow动作",
+      "scope": "支持按身份、来源、路径、严重度边界检索",
+      "exit_gate": "分页限额及敏感文本保护",
+      "depends_on": [
+        "EC-178"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "26_FOCUSED_EC179_PLUS_31_EC178_SYNTHETIC_LOCAL_FUNCTIONAL_CASES_PASS; DRAFT_2020_12_V2_BATCH_AND_SHOW_RESULT_SCHEMA_PASS; STANDALONE_POSIX_HMAC_PRIVATE_FINDING_READ_SCOPE_EXACT_FILTER_AND_SIGNED_PAGING; V1_LEGACY_PATH_INDEX_UNAVAILABLE_NO_FALSE_NEGATIVES; NATIVE_POWER_SHELL_PROVIDER_ACTORS_REAL_GIT_CI_CROSS_OS_POWERLOSS_AND_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/finding_show.py",
+        "construction/test_finding_show.py",
+        "construction/fixtures/ec179/README.md",
+        "references/finding-show-result.v1.schema.json",
+        "references/finding-show.md",
+        "references/finding-save-batch.v2.schema.json",
+        "construction/finding_save.py",
+        "construction/test_finding_save.py",
+        "EC-179.md",
+        "construction/EC179_DELIVERY_SHA256.json"
+      ]
+    },
+    {
+      "round": 180,
+      "ec": "EC-180",
+      "phase": "C",
+      "phase_name": "AI交接与Finding闭环",
+      "title": "Finding关联与重复识别",
+      "scope": "跨CodeInsight/CI结果建立谨慎重复匹配与关系图",
+      "exit_gate": "重复证据不自动等于相同缺陷或已修复",
+      "depends_on": [
+        "EC-179"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "22_EC180_PLUS_26_EC179_PLUS_31_EC178_SYNTHETIC_DEVELOPMENT_PASS; STRICT_SCHEMA_AND_STATIC_GATE_PASS; NATIVE_CI_REAL_WORLD_OS_SECURITY_PERFORMANCE_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/finding_correlate.py",
+        "construction/test_finding_correlate.py",
+        "construction/fixtures/ec180/README.md",
+        "references/finding-correlation-result.v1.schema.json",
+        "references/finding-correlation.md",
+        "construction/EC180_DELIVERY_SHA256.json",
+        "EC-180.md"
+      ],
+      "implementation_note": "Signed HMAC ledger declarations and unauthenticated offline CodeInsight v1 comparison only; NOT native FindingCorrelate route, semantic duplicate, fixed, CI/test or Git authenticity."
+    },
+    {
+      "round": 181,
+      "ec": "EC-181",
+      "phase": "D",
+      "phase_name": "质量与CI",
+      "title": "QualityDetect检测配置",
+      "scope": "只读发现项目语言、构建工具与允许的检查profile",
+      "exit_gate": "拒绝从不可信README直接执行命令",
+      "depends_on": [
+        "EC-180"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_POSIX_SYNTHETIC_38_PASS_AND_DRAFT_2020_12_SCHEMA_ONLY; REAL_CI_POWER_SHELL_MULTI_OS_FINAL_ACCEPTANCE_NOT_RUN"
+    },
+    {
+      "round": 182,
+      "ec": "EC-182",
+      "phase": "D",
+      "phase_name": "质量与CI",
+      "title": "QualityReadCI只读接口",
+      "scope": "按固定仓库、工作流、作业ID检索CI结果",
+      "exit_gate": "来源、时间戳及权限状态可复核",
+      "depends_on": [
+        "EC-181"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_40_GITHUB_GITLAB_SYNTHETIC_FOCUSED_CASES_AND_DRAFT_2020_12_SCHEMA; ACTUAL_PROVIDER_NATIVE_POWER_SHELL_FINAL_ACCEPTANCE_NOT_RUN"
+    },
+    {
+      "round": 183,
+      "ec": "EC-183",
+      "phase": "D",
+      "phase_name": "质量与CI",
+      "title": "CI精确SHA绑定",
+      "scope": "按commit/PR head和平台信息过滤关联CI",
+      "exit_gate": "不同SHA结果不能混用",
+      "depends_on": [
+        "EC-182"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_31_GITHUB_GITLAB_BRANCH_PR_SYNTHETIC_FOCUSED_CASES_AND_DRAFT_2020_12_RESPONSE_SCHEMA; ACTUAL_PROVIDER_GIT_SHA_BYTES_NATIVE_POWERSHELL_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/quality_sha_bind.py",
+        "construction/test_quality_sha_bind.py",
+        "construction/fixtures/ec183/README.md",
+        "references/quality-sha-bind-result.v1.schema.json",
+        "references/quality-sha-bind.md",
+        "construction/EC183_DELIVERY_SHA256.json",
+        "EC-183.md"
+      ],
+      "outcome_boundary": "Independent Provider source/CI SHA field association, not SHA-verified Git object bytes or authorized runner behavior; native QualityReadCI NOT_IMPLEMENTED; no side effects"
+    },
+    {
+      "round": 184,
+      "ec": "EC-184",
+      "phase": "D",
+      "phase_name": "质量与CI",
+      "title": "CI测试日志与覆盖提取",
+      "scope": "解析受限大小的报告与失败工件",
+      "exit_gate": "区分missing/partial/not_run/fail/pass",
+      "depends_on": [
+        "EC-183"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_34_OFFLINE_GH_GL_LOG_REPORT_BOUNDED_HOSTILE_CONTENT_FOCUSED_CASES_AND_DRAFT_2020_12_RESULT_SCHEMA; REAL_PROVIDER_ACTUAL_CI_NATIVE_POWERSHELL_WINDOWS_MACOS_E63_E66_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/quality_ci_evidence.py",
+        "construction/test_quality_ci_evidence.py",
+        "construction/fixtures/ec184/README.md",
+        "references/quality-ci-evidence-result.v1.schema.json",
+        "references/quality-ci-evidence.md",
+        "construction/EC184_DELIVERY_SHA256.json",
+        "EC-184.md"
+      ],
+      "outcome_boundary": "Only exact selected provider job log parsed claims and bounded optional reports; GitHub artifact run-only never uniquely selected job/attempt. Fresh separate EC182/EC183 provider metadata rechecks do not prove runner, actor, test execution, Git object bytes, atomic remote source or an overall PASS. Positive partial/2. No native route or writes."
+    },
+    {
+      "round": 185,
+      "ec": "EC-185",
+      "phase": "D",
+      "phase_name": "质量与CI",
+      "title": "Quality观察结果Schema",
+      "scope": "统一次数、日志引用、环境及测量声明",
+      "exit_gate": "没有benchmark不得推断性能结果",
+      "depends_on": [
+        "EC-184"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_29_OFFLINE_LOCAL_CONFIG_AND_SYNTHETIC_GH_GL_PROVIDER_FOCUSED_CASES_USING_REAL_EC181_182_183_184_ADAPTERS_AND_DRAFT2020_12_STRICT_RESULT_SCHEMA; NO_ACTUAL_BENCHMARK_CI_RUNNER_AUTHENTICATED_GIT_OS_NATIVE_POWERSHELL_OR_FINAL_ACCEPTANCE",
+      "implementation_artifacts": [
+        "construction/quality_observation.py",
+        "construction/test_quality_observation.py",
+        "construction/fixtures/ec185/README.md",
+        "references/quality-observation-result.v1.schema.json",
+        "references/quality-observation.md",
+        "construction/EC185_DELIVERY_SHA256.json",
+        "EC-185.md"
+      ],
+      "outcome_boundary": "Read-only Python quality observation schema & composer only, separate WorkingTree/remote SHA tracks, underlying separately authorized fresh reads and no receipt/hash authority; parsed test counts/coverage provider claims only. Performance not_measured; overall positive partial/2. Native QualityReadCI/Run/Show and source execution NOT_IMPLEMENTED."
+    },
+    {
+      "round": 186,
+      "ec": "EC-186",
+      "phase": "D",
+      "phase_name": "质量与CI",
+      "title": "QualityRun安全配置门禁",
+      "scope": "限定预先批准的检查profile和隔离执行环境",
+      "exit_gate": "未授权或无法隔离时拒绝执行",
+      "depends_on": [
+        "EC-185"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "35_LOCAL_SYNTHETIC_HOST_HMAC_APPROVAL_BROKER_LEASE_AND_REAL_EC181_POSIX_ROOT_IDENTITY_FOCUSED_DEVELOPMENT_CASES_DRAFT2020_12_SCHEMA; NO_REAL_BROKER_KERNEL_ISOLATION_RUNNER_TEST_EXECUTION_WINDOWS_MACOS_POWERSHELL_GIT_CI_OR_FINAL_ACCEPTANCE",
+      "implementation_artifacts": [
+        "construction/quality_run_guard.py",
+        "construction/test_quality_run_guard.py",
+        "construction/fixtures/ec186/README.md",
+        "references/quality-run-guard-result.v1.schema.json",
+        "references/quality-run-guard.md",
+        "construction/EC186_DELIVERY_SHA256.json",
+        "EC-186.md"
+      ],
+      "outcome_boundary": "Standalone Python only, immutable-by-code fixed profile selectors and signed distinct host policy/broker lease assertions verified, two EC181 local directory identity rechecks and four explicit host grants. No actual trusted broker/kernel sandbox/source bytes attested and no tests, runner, lease consumption, CI/native route or commands. Positive non-executable partial/2. EC187 budgets/cancel NOT_IMPLEMENTED."
+    },
+    {
+      "round": 187,
+      "ec": "EC-187",
+      "phase": "D",
+      "phase_name": "质量与CI",
+      "title": "QualityRun预算及中断",
+      "scope": "增加资源上限、超时、输出截断与取消语义",
+      "exit_gate": "中断保留partial，不把未结束标记通过",
+      "depends_on": [
+        "EC-186"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "45_LOCAL_SYNTHETIC_EC187_HOST_EVENTS_GRANTS_BUDGET_CANCEL_TRUNCATION_AND_REAL_EC181_ROOT_PLUS_35_EC186_FOCUSED_CASES_DRAFT2020_12_SCHEMA; NO_PRODUCTION_BROKER_KILL_WATCHDOG_SOURCE_SEAL_ONE_TIME_LEASE_KERNEL_SANDBOX_ACTUAL_TEST_CI_OR_NATIVE_FINAL_ACCEPTANCE",
+      "implementation_artifacts": [
+        "construction/quality_run_budget.py",
+        "construction/test_quality_run_budget.py",
+        "construction/fixtures/ec187/README.md",
+        "references/quality-run-budget-result.v1.schema.json",
+        "references/quality-run-budget.md",
+        "construction/EC187_DELIVERY_SHA256.json",
+        "EC-187.md"
+      ],
+      "outcome_boundary": "External host broker callback protocol only, not shipped actual runner. EC186 reverified before begin; strict opt-down resource/time/output budgets and cancellation partial. Host-supplied source seal, kernel controls, process exit and lease consumption are not independently proven; even exit0 partial/2. No native QualityRun, new PowerShell action or source write."
+    },
+    {
+      "round": 188,
+      "ec": "EC-188",
+      "phase": "D",
+      "phase_name": "质量与CI",
+      "title": "QualityShow查询接口",
+      "scope": "只读展示来源、SHA、测试/CI执行结论",
+      "exit_gate": "稳定分页、脱敏及覆盖标识",
+      "depends_on": [
+        "EC-187"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "55_LOCAL_EC188_SYNTHETIC_PYTHON_UNITTTESTS_WITH_STRICT_DRAFT2020_12_SUCCESS_REFUSAL_SCHEMA_AND_REAL_EC181_TO_EC187_OFFLINE_PRODUCERS; NO_NATIVE_POWERSHELL_LIVE_GIT_PROVIDER_CI_RUNNER_BROKER_PERFORMANCE_OR_FINAL_ACCEPTANCE",
+      "implementation_artifacts": [
+        "construction/quality_show.py",
+        "construction/test_quality_show.py",
+        "construction/fixtures/ec188/README.md",
+        "references/quality-show-result.v1.schema.json",
+        "references/quality-show.md",
+        "construction/EC188_DELIVERY_SHA256.json",
+        "EC-188.md"
+      ],
+      "outcome_boundary": "Standalone read-only source-scoped Python QualityShow over caller-supplied 7 EC181-187 receipt kinds. Exact live scope+item grants, HMAC cursor with entire supplied-evidence revision, bounded sorting/filtering, conservative coverage gaps and no sensitive raw output. Provider CI success/pass and EC187 host exit0 are not verified test/quality PASS; EC187 has no source pin and is only caller linked. No native PowerShell QualityShow, CI runner, Finding generation, repo/store/Git/Provider write, source-byte attestation or live integration."
+    },
+    {
+      "round": 189,
+      "ec": "EC-189",
+      "phase": "D",
+      "phase_name": "质量与CI",
+      "title": "Quality与Finding连接",
+      "scope": "失败证据辅助Finding但保留反证和再现说明",
+      "exit_gate": "CI失败不自动生成已确认缺陷",
+      "depends_on": [
+        "EC-188"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "22_LOCAL_EC189_OFFLINE_SYNTHETIC_REAL_EC178_179_HMAC_PRIVATE_LEDGER_AND_EC188_PRODUCER_SHAPES_PYTHON_COMPOSITION_STRICT_DRAFT2020_12_SUCCESS_REFUSAL; NO_LIVE_SOURCE_CI_ACTUAL_RUNNER_OR_NATIVE_CLI_FINAL_ACCEPTANCE",
+      "implementation_artifacts": [
+        "construction/quality_finding_link.py",
+        "construction/test_quality_finding_link.py",
+        "construction/fixtures/ec189/README.md",
+        "references/quality-finding-link-result.v1.schema.json",
+        "references/quality-finding-link.md",
+        "construction/EC189_DELIVERY_SHA256.json",
+        "EC-189.md"
+      ],
+      "outcome_boundary": "Read-only selected pairs only from real EC179 private HMAC FindingShow and real EC188 source-granted original receipt query; separately host-authorized bridge is not content/actor/causation proof. Provider fail/pass are potential support/counterevidence only; reviewed/rejected/not-reviewed unchanged and counter annotations retained; keyed repro text reference does not persist it. Source modes cannot mix; no quality/defect verified or store/native route/CI/test/Git/Issue write."
+    },
+    {
+      "round": 190,
+      "ec": "EC-190",
+      "phase": "D",
+      "phase_name": "质量与CI",
+      "title": "跨Source Mode质量流转",
+      "scope": "PR、已交付目标、工作树和CodeInsight质量信息关联",
+      "exit_gate": "不混淆提案与已交付、真实执行与静态推测",
+      "depends_on": [
+        "EC-189"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "34_FOCUSED_LOCAL_EC190_SYNTHETIC_DEVELOPMENT_TESTS_PASS_TRUE_EC188_HMAC_QUERY_AND_EC158_CODEINSIGHT_V1_BYTES_STRICT_DRAFT2020_12_OUTPUT; REAL_GIT_PROVIDER_HOST_ATTESTATION_NATIVE_POWERSHELL7_15_SMOKE_MULTI_OS_E63_E66_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/quality_mode_flow.py",
+        "construction/test_quality_mode_flow.py",
+        "construction/fixtures/ec190/README.md",
+        "references/cross-mode-quality-flow-result.v1.schema.json",
+        "references/cross-mode-quality-flow.md",
+        "construction/EC190_DELIVERY_SHA256.json",
+        "EC-190.md"
+      ],
+      "outcome_boundary": "Only exact independently scoped EC188 original quality producer queries and original EC158 CodeInsight v1 bytes bound to separately read host source-event records; staged source/event/revoke permissions, explicit host verifier and temporal/opposition/revocation states. No proposal delivery/currentness promotion, false Source Mode equivalent revision, static test inference, quality PASS, actual Git/CI/authenticated merge proof, business/store writes or native CLI."
+    },
+    {
+      "round": 191,
+      "ec": "EC-191",
+      "phase": "E",
+      "phase_name": "定期报告",
+      "title": "Due时区与周期判断",
+      "scope": "以明确项目时区而非执行机默认时区决定到期",
+      "exit_gate": "日周月年边界可稳定计算",
+      "depends_on": [
+        "EC-190"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "34_LOCAL_ZONEINFO_AND_DRAFT2020_12_DEVELOPMENT_CASES_PASSED; NATIVE_AND_FINAL_USER_ASSISTED_ACCEPTANCE_NOT_RUN"
+    },
+    {
+      "round": 192,
+      "ec": "EC-192",
+      "phase": "E",
+      "phase_name": "定期报告",
+      "title": "自然周期标识",
+      "scope": "日/ISO周/月/年转UTC左闭右开区间",
+      "exit_gate": "跨年ISO周与DST样例明确",
+      "depends_on": [
+        "EC-191"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "24_FOCUSED_REAL_ZONEINFO_EC191_AND_DRAFT2020_12_LOCAL_DEVELOPMENT_CASES_PASSED; NATIVE_MULTI_OS_AND_FINAL_USER_ASSISTED_ACCEPTANCE_NOT_RUN"
+    },
+    {
+      "round": 193,
+      "ec": "EC-193",
+      "phase": "E",
+      "phase_name": "定期报告",
+      "title": "仓库报告主体模型",
+      "scope": "绑定显式仓库身份和报告覆盖范围",
+      "exit_gate": "不是扫描全部用户机器或隐式发现仓库",
+      "depends_on": [
+        "EC-192"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "33_FOCUSED_LOCAL_SYNTHETIC_REAL_EC192_ZONEINFO_AND_DRAFT2020_12_SCHEMA_CHECKS_PASSED; REAL_GIT_REPO_AUTH_NATIVE_MULTI_OS_AND_FINAL_USER_ASSISTED_ACCEPTANCE_NOT_RUN"
+    },
+    {
+      "round": 194,
+      "ec": "EC-194",
+      "phase": "E",
+      "phase_name": "定期报告",
+      "title": "人员报告主体模型",
+      "scope": "仅稳定actor_key聚合贡献证据",
+      "exit_gate": "同名不合并；无法确定身份标记不完整",
+      "depends_on": [
+        "EC-193"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "34_FOCUSED_LOCAL_SYNTHETIC_EC193_REPLAY_AND_DRAFT2020_12_SCHEMA_CHECKS_PASSED; 67_COMBINED_EC193_EC194_PASSED; REAL_IDENTITY_PROVIDER_AUTHORIZATION_GIT_CI_NATIVE_MULTI_OS_AND_FINAL_USER_ASSISTED_ACCEPTANCE_NOT_RUN"
+    },
+    {
+      "round": 195,
+      "ec": "EC-195",
+      "phase": "E",
+      "phase_name": "定期报告",
+      "title": "跨仓库报告范围",
+      "scope": "显式仓库集合与权限交集建模",
+      "exit_gate": "缺少仓库单独列coverage缺口",
+      "depends_on": [
+        "EC-194"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "41_FOCUSED_LOCAL_SYNTHETIC_EC194_EC193_EC192_REPLAY_AND_DRAFT2020_12_SCHEMA_CHECKS_PASSED; NATIVE_POWERSHELL7_ORIGINAL_15_SMOKE_LIVE_GIT_IDENTITY_PROVIDER_AUTHORIZATION_MULTI_OS_E63_E66_FINAL_USER_ASSISTED_ACCEPTANCE_NOT_RUN"
+    },
+    {
+      "round": 196,
+      "ec": "EC-196",
+      "phase": "E",
+      "phase_name": "定期报告",
+      "title": "报告指标与证据覆盖",
+      "scope": "区别Git活动、AI结论、CI完成及未知",
+      "exit_gate": "不以LOC/commit数直接评价人员",
+      "depends_on": [
+        "EC-195"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "38_FOCUSED_EC196_SYNTHETIC_SCHEMA_CHECKS_AND_170_EC192_THROUGH_EC196_LOCAL_CASES_PASSED; NATIVE_POWERSHELL7_ORIGINAL_15_SMOKE_LIVE_GIT_PROVIDER_AI_CI_IDENTITY_AUTHORIZATION_MULTI_OS_E63_E66_FINAL_ASSISTED_ACCEPTANCE_NOT_RUN"
+    },
+    {
+      "round": 197,
+      "ec": "EC-197",
+      "phase": "E",
+      "phase_name": "定期报告",
+      "title": "ReportPrepare实现",
+      "scope": "生成period/subject/context/evidence绑定输入",
+      "exit_gate": "AI输入不包含未经授权的私人内容",
+      "depends_on": [
+        "EC-196"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_STATIC_AND_FIXTURE_ONLY; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation_artifacts": [
+        "construction/report_prepare.py",
+        "construction/test_report_prepare.py",
+        "construction/fixtures/ec197/README.md",
+        "references/report-prepare-result.v1.schema.json",
+        "references/report-prepare.md",
+        "construction/EC197_DELIVERY_SHA256.json",
+        "EC-197.md"
+      ],
+      "validation_summary": "39_FOCUSED_SYNTHETIC_AND_209_EC192_197_REGRESSION_PASSED_LOCAL_STRICT_DRAFT2020_12_SCHEMA; NATIVE_PROVIDER_PRIVACY_APPROVAL_FINAL_NOT_RUN"
+    },
+    {
+      "round": 198,
+      "ec": "EC-198",
+      "phase": "E",
+      "phase_name": "定期报告",
+      "title": "report_writing Handoff草稿",
+      "scope": "定义报告段落、引用、缺口和自检",
+      "exit_gate": "无证据的个人绩效判断禁止自动生成",
+      "depends_on": [
+        "EC-197"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_STATIC_AND_FIXTURE_ONLY; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation_artifacts": [
+        "construction/report_writing_handoff.py",
+        "construction/test_report_writing_handoff.py",
+        "construction/fixtures/ec198/README.md",
+        "references/report-writing-handoff-result.v1.schema.json",
+        "references/report-writing-handoff.md",
+        "construction/EC198_DELIVERY_SHA256.json",
+        "EC-198.md"
+      ],
+      "validation_summary": "35_FOCUSED_EC198_AND_244_COMBINED_EC192_198_SYNTHETIC_SCHEMA_LOCAL_PASSED; AI_PROVIDER_PRIVACY_NATIVE_AND_FINAL_NOT_RUN"
+    },
+    {
+      "round": 199,
+      "ec": "EC-199",
+      "phase": "E",
+      "phase_name": "定期报告",
+      "title": "ReportRender实现",
+      "scope": "完成校验、局部保存、重试及版本索引",
+      "exit_gate": "ReportRender不是ReportPublish",
+      "depends_on": [
+        "EC-198"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_STATIC_AND_SYNTHETIC_LOCAL_POSIX_TEMP_STORAGE_ONLY; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation_artifacts": [
+        "construction/report_render.py",
+        "construction/test_report_render.py",
+        "construction/fixtures/ec199/README.md",
+        "references/report-render-result.v1.schema.json",
+        "references/report-render-policy.v1.schema.json",
+        "references/report-render.md",
+        "construction/EC199_DELIVERY_SHA256.json",
+        "EC-199.md"
+      ],
+      "validation_summary": "28_EC199_FOCUSED_272_EC192_199_COMBINED_SYNTHETIC_STRICT_DRAFT2020_12_DEV_POSIX_TEMP_FILES_PASSED; REAL_AUTH_NATIVE_CROSS_OS_STORAGE_PROVIDER_FINAL_NOT_RUN"
+    },
+    {
+      "round": 200,
+      "ec": "EC-200",
+      "phase": "E",
+      "phase_name": "定期报告",
+      "title": "报告显示与更正版本",
+      "scope": "按主体期间查看本地报告、记录覆盖差异",
+      "exit_gate": "更正保留历史记录与来源，不静默替换",
+      "depends_on": [
+        "EC-199"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_SYNTHETIC_PYTHON_POSIX_AND_DRAFT2020_12_SCHEMA_ONLY; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation_artifacts": [
+        "construction/report_history.py",
+        "construction/test_report_history.py",
+        "construction/fixtures/ec200/README.md",
+        "references/report-history-read-policy.v1.schema.json",
+        "references/report-history-correction-policy.v1.schema.json",
+        "references/report-history-result.v1.schema.json",
+        "references/report-history.md",
+        "construction/EC200_DELIVERY_SHA256.json",
+        "EC-200.md"
+      ],
+      "validation_summary": "26_FOCUSED_298_COMBINED_EC192_200_SYNTHETIC_READ_STORE_BYTES_CORRECTION_CAS_SOURCE_REDACTION_REPLAY_SCHEMA_LOCAL; REAL_AUTH_OS_PROVIDER_NATIVE_FINAL_NOT_RUN"
+    },
+    {
+      "round": 201,
+      "ec": "EC-201",
+      "phase": "F",
+      "phase_name": "知识库和架构影响",
+      "title": "知识库边界/现状模型",
+      "scope": "区分经核实的已交付事实与待合并候选知识",
+      "exit_gate": "不把PR候选写成现行架构",
+      "depends_on": [
+        "EC-200"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_SYNTHETIC_PYTHON_AND_DRAFT2020_12_SCHEMA_ONLY; REAL_SOURCE_PROVIDER_AUTH_NATIVE_FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation_artifacts": [
+        "construction/knowledge_boundary.py",
+        "construction/test_knowledge_boundary.py",
+        "construction/fixtures/ec201/README.md",
+        "references/knowledge-boundary-request.v1.schema.json",
+        "references/knowledge-boundary-read-policy.v1.schema.json",
+        "references/knowledge-boundary-result.v1.schema.json",
+        "references/knowledge-boundary.md",
+        "construction/EC201_DELIVERY_SHA256.json",
+        "EC-201.md"
+      ],
+      "validation_summary": "26_FOCUSED_SYNTHETIC_LOCAL_IN_MEMORY_WITH_SOURCE_PIN_AND_SEPARATE_READ_GRANTS_PROVENANCE_REDACTION_CONTENT_HASH_AND_CANDIDATE_NONPROMOTION; LIVE_GIT_DELIVERY_AUTH_NATIVE_OS_FINAL_NOT_RUN"
+    },
+    {
+      "round": 202,
+      "ec": "EC-202",
+      "phase": "F",
+      "phase_name": "知识库和架构影响",
+      "title": "KnowledgeBootstrap实现",
+      "scope": "读取仓库与CES知识快照，允许初始化空库",
+      "exit_gate": "空库也要记录来源与覆盖",
+      "depends_on": [
+        "EC-201"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_SYNTHETIC_REAL_TEMP_POSIX_FILE_READ_AND_DRAFT2020_12_SCHEMAS_ONLY; REAL_ORGANIZATIONAL_GIT_TARGET_AUTH_NATIVE_MULTI_OS_FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation_artifacts": [
+        "construction/knowledge_bootstrap.py",
+        "construction/test_knowledge_bootstrap.py",
+        "construction/fixtures/ec202/README.md",
+        "references/knowledge-bootstrap-request.v1.schema.json",
+        "references/knowledge-bootstrap-read-policy.v1.schema.json",
+        "references/knowledge-snapshot-manifest.v1.schema.json",
+        "references/knowledge-bootstrap-result.v1.schema.json",
+        "references/knowledge-bootstrap.md",
+        "construction/EC202_DELIVERY_SHA256.json",
+        "EC-202.md"
+      ],
+      "validation_summary": "24_FOCUSED_SYNTHETIC_TEMP_FILE_POSIX_AND_FOUR_DRAFT2020_12_SCHEMAS; REAL_AUTH_GIT_DELIVERY_NATIVE_WINDOWS_MULTI_OS_FINAL_NOT_RUN"
+    },
+    {
+      "round": 203,
+      "ec": "EC-203",
+      "phase": "F",
+      "phase_name": "知识库和架构影响",
+      "title": "Knowledge目标SHA绑定",
+      "scope": "绑定target_ref/sha与是否已交付状态",
+      "exit_gate": "分支名称不替代精确目标提交",
+      "depends_on": [
+        "EC-202"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_REAL_LOCAL_POSIX_GIT_SHA1_SHA256_EPHEMERAL_ED25519_AND_THREE_DRAFT2020_12_SCHEMAS_ONLY; REAL_ORGANIZATION_TRUSTED_DELIVERY_KEY_AUTHORITIES_PROVIDER_NATIVE_MULTI_OS_FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation_artifacts": [
+        "construction/knowledge_target_binding.py",
+        "construction/test_knowledge_target_binding.py",
+        "construction/fixtures/ec203/README.md",
+        "references/knowledge-target-read-policy.v1.schema.json",
+        "references/knowledge-target-delivery-statement.v1.schema.json",
+        "references/knowledge-target-binding-result.v1.schema.json",
+        "references/knowledge-target-binding.md",
+        "construction/EC203_DELIVERY_SHA256.json",
+        "EC-203.md"
+      ],
+      "validation_summary": "30_FOCUSED_LOCAL_GIT_AND_EPHEMERAL_SIGNATURE_TESTS_PASSED; REAL_ORG_SIGNER_PROVIDER_DELIVERY_NATIVE_OS_E63_E66_FINAL_NOT_RUN"
+    },
+    {
+      "round": 204,
+      "ec": "EC-204",
+      "phase": "F",
+      "phase_name": "知识库和架构影响",
+      "title": "KnowledgeImpact变更集合",
+      "scope": "由变更文件和路径识别潜在影响知识章节",
+      "exit_gate": "模糊影响报告unknown不能肯定更新",
+      "depends_on": [
+        "EC-203"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_ACTUAL_TEMP_GIT_SHA1_SHA256_TWO_EPHEMERAL_ED25519_ROLES_AND_THREE_DRAFT2020_12_SCHEMAS_ONLY;_ORG_BASELINE_TARGET_SIGNER_AUTH_AND_REVOCATION_REAL_DELIVERY_PROVIDER_NATIVE_MULTI_OS_FINAL_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/knowledge_impact.py",
+        "construction/test_knowledge_impact.py",
+        "construction/fixtures/ec204/README.md",
+        "references/knowledge-impact-read-policy.v1.schema.json",
+        "references/knowledge-impact-baseline-statement.v1.schema.json",
+        "references/knowledge-impact-result.v1.schema.json",
+        "references/knowledge-impact.md",
+        "construction/EC204_DELIVERY_SHA256.json",
+        "EC-204.md"
+      ],
+      "validation_summary": "31_LOCAL_REAL_GIT_AND_EPHEMERAL_SIGNED_BASELINE_CASES_PASSED;_EC201_202_203_204_111_COMBINED_LOCAL_TESTS_PASSED;_REAL_ORG_NATIVE_OS_PERFORMANCE_FINAL_NOT_RUN"
+    },
+    {
+      "round": 205,
+      "ec": "EC-205",
+      "phase": "F",
+      "phase_name": "知识库和架构影响",
+      "title": "已有章节关联与差异",
+      "scope": "将当前知识、变更证据与过期标识对齐",
+      "exit_gate": "避免整库无关内容重写",
+      "depends_on": [
+        "EC-204"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "26_FOCUSED_TEMP_REAL_GIT_KNOWLEDGE_SNAPSHOT_EPHEMERAL_ED25519_AND_TWO_DRAFT2020_12_SCHEMA_CASES_PASSED;_137_ADJACENT_EC201_TO_EC205_LOCAL_TESTS_PASSED;_ORG_NATIVE_OS_E63_E66_FINAL_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/knowledge_chapters.py",
+        "construction/test_knowledge_chapters.py",
+        "construction/fixtures/ec205/README.md",
+        "references/knowledge-chapter-read-policy.v1.schema.json",
+        "references/knowledge-chapters-result.v1.schema.json",
+        "references/knowledge-chapters.md",
+        "construction/EC205_DELIVERY_SHA256.json",
+        "EC-205.md"
+      ],
+      "validation_summary": "26_FOCUSED_PASSED_137_LOCAL_ADJACENT_PASSED;_ZERO_KNOWLEDGE_WRITES;_EXPLICIT_SOURCE_LINKS_ONLY;_SEMANTIC_CHAPTER_STALENESS_NOT_PROVEN;_FINAL_ASSISTED_NOT_RUN"
+    },
+    {
+      "round": 206,
+      "ec": "EC-206",
+      "phase": "F",
+      "phase_name": "知识库和架构影响",
+      "title": "候选知识隔离区",
+      "scope": "隔离尚未交付改动和需要人工确认的主张",
+      "exit_gate": "正式知识不受候选污染",
+      "depends_on": [
+        "EC-205"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "23_FOCUSED_LOCAL_TESTS_PASSED;_160_EC201_206_ADJACENT_PASSED;_5_JSON_SCHEMAS_VALID;_POSIX_PRIVATE_LOCAL_WRITE_ONLY;_NO_AUTHORITATIVE_KNOWLEDGE_WRITE;_FINAL_ASSISTED_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/knowledge_candidate_store.py",
+        "construction/test_knowledge_candidate_store.py",
+        "construction/fixtures/ec206/README.md",
+        "references/knowledge-candidate-proposal.v1.schema.json",
+        "references/knowledge-candidate-append-policy.v1.schema.json",
+        "references/knowledge-candidate-read-policy.v1.schema.json",
+        "references/knowledge-candidate-list-policy.v1.schema.json",
+        "references/knowledge-candidate-result.v1.schema.json",
+        "references/knowledge-candidate-store.md",
+        "construction/EC206_DELIVERY_SHA256.json",
+        "EC-206.md"
+      ]
+    },
+    {
+      "round": 207,
+      "ec": "EC-207",
+      "phase": "F",
+      "phase_name": "知识库和架构影响",
+      "title": "knowledge_update Handoff",
+      "scope": "生成带证据、来源SHA及章节指纹的草稿",
+      "exit_gate": "AI仅负责语义修订不越权提交",
+      "depends_on": [
+        "EC-206"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "23_FOCUSED_LOCAL_TESTS_PASSED;_183_EC201_207_ADJACENT_PASSED;_4_JSON_SCHEMAS_VALID;_LOCAL_READ_ONLY_AI_INPUT_WITH_DOUBLE_EXACT_GRANTS_NO_TRANSFER_OR_SAVE;_FINAL_ASSISTED_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/knowledge_update_handoff.py",
+        "construction/test_knowledge_update_handoff.py",
+        "construction/fixtures/ec207/README.md",
+        "references/knowledge-update-handoff-request.v1.schema.json",
+        "references/knowledge-update-handoff-policy.v1.schema.json",
+        "references/knowledge-update-handoff-candidate-reads.v1.schema.json",
+        "references/knowledge-update-handoff-result.v1.schema.json",
+        "references/knowledge-update-handoff.md",
+        "construction/EC207_DELIVERY_SHA256.json",
+        "EC-207.md"
+      ]
+    },
+    {
+      "round": 208,
+      "ec": "EC-208",
+      "phase": "F",
+      "phase_name": "知识库和架构影响",
+      "title": "KnowledgeSave持久化",
+      "scope": "校验后在CES元数据边界保存新知识版本",
+      "exit_gate": "只读业务源码；不重写旧版本",
+      "depends_on": [
+        "EC-207"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "13_FOCUSED_TEMP_POSIX_REAL_EC206_EC207_ED25519_TESTS_PASSED;_6_STRICT_DRAFT2020_12_SCHEMAS_LOCAL_VALID;_196_ADJACENT_EC201_208_CASES_PASSED;_ORGANIZATION_NATIVE_OS_NFS_E63_E66_FINAL_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/knowledge_version_save.py",
+        "construction/test_knowledge_version_save.py",
+        "construction/fixtures/ec208/README.md",
+        "references/knowledge-save-request.v1.schema.json",
+        "references/knowledge-save-policy.v1.schema.json",
+        "references/knowledge-save-approvals.v1.schema.json",
+        "references/knowledge-save-record.v1.schema.json",
+        "references/knowledge-save-manifest.v1.schema.json",
+        "references/knowledge-save-result.v1.schema.json",
+        "references/knowledge-version-save.md",
+        "construction/EC208_DELIVERY_SHA256.json",
+        "EC-208.md"
+      ],
+      "validation_summary": "13_FOCUSED_PASSED_196_ADJACENT_PASSED;_IMMUTABLE_PRIVATE_POSIX_VERSION_METADATA_ONLY;_TWO_LOCAL_EPHEMERAL_SIGNER_ROLES;_ORIGINAL_KNOWLEDGE_BUSINESS_GIT_AND_OLD_RECORDS_UNCHANGED;_FINAL_ASSISTED_NOT_RUN"
+    },
+    {
+      "round": 209,
+      "ec": "EC-209",
+      "phase": "F",
+      "phase_name": "知识库和架构影响",
+      "title": "知识冲突及重试",
+      "scope": "对并发章节变更和过期target SHA执行乐观检查",
+      "exit_gate": "冲突显式返回不得静默覆盖",
+      "depends_on": [
+        "EC-208"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "LOCAL_13_FOCUSED_AND_209_ADJACENT_EC201_EC209_CASES_AND_3_DRAFT2020_12_SCHEMAS; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation_artifacts": [
+        "construction/knowledge_save_retry.py",
+        "construction/test_knowledge_save_retry.py",
+        "construction/fixtures/ec209/README.md",
+        "references/knowledge-save-retry-intent.v1.schema.json",
+        "references/knowledge-save-retry-policy.v1.schema.json",
+        "references/knowledge-save-retry-result.v1.schema.json",
+        "references/knowledge-save-retry.md",
+        "construction/EC209_DELIVERY_SHA256.json",
+        "EC-209.md"
+      ],
+      "validation_summary": "REAL_TEMP_PRIVATE_EC206_EC207_EC208_LOCAL_DISJOINT_TARGET_ABA_STALE_SNAPSHOT_PERMISSION_AND_CAS_NO_WRITE_CASES_13_FOCUSED_209_ADJACENT_PASS; ORGANIZATIONAL_AUTHORITY_LIVE_SOURCE_NATIVE_POWERHELL_OS_NFS_MULTIPROCESS_FINAL_NOT_RUN"
+    },
+    {
+      "round": 210,
+      "ec": "EC-210",
+      "phase": "F",
+      "phase_name": "知识库和架构影响",
+      "title": "知识查询与更新链路",
+      "scope": "串联Bootstrap→Impact→AI→Save→阅读",
+      "exit_gate": "未授权DocsOnlyPublish不触发",
+      "depends_on": [
+        "EC-209"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "19_FOCUSED_AND_228_ADJACENT_LOCAL_DEVELOPMENT_PASSED_5_SCHEMAS; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED"
+    },
+    {
+      "round": 211,
+      "ec": "EC-211",
+      "phase": "G",
+      "phase_name": "Issue读取、匹配与新建",
+      "title": "Issue只读Provider抽象",
+      "scope": "定义仓库和Issue远程身份及凭据门禁",
+      "exit_gate": "无帐号时可静态/模拟测试，不假称联网",
+      "depends_on": [
+        "EC-210"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "23_FOCUSED_LOCAL_SYNTHETIC_TEST_METHODS_PASSED_2_JSON_SCHEMA_DEFINITIONS_AND_SAMPLE_VALIDATION; LIVE_PROVIDER_NATIVE_AND_FINAL_ACCEPTANCE_NOT_RUN"
+    },
+    {
+      "round": 212,
+      "ec": "EC-212",
+      "phase": "G",
+      "phase_name": "Issue读取、匹配与新建",
+      "title": "IssueSync实现",
+      "scope": "按白名单Issue范围同步只读快照",
+      "exit_gate": "不修改任何现有Issue",
+      "depends_on": [
+        "EC-211"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "27_FOCUSED_LOCAL_SYNTHETIC_TESTS_AND_TWO_DRAFT2020_12_SCHEMAS;_LIVE_PROVIDER_NATIVE_AND_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/issue_sync.py",
+        "construction/test_issue_sync.py",
+        "construction/fixtures/ec212/README.md",
+        "references/issue-sync.md",
+        "references/issue-sync-grant.v1.schema.json",
+        "references/issue-sync-result.v1.schema.json",
+        "construction/EC212_DELIVERY_SHA256.json",
+        "EC-212.md"
+      ],
+      "validation_summary": "READ_ONLY_IN_MEMORY_BATCH_8_ISSUES_24_GET_MAX_EXACT_SCOPE_GRANTS_STALE_UNKNOWN_ID_COLLISION_NO_WRITES_SYNTHETIC;_FINAL_LIVE_PROVIDER_ORG_NATIVE_OS_NFS_NOT_RUN"
+    },
+    {
+      "round": 213,
+      "ec": "EC-213",
+      "phase": "G",
+      "phase_name": "Issue读取、匹配与新建",
+      "title": "IssueShow实现",
+      "scope": "按ID和受控过滤读取当前状态与来源",
+      "exit_gate": "服务不可用时返回unknown/unavailable",
+      "depends_on": [
+        "EC-212"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "35_FOCUSED_EC213_AND_85_ADJACENT_EC211_EC213_LOCAL_SYNTHETIC;_2_DRAFT2020_12_SCHEMAS_AND_REPRESENTATIVE_RESPONSES;_LIVE_PROVIDER_NATIVE_AND_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/issue_show.py",
+        "construction/test_issue_show.py",
+        "construction/fixtures/ec213/README.md",
+        "references/issue-show.md",
+        "references/issue-show-grant.v1.schema.json",
+        "references/issue-show-result.v1.schema.json",
+        "construction/EC213_DELIVERY_SHA256.json",
+        "EC-213.md"
+      ],
+      "validation_summary": "SINGLE_EXACT_REPO_AND_GLOBAL_ISSUE_ID_TWO_INDEPENDENT_GRANTS_ONE_EC211_READ_MAX_3_GET_CONTROLLED_FILTERS_FRESH_UNKNOWN_NO_WRITES_SYNTHETIC;_FINAL_LIVE_PROVIDER_ORG_NATIVE_OS_NFS_NOT_RUN"
+    },
+    {
+      "round": 214,
+      "ec": "EC-214",
+      "phase": "G",
+      "phase_name": "Issue读取、匹配与新建",
+      "title": "IssueMatch去重候选",
+      "scope": "依据仓库、证据锚点、标题语义形成候选列表",
+      "exit_gate": "不能把相似描述当成确定重复",
+      "depends_on": [
+        "EC-213"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "32_FOCUSED_AND_117_ADJACENT_SYNTHETIC_LOCAL_TESTS_PASSED_3_DRAFT2020_12_REQUEST_GRANT_RESULT_SCHEMAS; LIVE_PROVIDER_ORG_NATIVE_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/issue_match.py",
+        "construction/test_issue_match.py",
+        "construction/fixtures/ec214/README.md",
+        "references/issue-match.md",
+        "references/issue-match-request.v1.schema.json",
+        "references/issue-match-grant.v1.schema.json",
+        "references/issue-match-result.v1.schema.json",
+        "construction/EC214_DELIVERY_SHA256.json",
+        "EC-214.md"
+      ],
+      "validation_summary": "PINNED_ONE_REPO_8_EXACT_ISSUES_MAX_24_GET_ACTUAL_EC211_READER_EC212_REDACTED_PROJECTION_SCOPED_INDEPENDENT_MATCH_AND_TITLE_PRIVACY_GRANTS_CALLER_ASSERTED_EVIDENCE_ANCHORS_CJK_TITLE_LEXICAL_HINTS_ONLY_UNKNOWN_IF_PARTIAL_NO_DUPLICATE_OR_ABSENCE_ASSURANCE_NO_WRITES_FINAL_ACCEPTANCE_DEFERRED"
+    },
+    {
+      "round": 215,
+      "ec": "EC-215",
+      "phase": "G",
+      "phase_name": "Issue读取、匹配与新建",
+      "title": "Issue创建资格计算",
+      "scope": "以证据充分性、隐私、范围和缺失状态判定可否建议",
+      "exit_gate": "eligibility与authorization明确区分",
+      "depends_on": [
+        "EC-214"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "51_OF_51_FOCUSED_SYNTHETIC_LOCAL_METHODS_PASSED; 168_OF_168_ADJACENT_EC211_EC215_METHODS_PASSED; 3_DRAFT2020_12_SCHEMAS_VALIDATED; LIVE_PROVIDER_ORG_POWER_SHELL_OS_NFS_E63_E66_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/issue_eligibility.py",
+        "construction/test_issue_eligibility.py",
+        "construction/fixtures/ec215/README.md",
+        "references/issue-eligibility.md",
+        "references/issue-eligibility-request.v1.schema.json",
+        "references/issue-eligibility-review.v1.schema.json",
+        "references/issue-eligibility-result.v1.schema.json",
+        "construction/EC215_DELIVERY_SHA256.json",
+        "EC-215.md"
+      ],
+      "scope_boundaries": "ELIGIBLE_TO_PROPOSE_FOR_LOCAL_REDACTED_EC216_DRAFT_ONLY_NOT_ISSUECREATE_GRANT_OR_ABSENCE_PROOF; FULL_EC214_RECEIPT_CALLER_UNAUTHENTICATED; SIGNED_REVIEW_KEY_ROLE_UNATTESTED; NO_PROVIDER_GIT_KNOWLEDGE_NATIVE_WRITES"
+    },
+    {
+      "round": 216,
+      "ec": "EC-216",
+      "phase": "G",
+      "phase_name": "Issue读取、匹配与新建",
+      "title": "IssuePlan内容草稿",
+      "scope": "生成拟创建标题、描述、引用、目标仓库",
+      "exit_gate": "未授权只产生本地预览",
+      "depends_on": [
+        "EC-215"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "48_OF_48_EC216_FOCUSED_LOCAL_SYNTHETIC_METHODS_PASSED; 216_OF_216_EC211_EC216_ADJACENT_SYNTHETIC_LOCAL_METHODS_PASSED; 2_DRAFT2020_12_STRICT_SCHEMAS_CHECKED; LIVE_PROVIDER_ORG_GIT_PRIVACY_NATIVE_OS_NFS_E63_E66_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/issue_plan.py",
+        "construction/test_issue_plan.py",
+        "construction/fixtures/ec216/README.md",
+        "references/issue-plan.md",
+        "references/issue-plan-request.v1.schema.json",
+        "references/issue-plan-result.v1.schema.json",
+        "construction/EC216_DELIVERY_SHA256.json",
+        "EC-216.md"
+      ],
+      "scope_boundaries": "ONLY_STANDALONE_IN_MEMORY_CLOSED_VOCAB_REDACTED_LOCAL_PREVIEW_RECOMPUTE_EXACT_EC215_ELIGIBILITY_AND_RECEIPT_NO_DUPLICATE_ABSENCE_SOURCE_TRUTH_OR_ORG_REVIEWER_AUTHENTICATION_NO_EC217_CREATE_GRANT_EC218_REMOTE_WRITE_PUBLISH_OR_NATIVE_CLI"
+    },
+    {
+      "round": 217,
+      "ec": "EC-217",
+      "phase": "G",
+      "phase_name": "Issue读取、匹配与新建",
+      "title": "IssueCreate单次许可",
+      "scope": "要求目标、操作、已审文案的明确批准",
+      "exit_gate": "推断的用户偏好不等于授权",
+      "depends_on": [
+        "EC-216"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "33_OF_33_EC217_FOCUSED_LOCAL_SYNTHETIC_METHODS_PASSED; 249_OF_249_EC211_EC217_ADJACENT_LOCAL_SYNTHETIC_METHODS_PASSED; 3_DRAFT2020_12_SCHEMAS_CHECKED; REAL_ORG_ISSUER_USER_REVIEW_PROVIDER_MULTIHOST_OS_NFS_NATIVE_POWERSHELL_E63_E66_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/issue_create_grant.py",
+        "construction/test_issue_create_grant.py",
+        "construction/fixtures/ec217/README.md",
+        "references/issue-create-grant.md",
+        "references/issue-create-content.v1.schema.json",
+        "references/issue-create-approval.v1.schema.json",
+        "references/issue-create-grant-result.v1.schema.json",
+        "construction/EC217_DELIVERY_SHA256.json",
+        "EC-217.md"
+      ],
+      "scope_boundaries": "INDEPENDENT_HOST_TRUSTED_EXPLICIT_ED25519_NEW_ISSUE_RECEIPT_EXACT_TARGET_POLICY_PLAN_AND_SANITIZED_CONTENT_180SEC_ATOMIC_SINGLE_USE_LEDGER_RESERVATION_NO_REMOTE_PROVIDER_POST_NO_EDIT_NO_NATIVE_CLI_NO_REAL_ORG_SOURCE_ISSUE_AUTHENTICATION_EC218_PENDING"
+    },
+    {
+      "round": 218,
+      "ec": "EC-218",
+      "phase": "G",
+      "phase_name": "Issue读取、匹配与新建",
+      "title": "IssueCreate幂等写入",
+      "scope": "携带稳定幂等标识并处理重复提交",
+      "exit_gate": "相同请求不重复创建Issue",
+      "depends_on": [
+        "EC-217"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "24_OF_24_EC218_FOCUSED_LOCAL_SYNTHETIC_METHODS_PASSED; 187_OF_187_EC211_AND_EC214_EC217_ADJACENT_LOCAL_SYNTHETIC_METHODS_PASSED; 1_DRAFT2020_12_SCHEMA_CHECKED; REAL_PROVIDER_POST_ORG_SIGNER_HUMAN_PROSE_PRIVACY_SOURCE_CI_CROSS_HOST_OS_NFS_NATIVE_POWERSHELL_15_SMOKE_E63_E66_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/issue_create_write.py",
+        "construction/test_issue_create_write.py",
+        "construction/fixtures/ec218/README.md",
+        "references/issue-create-write.md",
+        "references/issue-create-write-result.v1.schema.json",
+        "construction/EC218_DELIVERY_SHA256.json",
+        "EC-218.md"
+      ],
+      "scope_boundaries": "STANDALONE_NEW_ISSUE_ONLY_GH_GL_REAL_POST_POSSIBLE_WITH_HOST_AUTH_AND_EXACT_EC217_RESERVATION_AND_DURABLE_SINGLE_ATTEMPT_DOUBLE_UNIQUE_GUARD_NO_AUTOMATIC_RETRY_OR_REMOTELY_CONFIRMED_ABSENCE_NO_EXISTING_ISSUE_MUTATION_NO_NATIVE_POWERSHELL_CLI_OR_EC219_RECONCILIATION"
+    },
+    {
+      "round": 219,
+      "ec": "EC-219",
+      "phase": "G",
+      "phase_name": "Issue读取、匹配与新建",
+      "title": "Issue未知结果重查",
+      "scope": "网络不确定时先远程确认后选择性重试",
+      "exit_gate": "不得把HTTP accepted当成完成",
+      "depends_on": [
+        "EC-218"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "28_OF_28_EC219_FOCUSED_PLUS_57_OF_57_EC217_EC218_ADJACENT_LOCAL_SYNTHETIC_METHODS_PASSED AND_1_DRAFT2020_12_RESULT_SCHEMA_CHECKED; REAL_PROVIDER_PRIVATE_HIDDEN_ISSUES ORG_SIGNER_HUMAN_PRIVACY_SOURCE_CI_CROSS_HOST_OS_NFS_NATIVE_POWERSHELL_15_SMOKE E63_E66_FINAL_ACCEPTANCE_NOT_RUN",
+      "implementation_artifacts": [
+        "construction/issue_unknown_recheck.py",
+        "construction/test_issue_unknown_recheck.py",
+        "construction/fixtures/ec219/README.md",
+        "references/issue-unknown-recheck.md",
+        "references/issue-unknown-recheck-result.v1.schema.json",
+        "construction/EC219_DELIVERY_SHA256.json",
+        "EC-219.md"
+      ],
+      "scope_boundaries": "REAL_EC218_ORIGINAL_UNKNOWN_RECORD_PLUS_HISTORICAL_FULL_EC217_ED25519 AND_EC216_215_214_EVIDENCE_VERIFY_DISTINCT_EXPLICIT_READ_AUTH OFFICIAL_GH_GL_GET_ONLY_BOUNDED_LIST_AND_DETAILS_DOUBLE_REPO_ID_PATH_PRIVACY NEW_APPEND_ONLY_POSITIVE_CANDIDATE_LEDGER_NO_CAUSAL_OR_ABSENCE_PROOF NO_AUTO_REPOST_OR_EXISTING_ISSUE_EDIT_NO_POWERSHELL_NATIVE_CLI"
+    },
+    {
+      "round": 220,
+      "ec": "EC-220",
+      "phase": "G",
+      "phase_name": "Issue读取、匹配与新建",
+      "title": "已有Issue严格只读回归",
+      "scope": "封锁close/comment/label/assign/edit端点",
+      "exit_gate": "Issue模块无现有条目改写路径",
+      "depends_on": [
+        "EC-219"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "31_OF_31_EC220_FOCUSED_LOCAL_SYNTHETIC_METHODS_AND_169_OF_169_EC211_EC212_EC213_EC214_EC218_EC219_ADJACENT_METHODS_PASSED_AND_1_DRAFT2020_12_SCHEMA_FOUR_REPRESENTATIVE_STATES; REAL_PROVIDER_AUTH_PRIVATE_CONFIDENTIAL_ISSUE_ORG_ISSUER_SCOPE_FINGERPRINT_WINDOWS_MACOS_NFS_CROSS_HOST_NATIVE_POWERSHELL7_15_SMOKE_E63_E66_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/issue_existing_readonly.py",
+        "construction/issue_provider.py",
+        "construction/issue_create_write.py",
+        "construction/issue_unknown_recheck.py",
+        "construction/test_issue_existing_readonly.py",
+        "construction/fixtures/ec220/README.md",
+        "references/issue-existing-readonly.md",
+        "references/issue-existing-readonly-result.v1.schema.json",
+        "construction/EC220_DELIVERY_SHA256.json",
+        "EC-220.md"
+      ],
+      "scope_boundaries": "EXISTING_ISSUE_PROVIDER_HTTP_GET_ONLY_EXACT_SCOPED_REPO_ID_PATH_ISSUE_GLOBAL_LOCAL_ID_AND_PRIVACY_CONSENT; SHARED_OFFICIAL_GH_GL_VERB_ROUTE_GUARD_IN_EC211_EC218_EC219; EXISTING_ISSUE_EDIT_COMMENT_LABEL_ASSIGN_CLOSE_REOPEN_BLOCKED; ONLY_EC218_NEW_COLLECTION_POST_STILL_REQUIRES_SIGNED_ONE_SHOT_DURABLE_BARRIER; UNKNOWN_NOT_ABSENCE; NO_POWERHELL_NATIVE_OR_EC221_DELIVERY"
+    },
+    {
+      "round": 221,
+      "ec": "EC-221",
+      "phase": "H",
+      "phase_name": "交付与发布",
+      "title": "DeliveryPreview初版",
+      "scope": "形成内容版本、渠道、受众与敏感级别预览",
+      "exit_gate": "未授权仅本地预览，不产生发送",
+      "depends_on": [
+        "EC-220"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "20_OF_20_LOCAL_SYNTHETIC_REAL_PRIVATE_EC199_EC200_REPORT_AND_EC178_EC179_FINDING_READ_CASES_PASSED_AND_DRAFT2020_12_RESULT_SCHEMA; LIVE_ORG_RECIPIENT_IDENTITY_TRUE_PRIVACY_GIT_CI_SOURCE_MULTIHOST_WINDOWS_MACOS_NFS_NATIVE_POWERSHELL7_15_SMOKE_E63_E66_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/delivery_preview.py",
+        "construction/test_delivery_preview.py",
+        "construction/fixtures/ec221/README.md",
+        "references/delivery-preview.md",
+        "references/delivery-preview-result.v1.schema.json",
+        "construction/EC221_DELIVERY_SHA256.json",
+        "EC-221.md"
+      ],
+      "scope_boundaries": "EXACT_VERSION_AND_HASH_PINNED_EC200_REPORT_AND_EC179_FINDING_SOURCE_LOCAL_READ_ONLY; NEW_EXPLICIT_PRIVATE_READ_AND_PREVIEW_BOOL_ASSERTIONS; IN_MEMORY_REDACTED_FIXED_VOCAB_METADATA_ONLY; AUDIENCE_CHANNEL_RECIPIENT_IDENTITY_SHA_UNVERIFIED; PRIVACY_FLOOR_AND_COVERAGE_GAPS; NOT_EC222_SENSITIVE_CONTENT_SCAN_OR_EC223_ID_VERIFICATION_OR_EC224_AUTH_OR_EC225_SEND; NEVER_REMOTE_AI_NETWORK_PUBLISH_GIT_ISSUE_OR_NATIVE_POWERSHELL"
+    },
+    {
+      "round": 222,
+      "ec": "EC-222",
+      "phase": "H",
+      "phase_name": "交付与发布",
+      "title": "报告与Finding脱敏策略",
+      "scope": "对补丁、路径、私钥、个人内容执行策略检查",
+      "exit_gate": "高敏数据不自动对外发布",
+      "depends_on": [
+        "EC-221"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "17_OF_17_LOCAL_SYNTHETIC_REAL_PRIVATE_EC200_REPORT_AND_EC179_HMAC_FINDING_CASES_PASSED_AND_DRAFT2020_12_RESULT_SCHEMA_FOUR_STATES; LIVE_ORG_RECIPIENT_PRIVACY_GIT_CI_SOURCE_MULTIHOST_WINDOWS_MACOS_NFS_NATIVE_POWERSHELL7_15_SMOKE_E63_E66_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/delivery_redaction.py",
+        "construction/test_delivery_redaction.py",
+        "construction/fixtures/ec222/README.md",
+        "references/delivery-redaction.md",
+        "references/delivery-redaction-result.v1.schema.json",
+        "construction/EC222_DELIVERY_SHA256.json",
+        "EC-222.md"
+      ],
+      "scope_boundaries": "EXACT_EC221_PREVIEW_AND_STORED_SOURCE_REVISION_SHA_PIN; FRESH_INDEPENDENT_EC222_PLAINTEXT_AND_ORIGINAL_EC200_MARKDOWN_GRANTS; SOURCE_SHA_BOUND_LOCAL_FIXED_SENSITIVE_POLICY_PATCH_PATH_SECRET_PERSON_UNKNOWN_CONTENT_FAIL_CLOSED; EC179_HASHES_ONLY_FINDING_REQUIRES_MATCHING_EPHEMERAL_EC175_ORIGINAL_SHA_AND_HMAC_RECORD_WITH_TTL; SAFE_MEANS_ONLY_FIXED_LOCAL_REDACTED_SUMMARY_NOT_SOURCE_DECLASSIFICATION; NO_EC223_RECIPIENT_OR_EC224_APPROVAL_OR_EC225_SEND; NO_EXTERNAL_AI_NETWORK_PUBLISH_GIT_ISSUE_OR_NATIVE_POWERSHELL"
+    },
+    {
+      "round": 223,
+      "ec": "EC-223",
+      "phase": "H",
+      "phase_name": "交付与发布",
+      "title": "收件人及渠道身份验证",
+      "scope": "接收明确recipient/channel/project范围",
+      "exit_gate": "不能由提交作者列表自动推送",
+      "depends_on": [
+        "EC-222"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "LOCAL_SYNTHETIC_GENUINE_PRIVATE_REPORT_READ_AND_SIGNED_DOCUMENT_TESTS_ONLY; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation_artifacts": [
+        "construction/delivery_identity.py",
+        "construction/test_delivery_identity.py",
+        "construction/fixtures/ec223/README.md",
+        "references/delivery-identity.md",
+        "references/delivery-identity-result.v1.schema.json",
+        "construction/EC223_DELIVERY_SHA256.json",
+        "EC-223.md"
+      ],
+      "development_result": "STANDALONE_EXACT_SIGNED_SINGLE_RECIPIENT_PROJECT_ROUTE_AND_FRESH_REVOCATION_AND_OPERATOR_CHECK_PERMISSION_VERIFIED_LOCALLY_NO_SEND"
+    },
+    {
+      "round": 224,
+      "ec": "EC-224",
+      "phase": "H",
+      "phase_name": "交付与发布",
+      "title": "交付授权绑定",
+      "scope": "授权绑定精确payload hash/目标/渠道/时效",
+      "exit_gate": "任何内容或收件人变化需重授权",
+      "depends_on": [
+        "EC-223"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "23_OF_23_LOCAL_SYNTHETIC_REAL_EC200_EC221_EC222_EC223_EC224_SIGNED_DELIVERY_AUTHORIZATION_METHODS_PASSED_AND_STRICT_DRAFT2020_12_SCHEMA; ENTERPRISE_APPROVER_IDENTITY_PROVIDER_OS_NFS_WINDOWS_MACOS_LINUX_NATIVE_POWERSHELL7_15_SMOKE_E63_E66_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/delivery_authorization.py",
+        "construction/test_delivery_authorization.py",
+        "construction/fixtures/ec224/README.md",
+        "references/delivery-authorization.md",
+        "references/delivery-authorization-result.v1.schema.json",
+        "construction/EC224_DELIVERY_SHA256.json",
+        "EC-224.md"
+      ],
+      "scope_boundaries": "SIX_DISTINCT_HOST_PINNED_ED25519_ROOTS_THREE_EC223_IDENTITY_PLUS_THREE_NEW_APPROVAL_ORG_ENTITLEMENT_PREGRANT_REVOCATION; INDEPENDENT_OPERATOR_ORGANIZATION_SIGNED_PERMISSION; EXACT_GRANT_BINDS_PREGRANT_REVOCATION_CHECKPOINT_SHA_AND_EC221_PREVIEW_EC222_REVIEW_EC223_IDENTITY_PAYLOAD_UTF8_BYTES_SOURCE_VERSIONS_PRIVACY_ROUTE_PROJECT_RECIPIENT_CHANNEL_AUDIENCE_AND_FIXED_CODE_POLICY_SHA; RECHECK_REAL_PRIVATE_STORES_AND_ALL_EXPIRIES; LOCAL_APPROVAL_RECEIPT_ONLY_NOT_SENT_OR_PROVIDER_ONE_USE",
+      "development_result": "STANDALONE_HOST_SIGNED_ORGANIZATION_PERMISSION_PREGRANT_REVOCATION_AND_APPROVER_EXACT_CONTENT_SINGLE_PRIVATE_TARGET; REAL_EC223_222_221_RECHECK; NO_SEND_ONE_USE_PROVIDER_OR_NATIVE_POWER_SHELL"
+    },
+    {
+      "round": 225,
+      "ec": "EC-225",
+      "phase": "H",
+      "phase_name": "交付与发布",
+      "title": "DeliverySend适配器",
+      "scope": "在受控provider接口上发送单项交付",
+      "exit_gate": "缺失凭据时无假发送结果",
+      "depends_on": [
+        "EC-224"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "20_OF_20_EC225_LOCAL_SYNTHETIC_ACTUAL_EC200_EC221_EC222_EC223_EC224_PRIVATE_SOURCE_TO_SIGNED_TEST_GATEWAY_METHODS_PASSED_AND_STRICT_DRAFT2020_12_SCHEMA; LIVE_PROVIDER_NETWORK_OS_NFS_CRASH_WINDOWS_MACOS_LINUX_NATIVE_POWERSHELL7_15_SMOKE_E63_E66_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/delivery_send.py",
+        "construction/test_delivery_send.py",
+        "construction/fixtures/ec225/README.md",
+        "references/delivery-send.md",
+        "references/delivery-send-result.v1.schema.json",
+        "construction/EC225_DELIVERY_SHA256.json",
+        "EC-225.md"
+      ],
+      "scope_boundaries": "HOST_PINNED_USER_CONTROLLED_SINGLE_PRIVATE_SANDBOX_TARGET_ONLY; EIGHT_DISTINCT_ED25519_ROOTS_THROUGH_EC225; INDEPENDENT_SHORT_SIGNED_SIDE_EFFECT_GRANT_PROVIDER_SIGNED_FRESH_CAPABILITY_EXACT_ACCOUNT_RECIPIENT_ROUTE_PAYLOAD_SOURCE_POLICY_CODE; FULL_EC224_223_222_221_PRIVATE_RECHECK_BEFORE_AND_AFTER_PROBE; GRANT_KEY_DURABLE_SINGLE_USE_ATOMIC_POSIX_LOCAL_OUTBOX_COMMITTED_BEFORE_ANY_NETWORK; AT_MOST_ONE_HTTPS_POST; NEVER_AUTO_RETRY_UNKNOWN; HTTP_2XX_IS_SUBMISSION_UNCONFIRMED_NOT_SENT_ACCEPTED_DELIVERED; NO_REAL_PROVIDER_TEST_NO_PUBLISH_NO_NATIVE_POWERSHELL",
+      "development_result": "STANDALONE_HOST_CONTROLLED_SANDBOX_ONLY_SIGNED_CAPABILITY_HTTPS_SEND_ADAPTER_WITH_SINGLE_GRANT_USE_AND_NO_FALSE_DELIVERY_PROOF"
+    },
+    {
+      "round": 226,
+      "ec": "EC-226",
+      "phase": "H",
+      "phase_name": "交付与发布",
+      "title": "accepted与delivered状态",
+      "scope": "分离网关接受、真实送达与确认未知",
+      "exit_gate": "状态不得从accepted自动升级为delivered",
+      "depends_on": [
+        "EC-225"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "24_OF_24_EC226_LOCAL_SYNTHETIC_ACTUAL_EC200_THROUGH_EC225_PRIVATE_CHAIN_TO_CHALLENGED_SIGNED_PROVIDER_STATUS_AND_INDEPENDENT_INBOX_METHODS_PASSED_AND_STRICT_DRAFT2020_12_SCHEMA; LIVE_PROVIDER_STATUS_TOKEN_INBOX_PKI_OS_NFS_CRASH_WINDOWS_MACOS_LINUX_NATIVE_POWERSHELL7_15_SMOKE_E63_E66_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/delivery_status.py",
+        "construction/test_delivery_status.py",
+        "construction/fixtures/ec226/README.md",
+        "references/delivery-status.md",
+        "references/delivery-status-result.v1.schema.json",
+        "construction/EC226_DELIVERY_SHA256.json",
+        "EC-226.md"
+      ],
+      "scope_boundaries": "TEN_DISTINCT_HOST_ED25519_ROOTS_THROUGH_EC226; FRESH_INDEPENDENT_SIGNED_STATUS_READ_PERMISSION_AND_DURABLE_ONE_USE_READ_NONCE; ORIGINAL_EC225_SUBMIT_ATTEMPT_MARKER_PLUS_EC224_EC225_HISTORIC_SIGNATURE_AND_PAYLOAD_BYTES_VERIFICATION; PROVIDER_SIGNED_ACCEPTED_SEPARATE_FROM_INBOX_OBSERVER_SIGNED_DELIVERED; DO_NOT_PROMOTE_PROVIDER_ONLY_DELIVERED_OR_HTTP_2XX; NO_SUBMIT_RETRY_OR_FULL_AUDIT_OR_PUBLICATION_OR_NATIVE_POWERSHELL",
+      "development_result": "STANDALONE_HOST_CONTROLLED_SANDBOX_PRIVATE_READ_ONE_CHALLENGED_SIGNED_STATUS_QUERY; STRICT_EVIDENCE_SEPARATION_ACCEPTED_VS_INBOX_DELIVERED_UNKNOWN_FAIL_CLOSED"
+    },
+    {
+      "round": 227,
+      "ec": "EC-227",
+      "phase": "H",
+      "phase_name": "交付与发布",
+      "title": "交付幂等重试与审计",
+      "scope": "提供操作ID、重入保护与结果回读",
+      "exit_gate": "未知发送状态不得盲目重复发送",
+      "depends_on": [
+        "EC-226"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "29_OF_29_EC227_FOCUSED_AND_44_OF_44_EC225_EC226_ADJACENT_LOCAL_SYNTHETIC_CASES_PASSED_AND_TWO_STRICT_DRAFT2020_12_SCHEMAS; REAL_PROVIDER_INBOX_HMAC_KEY_EXTERNAL_HEAD_CRASH_NFS_MULTIPROCESS_MULTIHOST_WINDOWS_MACOS_LINUX_NATIVE_POWERSHELL7_15_SMOKE_E63_E66_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/delivery_reconcile.py",
+        "construction/test_delivery_reconcile.py",
+        "construction/fixtures/ec227/README.md",
+        "references/delivery-reconcile.md",
+        "references/delivery-reconcile-result.v1.schema.json",
+        "references/delivery-reconcile-audit.v1.schema.json",
+        "construction/EC227_DELIVERY_SHA256.json",
+        "EC-227.md"
+      ],
+      "scope_boundaries": "ONLY_ORIGINAL_EC225_ATTEMPT_STATUS_RECONCILIATION; EXACT_SIGNED_EC224_225_CONTENT_AND_TARGET_HISTORY; SINGLE_FRESH_EC226_INDEPENDENT_STATUS_READ_PER_N0NCE; NEVER_REPLAY_UNKNOWN_POST; APPEND_ONLY_OWNER_PRIVATE_POSIX_LOCAL_HMAC_AND_FSYNC_WITH_EXTERNAL_HEAD_OPTIONAL; NO_UNREVIEWED_REMOTE_DUPLICATE_FREE_PROOF; NO_NEW_SEND_GENERIC_PUBLISH_OR_NATIVE_ACTION",
+      "development_result": "BOUNDED_64_EVENT_AUDIT_RECONCILES_SIGNED_ACCEPTANCE_VS_INBOX_OBSERVATION; REENTRY_READ_CONCURRENCY_TAMPER_CRASH_CONFLICTS_FAIL_CLOSED; ORIGINAL_POST_RETRY_ALWAYS_DENIED"
+    },
+    {
+      "round": 228,
+      "ec": "EC-228",
+      "phase": "H",
+      "phase_name": "交付与发布",
+      "title": "ReportPublish受控发布",
+      "scope": "与ReportRender分离的显式公开动作",
+      "exit_gate": "发布对象来自版本化报告而非任意路径",
+      "depends_on": [
+        "EC-227"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "39_OF_39_EC228_FOCUSED_LOCAL_SYNTHETIC_REAL_EC199_EC200_VERSIONED_REPORT_WITH_SIX_SIGNED_ROOTS_AND_ONE_PRIVATE_FAKE_PROVIDER_METHODS_PASSED_PLUS_75_OF_75_ADJACENT_EC200_EC225_EC227_METHODS; DRAFT2020_12_SCHEMA_AND_PYTHON_COMPILE; REAL_PROVIDER_REVOCATION_PRIVATE_PUBLICATION_VERIFIED_REMOTE_RECEIPT_CRASH_NFS_MULTIPROCESS_MULTIHOST_WINDOWS_MACOS_LINUX_NATIVE_POWERSHELL7_15_SMOKE_E63_E66_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/report_publish.py",
+        "construction/test_report_publish.py",
+        "construction/fixtures/ec228/README.md",
+        "references/report-publish.md",
+        "references/report-publish-result.v1.schema.json",
+        "construction/EC228_DELIVERY_SHA256.json",
+        "EC-228.md"
+      ],
+      "scope_boundaries": "ORIGINAL_EC199_EC200_PRIVATE_FULL_REPOSITORY_HISTORY_VERIFIED_IMMUTABLE_LATEST_REPORT_ONLY; SIX_HOST_PINNED_INDEPENDENT_ED25519_POLICY_TARGET_REVOCATION_CONTENT_REVIEW_ONE_USE_SIDE_EFFECT_PROVIDER_PROBE; RECHECK_BEFORE_SINGLE_CREATE_ONLY_HTTPS_POST; FYSNC_REPORT_TARGET_ONCE_ONLY_LOCAL_POSIX_OUTBOX; NO_PUBLIC_PRODUCTION_REMOTE_UPDATE_EXTERNAL_RECEIPT_NATIVE_POWERSHELL_ACTION_EC229_OR_EC230",
+      "development_result": "ONE_PRIVATE_TEST_SANDBOX_PROVIDER_CREATE_ONLY_REPORT_PUBLISH_ATTEMPT_ONLY; HTTP_2XX_SUBMISSION_UNCONFIRMED_NO_REMOTE_PUBLICATION_PROOF_NO_RETRY"
+    },
+    {
+      "round": 229,
+      "ec": "EC-229",
+      "phase": "H",
+      "phase_name": "交付与发布",
+      "title": "DocsOnlyPublish独立工作树",
+      "scope": "使用隔离工作树、允许文档路径与特定批准",
+      "exit_gate": "不改业务源码/CI/schema，无法满足则不执行",
+      "depends_on": [
+        "EC-228"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "30_OF_30_EC229_FOCUSED_ACTUAL_DISPOSABLE_GIT_AND_SYNTHETIC_FOUR_INDEPENDENT_ED25519_SIGNERS; STRICT_DRAFT2020_12_RESULT_AND_PYTHON_COMPILE; REAL_ORGANIZATIONAL_KEYS_HUMAN_REVIEW_CUSTOMER_GIT_HISTORY_PRIVACY_POSIX_CRASH_NFS_MULTIHOST_WINDOWS_MACOS_NATIVE_POWERSHELL7_15_SMOKE_E63_E66_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/docs_only_publish.py",
+        "construction/test_docs_only_publish.py",
+        "construction/fixtures/ec229/README.md",
+        "references/docs-only-publish.md",
+        "references/docs-only-publish-result.v1.schema.json",
+        "construction/EC229_DELIVERY_SHA256.json",
+        "EC-229.md"
+      ],
+      "scope_boundaries": "ONE_HOST_PINNED_REAL_GIT_BASE_SHA1_EXACT_NEW_DOCS_MD_PATHS_ONLY; OWNER_PRIVATE_ISOLATED_DETACHED_GIT_WORKTREE_PLUS_ONE_LOCAL_PRIVATE_BARE_SANDBOX_NEW_OPERATION_REF_WITH_ABSENT_REF_LEASE; FOUR_INDEPENDENT_SIGNED_ED25519_POLICIES_REVIEW_REVOCATION_GRANT_AND_FSYNC_NO_RETRY_CLAIM; NO_ORIGINAL_BRANCH_INDEX_SOURCE_CI_SCHEMA_EXISTING_REF_REMOTE_PRODUCTION_OR_NETWORK_MUTATION; NO_EC230_RECEIPT_CLEANUP",
+      "development_result": "PRIVATE_OFFLINE_GIT_SANDBOX_COMMIT_AND_NEW_REF_OBSERVED_ONCE_ONLY; PARTIAL_2_NOT_PUBLICLY_PUBLISHED_OR_ACCEPTED; UNKNOWN_NEVER_RETRY"
+    },
+    {
+      "round": 230,
+      "ec": "EC-230",
+      "phase": "H",
+      "phase_name": "交付与发布",
+      "title": "发布回执与失败清理",
+      "scope": "记录目标、批准、回执、失败与已清理临时资源",
+      "exit_gate": "不删远端历史或擅自修复现存内容",
+      "depends_on": [
+        "EC-229"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "28_OF_28_EC230_FOCUSED_REAL_DISPOSABLE_GIT_EC200_STORE_SYNTHETIC_ED25519_FAKE_SIGNED_GET; STRICT_DRAFT2020_12_AND_SOURCE_COMPILE; REAL_PROVIDER_READONLY_GET_ACL_ORG_ROLE_CUSTODY_ORIGINAL_HISTORY_CLOCK_GIT_CRASH_SAME_UID_NFS_MULTIHOST_OTHER_OS_POWERSHELL7_15_SMOKE_E63_E66_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/publication_receipts.py",
+        "construction/test_publication_receipts.py",
+        "construction/fixtures/ec230/README.md",
+        "references/publication-receipts.md",
+        "references/publication-receipt-result.v1.schema.json",
+        "construction/EC230_DELIVERY_SHA256.json",
+        "EC-230.md"
+      ],
+      "scope_boundaries": "TWO_INDEPENDENT_NEW_HOST_PINNED_ED25519_READ_AND_CLEANUP_ROOTS; HISTORICAL_EC228_SIGNED_ORIGINAL_EXACT_IMMUTABLE_REPORT_AND_ATTEMPT_JOURNAL_PLUS_ONE_FRESH_PROVIDER_SIGNED_PRIVATE_GET; EC229_REAL_LOCAL_BARE_REF_CHECK_COMMIT_PARENT_ADD_ONLY_DOC_BYTES_AND_HISTORIC_MARKERS; OWNER_PRIVATE_FSYNC_SPENT_READ_AUDIT_AND_SEPARATE_SINGLE_CLEANUP_SLOT; REMOVE_ONLY_RECENTLY_VERIFIED_CLEAN_EXACT_LOCAL_LINKED_WORKTREE_AFTER_FRESH_CUSTODIAN_PERMISSION; NEVER_ORIGINAL_REPORT_SOURCE_INDEX_WORKTREE_JOURNAL_REMOTE_REF_PROVIDER_OBJECT_DELETE_ORIGINAL_POST_PUSH_RETRY_PUBLICATION_CLAIM; HISTORIC_ATTEMPT_SIGNER_CLOCK_NOT_RETROATTESTED",
+      "development_result": "PRIVATE_REPORT_PROVIDER_SIGNED_READBACK_OR_LOCAL_GIT_OFFLINE_EXACT_REF_ONLY; POSITIVE_OBSERVATION_PARTIAL_2_NO_PUBLIC_VISIBILITY; UNKNOWN_NEVER_RETRY; CLEAN_LOCAL_LINKED_WORKTREE_ONLY_WITH_SEPARATE_CUSTODIAN_SIGNED_INODE_AND_FRESH_OBSERVATION"
+    },
+    {
+      "round": 231,
+      "ec": "EC-231",
+      "phase": "I",
+      "phase_name": "Cycle与断点续建",
+      "title": "Cycle运行元数据Schema",
+      "scope": "表达任务集合、输入指纹、步骤状态和预算",
+      "exit_gate": "每次循环有可追溯的真实RunId",
+      "depends_on": [
+        "EC-230"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "25_OF_25_EC231_FOCUSED_LOCAL_POSIX_METADATA_SCHEMA_STRICT_JSON_REAL_FSYNC_AND_CLI; DRAFT2020_12_SCHEMA_POSITIVE_NEGATIVE; COMPILE; EXTERNAL_IDENTITY_CRASH_SAME_UID_NFS_MULTIHOST_OTHER_OS_NATIVE_POWERSHELL7_15_SMOKE_E63_E66_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/cycle_run_metadata.py",
+        "construction/test_cycle_run_metadata.py",
+        "construction/fixtures/ec231/README.md",
+        "references/cycle-run-metadata.md",
+        "references/cycle-run-metadata.v1.schema.json",
+        "construction/EC231_DELIVERY_SHA256.json",
+        "EC-231.md"
+      ],
+      "scope_boundaries": "STANDALONE_POSIX_PRIVATE_IMMUTABLE_0700_0600_FSYNC_EXCLUSIVE_RUN_V1_192_BIT_ID; REAL_CALLER_INPUT_BYTES_SHA_ONLY_NOT_CONTENT; ACTOR_UNVERIFIED_NO_GRANT; ORDERED_32_STEP_ACTION_SET_AND_REFERENCE_ONLY_DEPENDENCY_PLACEHOLDERS_WITHOUT_DAG_CHECK; BOUNDED_UTC_DECLARATIONS_AND_CAPTURE_ONLY_BUDGET; NOT_STARTED_NEW_METADATA_AND_UNKNOWN_OVER_PARTIAL_CONSERVATIVE_VALIDATION; NO_EXECUTION_NO_NATIVE_CYCLE_ACTION_NO_RESUME_NO_WRITE_OR_EXTERNAL_EFFECT",
+      "development_result": "CSPRNG_192_BIT_RUN_ID_RETURNED_AFTER_OWNER_PRIVATE_EXCLUSIVE_FSYNC_AND_READBACK; INPUT_BYTES_SHA256_PROVENANCE_ACTOR_UNVERIFIED; STRICT_NOT_STARTED_PARTIAL_UNKNOWN_METADATA_ONLY; NO_EXECUTION_OR_NATIVE_ACTION"
+    },
+    {
+      "round": 232,
+      "ec": "EC-232",
+      "phase": "I",
+      "phase_name": "Cycle与断点续建",
+      "title": "任务依赖DAG检查",
+      "scope": "根据Code→Quality→Report等依赖进行拓扑排序",
+      "exit_gate": "环依赖显式报错而非死循环",
+      "depends_on": [
+        "EC-231"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "21_FOCUSED_LOCAL_REAL_EC231_RECORD_AND_CLI_DEV_METHODS_PASSED; DRAFT2020_12_POSITIVE_NEGATIVE_CHECKED; NATIVE_POWERSHELL_ORIGINAL_15_SMOKE_E63_E66_AND_USER_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/cycle_dag.py",
+        "construction/test_cycle_dag.py",
+        "construction/fixtures/ec232/README.md",
+        "references/cycle-dag.md",
+        "references/cycle-dag-result.v1.schema.json",
+        "construction/HANDOFF_SOURCE_LOCK.json",
+        "EC-232.md"
+      ],
+      "scope_boundaries": "EXISTING_EC231_PRIVATE_RUN_LOAD_AND_EXACT_ID_ACTION_RECORD_SOURCE_DIGEST_VALIDATION; OPTIONAL_OUT_OF_BAND_SELF_HASH_PINS_NOT_SIGNATURES; STABLE_KAHN_32_NODE_TOPOLOGICAL_WAVES; TARJAN_ALL_CYCLIC_SCCS_CLOSED_REAL_WITNESS_AND_DOWNSTREAM_BLOCKED_INVENTORY; INVALID_MISSING_MALFORMED_OR_UNPINNED_DIVERGENCE_UNKNOWN_NO_PARTIAL_DISPATCH_ORDER; FULL_NO_EFFECT_TRUST_FALSE_SCHEMA_CLI; NO_METADATA_MUTATION_ORIGINAL_POWERSHELL_EXECUTION_PERMISSION_RESUME_BUDGET_ENFORCEMENT_SCHEDULER",
+      "development_result": "SAVED_EC231_RUN_ID_AND_HASH_REVALIDATED; DETERMINISTIC_32_STEP_KAHN_WAVE_DAG_AND_ALL_TARJAN_CYCLIC_SCCS_CLOSED_WITNESS; BLOCKED_NO_PARTIAL_ORDER_OR_EXECUTION_NEXT_PERMISSION_RESUME"
+    },
+    {
+      "round": 233,
+      "ec": "EC-233",
+      "phase": "I",
+      "phase_name": "Cycle与断点续建",
+      "title": "Cycle -Mode Next处理器",
+      "scope": "真实返回cli_action/ai_handoff/await_permission/none",
+      "exit_gate": "next_step必须指向已经实现的处理器",
+      "depends_on": [
+        "EC-232"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "32_FOCUSED_EC233_REAL_EC231_EC232_POSIX_RECORD_AND_EXISTING_NATIVE_HANDLER_EC174_FUNCTIONAL_TESTS_PASSED; DRAFT2020_12_POSITIVE_NEGATIVE_NEXT_SCHEMA_AND_NATIVE_SOURCE_CHECK; POWERSHELL7_15_SMOKE_OS_E63_E66_FINAL_USER_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/cycle_next.py",
+        "construction/test_cycle_next.py",
+        "construction/fixtures/ec233/README.md",
+        "references/cycle-next.md",
+        "references/cycle-next-result.v1.schema.json",
+        "construction/EC233_DELIVERY_SHA256.json",
+        "EC-233.md"
+      ],
+      "scope_boundaries": "EXISTING_EC231_PRIVATE_RUN_AND_EC232_DAG_RELOAD_WITH_EXTERNAL_DIGEST_PINS_AND_GRAPH_BINDING; ONLY_FIRST_DECLARED_NOT_STARTED_ROOT_NO_DEPENDENCY_SUCCESS_INFERENCE_OR_SILENT_UNSUPPORTED_SKIP; EC155_EC152_TRUE_16_NATIVE_SOURCE_BACKED_ACTION_MODE_BINDINGS_WITH_REVIEWED_EC157_159_DRIFT; EC174_REAL_CODE_ANALYSIS_AI_HANDOFF_REQUIRES_EC173_SOURCE_AND_INDEPENDENT_APPROVALS; CODESAVE_AWAIT_PERMISSION_NO_PAUSED_STATE_OR_GRANT; FOUR_KINDS_CLI_ACTION_AI_HANDOFF_AWAIT_PERMISSION_NONE; NO_EFFECTS_NO_EXECUTION_NO_NATIVE_CYCLE_ACTION_NO_BUDGET_ENFORCEMENT_RESUME_SUMMARY_SCHEDULER",
+      "development_result": "FIRST_DECLARED_SAVED_NOT_STARTED_ZERO_DEPENDENCY_ROOT_ONLY; ACTUAL_SOURCE_TRACED_NATIVE_7_FAMILIES_16_ROUTES_AND_EC174_AI_CODE_ANALYSIS; FOUR_KINDS_WITH_CODESAVE_EXPLICIT_APPROVAL_REQUIRED; NO_STEP_EXECUTION_PERSISTED_PAUSE_PERMISSION_OR_RESUME"
+    },
+    {
+      "round": 234,
+      "ec": "EC-234",
+      "phase": "I",
+      "phase_name": "Cycle与断点续建",
+      "title": "预算、速率与输出限额",
+      "scope": "明确最大步骤数、时间/资源/证据边界",
+      "exit_gate": "达到预算停止并返回剩余工作",
+      "depends_on": [
+        "EC-233"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "27_OF_27_EC234_FOCUSED_REAL_EC231_EC232_EC233_SAVED_RECORD_SOURCE_ROUTE_ADMISSION_RATE_WALL_CPU_EVIDENCE_OUTPUT_BYTES_TESTS_AND_STRICT_DRAFT2020_12_EMBEDDED_EC233_SCHEMA_PASSED; EXTERNAL_PROCESS_HARD_LIMITS_NOT_IMPLEMENTED; NATIVE_POWERSHELL7_15_SMOKE_OS_NFS_MULTIHOST_E63_E66_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/cycle_budget.py",
+        "construction/test_cycle_budget.py",
+        "construction/fixtures/ec234/README.md",
+        "references/cycle-budget.md",
+        "references/cycle-budget-result.v1.schema.json",
+        "construction/EC234_DELIVERY_SHA256.json",
+        "EC-234.md"
+      ],
+      "scope_boundaries": "LOCAL_CONTROLLER_ONE_EXISTING_PRIVATE_EC231_RUN_ONLY; R233_NEXT_READONLY_SOURCE_BACKED_GRAPH_AND_PIN_RECHECK; STEP_INSPECTION_NOT_EXECUTION; SINGLE_OBJECT_PROCESS_RATE_WINDOW_AND_THREADS_LOCK; MONOTONIC_WALL_PROCESS_CPU_CHECKPOINT_ONLY; OWN_ACCEPTED_DIAGNOSTIC_AND_SERIALIZED_OUTPUT_HARD_BYTE_COUNTS; MATERIAL_ACCOUNTING_NOT_RSS_IO; STOP_WITH_FULL_UNPROVEN_STEPS_WHEN_BOUNDED_JSON_FITS_OTHERWISE_ZERO_BYTES; NO_NATIVE_CYCLE_EXTERNAL_HARD_QUOTAS_AI_TRANSFER_PERMISSION_PAUSE_RESUME_STEP_COMPLETION",
+      "development_result": "REAL_SINGLE_OBJECT_READONLY_INSPECTION_ADMISSION_RATE_TIME_CPU_DIAGNOSTIC_MATERIAL_AND_EXACT_CUMULATIVE_OUTPUT_BYTES; STOP_WITH_ALL_UNEXECUTED_STEPS_OR_ZERO_BYTES_IF_BUDGET_TOO_TIGHT; NEVER_NATIVE_EXECUTION_PERMISSION_OR_PERSISTED_PAUSE_RESUME"
+    },
+    {
+      "round": 235,
+      "ec": "EC-235",
+      "phase": "I",
+      "phase_name": "Cycle与断点续建",
+      "title": "await_permission暂停节点",
+      "scope": "保存批准边界与等待原因",
+      "exit_gate": "无批准不得自动推进后续写/发布",
+      "depends_on": [
+        "EC-234"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "32_OF_32_FOCUSED_REAL_EC231_EC234_BUDGETED_SOURCE_BACKED_PERMISSION_PAUSE_PRIVATE_DURABLE_RECORD_RESTART_TAMPER_CONCURRENT_DENIAL_AND_DRAFT2020_12_SCHEMA_PASSED; ACTUAL_INDEPENDENT_APPROVAL_NATIVE_POWERSHELL7_15_SMOKE_ENTERPRISE_OS_NFS_MULTIHOST_E63_E66_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/cycle_permission_pause.py",
+        "construction/test_cycle_permission_pause.py",
+        "construction/fixtures/ec235/README.md",
+        "references/cycle-permission-pause.md",
+        "references/cycle-permission-pause.v1.schema.json",
+        "construction/EC235_DELIVERY_SHA256.json",
+        "EC-235.md"
+      ],
+      "scope_boundaries": "DENIAL_ONLY_IMMUTABLE_ONE_PAUSE_PER_REAL_EC231_RUN; ONE_EC234_BUDGETED_AWAIT_PERMISSION_FROM_EC233_CODE_SAVE_SNAPSHOT_FIRST_ROOT; AUTH_GATE_ALWAYS_DENY_FOR_NOT_PROVIDED_OR_DECLINED; EC231_ORIGINAL_UNCHANGED_ALL_STEPS_UNPERFORMED; RESTART_LIVE_ROUTE_HASH_RECHECK; PRIVATE_POSIX_EXCLUSIVE_FSYNC_STORE; NO_ACTOR_SOURCE_SIGNATURE_APPROVAL_DISPATCH_AI_NATIVE_CYCLE_OR_EC236_RESUME",
+      "development_result": "REAL_ONE_TIME_PERMISSION_WAIT_DECLINED_CHECKPOINT_AND_RESTART_INSPECT; STRONG_SHAPE_AND_LIVE_ROUTE_DRIFT_REJECTION; NO_PERMISSION_GRANTED_NO_DEPENDENTS_ADVANCED"
+    },
+    {
+      "round": 236,
+      "ec": "EC-236",
+      "phase": "I",
+      "phase_name": "Cycle与断点续建",
+      "title": "Resume状态恢复处理器",
+      "scope": "读取真实运行记录和输入指纹核对",
+      "exit_gate": "输入变更时必须重新准备，禁止伪恢复",
+      "depends_on": [
+        "EC-235"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "25_OF_25_FOCUSED_REAL_EC231_EC235_RESTART_FRESH_INPUT_SOURCE_DIVERGENCE_CLI_PIN_MISSING_CORRUPT_DRIFT_DENIAL_AND_DRAFT2020_12_SCHEMA_PASSED; NATIVE_POWERSHELL7_15_SMOKE_ENTERPRISE_PERMISSION_ACTOR_SOURCE_OS_NFS_MULTIHOST_E63_E66_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/cycle_resume.py",
+        "construction/test_cycle_resume.py",
+        "construction/fixtures/ec236/README.md",
+        "references/cycle-resume.md",
+        "references/cycle-resume-check.v1.schema.json",
+        "construction/EC236_DELIVERY_SHA256.json",
+        "EC-236.md"
+      ],
+      "scope_boundaries": "REAL_EC231_AND_EC235_DENIAL_RESTART_READ_VALIDATE_EC233_SOURCE_ROUTE_TWICE; REAL_FRESH_BYTES_SOURCE_REF_SHA_LENGTH_COMPARISON; DIFFERENCE_REQUIRES_NEW_PREPARATION; MATCH_ONLY_RESTORES_NOT_STARTED_DENIAL_VIEW; BAD_CHECKPOINT_MISSING_CHANGED_HANDLER_OR_PINS_UNKNOWN; NO_APPROVAL_TOKEN_NATIVE_POWERSHELL_DISPATCH_CODE_SAVE_AI_WRITE_STEPS_DEPENDENCY_PROMOTION_OR_EC237_SUMMARY",
+      "development_result": "REAL_INPUT_CHANGED_REPREPARE_REQUIRED_OR_MATCHED_PAUSED_DENY_RESTORED_VIEW; NEVER_EXECUTES_RESUMES_OR_AUTHORIZES; UNKNOWN_ON_ABSENT_OR_CORRUPT_HISTORY"
+    },
+    {
+      "round": 237,
+      "ec": "EC-237",
+      "phase": "I",
+      "phase_name": "Cycle与断点续建",
+      "title": "Cycle -Mode Summary",
+      "scope": "查看步骤、成功/阻塞/失败、证据和开销",
+      "exit_gate": "Summary不表示整体已成功完成",
+      "depends_on": [
+        "EC-236"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "42_OF_42_LOCAL_REAL_EC231_EC232_EC233_EC235_RUN_STEP_EVIDENCE_COST_DAG_SOURCE_PIN_DENY_CLI_AND_DRAFT202012; NATIVE_POWERSHELL7_15_SMOKE_E63_E66_ENTERPRISE_OS_NFS_MULTIHOST_FINAL_ACCEPTANCE_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/cycle_summary.py",
+        "construction/test_cycle_summary.py",
+        "construction/fixtures/ec237/README.md",
+        "references/cycle-summary.md",
+        "references/cycle-summary.v1.schema.json",
+        "construction/EC237_DELIVERY_SHA256.json",
+        "EC-237.md"
+      ],
+      "scope_boundaries": "ACTUAL_EC231_POSIX_PRIVATE_IMMUTABLE_RUN_REREAD_EC232_GRAPH_DOUBLE_EC233_LIVE_SOURCE_CHECK_OPTIONAL_REAL_EC235_DENY_SIDECAR_RELOAD; ALL_STEPS_NOT_STARTED_DECLARED_PARTIAL_UNKNOWN_WITH_UNVERIFIED_EVIDENCE_AND_HANDOFF_IDS; NEVER_SUCCESS_FAILURE_PROOF; COUNTS_DEPENDENCY_PERMISSION_BLOCKS; EC231_CAPTURE_USAGE_ONLY_EC235_DECLARED_ONE_INSPECTION_NOT_EXTERNAL_EXECUTION_COST; UNCERTAIN_FILES_HANDLERS_PINS_AND_DRIFT_UNKNOWN_WITH_NO_STALE_STEPS; STANDALONE_READONLY_PYTHON_NO_NATIVE_CYCLE_ROUTING_NO_APPROVAL_NO_DISPATCH_EC238_NEXT",
+      "development_result": "REAL_PRIVATE_RECORD_SOURCE_BOUND_READONLY_SUMMARY; NO VERIFIED BUSINESS SUCCESS_FAILURE; DECLARED_EVIDENCE_COST_ONLY; DENY_AND_DEPENDENCY_BLOCKS; UNKNOWN_DISCARDS_STALE_STEPS; NO NATIVE ACTION"
+    },
+    {
+      "round": 238,
+      "ec": "EC-238",
+      "phase": "I",
+      "phase_name": "Cycle与断点续建",
+      "title": "跨动作RunId/HandoffId一致性",
+      "scope": "Code/Finding/Quality/Report/Knowledge/Delivery共享上下文",
+      "exit_gate": "不允许将别的Run草稿插入当前流程",
+      "depends_on": [
+        "EC-237"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "24_OF_24_EC238_FOCUSED_REAL_PERSISTED_EC231_CYCLE_AND_EC171_172_HMAC_STAGED_RUN_HANDOFF_LINK_UNIQUE_OWNERS_BYTE_SHA_SIX_SYNTHETIC_PRODUCER_FAMILIES_NESTED_IDS_CONFLICT_UNTRUSTED_UNKNOWN_BATCH_SCHEMA_CLI_PASSED_LOCAL; REAL_SIX_PRODUCERS_ENTERPRISE_ACTOR_SOURCE_PERMISSION_NATIVE_POWERSHELL7_15_SMOKE_OS_NFS_MULTIHOST_E63_E66_FINAL_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/cycle_cross_action.py",
+        "construction/test_cycle_cross_action.py",
+        "construction/fixtures/ec238/README.md",
+        "references/cycle-cross-action.md",
+        "references/cycle-cross-action-result.v1.schema.json",
+        "references/cycle-cross-action-snapshot.v1.schema.json",
+        "construction/EC238_DELIVERY_SHA256.json",
+        "EC-238.md"
+      ],
+      "scope_boundaries": "REQUIRE_ACTUAL_EC231_SAVED_SNAPSHOT_BYTES_AT_CREATION_AND_ACTUAL_EC171_172_STAGED_HMAC_RUN_HANDOFF_PIN_TTL; SEPARATE_CYCLE_AND_STAGED_RUN_IDS; PRIVATE_IMMUTABLE_SINGLE_OWNER_PER_STAGE_RUN_AND_HANDOFF; EACH_SIX_FAMILY_EXISTING_SCHEMA_STEP_AND_EXACT_UNMODIFIED_JSON_BYTES_SHA_GLOBAL_PRIVATE_OWNER; NESTED_DECLARED_RUN_HANDOFF_CONTEXT_CONFLICT_REJECTION; ENTIRE_BATCH_NO_PARTIAL_SUCCESS; TRUST_LOCAL_ONLY; NO_BUSINESS_PRODUCER_ATTESTATION_SOURCE_ACTOR_AUTH_APPROVAL_WRITES_TASK_EXECUTION_MULTI_FILE_ATOMICITY_SCHEDULER_NATIVE_CYCLE",
+      "development_result": "STANDALONE_LINK_ATTACH_CHECK_POSIX_PRIVATE_OWNER_AND_SOURCE_REPLAY; KNOWN_MIXED_VS_UNKNOWN_FAIL_CLOSED; ACTUAL_ORIGINAL_RUN_HANDOFF_BUT_SYNTHETIC_FAMILY_PAYLOADS; NO_BUSINESS_SUCCESS_OR_PERMISSION"
+    },
+    {
+      "round": 239,
+      "ec": "EC-239",
+      "phase": "I",
+      "phase_name": "Cycle与断点续建",
+      "title": "外部周期调度边界",
+      "scope": "支持外部调度发起但不假装创建Scheduled Task",
+      "exit_gate": "未安装调度程序时只提供可执行说明",
+      "depends_on": [
+        "EC-238"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "19_OF_19_EC239_FOCUSED_EXISTING_REAL_PRIVATE_EC231_RUN_AND_REAL_EC237_READONLY_SUMMARY_WITH_SYNTHETIC_HOST_TRIGGER_CADENCE_PINS_UNKNOWN_BLOCK_AND_DRAFT2020_12_SCHEMA_PASSED_LOCAL; REAL_HOST_SCHEDULER_INSTALL_EVENT_ORIGIN_CLOCK_ACTOR_SOURCE_APPROVAL_NATIVE_POWERSHELL7_15_SMOKE_MULTIHOST_WINDOWS_MACOS_E63_E66_FINAL_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/cycle_external_scheduler.py",
+        "construction/test_cycle_external_scheduler.py",
+        "construction/fixtures/ec239/README.md",
+        "references/cycle-external-scheduler.md",
+        "references/cycle-external-scheduler.v1.schema.json",
+        "construction/EC239_DELIVERY_SHA256.json",
+        "EC-239.md"
+      ],
+      "scope_boundaries": "STANDALONE_POSIX_EC231_SAVED_RUN_THREE_EXTERNAL_SHA_PINS; INSTRUCTIONS_ONLY_WHEN_HOST_DECLARED_ABSENT; DECLARED_CONFIGURED_NO_REAL_HOST_PROOF; EXTERNAL_EVENT_ID_AND_CANONICAL_UTC_HOURLY_DAILY_WEEKLY_TICK; ONE_ACTUAL_EC237_READONLY_SUMMARY_CHECK_PER_VALID_INVOKE_AND_BEFORE_AFTER_LOCAL_RECORD_READ; NO_COMMAND_EXECUTION_NO_CRON_OR_WINDOWS_TASK_INSTALLATION_NO_NATIVE_POWER_SHELL_ACTION_NO_ACTOR_SOURCE_TRIGGER_AUTH_NO_BUSINESS_EXECUTION_OR_WRITES_NO_EC240_REPLAY_PARALLEL_CONTROL_NO_EC241_ROUTING"
+    },
+    {
+      "round": 240,
+      "ec": "EC-240",
+      "phase": "I",
+      "phase_name": "Cycle与断点续建",
+      "title": "中断、重复和并行冲突",
+      "scope": "对重放、权限失败、重复上传及锁定场景设规则",
+      "exit_gate": "不会重复写记录或绕过操作权限",
+      "depends_on": [
+        "EC-239"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "22_OF_22_EC240_FOCUSED_GENUINE_EC231_EC172_EC238_EC239_LOCAL_WITH_SYNTHETIC_EVENTS_AND_PRODUCER_DRAFT2020_12_OUTPUT_LEDGER_PASSED_LOCAL; REAL_OS_SIGKILL_NFS_MULTIHOST_SAME_UID_ENTERPRISE_SCHEDULER_POWERSHELL7_15_SMOKE_E63_E66_FINAL_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/cycle_conflict_guard.py",
+        "construction/test_cycle_conflict_guard.py",
+        "construction/fixtures/ec240/README.md",
+        "references/cycle-conflict-guard.md",
+        "references/cycle-conflict-result.v1.schema.json",
+        "references/cycle-conflict-ledger.v1.schema.json",
+        "construction/EC240_DELIVERY_SHA256.json",
+        "EC-240.md"
+      ],
+      "scope_boundaries": "OPT_IN_GUARD_TWO_REAL_EC239_READONLY_AND_EC238_LOCAL_ONLY_OPERATIONS_PER_GENUINE_EC231_RUN_WITH_CALLER_PINS; POSIX_LOCAL_FLOCK_FSYNC_SELFHASHED_SINGLE_FILE_LEDGER_NO_AUTO_RETRY_AFTER_RESERVED; EVENT_TICK_AND_ARTIFACT_SLOT_DEDUP_NO_HANDLER_REINVOKE; BUSINESS_WRITES_PERMISSION_DENIED; DIRECT_OLD_APIS_AND_EC238_LINK_NOT_GUARDED; NEVER_NATIVE_CYCLE_OR_REAL_SCHEDULER_INSTALLED_OR_ENTERPRISE_ACTOR_SOURCE_PROOF_OR_CROSS_FILE_HOST_EXACTLY_ONCE; OS_NFS_MULTIHOST_FINAL_NOT_RUN"
+    },
+    {
+      "round": 241,
+      "ec": "EC-241",
+      "phase": "J",
+      "phase_name": "全功能收口与最终验收移交",
+      "title": "全部Action路由接线",
+      "scope": "接通新增Action/Mode到CLI统一分发层",
+      "exit_gate": "规划内所有Action都可路由到真实处理器",
+      "depends_on": [
+        "EC-240"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "TARGETED_REAL_LOCAL_EC231_CREATE_INSPECT_EC237_SUMMARY_DUE_ISSUE_ELIGIBILITY_ROUTING_AND_GATES_EXERCISED; 23_DESIGNED_CASES_FULL_SUITE_NOT_CLAIMED; PYTHON_COMPILE_AND_ROUTE_BINDINGS_LOCAL_PASSED; PS7_LEGACY_15_SMOKE_ENTERPRISE_HOST_WRITES_E63_E66_FINAL_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/unified_action_router.py",
+        "scripts/ces_router.py",
+        "scripts/ces-v5.ps1",
+        "construction/test_unified_action_router.py",
+        "references/unified-action-routing.md",
+        "references/unified-action-router-request.v1.schema.json",
+        "references/unified-action-router-result.v1.schema.json",
+        "construction/fixtures/ec241/README.md",
+        "construction/EC241_DELIVERY_SHA256.json",
+        "EC-241.md"
+      ],
+      "scope_boundaries": "54_NEW_FIXED_CLI_API_PREVIEW_AND_HOST_ONLY_REGISTRATIONS_16_ORIGINAL_NATIVE_R150_LEGACY_UNCHANGED; LEGACY_POWERSHELL_SOURCE_SHA_UNCHANGED; API_CLI_REAL_LOCAL_HANDLERS_INVOKED; HOST_REQUIRED_ALWAYS_DENIED_WITHOUT_INDEPENDENT_HOST; PRIVATE_LOCAL_WRITE_ACK_NOT_BUSINESS_GRANT; ORIGINAL_POWERSHELL7_AND_EXTERNAL_EFFECTS_FINAL_NOT_RUN"
+    },
+    {
+      "round": 242,
+      "ec": "EC-242",
+      "phase": "J",
+      "phase_name": "全功能收口与最终验收移交",
+      "title": "全域Schema/迁移审查",
+      "scope": "对CodeInsight/Finding/Quality/Report/Knowledge/Issue/Delivery/Cycle核对版本",
+      "exit_gate": "旧数据有可读、拒绝或迁移路径",
+      "depends_on": [
+        "EC-241"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "22_OF_22_FOCUSED_LOCAL_SYNTHETIC_AND_REAL_ORIGINAL_EC158_READER_AND_ROUTER_CLI; 112_PINNED_SCHEMA_BYTE_VALID_ZERO_DRIFT; KNOWN_ID_VERSION_DEBT_REVIEW_REQUIRED; ORIGINAL_NATIVE_15_SMOKE_ENTERPRISE_SIGNATURE_OS_E63_E66_FINAL_NOT_RUN_B001_OPEN",
+      "implementation_artifacts": [
+        "construction/schema_migration_review.py",
+        "construction/SCHEMA_CATALOG.json",
+        "construction/test_schema_migration_review.py",
+        "construction/fixtures/ec242/",
+        "references/schema-migration-review.md",
+        "references/schema-migration-review-result.v1.schema.json",
+        "construction/EC242_DELIVERY_SHA256.json",
+        "EC-242.md",
+        "construction/unified_action_router.py",
+        "references/unified-action-router-result.v1.schema.json"
+      ],
+      "scope_boundaries": "INVENTORY_AUDIT_INSPECT_PLAN_ACTUAL_LOCAL_DRAFT2020_12_VALIDATION_ORIGINAL_CODEINSIGHT_EC158; NO_REMOTE_REFS_OR_MIGRATION_WRITES; KNOWN_UNVERSIONED_CONTRACTS_SHAPE_ONLY; NO_BUSINESS_PROVENANCE_OR_PERMISSIONS; UNIFIED_74_ROUTES_16_R150_NATIVE_UNCHANGED_58_OPT_IN"
+    },
+    {
+      "round": 243,
+      "ec": "EC-243",
+      "phase": "J",
+      "phase_name": "全功能收口与最终验收移交",
+      "title": "错误码和部分覆盖一致性",
+      "scope": "统一offline/denied/partial/invalid/unavailable状态",
+      "exit_gate": "无handler不允许返回虚构success",
+      "depends_on": [
+        "EC-242"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "26_OF_26_NEW_LOCAL_TARGETED_TESTS_PASSED_INCLUDING_REAL_DUE_CYCLE_SCHEMAREVIEW_CODEPREPARE; SYNTHETIC_OFFLINE_AND_MALFORMED_EXITS_TESTED_NOT_REAL_PROVIDER; EC242_112_PINS_UNCHANGED; ORIGINAL_EC241_LARGER_REGRESSION_TIMED_OUT; NATIVE_POWERSHELL7_15_SMOKE_ENTERPRISE_NETWORK_OS_E63_E66_FINAL_NOT_RUN; B001_OPEN",
+      "implementation_artifacts": [
+        "construction/outcome_consistency.py",
+        "construction/unified_action_router.py",
+        "scripts/ces-v5.ps1",
+        "construction/test_outcome_consistency.py",
+        "references/unified-action-router-result.v2.json",
+        "references/outcome-status-policy.md",
+        "construction/EC243_DELIVERY_SHA256.json",
+        "EC-243.md"
+      ],
+      "scope_boundaries": "74_FIXED_ROUTES_UNCHANGED; FIVE_CANONICAL_RETURN_CLASSES_AND_EXIT_CODES; NO_BUSINESS_SUCCESS_AUTH_OR_SOURCE_PROOF; OLD_112_SCHEMA_AND_R150_PINNED_POWER_SHELL_SOURCE_UNCHANGED; NO_IMPLEMENTATION_OF_EC244_LATER"
+    },
+    {
+      "round": 244,
+      "ec": "EC-244",
+      "phase": "J",
+      "phase_name": "全功能收口与最终验收移交",
+      "title": "全域安全与权限静态核查",
+      "scope": "按业务仓只读、Issue不改、文档发布隔离复核",
+      "exit_gate": "从CLI入口到动作末端权限链闭合",
+      "depends_on": [
+        "EC-243"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "41_OF_41_STATIC_GATES_PASS; 307_OF_307_SOURCE_SHA_LOCK_MATCH; 14_OF_14_NEW_FOCUSED_CASES_PASS; NO_BUSINESS_HANDLER_EXECUTED_EXCEPT_LOCAL_HOST_REFUSAL; ORIGINAL_ROUTER_74_NATIVE_15_SMOKE_AND_112_EC242_SCHEMA_UNCHANGED; NO_POWER_SHELL7_OR_REAL_GIT_ISSUE_PROVIDER_ENTERPRISE_BROKER_OS_NFS_E63_E66_FINAL_RUN; B001_OPEN",
+      "implementation_artifacts": [
+        "construction/security_permission_audit.py",
+        "construction/SECURITY_SOURCE_LOCK.json",
+        "construction/SECURITY_REVIEW.json",
+        "construction/test_security_permission_audit.py",
+        "references/security-permission-static-audit.md",
+        "construction/EC244_DELIVERY_SHA256.json",
+        "EC-244.md"
+      ],
+      "scope_boundaries": "SOURCE_STATIC_AST_AND_POWER_SHELL_TEXT_PLUS_LOCAL_SHA_LOCK_ONLY; DIRECT_PYTHON_MAIN_NOT_GOVERNED_BY_ROUTER; ORIGINAL_GIT_LINKED_WORKTREE_ADMIN_METADATA_CHANGED_BY_DOCSONLY; NO_BUSINESS_REPO_NONMUTATION_FORMAL_PROOF_OR_HOST_AUTHORITY; NO_EC245_OR_LATER"
+    },
+    {
+      "round": 245,
+      "ec": "EC-245",
+      "phase": "J",
+      "phase_name": "全功能收口与最终验收移交",
+      "title": "断网/保密/资源限制用例补齐",
+      "scope": "编写失败和离线fixture及应对策略",
+      "exit_gate": "不将mock通过等价为在线验收",
+      "depends_on": [
+        "EC-244"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "26_OF_26_REAL_HANDLER_LOCAL_NEGATIVE_FAULT_SIMULATIONS_PASS; 10_OF_10_FOCUSED_TESTS_PASS; 41_OF_41_OLD_STATIC_GATES_AND_307_OF_307_OLD_SOURCE_SHA_RECHECK_MATCH; NO_REAL_PROVIDER_ENTERPRISE_POWERSHELL_OS_NETWORK_OR_E63_E66_FINAL_ACCEPTANCE; B001_OPEN",
+      "implementation_artifacts": [
+        "construction/ec245_cases/run.py",
+        "construction/ec245_cases/test_cases.py",
+        "construction/fixtures/ec245/scenarios.json",
+        "references/failure-mode-offline-privacy-resource.md",
+        "construction/EC245_LOCAL_REPORT.json",
+        "construction/EC245_DELIVERY_SHA256.json",
+        "EC-245.md"
+      ],
+      "scope_boundaries": "NEW_NESTED_OFFLINE_DEV_RUNNER_ONLY_OUTSIDE_ROUTER_AND_EC244_142_TOP_LEVEL_MAIN_INVENTORY; NO_ROUTER_WIRE_OR_NEW_BUSINESS_ROUTE; FAULT_MOCK_NOT_LIVE_ACCEPTANCE; SCRATCH_STDOUT_DISK_NOT_REALTIME_BOUNDED"
+    },
+    {
+      "round": 246,
+      "ec": "EC-246",
+      "phase": "J",
+      "phase_name": "全功能收口与最终验收移交",
+      "title": "示例、路由文档与产品矩阵同步",
+      "scope": "逐一校对SKILL/README/orchestration/schema/CLI help",
+      "exit_gate": "不再将计划接口描述为已经验证",
+      "depends_on": [
+        "EC-245"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "DEVELOPMENT_STATIC_AND_FIXTURE_ONLY; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation": [
+        "construction/ec246_docs/route_help.py",
+        "references/route-catalog-ec246.json",
+        "references/route-catalog-ec246.md",
+        "construction/CAPABILITY_MATRIX.json",
+        "references/unified-action-routing.md",
+        "EC-246.md",
+        "references/orchestration.md",
+        "history/legacy-docs/orchestration-pre-ec246-snapshot.md",
+        "construction/ec246_docs/test_route_help.py"
+      ],
+      "scope_boundaries": "EXACT_UNCHANGED_74_ACTION_MODES_SOURCE_BOUND_HELP_ONLY; HOST_REQUIRED_REFUSES; NO_ROUTER_WIRE_NOR_PINNED_SCHEMA_OR_LEGACY_CHANGE; FINAL_USER_ASSISTED_ACCEPTANCE_NOT_RUN"
+    },
+    {
+      "round": 247,
+      "ec": "EC-247",
+      "phase": "J",
+      "phase_name": "全功能收口与最终验收移交",
+      "title": "跨模块回归用例完备性补齐",
+      "scope": "为15套既有Smoke及新增模块准备可复现测试数据",
+      "exit_gate": "测试编写不等于执行；集中验收仍未开始",
+      "depends_on": [
+        "EC-246"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "7_OF_7_LOCAL_SYNTHETIC_CROSS_MODULE_AND_10_OF_10_FOCUSED_TESTS; 15_ORIGINAL_SMOKE_SHA_MATCHED_BUT_NATIVE_0_OF_15_NOT_RUN; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation": [
+        "construction/ec247_regression/runner.py",
+        "construction/ec247_regression/test_runner.py",
+        "construction/fixtures/ec247/manifest.json",
+        "construction/fixtures/ec247/cycle-actions.json",
+        "construction/fixtures/ec247/cycle-input.txt",
+        "construction/fixtures/ec247/schema-cycle-example.json",
+        "construction/fixtures/ec247/offline-requests.json",
+        "construction/LEGACY_REGRESSION_RESULTS.json",
+        "references/ec247-cross-module-regression.md",
+        "EC-247.md",
+        "construction/EC247_DELIVERY_SHA256.json"
+      ],
+      "scope_boundaries": "NO_CHANGE_15_NATIVE_SMOKE_OR_EC242_112_SCHEMAS_EC243_74_ROUTER_EC244_307_LOCK_EC245_EC246; NO_NETWORK_NO_REAL_HOST_NO_BUSINESS_REPO_WRITE; NATIVE_REAL_OS_ENTERPRISE_E63_E66_AND_FINAL_NOT_RUN"
+    },
+    {
+      "round": 248,
+      "ec": "EC-248",
+      "phase": "J",
+      "phase_name": "全功能收口与最终验收移交",
+      "title": "旧CodeShow兼容和性能风险处置",
+      "scope": "不新增k>56，对大图路线设超时、资源上限和懒加载评估",
+      "exit_gate": "旧行为保持兼容，修正范围明示",
+      "depends_on": [
+        "EC-247"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "16_OF_16_FOCUSED_LOCAL_SOURCE_AND_REAL_PYTHON_CHILD_TESTS; NATIVE_POWERSHELL_CODE_SHOW_ORIGINAL_15_SMOKE_AND_E63_E66_NOT_RUN; FINAL_USER_ASSISTED_ACCEPTANCE_DEFERRED",
+      "implementation": [
+        "construction/ec248_codeshow/guarded_sequence.py",
+        "construction/ec248_codeshow/test_guarded_sequence.py",
+        "references/ec248-codeshow-performance.md",
+        "construction/LEGACY_SEQUENCE_RESULTS.json",
+        "EC-248.md",
+        "construction/EC248_DELIVERY_SHA256.json"
+      ],
+      "scope_boundaries": "OPT_IN_POSIX_NATIVE_SEQUENCE_SUBPROCESS_WALL_CPU_RLIMIT_AS_OUTPUT_BOUNDS; 124_ORIGINAL_MODULES_SOURCE_SHA_PINS; LAZY_ASSESSMENT_NO_REWRITE; ORIGINAL_15_SMOKE_AND_74_ROUTES_EC242_EC243_EC244_EC245_EC246_EC247_UNCHANGED; NATIVE_E63_E66_NOT_RUN"
+    },
+    {
+      "round": 249,
+      "ec": "EC-249",
+      "phase": "J",
+      "phase_name": "全功能收口与最终验收移交",
+      "title": "全功能施工完成判定",
+      "scope": "核对所有规划功能实现状态及遗留缺陷",
+      "exit_gate": "若未完成不得进入验收；变更计划需用户确认",
+      "depends_on": [
+        "EC-248"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "100_OF_100_PLANNED_ROWS_READ_AND_CLASSIFIED_307_LOCAL_LOCKS_74_ROUTE_DIRECTORY_AND_15_NATIVE_SMOKE_SOURCE_ONLY; FULL_FUNCTION_NOT_COMPLETE; 11_HOST_REQUIRED_ROUTES_ALWAYS_DENIED; CYCLE_REAL_DISPATCH_AND_QUALITY_RUN_HOST_NOT_AVAILABLE; PWSH_NATIVE_15_SMOKE_REAL_PROVIDER_OS_E63_E66_FINAL_NOT_RUN; B001_OPEN; EC250_FREEZE_BLOCKED",
+      "implementation": [
+        "construction/ec249_completion/decision.py",
+        "construction/ec249_completion/test_decision.py",
+        "references/ec249-full-function-readiness.md",
+        "construction/EC249_COMPLETION_DECISION.json",
+        "EC-249.md"
+      ],
+      "scope_boundaries": "SOURCE_ONLY_READONLY_COMPLETION_DETERMINATION; 99_AUTHORED_CLAIMS_NOT_FULL_WORKING_FUNCTIONS; NO_PREEMPTIVE_EC250_FREEZE_OR_FINAL_ACCEPTANCE; NO_PERMISSION_GRANT_OR_HOST_BRIDGE; NO_UNAPPROVED_PLAN_REVISION"
+    },
+    {
+      "round": 250,
+      "ec": "EC-250",
+      "phase": "J",
+      "phase_name": "全功能收口与最终验收移交",
+      "title": "Linux 独立宿主 FindingShow Query 实际只读调用桥接",
+      "scope": "先补一个真实功能缺口：operator-private policy + Linux SO_PEERCRED local UID-bound AF_UNIX host FindingShow access to genuine existing EC178 HMAC ledger, no general host authorization",
+      "exit_gate": "This one bounded local host broker reads a real sealed EC178 Finding ledger under independent operator-installed scope; no original HOST_REQUIRED/router denial relaxed; never claim full-function completion or freeze.",
+      "depends_on": [
+        "EC-249"
+      ],
+      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+      "verification": "10_OF_10_LOCAL_LINUX_HOST_BROKER_TESTS_WITH_REAL_EC178_LEDGER; ORIGINAL_11_HOST_REQUIRED_ROUTER_MODES_STILL_DENY; NO_NATIVE_PROVIDER_ENTERPRISE_E63_E66_OS_MULTIPLAT_TESTS_OR_FINAL_ACCEPTANCE",
+      "implementation": [
+        "construction/ec250_finding_host/broker.py",
+        "construction/ec250_finding_host/test_broker.py",
+        "references/ec250-linux-finding-host.md",
+        "construction/PLAN_REV_002_PROVENANCE.json",
+        "EC-250.md",
+        "construction/EC250_LOCAL_REPORT.json"
+      ],
+      "scope_boundaries": "R250_IMPLEMENTATION_ONLY_BECAUSE_R249_FREEZE_GATE_BLOCKED; PREVIOUS_PLAN_PRESERVED; NO_FINAL_CANDIDATE; NO_BUSINESS_WRITE_OR_ENTERPRISE_ATTESTATION; ORIGINAL_ROUTER_UNCHANGED; NEXT_ROUND_REQUIRES_NEW_NUMBERED_PLAN"
+    }
+  ]
+}

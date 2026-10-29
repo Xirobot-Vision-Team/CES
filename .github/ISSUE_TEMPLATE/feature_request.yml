@@ -1,0 +1,19 @@
+name: Feature request
+description: Propose a general capability rather than a project-specific branch.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Use case
+      description: Describe the problem and intended result without private project data.
+    validations:
+      required: true
+  - type: textarea
+    id: design
+    attributes:
+      label: General behavior and configuration
+      description: Which project-specific facts should be external configuration?
+  - type: textarea
+    id: boundaries
+    attributes:
+      label: Validation and authorization boundaries

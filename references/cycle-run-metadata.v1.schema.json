@@ -1,0 +1,486 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schemas/cycle-run-metadata.v1.schema.json",
+  "title": "EC231 CES Cycle metadata-only immutable record (no execution proof)",
+  "description": "Strict JSON shape; machine validator additionally enforces cross-object referential, hash, timestamp and state semantics. Record hash is unsigned, not tamper authentication.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "record_kind",
+    "run_id",
+    "created_at_utc",
+    "updated_at_utc",
+    "clock_trust",
+    "run_state",
+    "input",
+    "actor",
+    "action_set",
+    "action_set_sha256",
+    "steps",
+    "dependency_resolution",
+    "budget",
+    "effects",
+    "record_sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.cycle_run_metadata.v1"
+    },
+    "record_kind": {
+      "const": "CYCLE_METADATA_ONLY"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^run_v1_[0-9a-f]{48}$",
+      "minLength": 55,
+      "maxLength": 55
+    },
+    "created_at_utc": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$",
+      "minLength": 27,
+      "maxLength": 27
+    },
+    "updated_at_utc": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$",
+      "minLength": 27,
+      "maxLength": 27
+    },
+    "clock_trust": {
+      "const": "UNVERIFIED_HOST_UTC"
+    },
+    "run_state": {
+      "enum": [
+        "NOT_STARTED",
+        "PARTIAL",
+        "UNKNOWN"
+      ]
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_ref",
+        "sha256",
+        "byte_length",
+        "completeness",
+        "provenance",
+        "authenticated"
+      ],
+      "properties": {
+        "source_ref": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+-]{0,127}$",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        "byte_length": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1048576
+        },
+        "completeness": {
+          "enum": [
+            "UNKNOWN",
+            "DECLARED_PARTIAL",
+            "DECLARED_COMPLETE"
+          ]
+        },
+        "provenance": {
+          "const": "CALLER_SUPPLIED_BYTES"
+        },
+        "authenticated": {
+          "const": false
+        }
+      }
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "origin",
+        "subject",
+        "verified",
+        "permissions_granted"
+      ],
+      "properties": {
+        "origin": {
+          "enum": [
+            "human",
+            "service",
+            "external"
+          ]
+        },
+        "subject": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/+-]{0,127}$",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "verified": {
+          "const": false
+        },
+        "permissions_granted": {
+          "const": false
+        }
+      }
+    },
+    "action_set": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "step_id",
+          "action",
+          "mode",
+          "depends_on"
+        ],
+        "properties": {
+          "step_id": {
+            "type": "string",
+            "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$",
+            "minLength": 6,
+            "maxLength": 53
+          },
+          "action": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Za-z0-9]{0,47}$",
+            "minLength": 1,
+            "maxLength": 48
+          },
+          "mode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Z][A-Za-z0-9]{0,31}$",
+                "minLength": 1,
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "depends_on": {
+            "type": "array",
+            "maxItems": 32,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$",
+              "minLength": 6,
+              "maxLength": 53
+            }
+          }
+        }
+      }
+    },
+    "action_set_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "step_id",
+          "state",
+          "observed_at_utc",
+          "handoff_id",
+          "evidence_sha256",
+          "reason_code"
+        ],
+        "properties": {
+          "step_id": {
+            "type": "string",
+            "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$",
+            "minLength": 6,
+            "maxLength": 53
+          },
+          "state": {
+            "enum": [
+              "NOT_STARTED",
+              "DECLARED_PARTIAL",
+              "UNKNOWN"
+            ]
+          },
+          "observed_at_utc": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$",
+                "minLength": 27,
+                "maxLength": 27
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "handoff_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^handoff_v1_[0-9a-f]{48}$",
+                "minLength": 59,
+                "maxLength": 59
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "evidence_sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$",
+                "minLength": 64,
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reason_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]{2,63}$",
+                "minLength": 3,
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "NOT_STARTED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "observed_at_utc": {
+                  "type": "null"
+                },
+                "handoff_id": {
+                  "type": "null"
+                },
+                "evidence_sha256": {
+                  "type": "null"
+                },
+                "reason_code": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "UNKNOWN"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "observed_at_utc": {
+                  "type": "null"
+                },
+                "evidence_sha256": {
+                  "type": "null"
+                },
+                "reason_code": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_]{2,63}$",
+                  "minLength": 3,
+                  "maxLength": 64
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "DECLARED_PARTIAL"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "observed_at_utc": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$",
+                  "minLength": 27,
+                  "maxLength": 27
+                },
+                "evidence_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$",
+                  "minLength": 64,
+                  "maxLength": 64
+                },
+                "reason_code": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_]{2,63}$",
+                  "minLength": 3,
+                  "maxLength": 64
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "dependency_resolution": {
+      "const": "NOT_EVALUATED_EC232"
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "limits",
+        "usage",
+        "enforcement"
+      ],
+      "properties": {
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "max_steps",
+            "wall_ms",
+            "input_bytes",
+            "evidence_bytes",
+            "output_bytes"
+          ],
+          "properties": {
+            "max_steps": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 32
+            },
+            "wall_ms": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 86400000
+            },
+            "input_bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1048576
+            },
+            "evidence_bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8388608
+            },
+            "output_bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8388608
+            }
+          }
+        },
+        "usage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "steps",
+            "wall_ms",
+            "input_bytes",
+            "evidence_bytes",
+            "output_bytes"
+          ],
+          "properties": {
+            "steps": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32
+            },
+            "wall_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 86400000
+            },
+            "input_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1048576
+            },
+            "evidence_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 8388608
+            },
+            "output_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 8388608
+            }
+          }
+        },
+        "enforcement": {
+          "const": "CAPTURE_ONLY_NO_RUN_ENFORCEMENT"
+        }
+      }
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "executed",
+        "write_authorized",
+        "external_delivery_proven",
+        "resume_authorized"
+      ],
+      "properties": {
+        "executed": {
+          "const": false
+        },
+        "write_authorized": {
+          "const": false
+        },
+        "external_delivery_proven": {
+          "const": false
+        },
+        "resume_authorized": {
+          "const": false
+        }
+      }
+    },
+    "record_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    }
+  }
+}

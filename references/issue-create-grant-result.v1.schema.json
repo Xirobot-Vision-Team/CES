@@ -1,0 +1,552 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/ces/issue-create-grant-result.v1.schema.json",
+  "title": "EC217 metadata-redacted one-time grant decision, never remote IssueWrite",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "grant_state",
+    "challenge",
+    "approval_receipt_sha256",
+    "approval_method",
+    "delivery_state",
+    "safe_next_step",
+    "one_attempt_reservation",
+    "host_ledger_atomic_claim_recorded",
+    "issue_create_authorized_for_this_one_attempt",
+    "permission_to_edit_existing_issue",
+    "issue_created",
+    "issue_create_network_attempted",
+    "provider_or_business_repository_written",
+    "finding_or_knowledge_written",
+    "external_content_disclosed",
+    "external_ai_called",
+    "native_issue_action_registered",
+    "repository_issue_inventory_complete",
+    "duplicate_absence_proven",
+    "source_authenticity_independently_verified",
+    "organizational_issuer_authenticated_by_ces",
+    "final_prose_safe_by_machine_proof"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.issue_create_grant.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "unavailable",
+        "invalid_input"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^ISSUE_CREATE_GRANT_[A-Z0-9_]{1,110}$"
+    },
+    "grant_state": {
+      "enum": [
+        "NEEDS_REVIEW",
+        "SIGNED_REVIEW_VALID",
+        "RESERVED_ONE_ATTEMPT",
+        "BLOCKED",
+        "UNKNOWN",
+        "INVALID_INPUT"
+      ]
+    },
+    "challenge": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "challenge_sha256",
+            "action",
+            "audience",
+            "provider",
+            "visibility",
+            "target_identity_sha256",
+            "policy_revision_sha256",
+            "plan_sha256",
+            "plan_result_sha256",
+            "final_content_sha256",
+            "final_title_chars",
+            "final_body_chars",
+            "citation_count",
+            "label_count",
+            "human_review_of_full_private_text_required",
+            "content_sanitization_machine_verified",
+            "provider_write_authorized"
+          ],
+          "properties": {
+            "challenge_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "action": {
+              "const": "CREATE_NEW_ISSUE"
+            },
+            "audience": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 96
+            },
+            "provider": {
+              "enum": [
+                "github",
+                "gitlab"
+              ]
+            },
+            "visibility": {
+              "enum": [
+                "PUBLIC",
+                "PRIVATE"
+              ]
+            },
+            "target_identity_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "policy_revision_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "plan_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "plan_result_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "final_content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "final_title_chars": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "final_body_chars": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "citation_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "label_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "human_review_of_full_private_text_required": {
+              "const": true
+            },
+            "content_sanitization_machine_verified": {
+              "const": false
+            },
+            "provider_write_authorized": {
+              "const": false
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "approval_receipt_sha256": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "approval_method": {
+      "enum": [
+        "INDEPENDENT_DETACHED_HUMAN_SIGNATURE",
+        "NOT_ACCEPTED"
+      ]
+    },
+    "delivery_state": {
+      "const": "NOT_ATTEMPTED"
+    },
+    "safe_next_step": {
+      "enum": [
+        "NO_REMOTE_CREATE_AUTHORIZATION",
+        "EC218_MUST_REVALIDATE_AND_ATTEMPT_AT_MOST_ONCE"
+      ]
+    },
+    "one_attempt_reservation": {
+      "type": "boolean"
+    },
+    "host_ledger_atomic_claim_recorded": {
+      "type": "boolean"
+    },
+    "issue_create_authorized_for_this_one_attempt": {
+      "type": "boolean"
+    },
+    "permission_to_edit_existing_issue": {
+      "const": false
+    },
+    "issue_created": {
+      "const": false
+    },
+    "issue_create_network_attempted": {
+      "const": false
+    },
+    "provider_or_business_repository_written": {
+      "const": false
+    },
+    "finding_or_knowledge_written": {
+      "const": false
+    },
+    "external_content_disclosed": {
+      "const": false
+    },
+    "external_ai_called": {
+      "const": false
+    },
+    "native_issue_action_registered": {
+      "const": false
+    },
+    "repository_issue_inventory_complete": {
+      "const": false
+    },
+    "duplicate_absence_proven": {
+      "const": false
+    },
+    "source_authenticity_independently_verified": {
+      "const": false
+    },
+    "organizational_issuer_authenticated_by_ces": {
+      "const": false
+    },
+    "final_prose_safe_by_machine_proof": {
+      "const": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "grant_state": {
+            "const": "RESERVED_ONE_ATTEMPT"
+          }
+        },
+        "required": [
+          "grant_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          },
+          "exit_code": {
+            "const": 2
+          },
+          "one_attempt_reservation": {
+            "const": true
+          },
+          "host_ledger_atomic_claim_recorded": {
+            "const": true
+          },
+          "issue_create_authorized_for_this_one_attempt": {
+            "const": true
+          },
+          "approval_method": {
+            "const": "INDEPENDENT_DETACHED_HUMAN_SIGNATURE"
+          },
+          "safe_next_step": {
+            "const": "EC218_MUST_REVALIDATE_AND_ATTEMPT_AT_MOST_ONCE"
+          },
+          "challenge": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "challenge_sha256",
+              "action",
+              "audience",
+              "provider",
+              "visibility",
+              "target_identity_sha256",
+              "policy_revision_sha256",
+              "plan_sha256",
+              "plan_result_sha256",
+              "final_content_sha256",
+              "final_title_chars",
+              "final_body_chars",
+              "citation_count",
+              "label_count",
+              "human_review_of_full_private_text_required",
+              "content_sanitization_machine_verified",
+              "provider_write_authorized"
+            ],
+            "properties": {
+              "challenge_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "action": {
+                "const": "CREATE_NEW_ISSUE"
+              },
+              "audience": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 96
+              },
+              "provider": {
+                "enum": [
+                  "github",
+                  "gitlab"
+                ]
+              },
+              "visibility": {
+                "enum": [
+                  "PUBLIC",
+                  "PRIVATE"
+                ]
+              },
+              "target_identity_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "policy_revision_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "plan_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "plan_result_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "final_content_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "final_title_chars": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "final_body_chars": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "citation_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "label_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "human_review_of_full_private_text_required": {
+                "const": true
+              },
+              "content_sanitization_machine_verified": {
+                "const": false
+              },
+              "provider_write_authorized": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "one_attempt_reservation": {
+            "const": false
+          },
+          "host_ledger_atomic_claim_recorded": {
+            "const": false
+          },
+          "issue_create_authorized_for_this_one_attempt": {
+            "const": false
+          },
+          "safe_next_step": {
+            "const": "NO_REMOTE_CREATE_AUTHORIZATION"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "grant_state": {
+            "const": "SIGNED_REVIEW_VALID"
+          }
+        },
+        "required": [
+          "grant_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "approval_method": {
+            "const": "INDEPENDENT_DETACHED_HUMAN_SIGNATURE"
+          },
+          "challenge": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "challenge_sha256",
+              "action",
+              "audience",
+              "provider",
+              "visibility",
+              "target_identity_sha256",
+              "policy_revision_sha256",
+              "plan_sha256",
+              "plan_result_sha256",
+              "final_content_sha256",
+              "final_title_chars",
+              "final_body_chars",
+              "citation_count",
+              "label_count",
+              "human_review_of_full_private_text_required",
+              "content_sanitization_machine_verified",
+              "provider_write_authorized"
+            ],
+            "properties": {
+              "challenge_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "action": {
+                "const": "CREATE_NEW_ISSUE"
+              },
+              "audience": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 96
+              },
+              "provider": {
+                "enum": [
+                  "github",
+                  "gitlab"
+                ]
+              },
+              "visibility": {
+                "enum": [
+                  "PUBLIC",
+                  "PRIVATE"
+                ]
+              },
+              "target_identity_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "policy_revision_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "plan_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "plan_result_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "final_content_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "final_title_chars": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "final_body_chars": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "citation_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "label_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "human_review_of_full_private_text_required": {
+                "const": true
+              },
+              "content_sanitization_machine_verified": {
+                "const": false
+              },
+              "provider_write_authorized": {
+                "const": false
+              }
+            }
+          },
+          "status": {
+            "const": "partial"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          },
+          "grant_state": {
+            "const": "INVALID_INPUT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          },
+          "grant_state": {
+            "const": "UNKNOWN"
+          }
+        }
+      }
+    }
+  ]
+}

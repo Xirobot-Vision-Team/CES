@@ -1,0 +1,749 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ces:finding-projection:v1",
+  "title": "CES EC177 in-memory Finding projection v1 (structure only, NEVER authority)",
+  "description": "Describes only positive partial/2 EC177 projections. Unkeyed SHA and schema conformity do not authenticate sources, reviewers, models or real tests; failures use the common denial envelope.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "source_binding",
+    "coverage",
+    "findings",
+    "findings_count",
+    "saved_metadata_link",
+    "effects",
+    "trust_boundary",
+    "projection_sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.finding_projection.v1"
+    },
+    "status": {
+      "const": "partial"
+    },
+    "exit_code": {
+      "const": 2
+    },
+    "reason_code": {
+      "const": "FINDING_IN_MEMORY_ASSERTIONS_NOT_OBJECTIVELY_TESTED"
+    },
+    "source_binding": {
+      "$ref": "#/$defs/binding"
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "complete_for_selected_source",
+        "missing_requirements_count",
+        "historical_proposal_only",
+        "source_currentness_proven"
+      ],
+      "properties": {
+        "complete_for_selected_source": {
+          "type": "boolean"
+        },
+        "missing_requirements_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        },
+        "historical_proposal_only": {
+          "type": "boolean"
+        },
+        "source_currentness_proven": {
+          "const": false
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "$ref": "#/$defs/finding"
+      }
+    },
+    "findings_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 32
+    },
+    "saved_metadata_link": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/saved_link"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "findings_persisted",
+        "ces_records_written",
+        "business_repository_written",
+        "git_or_issue_written",
+        "source_code_or_tests_executed",
+        "external_transfer"
+      ],
+      "properties": {
+        "findings_persisted": {
+          "const": false
+        },
+        "ces_records_written": {
+          "const": false
+        },
+        "business_repository_written": {
+          "const": false
+        },
+        "git_or_issue_written": {
+          "const": false
+        },
+        "source_code_or_tests_executed": {
+          "const": false
+        },
+        "external_transfer": {
+          "const": false
+        }
+      }
+    },
+    "trust_boundary": {
+      "const": "SEALED_LOCAL_SOURCE_AND_OPTIONAL_PRIVATE_HMAC_ONLY_NO_SEMANTIC_TEST_GIT_OR_ACTOR_PROOF"
+    },
+    "projection_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "$defs": {
+    "anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "segment_index",
+        "segment_label_sha256",
+        "item_index",
+        "source_path_sha256",
+        "line_number_in_segment_or_item",
+        "line_number_is_git_file_line",
+        "anchor_sha256",
+        "evidence_origin",
+        "quote_sha256",
+        "quote",
+        "live_git_currentness_proven",
+        "semantic_implication_proven"
+      ],
+      "properties": {
+        "segment_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "segment_label_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "item_index": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_path_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "line_number_in_segment_or_item": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "line_number_is_git_file_line": {
+          "const": false
+        },
+        "anchor_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "evidence_origin": {
+          "const": "EXACT_LINE_IN_EC173_SEALED_INPUT"
+        },
+        "quote_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "quote": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "live_git_currentness_proven": {
+          "const": false
+        },
+        "semantic_implication_proven": {
+          "const": false
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "handoff_id",
+        "stage_revision",
+        "stage_event_sha256",
+        "source_mode",
+        "task_kind",
+        "source_context_sha256",
+        "source_identity_sha256",
+        "evidence_hash",
+        "material_sha256"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "handoff_id": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "stage_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "stage_event_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_mode": {
+          "enum": [
+            "WorkingTree",
+            "DeliveredTarget",
+            "ProposedPR"
+          ]
+        },
+        "task_kind": {
+          "const": "code_analysis"
+        },
+        "source_context_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_identity_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "evidence_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "material_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "counter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "annotation_sha256",
+        "origin",
+        "anchors",
+        "interpretation_sha256",
+        "interpretation",
+        "contradiction_semantically_proven"
+      ],
+      "properties": {
+        "annotation_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "origin": {
+          "const": "CALLER_ASSERTED_COUNTER_EVIDENCE_NOT_VERIFIED_CONTRADICTION"
+        },
+        "anchors": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "items": {
+            "$ref": "#/$defs/anchor"
+          }
+        },
+        "interpretation_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "interpretation": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 800
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "contradiction_semantically_proven": {
+          "const": false
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "finding_id",
+        "identity",
+        "classification",
+        "assertion",
+        "evidence",
+        "assessment",
+        "coverage",
+        "uncertainty",
+        "saved_metadata_record_sha256",
+        "persistent_finding_created"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ces.finding.v1"
+        },
+        "finding_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "identity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "ordinal",
+            "candidate_sha256",
+            "original_finding_sha256",
+            "source_binding",
+            "identity_immutable_within_pinned_source",
+            "identity_does_not_prove_defect_or_cross_revision_equivalence"
+          ],
+          "properties": {
+            "ordinal": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 32
+            },
+            "candidate_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "original_finding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "source_binding": {
+              "$ref": "#/$defs/binding"
+            },
+            "identity_immutable_within_pinned_source": {
+              "const": true
+            },
+            "identity_does_not_prove_defect_or_cross_revision_equivalence": {
+              "const": true
+            }
+          }
+        },
+        "classification": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "severity",
+            "confidence"
+          ],
+          "properties": {
+            "severity": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "origin"
+              ],
+              "properties": {
+                "value": {
+                  "enum": [
+                    "info",
+                    "low",
+                    "medium",
+                    "high",
+                    "critical"
+                  ]
+                },
+                "origin": {
+                  "const": "UNAUTHENTICATED_MODEL_CLAIM_NOT_CALIBRATED"
+                }
+              }
+            },
+            "confidence": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "origin"
+              ],
+              "properties": {
+                "value": {
+                  "enum": [
+                    "low",
+                    "medium",
+                    "high"
+                  ]
+                },
+                "origin": {
+                  "const": "UNAUTHENTICATED_MODEL_CLAIM_NOT_PROBABILITY"
+                }
+              }
+            }
+          }
+        },
+        "assertion": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "origin",
+            "title_sha256",
+            "analysis_sha256",
+            "suggested_action_sha256",
+            "title",
+            "analysis",
+            "suggested_action",
+            "raw_text_disclosed_under_new_grant"
+          ],
+          "properties": {
+            "origin": {
+              "const": "EC174_CALLBACK_MODEL_OR_CALLER_CLAIM_UNAUTHENTICATED"
+            },
+            "title_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "analysis_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "suggested_action_sha256": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 1600
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "analysis": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 1600
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "suggested_action": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 1600
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "raw_text_disclosed_under_new_grant": {
+              "type": "boolean"
+            }
+          }
+        },
+        "evidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "positive_anchors",
+            "counter_evidence",
+            "counter_evidence_exhaustive",
+            "source_line_observed_in_sealed_ec173_input",
+            "current_git_file_line_or_test_proven"
+          ],
+          "properties": {
+            "positive_anchors": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 5,
+              "items": {
+                "$ref": "#/$defs/anchor"
+              }
+            },
+            "counter_evidence": {
+              "type": "array",
+              "maxItems": 3,
+              "items": {
+                "$ref": "#/$defs/counter"
+              }
+            },
+            "counter_evidence_exhaustive": {
+              "const": false
+            },
+            "source_line_observed_in_sealed_ec173_input": {
+              "const": true
+            },
+            "current_git_file_line_or_test_proven": {
+              "const": false
+            }
+          }
+        },
+        "assessment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state",
+            "basis",
+            "key_holder_review_attestation_sha256",
+            "review_verifier_id_sha256",
+            "reviewer_real_identity_authenticated",
+            "semantically_confirmed_defect",
+            "actually_tested",
+            "possible_states",
+            "actually_tested_requires_independent_objective_execution_not_supported_in_ec177"
+          ],
+          "properties": {
+            "state": {
+              "enum": [
+                "UNVERIFIED",
+                "REVIEWED",
+                "REJECTED",
+                "INCONCLUSIVE"
+              ]
+            },
+            "basis": {
+              "enum": [
+                "NO_MANUAL_ATTESTATION",
+                "LOCAL_HMAC_KEY_HOLDER_CONFIRMED_CLAIM_NOT_TRUTH",
+                "LOCAL_HMAC_KEY_HOLDER_REJECTED_CLAIM_NOT_OBJECTIVE_TEST",
+                "LOCAL_HMAC_KEY_HOLDER_INCONCLUSIVE_NOT_TEST"
+              ]
+            },
+            "key_holder_review_attestation_sha256": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "review_verifier_id_sha256": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "reviewer_real_identity_authenticated": {
+              "const": false
+            },
+            "semantically_confirmed_defect": {
+              "const": false
+            },
+            "actually_tested": {
+              "const": false
+            },
+            "possible_states": {
+              "const": [
+                "UNVERIFIED",
+                "REVIEWED",
+                "REJECTED",
+                "INCONCLUSIVE",
+                "ACTUALLY_TESTED"
+              ]
+            },
+            "actually_tested_requires_independent_objective_execution_not_supported_in_ec177": {
+              "const": true
+            }
+          }
+        },
+        "coverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_mode",
+            "source_quality",
+            "complete_for_selected_source",
+            "missing_requirements_count",
+            "missing_requirements_sha256",
+            "source_observed_at_utc",
+            "historical_proposal_only",
+            "source_currentness_proven"
+          ],
+          "properties": {
+            "source_mode": {
+              "enum": [
+                "WorkingTree",
+                "DeliveredTarget",
+                "ProposedPR"
+              ]
+            },
+            "source_quality": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "complete_for_selected_source": {
+              "type": "boolean"
+            },
+            "missing_requirements_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1024
+            },
+            "missing_requirements_sha256": {
+              "type": "array",
+              "maxItems": 1024,
+              "items": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "source_observed_at_utc": {
+              "type": "string",
+              "maxLength": 40
+            },
+            "historical_proposal_only": {
+              "type": "boolean"
+            },
+            "source_currentness_proven": {
+              "const": false
+            }
+          }
+        },
+        "uncertainty": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 8,
+          "items": {
+            "enum": [
+              "MODEL_CLAIM_SEMANTICS_NOT_OBJECTIVELY_VERIFIED",
+              "CURRENT_LIVE_GIT_SOURCE_NOT_PROVEN",
+              "ACTUAL_TEST_OR_CI_EXECUTION_NOT_OBSERVED",
+              "REMOTE_PROVIDER_AND_REVIEWER_REAL_IDENTITY_NOT_AUTHENTICATED",
+              "COUNTER_EVIDENCE_COMPLETENESS_NOT_ESTABLISHED",
+              "SELECTED_SOURCE_COVERAGE_INCOMPLETE",
+              "HISTORICAL_PROPOSAL_NOT_CURRENT_DELIVERED_CODE",
+              "PINNED_REVIEW_DECLARATION_INCONCLUSIVE",
+              "CLAIM_REJECTED_BY_PINNED_KEY_HOLDER"
+            ]
+          }
+        },
+        "saved_metadata_record_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "persistent_finding_created": {
+          "const": false
+        }
+      }
+    },
+    "saved_link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "save_operation_id",
+        "record_sha256",
+        "private_hmac_verified_this_call",
+        "save_was_only_metadata",
+        "finding_was_persisted",
+        "semantic_truth_or_test_proven",
+        "expires_at_utc"
+      ],
+      "properties": {
+        "source": {
+          "const": "EC176_GENUINE_PRIVATE_HMAC_METADATA_READ"
+        },
+        "save_operation_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "record_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "private_hmac_verified_this_call": {
+          "const": true
+        },
+        "save_was_only_metadata": {
+          "const": true
+        },
+        "finding_was_persisted": {
+          "const": false
+        },
+        "semantic_truth_or_test_proven": {
+          "const": false
+        },
+        "expires_at_utc": {
+          "type": "string",
+          "maxLength": 40
+        }
+      }
+    }
+  }
+}

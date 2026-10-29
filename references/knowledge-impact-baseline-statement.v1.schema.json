@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/knowledge-impact-baseline-statement.v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_impact_baseline_statement.v1"
+    },
+    "purpose": {
+      "const": "knowledge_preceding_delivered_commit"
+    },
+    "signer_key_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "repository_ref": {
+      "type": "string",
+      "pattern": "^cesrepo1:[0-9a-f]{64}$"
+    },
+    "knowledge_space_key": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "source_policy_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "period_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "request_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "scope_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "target_statement_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "target_ref": {
+      "type": "string",
+      "minLength": 12,
+      "maxLength": 256,
+      "pattern": "^refs/(heads|remotes)/[A-Za-z0-9._/-]+$"
+    },
+    "baseline_revision": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "enum": [
+            "sha1",
+            "sha256"
+          ]
+        },
+        "oid": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+        }
+      },
+      "required": [
+        "algorithm",
+        "oid"
+      ]
+    },
+    "target_revision": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "enum": [
+            "sha1",
+            "sha256"
+          ]
+        },
+        "oid": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+        }
+      },
+      "required": [
+        "algorithm",
+        "oid"
+      ]
+    },
+    "baseline_recorded_at_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    }
+  },
+  "required": [
+    "schema",
+    "purpose",
+    "signer_key_id",
+    "repository_ref",
+    "knowledge_space_key",
+    "source_policy_revision",
+    "period_id",
+    "request_binding_sha256",
+    "scope_binding_sha256",
+    "target_statement_binding_sha256",
+    "target_ref",
+    "baseline_revision",
+    "target_revision",
+    "baseline_recorded_at_utc"
+  ]
+}

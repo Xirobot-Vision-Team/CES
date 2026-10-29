@@ -1,0 +1,999 @@
+{
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "ces.quality_sha_bind.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^QUALITYSHABIND_[A-Z0-9_]+$"
+    },
+    "source": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "enum": [
+                "github",
+                "gitlab"
+              ]
+            },
+            "repository": {
+              "type": "string",
+              "minLength": 1
+            },
+            "project_id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9223372036854775807
+            },
+            "source_mode": {
+              "enum": [
+                "DeliveredTarget",
+                "ProposedPR"
+              ]
+            },
+            "proposal_number": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9223372036854775807
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "proposal_object_id": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9223372036854775807
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "branch": {
+              "type": "string",
+              "minLength": 1
+            },
+            "commit_sha": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "observed_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "authority": {
+              "enum": [
+                "SYNTHETIC_DEVELOPMENT",
+                "LIVE_PROVIDER_METADATA"
+              ]
+            }
+          },
+          "required": [
+            "provider",
+            "repository",
+            "project_id",
+            "source_mode",
+            "proposal_number",
+            "proposal_object_id",
+            "branch",
+            "commit_sha",
+            "observed_at",
+            "authority"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "source_mode": {
+                    "const": "DeliveredTarget"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "proposal_number": {
+                    "type": "null"
+                  },
+                  "proposal_object_id": {
+                    "type": "null"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "source_mode": {
+                    "const": "ProposedPR"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "proposal_number": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9223372036854775807
+                  },
+                  "proposal_object_id": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9223372036854775807
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ci_observation": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9223372036854775807
+            },
+            "workflow_id": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9223372036854775807
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9223372036854775807
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "job_id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9223372036854775807
+            },
+            "run_conclusion": {
+              "enum": [
+                "success",
+                "failure"
+              ]
+            },
+            "job_conclusion": {
+              "enum": [
+                "success",
+                "failure"
+              ]
+            },
+            "original_observation_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "fresh_observation_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "fresh_observed_at": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "run_id",
+            "workflow_id",
+            "attempt",
+            "job_id",
+            "run_conclusion",
+            "job_conclusion",
+            "original_observation_sha256",
+            "fresh_observation_sha256",
+            "fresh_observed_at"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "binding": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "source_commit_sha": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "ci_commit_sha": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "sha_equal": {
+              "const": true
+            },
+            "association_level": {
+              "enum": [
+                "SYNTHETIC_EQUALITY_ONLY",
+                "PROVIDER_SOURCE_CI_METADATA_ASSOCIATED"
+              ]
+            },
+            "git_object_bytes_hashed": {
+              "const": false
+            },
+            "working_tree_verified": {
+              "const": false
+            },
+            "tests_executed_by_ces": {
+              "const": false
+            },
+            "actor_verified": {
+              "const": false
+            }
+          },
+          "required": [
+            "source_commit_sha",
+            "ci_commit_sha",
+            "sha_equal",
+            "association_level",
+            "git_object_bytes_hashed",
+            "working_tree_verified",
+            "tests_executed_by_ces",
+            "actor_verified"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "coverage": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "exact_repository_id": {
+              "const": true
+            },
+            "repository_rechecked": {
+              "const": true
+            },
+            "branch_rechecked": {
+              "const": true
+            },
+            "commit_endpoint_read": {
+              "const": true
+            },
+            "fresh_ci_rechecked": {
+              "const": true
+            },
+            "ci_metadata_unchanged": {
+              "const": true
+            },
+            "receipt_age_checked": {
+              "const": true
+            },
+            "ci_source_sha_associated": {
+              "type": "boolean"
+            },
+            "git_object_bytes_hashed": {
+              "const": false
+            },
+            "working_tree_verified": {
+              "const": false
+            },
+            "test_execution_by_ces": {
+              "const": false
+            },
+            "logs_inspected": {
+              "const": false
+            },
+            "atomic_cross_request_snapshot": {
+              "const": false
+            },
+            "proposal_rechecked": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "exact_repository_id",
+            "repository_rechecked",
+            "branch_rechecked",
+            "commit_endpoint_read",
+            "fresh_ci_rechecked",
+            "ci_metadata_unchanged",
+            "receipt_age_checked",
+            "ci_source_sha_associated",
+            "git_object_bytes_hashed",
+            "working_tree_verified",
+            "test_execution_by_ces",
+            "logs_inspected",
+            "atomic_cross_request_snapshot",
+            "proposal_rechecked"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "association_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "permission": {
+      "type": "object",
+      "properties": {
+        "source_scope": {
+          "enum": [
+            "NOT_ATTESTED",
+            "HOST_CALLBACK_ALLOWED"
+          ]
+        },
+        "ci_scope": {
+          "enum": [
+            "NOT_ATTESTED",
+            "HOST_CALLBACK_ALLOWED"
+          ]
+        },
+        "transport": {
+          "enum": [
+            "SYNTHETIC",
+            "LIVE_HTTPS",
+            "UNDETERMINED"
+          ]
+        },
+        "credential_identity": {
+          "const": "NOT_ATTESTED"
+        }
+      },
+      "required": [
+        "source_scope",
+        "ci_scope",
+        "transport",
+        "credential_identity"
+      ],
+      "additionalProperties": false
+    },
+    "effects": {
+      "type": "object",
+      "properties": {
+        "read_only": {
+          "const": true
+        },
+        "source_get_calls": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7
+        },
+        "ci_get_calls": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "live_source_get_requests": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7
+        },
+        "live_ci_get_requests": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "executed_commands": {
+          "const": false
+        },
+        "git_operations": {
+          "const": false
+        },
+        "read_ci_logs": {
+          "const": false
+        },
+        "writes_performed": {
+          "const": false
+        }
+      },
+      "required": [
+        "read_only",
+        "source_get_calls",
+        "ci_get_calls",
+        "live_source_get_requests",
+        "live_ci_get_requests",
+        "executed_commands",
+        "git_operations",
+        "read_ci_logs",
+        "writes_performed"
+      ],
+      "additionalProperties": false
+    },
+    "trust_boundary": {
+      "enum": [
+        "NO_BINDING_ON_REFUSAL",
+        "SYNTHETIC_UNVERIFIED",
+        "PROVIDER_METADATA_ONLY_NO_GIT_BYTES_OR_RUNNER"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "source",
+    "ci_observation",
+    "binding",
+    "coverage",
+    "association_sha256",
+    "permission",
+    "effects",
+    "trust_boundary"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/quality-sha-bind-result.v1.schema.json",
+  "title": "CES EC183 independent CI/source SHA association (metadata only)",
+  "description": "A partial association of two independently read Provider metadata sources, never CI execution or verified Git bytes.",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "enum": [
+                  "github",
+                  "gitlab"
+                ]
+              },
+              "repository": {
+                "type": "string",
+                "minLength": 1
+              },
+              "project_id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9223372036854775807
+              },
+              "source_mode": {
+                "enum": [
+                  "DeliveredTarget",
+                  "ProposedPR"
+                ]
+              },
+              "proposal_number": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9223372036854775807
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "proposal_object_id": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9223372036854775807
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "branch": {
+                "type": "string",
+                "minLength": 1
+              },
+              "commit_sha": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              },
+              "observed_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "authority": {
+                "enum": [
+                  "SYNTHETIC_DEVELOPMENT",
+                  "LIVE_PROVIDER_METADATA"
+                ]
+              }
+            },
+            "required": [
+              "provider",
+              "repository",
+              "project_id",
+              "source_mode",
+              "proposal_number",
+              "proposal_object_id",
+              "branch",
+              "commit_sha",
+              "observed_at",
+              "authority"
+            ],
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "source_mode": {
+                      "const": "DeliveredTarget"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "proposal_number": {
+                      "type": "null"
+                    },
+                    "proposal_object_id": {
+                      "type": "null"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "source_mode": {
+                      "const": "ProposedPR"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "proposal_number": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 9223372036854775807
+                    },
+                    "proposal_object_id": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 9223372036854775807
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "ci_observation": {
+            "type": "object",
+            "properties": {
+              "run_id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9223372036854775807
+              },
+              "workflow_id": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9223372036854775807
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "attempt": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9223372036854775807
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "job_id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9223372036854775807
+              },
+              "run_conclusion": {
+                "enum": [
+                  "success",
+                  "failure"
+                ]
+              },
+              "job_conclusion": {
+                "enum": [
+                  "success",
+                  "failure"
+                ]
+              },
+              "original_observation_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "fresh_observation_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "fresh_observed_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "run_id",
+              "workflow_id",
+              "attempt",
+              "job_id",
+              "run_conclusion",
+              "job_conclusion",
+              "original_observation_sha256",
+              "fresh_observation_sha256",
+              "fresh_observed_at"
+            ],
+            "additionalProperties": false
+          },
+          "binding": {
+            "type": "object",
+            "properties": {
+              "source_commit_sha": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              },
+              "ci_commit_sha": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              },
+              "sha_equal": {
+                "const": true
+              },
+              "association_level": {
+                "enum": [
+                  "SYNTHETIC_EQUALITY_ONLY",
+                  "PROVIDER_SOURCE_CI_METADATA_ASSOCIATED"
+                ]
+              },
+              "git_object_bytes_hashed": {
+                "const": false
+              },
+              "working_tree_verified": {
+                "const": false
+              },
+              "tests_executed_by_ces": {
+                "const": false
+              },
+              "actor_verified": {
+                "const": false
+              }
+            },
+            "required": [
+              "source_commit_sha",
+              "ci_commit_sha",
+              "sha_equal",
+              "association_level",
+              "git_object_bytes_hashed",
+              "working_tree_verified",
+              "tests_executed_by_ces",
+              "actor_verified"
+            ],
+            "additionalProperties": false
+          },
+          "coverage": {
+            "type": "object",
+            "properties": {
+              "exact_repository_id": {
+                "const": true
+              },
+              "repository_rechecked": {
+                "const": true
+              },
+              "branch_rechecked": {
+                "const": true
+              },
+              "commit_endpoint_read": {
+                "const": true
+              },
+              "fresh_ci_rechecked": {
+                "const": true
+              },
+              "ci_metadata_unchanged": {
+                "const": true
+              },
+              "receipt_age_checked": {
+                "const": true
+              },
+              "ci_source_sha_associated": {
+                "type": "boolean"
+              },
+              "git_object_bytes_hashed": {
+                "const": false
+              },
+              "working_tree_verified": {
+                "const": false
+              },
+              "test_execution_by_ces": {
+                "const": false
+              },
+              "logs_inspected": {
+                "const": false
+              },
+              "atomic_cross_request_snapshot": {
+                "const": false
+              },
+              "proposal_rechecked": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "exact_repository_id",
+              "repository_rechecked",
+              "branch_rechecked",
+              "commit_endpoint_read",
+              "fresh_ci_rechecked",
+              "ci_metadata_unchanged",
+              "receipt_age_checked",
+              "ci_source_sha_associated",
+              "git_object_bytes_hashed",
+              "working_tree_verified",
+              "test_execution_by_ces",
+              "logs_inspected",
+              "atomic_cross_request_snapshot",
+              "proposal_rechecked"
+            ],
+            "additionalProperties": false
+          },
+          "association_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "reason_code": {
+            "const": "QUALITYSHABIND_CI_SOURCE_SHA_ASSOCIATED"
+          },
+          "trust_boundary": {
+            "enum": [
+              "SYNTHETIC_UNVERIFIED",
+              "PROVIDER_METADATA_ONLY_NO_GIT_BYTES_OR_RUNNER"
+            ]
+          },
+          "permission": {
+            "properties": {
+              "source_scope": {
+                "const": "HOST_CALLBACK_ALLOWED"
+              },
+              "ci_scope": {
+                "const": "HOST_CALLBACK_ALLOWED"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "exit_code": {
+            "enum": [
+              4,
+              5
+            ]
+          },
+          "source": {
+            "type": "null"
+          },
+          "ci_observation": {
+            "type": "null"
+          },
+          "binding": {
+            "type": "null"
+          },
+          "coverage": {
+            "type": "null"
+          },
+          "association_sha256": {
+            "type": "null"
+          },
+          "trust_boundary": {
+            "const": "NO_BINDING_ON_REFUSAL"
+          },
+          "permission": {
+            "properties": {
+              "source_scope": {
+                "const": "NOT_ATTESTED"
+              },
+              "ci_scope": {
+                "const": "NOT_ATTESTED"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "type": "object"
+          }
+        }
+      },
+      "then": {
+        "oneOf": [
+          {
+            "properties": {
+              "permission": {
+                "properties": {
+                  "transport": {
+                    "const": "SYNTHETIC"
+                  }
+                }
+              },
+              "source": {
+                "properties": {
+                  "authority": {
+                    "const": "SYNTHETIC_DEVELOPMENT"
+                  }
+                }
+              },
+              "binding": {
+                "properties": {
+                  "association_level": {
+                    "const": "SYNTHETIC_EQUALITY_ONLY"
+                  }
+                }
+              },
+              "coverage": {
+                "properties": {
+                  "ci_source_sha_associated": {
+                    "const": false
+                  }
+                }
+              },
+              "trust_boundary": {
+                "const": "SYNTHETIC_UNVERIFIED"
+              },
+              "effects": {
+                "properties": {
+                  "live_source_get_requests": {
+                    "const": 0
+                  },
+                  "live_ci_get_requests": {
+                    "const": 0
+                  }
+                }
+              }
+            }
+          },
+          {
+            "properties": {
+              "permission": {
+                "properties": {
+                  "transport": {
+                    "const": "LIVE_HTTPS"
+                  }
+                }
+              },
+              "source": {
+                "properties": {
+                  "authority": {
+                    "const": "LIVE_PROVIDER_METADATA"
+                  }
+                }
+              },
+              "binding": {
+                "properties": {
+                  "association_level": {
+                    "const": "PROVIDER_SOURCE_CI_METADATA_ASSOCIATED"
+                  }
+                }
+              },
+              "coverage": {
+                "properties": {
+                  "ci_source_sha_associated": {
+                    "const": true
+                  }
+                }
+              },
+              "trust_boundary": {
+                "const": "PROVIDER_METADATA_ONLY_NO_GIT_BYTES_OR_RUNNER"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

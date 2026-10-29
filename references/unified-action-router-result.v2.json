@@ -1,0 +1,334 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/unified-action-router-result.v2.json",
+  "title": "EC243 normalized unverified CES router action result (not inventory, never business success)",
+  "description": "V2 intentionally uses .json to keep the historical 112 SHA-pinned EC242 *.schema.json catalog immutable; validate this v2 explicitly.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "build",
+    "action",
+    "mode",
+    "status",
+    "reason_code",
+    "normalized_exit_code",
+    "outcome_basis",
+    "handler_outcome_consistent",
+    "coverage_assessment",
+    "coverage_missing_claims",
+    "route_kind",
+    "handler",
+    "effect_class",
+    "handler_invoked",
+    "handler_attempted",
+    "handler_exit_code",
+    "handler_status",
+    "handler_result",
+    "business_effect_verified",
+    "external_identity_authenticated_by_router",
+    "permissions_granted_by_router",
+    "tasks_advanced_by_router",
+    "native_powershell_runtime_tested",
+    "limitations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.unified_action_router.v2"
+    },
+    "version": {
+      "const": "1.0.0"
+    },
+    "build": {
+      "const": "1.0.0"
+    },
+    "action": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mode": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "offline",
+        "denied",
+        "partial",
+        "invalid",
+        "unavailable"
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{1,127}$"
+    },
+    "normalized_exit_code": {
+      "enum": [
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "outcome_basis": {
+      "type": "string",
+      "pattern": "^[a-z][a-z_]{1,79}$"
+    },
+    "handler_outcome_consistent": {
+      "type": "boolean"
+    },
+    "coverage_assessment": {
+      "enum": [
+        "NOT_OBSERVED_NO_VALID_HANDLER_RESULT",
+        "DECLARED_GAPS_UNVERIFIED",
+        "PARTIAL_OR_INCOMPLETE_UNVERIFIED",
+        "NOT_ATTESTED_BY_ROUTER"
+      ]
+    },
+    "coverage_missing_claims": {
+      "type": "array",
+      "maxItems": 7,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "source_identity_bound",
+          "path_inventory_complete",
+          "content_released",
+          "content_complete_for_selected_source",
+          "source_currentness_proven",
+          "remote_delivery_proven",
+          "provider_actor_verified"
+        ]
+      }
+    },
+    "route_kind": {
+      "enum": [
+        "CLI",
+        "API",
+        "PREVIEW",
+        "HOST_REQUIRED",
+        null
+      ]
+    },
+    "handler": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "effect_class": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "handler_invoked": {
+      "type": "boolean"
+    },
+    "handler_attempted": {
+      "type": "boolean"
+    },
+    "handler_exit_code": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "handler_status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 160
+    },
+    "handler_result": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "business_effect_verified": {
+      "const": false
+    },
+    "external_identity_authenticated_by_router": {
+      "const": false
+    },
+    "permissions_granted_by_router": {
+      "const": false
+    },
+    "tasks_advanced_by_router": {
+      "const": false
+    },
+    "native_powershell_runtime_tested": {
+      "const": false
+    },
+    "limitations": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "normalized_exit_code": {
+            "const": 2
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "denied"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "normalized_exit_code": {
+            "const": 3
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "offline"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "normalized_exit_code": {
+            "const": 3
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "normalized_exit_code": {
+            "const": 4
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "normalized_exit_code": {
+            "const": 5
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "handler_invoked": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "handler_attempted": {
+            "const": true
+          },
+          "handler_result": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "handler_invoked": {
+            "const": false
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "handler_result": {
+            "type": "null"
+          },
+          "handler_status": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "coverage_assessment": {
+            "const": "NOT_OBSERVED_NO_VALID_HANDLER_RESULT"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "handler_invoked": {
+            "const": false
+          },
+          "coverage_missing_claims": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "coverage_assessment": {
+            "const": "DECLARED_GAPS_UNVERIFIED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "handler_invoked": {
+            "const": true
+          },
+          "coverage_missing_claims": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

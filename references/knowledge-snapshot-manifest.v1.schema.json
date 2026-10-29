@@ -1,0 +1,86 @@
+{
+  "$id": "https://ces.local/schemas/knowledge-snapshot-manifest.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "captured_at_utc": {
+      "anyOf": [
+        {
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "coverage": {
+      "enum": [
+        "complete_declared",
+        "partial_declared",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "entries": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "relative_path": {
+            "maxLength": 256,
+            "pattern": "^[A-Za-z0-9_][A-Za-z0-9._-]{0,63}(/[A-Za-z0-9_][A-Za-z0-9._-]{0,63})*$",
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "size_bytes": {
+            "maximum": 16384,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "relative_path",
+          "sha256",
+          "size_bytes"
+        ],
+        "type": "object"
+      },
+      "maxItems": 32,
+      "type": "array"
+    },
+    "knowledge_space_key": {
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+      "type": "string"
+    },
+    "repository_ref": {
+      "pattern": "^cesrepo1:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "ces.knowledge_snapshot_manifest.v1"
+    },
+    "snapshot_version": {
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+      "type": "string"
+    },
+    "source_policy_revision": {
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "repository_ref",
+    "knowledge_space_key",
+    "source_policy_revision",
+    "snapshot_version",
+    "captured_at_utc",
+    "coverage",
+    "entries"
+  ],
+  "title": "knowledge-snapshot-manifest.v1",
+  "type": "object"
+}

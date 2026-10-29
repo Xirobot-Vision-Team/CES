@@ -1,0 +1,196 @@
+{
+  "business_permissions_granted": false,
+  "enterprise_or_os_accepted": false,
+  "final_acceptance_started": false,
+  "flow_count": 7,
+  "flow_passed": 7,
+  "flows": [
+    {
+      "error_code": null,
+      "id": "schema_admission",
+      "status": "LOCAL_DEVELOPMENT_PASSED",
+      "steps": [
+        {
+          "handler_invoked": true,
+          "normalized_exit": 2,
+          "normalized_status": "partial",
+          "route": "SchemaReview:Inventory"
+        },
+        {
+          "handler_invoked": true,
+          "normalized_exit": 2,
+          "normalized_status": "partial",
+          "route": "SchemaReview:Audit"
+        },
+        {
+          "handler_invoked": true,
+          "normalized_exit": 2,
+          "normalized_status": "partial",
+          "route": "SchemaReview:Inspect"
+        },
+        {
+          "handler_invoked": true,
+          "normalized_exit": 2,
+          "normalized_status": "partial",
+          "route": "SchemaReview:Plan"
+        }
+      ]
+    },
+    {
+      "error_code": null,
+      "id": "calendar_period",
+      "status": "LOCAL_DEVELOPMENT_PASSED",
+      "steps": [
+        {
+          "handler_invoked": true,
+          "normalized_exit": 2,
+          "normalized_status": "partial",
+          "route": "Due:Evaluate"
+        },
+        {
+          "handler_invoked": true,
+          "normalized_exit": 2,
+          "normalized_status": "partial",
+          "route": "NaturalPeriod:from_instant"
+        }
+      ]
+    },
+    {
+      "error_code": null,
+      "id": "cycle_source_chain",
+      "status": "LOCAL_DEVELOPMENT_PASSED",
+      "steps": [
+        {
+          "handler_invoked": false,
+          "normalized_exit": 3,
+          "normalized_status": "denied",
+          "route": "Cycle:Create"
+        },
+        {
+          "handler_invoked": true,
+          "normalized_exit": 2,
+          "normalized_status": "partial",
+          "route": "Cycle:Create"
+        },
+        {
+          "handler_invoked": true,
+          "normalized_exit": 2,
+          "normalized_status": "partial",
+          "route": "Cycle:Inspect"
+        },
+        {
+          "handler_invoked": true,
+          "normalized_exit": 2,
+          "normalized_status": "partial",
+          "route": "Cycle:Next"
+        },
+        {
+          "handler_invoked": true,
+          "normalized_exit": 2,
+          "normalized_status": "partial",
+          "route": "Cycle:Summary"
+        },
+        {
+          "handler_invoked": true,
+          "normalized_exit": 3,
+          "normalized_status": "denied",
+          "route": "Cycle:BusinessWriteAttempt"
+        }
+      ]
+    },
+    {
+      "error_code": null,
+      "id": "code_save_gates",
+      "status": "LOCAL_DEVELOPMENT_PASSED",
+      "steps": [
+        {
+          "handler_invoked": true,
+          "normalized_exit": 4,
+          "normalized_status": "invalid",
+          "route": "CodePrepare:MultiSource"
+        },
+        {
+          "handler_invoked": false,
+          "normalized_exit": 3,
+          "normalized_status": "denied",
+          "route": "CodeSave:Staged"
+        },
+        {
+          "handler_invoked": false,
+          "normalized_exit": 3,
+          "normalized_status": "denied",
+          "route": "CodeSave:Snapshot"
+        }
+      ]
+    },
+    {
+      "error_code": null,
+      "id": "issue_creation_boundary",
+      "status": "LOCAL_DEVELOPMENT_PASSED",
+      "steps": [
+        {
+          "handler_invoked": true,
+          "normalized_exit": 4,
+          "normalized_status": "invalid",
+          "route": "IssueCreate:Eligibility"
+        },
+        {
+          "handler_invoked": false,
+          "normalized_exit": 3,
+          "normalized_status": "denied",
+          "route": "IssueCreate:Create"
+        }
+      ]
+    },
+    {
+      "error_code": null,
+      "id": "delivery_publication_boundary",
+      "status": "LOCAL_DEVELOPMENT_PASSED",
+      "steps": [
+        {
+          "handler_invoked": false,
+          "normalized_exit": 4,
+          "normalized_status": "invalid",
+          "route": "DeliveryPreview:Preview"
+        },
+        {
+          "handler_invoked": false,
+          "normalized_exit": 3,
+          "normalized_status": "denied",
+          "route": "DeliverySend:Send"
+        },
+        {
+          "handler_invoked": false,
+          "normalized_exit": 3,
+          "normalized_status": "denied",
+          "route": "DocsOnlyPublish:LocalSandbox"
+        },
+        {
+          "handler_invoked": false,
+          "normalized_exit": 3,
+          "normalized_status": "denied",
+          "route": "ReportPublish:PrivateTest"
+        }
+      ]
+    },
+    {
+      "error_code": null,
+      "id": "provider_network_boundary",
+      "status": "LOCAL_DEVELOPMENT_PASSED",
+      "steps": [
+        {
+          "handler_invoked": false,
+          "normalized_exit": 3,
+          "normalized_status": "denied",
+          "route": "Collect:ProposedPR"
+        }
+      ]
+    }
+  ],
+  "native_smokes_executed": false,
+  "native_smokes_mapped": 15,
+  "package": "V5.57/R247/EC247",
+  "real_network_tested": false,
+  "result": "LOCAL_DEVELOPMENT_PASSED_NOT_FINAL_ACCEPTANCE",
+  "schema": "ces.ec247.regression_report.v1"
+}

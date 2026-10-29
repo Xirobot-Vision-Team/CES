@@ -1,0 +1,318 @@
+{
+  "type": "object",
+  "required": [
+    "schema",
+    "status",
+    "reason_code",
+    "run_id",
+    "handoff_id",
+    "cycle_record_sha256",
+    "owner_binding_sha256",
+    "stage_run_id",
+    "stage_context_sha256",
+    "families",
+    "artifacts",
+    "all_six_present",
+    "local_identity_consistent",
+    "producer_authenticated",
+    "actor_authenticated",
+    "source_authenticated",
+    "business_steps_executed_proven",
+    "permission_granted",
+    "business_write_performed",
+    "native_cycle_action_registered"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.cycle_cross_action.v1"
+    },
+    "status": {
+      "enum": [
+        "LINKED_LOCAL_ONLY",
+        "ATTACHED_LOCAL_ONLY",
+        "CONSISTENT_LOCAL_ONLY",
+        "BLOCKED_MIXED_CONTEXT",
+        "UNKNOWN_BLOCKED"
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{2,63}$",
+      "maxLength": 64
+    },
+    "run_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^run_v1_[0-9a-f]{48}$",
+          "minLength": 55,
+          "maxLength": 55
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "handoff_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^handoff_v1_[0-9a-f]{48}$",
+          "minLength": 59,
+          "maxLength": 59
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "cycle_record_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "owner_binding_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "stage_run_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^run_v1_[0-9a-f]{48}$",
+          "minLength": 55,
+          "maxLength": 55
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "stage_context_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "families": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 6,
+      "items": {
+        "enum": [
+          "Code",
+          "Delivery",
+          "Finding",
+          "Knowledge",
+          "Quality",
+          "Report"
+        ]
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "required": [
+          "family",
+          "step_id",
+          "producer_schema",
+          "artifact_sha256",
+          "artifact_bytes",
+          "identity_fields_checked"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "family": {
+            "type": "string",
+            "enum": [
+              "Code",
+              "Delivery",
+              "Finding",
+              "Knowledge",
+              "Quality",
+              "Report"
+            ]
+          },
+          "step_id": {
+            "type": "string",
+            "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$"
+          },
+          "producer_schema": {
+            "type": "string",
+            "pattern": "^ces\\.[a-z0-9_]+\\.v1$"
+          },
+          "artifact_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "artifact_bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 524288
+          },
+          "identity_fields_checked": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          }
+        }
+      }
+    },
+    "all_six_present": {
+      "type": "boolean"
+    },
+    "local_identity_consistent": {
+      "type": "boolean"
+    },
+    "producer_authenticated": {
+      "const": false
+    },
+    "actor_authenticated": {
+      "const": false
+    },
+    "source_authenticated": {
+      "const": false
+    },
+    "business_steps_executed_proven": {
+      "const": false
+    },
+    "permission_granted": {
+      "const": false
+    },
+    "business_write_performed": {
+      "const": false
+    },
+    "native_cycle_action_registered": {
+      "const": false
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ces:cycle-cross-action-result:v1",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "BLOCKED_MIXED_CONTEXT",
+              "UNKNOWN_BLOCKED"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "local_identity_consistent": {
+            "const": false
+          },
+          "cycle_record_sha256": {
+            "type": "null"
+          },
+          "owner_binding_sha256": {
+            "type": "null"
+          },
+          "stage_run_id": {
+            "type": "null"
+          },
+          "stage_context_sha256": {
+            "type": "null"
+          },
+          "all_six_present": {
+            "const": false
+          },
+          "families": {
+            "maxItems": 0
+          },
+          "artifacts": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "LINKED_LOCAL_ONLY",
+              "ATTACHED_LOCAL_ONLY",
+              "CONSISTENT_LOCAL_ONLY"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "local_identity_consistent": {
+            "const": true
+          },
+          "run_id": {
+            "type": "string",
+            "pattern": "^run_v1_[0-9a-f]{48}$",
+            "minLength": 55,
+            "maxLength": 55
+          },
+          "handoff_id": {
+            "type": "string",
+            "pattern": "^handoff_v1_[0-9a-f]{48}$",
+            "minLength": 59,
+            "maxLength": 59
+          },
+          "cycle_record_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "owner_binding_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "stage_run_id": {
+            "type": "string",
+            "pattern": "^run_v1_[0-9a-f]{48}$",
+            "minLength": 55,
+            "maxLength": 55
+          },
+          "stage_context_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "minLength": 64,
+            "maxLength": 64
+          }
+        }
+      }
+    }
+  ]
+}

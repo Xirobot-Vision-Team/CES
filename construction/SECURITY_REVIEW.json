@@ -1,0 +1,3599 @@
+{
+  "actor_authenticated": false,
+  "broker_or_host_attested": false,
+  "build": "R244",
+  "business_repository_mutation_absence_proven": false,
+  "checks": [
+    {
+      "domain": "routing",
+      "id": "ROUTER_LEGACY_OWNED",
+      "line": 529,
+      "missing": [],
+      "source": "construction/unified_action_router.py",
+      "status": "PASS_STATIC",
+      "symbol": "dispatch"
+    },
+    {
+      "domain": "routing",
+      "id": "ROUTER_HOST_DENIED_FIRST",
+      "line": 529,
+      "missing": [],
+      "source": "construction/unified_action_router.py",
+      "status": "PASS_STATIC",
+      "symbol": "dispatch"
+    },
+    {
+      "domain": "routing",
+      "id": "ROUTER_LOCAL_WRITE_EXPLICIT",
+      "line": 256,
+      "missing": [],
+      "source": "construction/unified_action_router.py",
+      "status": "PASS_STATIC",
+      "symbol": "_request"
+    },
+    {
+      "domain": "routing",
+      "id": "ROUTER_HOST_INPUT_NOT_CREDENTIALS",
+      "line": 256,
+      "missing": [],
+      "source": "construction/unified_action_router.py",
+      "status": "PASS_STATIC",
+      "symbol": "_request"
+    },
+    {
+      "domain": "routing",
+      "id": "ROUTER_FIXED_SOURCE_FILES",
+      "line": 340,
+      "missing": [],
+      "source": "construction/unified_action_router.py",
+      "status": "PASS_STATIC",
+      "symbol": "_regular_module"
+    },
+    {
+      "domain": "routing",
+      "id": "ROUTER_CHILD_ISOLATED",
+      "line": 352,
+      "missing": [],
+      "source": "construction/unified_action_router.py",
+      "status": "PASS_STATIC",
+      "symbol": "_run_cli"
+    },
+    {
+      "domain": "routing",
+      "id": "ROUTER_API_IMPORT_PIN",
+      "line": 417,
+      "missing": [],
+      "source": "construction/unified_action_router.py",
+      "status": "PASS_STATIC",
+      "symbol": "_run_api"
+    },
+    {
+      "domain": "routing",
+      "id": "ROUTER_PREVIEW_FIXED_CONSTRUCTORS",
+      "line": 458,
+      "missing": [],
+      "source": "construction/unified_action_router.py",
+      "status": "PASS_STATIC",
+      "symbol": "_run_preview"
+    },
+    {
+      "domain": "routing",
+      "id": "ROUTER_RESULT_CANONICAL",
+      "line": 529,
+      "missing": [],
+      "source": "construction/unified_action_router.py",
+      "status": "PASS_STATIC",
+      "symbol": "dispatch"
+    },
+    {
+      "domain": "existing_issue",
+      "id": "ISSUE_GET_ONLY_SELECTED",
+      "line": 91,
+      "missing": [],
+      "source": "construction/issue_existing_readonly.py",
+      "status": "PASS_STATIC",
+      "symbol": "issue_http_route"
+    },
+    {
+      "domain": "existing_issue",
+      "id": "ISSUE_NEW_COLLECTION_ONLY",
+      "line": 91,
+      "missing": [],
+      "source": "construction/issue_existing_readonly.py",
+      "status": "PASS_STATIC",
+      "symbol": "issue_http_route"
+    },
+    {
+      "domain": "existing_issue",
+      "id": "ISSUE_READ_INDEPENDENT_ACCESS",
+      "line": 324,
+      "missing": [],
+      "source": "construction/issue_existing_readonly.py",
+      "status": "PASS_STATIC",
+      "symbol": "read_existing_issue"
+    },
+    {
+      "domain": "existing_issue",
+      "id": "ISSUE_CREATE_ONCE_LEDGER_BEFORE_POST",
+      "line": 531,
+      "missing": [],
+      "source": "construction/issue_create_write.py",
+      "status": "PASS_STATIC",
+      "symbol": "create_new_issue_once"
+    },
+    {
+      "domain": "existing_issue",
+      "id": "ISSUE_CREATE_TRANSPORT_ONLY_NEW",
+      "line": 399,
+      "missing": [],
+      "source": "construction/issue_create_write.py",
+      "status": "PASS_STATIC",
+      "symbol": "StrictHTTPSIssueCreateTransport.post_create"
+    },
+    {
+      "domain": "existing_issue",
+      "id": "ISSUE_UNKNOWN_ONLY_GET",
+      "line": 455,
+      "missing": [],
+      "source": "construction/issue_unknown_recheck.py",
+      "status": "PASS_STATIC",
+      "symbol": "recheck_unknown_issue"
+    },
+    {
+      "domain": "docs_publication",
+      "id": "DOCS_EXACT_SAFE_PATH",
+      "line": 146,
+      "missing": [],
+      "source": "construction/docs_only_publish.py",
+      "status": "PASS_STATIC",
+      "symbol": "_safe_path"
+    },
+    {
+      "domain": "docs_publication",
+      "id": "DOCS_FOUR_SEPARATE_SIGNERS",
+      "line": 522,
+      "missing": [],
+      "source": "construction/docs_only_publish.py",
+      "status": "PASS_STATIC",
+      "symbol": "DocsOnlyPublisher._verify"
+    },
+    {
+      "domain": "docs_publication",
+      "id": "DOCS_DISJOINT_ROOTS",
+      "line": 395,
+      "missing": [],
+      "source": "construction/docs_only_publish.py",
+      "status": "PASS_STATIC",
+      "symbol": "DocsOnlyPublisher.__init__"
+    },
+    {
+      "domain": "docs_publication",
+      "id": "DOCS_STAGING_NEW_DOCS_ONLY",
+      "line": 782,
+      "missing": [],
+      "source": "construction/docs_only_publish.py",
+      "status": "PASS_STATIC",
+      "symbol": "DocsOnlyPublisher.publish_once"
+    },
+    {
+      "domain": "docs_publication",
+      "id": "DOCS_PRIVATE_NEW_REF_ONLY",
+      "line": 782,
+      "missing": [],
+      "source": "construction/docs_only_publish.py",
+      "status": "PASS_STATIC",
+      "symbol": "DocsOnlyPublisher.publish_once"
+    },
+    {
+      "domain": "docs_publication",
+      "id": "DOCS_NO_AUTORETRY",
+      "line": 782,
+      "missing": [],
+      "source": "construction/docs_only_publish.py",
+      "status": "PASS_STATIC",
+      "symbol": "DocsOnlyPublisher.publish_once"
+    },
+    {
+      "domain": "docs_publication",
+      "id": "DOCS_GIT_PROTOCOL_LIMITED",
+      "line": 330,
+      "missing": [],
+      "source": "construction/docs_only_publish.py",
+      "status": "PASS_STATIC",
+      "symbol": "RestrictedGit.run"
+    },
+    {
+      "domain": "independent_authority",
+      "id": "QUALITY_RUN_HOST_POLICY",
+      "line": 330,
+      "missing": [],
+      "source": "construction/quality_run_guard.py",
+      "status": "PASS_STATIC",
+      "symbol": "QualityRunSafetyGate.prepare"
+    },
+    {
+      "domain": "independent_authority",
+      "id": "QUALITY_RUN_BROKER",
+      "line": 266,
+      "missing": [],
+      "source": "construction/quality_run_budget.py",
+      "status": "PASS_STATIC",
+      "symbol": "QualityRunBudgetController.run"
+    },
+    {
+      "domain": "independent_authority",
+      "id": "KNOWLEDGE_SAVE_INDEPENDENT_APPROVAL",
+      "line": 833,
+      "missing": [],
+      "source": "construction/knowledge_version_save.py",
+      "status": "PASS_STATIC",
+      "symbol": "KnowledgeVersionSave.save"
+    },
+    {
+      "domain": "independent_authority",
+      "id": "DELIVERY_INDEPENDENT_GRANT",
+      "line": 563,
+      "missing": [],
+      "source": "construction/delivery_send.py",
+      "status": "PASS_STATIC",
+      "symbol": "DeliverySender.send_once"
+    },
+    {
+      "domain": "independent_authority",
+      "id": "REPORT_PUBLISH_INDEPENDENT_GRANT",
+      "line": 573,
+      "missing": [],
+      "source": "construction/report_publish.py",
+      "status": "PASS_STATIC",
+      "symbol": "ReportPublisher.publish_once"
+    },
+    {
+      "domain": "routing",
+      "id": "HOST_DENIAL_PRECEDES_ANY_HANDLER",
+      "line": 529,
+      "source": "construction/unified_action_router.py",
+      "status": "PASS_STATIC"
+    },
+    {
+      "domain": "routing",
+      "id": "RESULT_NEVER_GRANTS_BUSINESS_AUTHORITY",
+      "line": 303,
+      "source": "construction/unified_action_router.py",
+      "status": "PASS_STATIC"
+    },
+    {
+      "details": [],
+      "domain": "existing_issue",
+      "id": "ISSUE_NONMUTATING_MODULE_ISSUE_SYNC",
+      "source": "construction/issue_sync.py",
+      "status": "PASS_STATIC"
+    },
+    {
+      "details": [],
+      "domain": "existing_issue",
+      "id": "ISSUE_NONMUTATING_MODULE_ISSUE_SHOW",
+      "source": "construction/issue_show.py",
+      "status": "PASS_STATIC"
+    },
+    {
+      "details": [],
+      "domain": "existing_issue",
+      "id": "ISSUE_NONMUTATING_MODULE_ISSUE_MATCH",
+      "source": "construction/issue_match.py",
+      "status": "PASS_STATIC"
+    },
+    {
+      "details": [],
+      "domain": "existing_issue",
+      "id": "ISSUE_NONMUTATING_MODULE_ISSUE_ELIGIBILITY",
+      "source": "construction/issue_eligibility.py",
+      "status": "PASS_STATIC"
+    },
+    {
+      "details": [],
+      "domain": "existing_issue",
+      "id": "ISSUE_NONMUTATING_MODULE_ISSUE_EXISTING_READONLY",
+      "source": "construction/issue_existing_readonly.py",
+      "status": "PASS_STATIC"
+    },
+    {
+      "details": [],
+      "domain": "existing_issue",
+      "id": "ISSUE_NONMUTATING_MODULE_ISSUE_PROVIDER",
+      "source": "construction/issue_provider.py",
+      "status": "PASS_STATIC"
+    },
+    {
+      "details": [],
+      "domain": "existing_issue",
+      "id": "ISSUE_NONMUTATING_MODULE_ISSUE_UNKNOWN_RECHECK",
+      "source": "construction/issue_unknown_recheck.py",
+      "status": "PASS_STATIC"
+    },
+    {
+      "details": [
+        864
+      ],
+      "domain": "docs_publication",
+      "id": "DOCS_ONLY_ONE_PRIVATE_PUSH_SITE",
+      "source": "construction/docs_only_publish.py",
+      "status": "PASS_STATIC"
+    },
+    {
+      "domain": "native_bridge",
+      "id": "LEGACY_NATIVE_CODE_SAVE_OPTIN",
+      "missing": [],
+      "source": "scripts/ces.ps1",
+      "status": "PASS_STATIC"
+    },
+    {
+      "domain": "native_bridge",
+      "id": "V5_POWERSHELL_LEGACY_DELEGATION",
+      "missing": [],
+      "source": "scripts/ces-v5.ps1",
+      "status": "PASS_STATIC"
+    },
+    {
+      "domain": "native_bridge",
+      "id": "V5_POWERSHELL_PYTHON_BRIDGE",
+      "missing": [],
+      "source": "scripts/ces-v5.ps1",
+      "status": "PASS_STATIC"
+    },
+    {
+      "domain": "routing",
+      "id": "PY_WRAPPER_FIXED_ROUTER_IMPORT",
+      "source": "scripts/ces_router.py",
+      "status": "PASS_STATIC"
+    }
+  ],
+  "direct_python_entrypoint_count": 142,
+  "direct_python_entrypoints": [
+    "construction/action_registry.py",
+    "construction/ai_handoff_router.py",
+    "construction/codeprepare_multisource.py",
+    "construction/codesave_staged.py",
+    "construction/codevalidate_staged.py",
+    "construction/cycle_budget.py",
+    "construction/cycle_conflict_guard.py",
+    "construction/cycle_cross_action.py",
+    "construction/cycle_dag.py",
+    "construction/cycle_external_scheduler.py",
+    "construction/cycle_next.py",
+    "construction/cycle_permission_pause.py",
+    "construction/cycle_resume.py",
+    "construction/cycle_run_metadata.py",
+    "construction/cycle_summary.py",
+    "construction/finding_save.py",
+    "construction/handoff_input.py",
+    "construction/handoff_lifecycle.py",
+    "construction/issue_eligibility.py",
+    "construction/issue_match.py",
+    "construction/issue_provider.py",
+    "construction/issue_show.py",
+    "construction/issue_sync.py",
+    "construction/plan_guard.py",
+    "construction/proposed_pr_evidence_store.py",
+    "construction/proposed_pr_identity.py",
+    "construction/proposed_pr_linear.py",
+    "construction/proposed_pr_merge.py",
+    "construction/proposed_pr_patch.py",
+    "construction/proposed_pr_paths.py",
+    "construction/proposed_pr_reconcile.py",
+    "construction/proposed_pr_snapshot.py",
+    "construction/proposed_pr_source.py",
+    "construction/quality_ci_evidence.py",
+    "construction/quality_detect.py",
+    "construction/quality_read_ci.py",
+    "construction/quality_sha_bind.py",
+    "construction/response_contract.py",
+    "construction/schema_compat.py",
+    "construction/schema_migration_review.py",
+    "construction/security_permission_audit.py",
+    "construction/sequence_audit.py",
+    "construction/source_audit.py",
+    "construction/stage_a_gate.py",
+    "construction/task_staging.py",
+    "construction/test_action_registry.py",
+    "construction/test_actor_report_subject.py",
+    "construction/test_ai_handoff_router.py",
+    "construction/test_codeprepare_multisource.py",
+    "construction/test_codesave_staged.py",
+    "construction/test_codevalidate_staged.py",
+    "construction/test_cross_repository_report_scope.py",
+    "construction/test_cycle_budget.py",
+    "construction/test_cycle_conflict_guard.py",
+    "construction/test_cycle_cross_action.py",
+    "construction/test_cycle_dag.py",
+    "construction/test_cycle_external_scheduler.py",
+    "construction/test_cycle_next.py",
+    "construction/test_cycle_permission_pause.py",
+    "construction/test_cycle_resume.py",
+    "construction/test_cycle_run_metadata.py",
+    "construction/test_cycle_summary.py",
+    "construction/test_delivery_authorization.py",
+    "construction/test_delivery_identity.py",
+    "construction/test_delivery_preview.py",
+    "construction/test_delivery_reconcile.py",
+    "construction/test_delivery_redaction.py",
+    "construction/test_delivery_send.py",
+    "construction/test_delivery_status.py",
+    "construction/test_docs_only_publish.py",
+    "construction/test_due_calendar.py",
+    "construction/test_finding_correlate.py",
+    "construction/test_finding_save.py",
+    "construction/test_finding_schema.py",
+    "construction/test_finding_show.py",
+    "construction/test_handoff_input.py",
+    "construction/test_handoff_lifecycle.py",
+    "construction/test_issue_create_grant.py",
+    "construction/test_issue_create_write.py",
+    "construction/test_issue_eligibility.py",
+    "construction/test_issue_existing_readonly.py",
+    "construction/test_issue_match.py",
+    "construction/test_issue_plan.py",
+    "construction/test_issue_provider.py",
+    "construction/test_issue_show.py",
+    "construction/test_issue_sync.py",
+    "construction/test_issue_unknown_recheck.py",
+    "construction/test_knowledge_bootstrap.py",
+    "construction/test_knowledge_boundary.py",
+    "construction/test_knowledge_candidate_store.py",
+    "construction/test_knowledge_chapters.py",
+    "construction/test_knowledge_impact.py",
+    "construction/test_knowledge_lifecycle.py",
+    "construction/test_knowledge_save_retry.py",
+    "construction/test_knowledge_target_binding.py",
+    "construction/test_knowledge_update_handoff.py",
+    "construction/test_knowledge_version_save.py",
+    "construction/test_natural_period.py",
+    "construction/test_outcome_consistency.py",
+    "construction/test_plan_guard.py",
+    "construction/test_proposed_pr_evidence_store.py",
+    "construction/test_proposed_pr_identity.py",
+    "construction/test_proposed_pr_linear.py",
+    "construction/test_proposed_pr_merge.py",
+    "construction/test_proposed_pr_patch.py",
+    "construction/test_proposed_pr_paths.py",
+    "construction/test_proposed_pr_reconcile.py",
+    "construction/test_proposed_pr_snapshot.py",
+    "construction/test_proposed_pr_source.py",
+    "construction/test_publication_receipts.py",
+    "construction/test_quality_ci_evidence.py",
+    "construction/test_quality_detect.py",
+    "construction/test_quality_finding_link.py",
+    "construction/test_quality_mode_flow.py",
+    "construction/test_quality_observation.py",
+    "construction/test_quality_read_ci.py",
+    "construction/test_quality_run_budget.py",
+    "construction/test_quality_run_guard.py",
+    "construction/test_quality_sha_bind.py",
+    "construction/test_quality_show.py",
+    "construction/test_report_evidence_metrics.py",
+    "construction/test_report_history.py",
+    "construction/test_report_prepare.py",
+    "construction/test_report_publish.py",
+    "construction/test_report_render.py",
+    "construction/test_report_writing_handoff.py",
+    "construction/test_repository_report_subject.py",
+    "construction/test_response_contract.py",
+    "construction/test_schema_compat.py",
+    "construction/test_schema_migration_review.py",
+    "construction/test_security_boundary.py",
+    "construction/test_security_permission_audit.py",
+    "construction/test_sequence_audit.py",
+    "construction/test_stage_a_gate.py",
+    "construction/test_task_staging.py",
+    "construction/test_trace_actions.py",
+    "construction/test_unified_action_router.py",
+    "construction/test_upstream_gap.py",
+    "construction/trace_actions.py",
+    "construction/unified_action_router.py",
+    "construction/upstream_gap.py",
+    "scripts/ces_router.py"
+  ],
+  "docs_publication_live_isolation_proven": false,
+  "execution_included": false,
+  "existing_issue_live_nonmutation_proven": false,
+  "exit_code": 0,
+  "gate_count": 41,
+  "host_denied_routes": 11,
+  "limitations": [
+    "AST/source SHA and patterns are necessary local review signals, NOT semantic proof of a closed transitive call graph",
+    "Direct standalone Python modules bypass the V5 router; only separately authorized hosts may execute side effects",
+    "DocsOnly uses source Git administrative worktree metadata; original worktree/index/content isolation not independently observed",
+    "Independent signed policy, current actor, source trust, provider credentials, broker and revocation require final host attestations",
+    "Python import callbacks/dynamic calls, PowerShell semantics, OS race/symlink/multihost/NFS and network cannot be statically verified",
+    "B001 missing frozen source plan remains OPEN; E63-E66, native 15 smoke, final user-assisted acceptance NOT_RUN"
+  ],
+  "local_opt_in_routes": 10,
+  "native_route_count": 16,
+  "new_route_count": 58,
+  "operator_final_acceptance": "NOT_RUN",
+  "package_version": "V5.54",
+  "pass_static_gates": 41,
+  "permission_granted": false,
+  "real_network_and_native_runtime_tested": false,
+  "reviewed_source_lock": true,
+  "route_count": 74,
+  "route_kinds": {
+    "API": 7,
+    "CLI": 39,
+    "HOST_REQUIRED": 11,
+    "LEGACY_NATIVE_ONLY": 16,
+    "PREVIEW": 1
+  },
+  "router_does_not_govern_direct_entrypoints": true,
+  "routes": [
+    {
+      "action": "inspect",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": null,
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "collect",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": "workingtree",
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "collect",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": "deliveredtarget",
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "reconcile",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": "snapshot",
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "codeprepare",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": "snapshot",
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "codevalidate",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": "snapshot",
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "codesave",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "PRIVATE_CES_METADATA_WRITE_OPT_IN",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": "snapshot",
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "codeshow",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": "list",
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "codeshow",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": "detail",
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "codeshow",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": "findings",
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "codeshow",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": "compare",
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "codeshow",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": "trace",
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "codeshow",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": "overview",
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "codeshow",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": "triage",
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "codeshow",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": "recurrence",
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "codeshow",
+      "boundary": "Legacy PowerShell R150 owner; per-route handler not executed",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces.ps1"
+      ],
+      "entry_line": null,
+      "kind": "LEGACY_NATIVE_ONLY",
+      "mode": "sequence",
+      "module": "ces",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "scripts/ces.ps1",
+      "source_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "symbol": "scripts/ces.ps1"
+    },
+    {
+      "action": "Collect",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "proposed_pr_identity",
+        "proposed_pr_patch",
+        "proposed_pr_paths",
+        "proposed_pr_source"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/proposed_pr_snapshot.py:main"
+      ],
+      "entry_line": 553,
+      "kind": "CLI",
+      "mode": "ProposedPR",
+      "module": "proposed_pr_snapshot",
+      "potential_module_sinks": [
+        "run"
+      ],
+      "prefix": [],
+      "source": "construction/proposed_pr_snapshot.py",
+      "source_sha256": "b3174f8d2f21161ed2013d18a11c1fc5d2064a65ba53d7d40a8b97bced77bfb3",
+      "symbol": "main"
+    },
+    {
+      "action": "Reconcile",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "proposed_pr_identity",
+        "proposed_pr_snapshot",
+        "proposed_pr_source"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/proposed_pr_reconcile.py:main"
+      ],
+      "entry_line": 332,
+      "kind": "CLI",
+      "mode": "Remote",
+      "module": "proposed_pr_reconcile",
+      "potential_module_sinks": [
+        "open"
+      ],
+      "prefix": [],
+      "source": "construction/proposed_pr_reconcile.py",
+      "source_sha256": "a2a9f8070bf386409fe8b8702568139112d1965c36e8332727e388f4797dbd3d",
+      "symbol": "main"
+    },
+    {
+      "action": "Reconcile",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "proposed_pr_identity",
+        "proposed_pr_reconcile",
+        "proposed_pr_source"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/proposed_pr_merge.py:main"
+      ],
+      "entry_line": 466,
+      "kind": "CLI",
+      "mode": "DeliveryAssociation",
+      "module": "proposed_pr_merge",
+      "potential_module_sinks": [
+        "open",
+        "run"
+      ],
+      "prefix": [],
+      "source": "construction/proposed_pr_merge.py",
+      "source_sha256": "3a2985df89c1905a96fe282bb8f85580989fc3c6730ca02034bc1df810222db2",
+      "symbol": "main"
+    },
+    {
+      "action": "CodePrepare",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "proposed_pr_identity",
+        "proposed_pr_snapshot"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/codeprepare_multisource.py:main"
+      ],
+      "entry_line": 788,
+      "kind": "CLI",
+      "mode": "MultiSource",
+      "module": "codeprepare_multisource",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [],
+      "source": "construction/codeprepare_multisource.py",
+      "source_sha256": "e575018a78b1ef55e85a49465f6bf8bd1d294f35635e1967c57dfe9701ed762b",
+      "symbol": "main"
+    },
+    {
+      "action": "AIHandoff",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/handoff_lifecycle.py:main"
+      ],
+      "entry_line": 598,
+      "kind": "CLI",
+      "mode": "Lifecycle",
+      "module": "handoff_lifecycle",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [],
+      "source": "construction/handoff_lifecycle.py",
+      "source_sha256": "8e9cdb9d9b0a7857afaaa8eeae3ca26d4cdd6128729ee4b4379485762c2325bc",
+      "symbol": "main"
+    },
+    {
+      "action": "AIHandoff",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "handoff_lifecycle"
+      ],
+      "effect": "PRIVATE_CES_METADATA_WRITE_OPT_IN",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/task_staging.py:main"
+      ],
+      "entry_line": 676,
+      "kind": "CLI",
+      "mode": "Stage",
+      "module": "task_staging",
+      "potential_module_sinks": [
+        "replace",
+        "unlink"
+      ],
+      "prefix": [],
+      "source": "construction/task_staging.py",
+      "source_sha256": "b64638cdc720f3ea863cd8ab7da8f3292298da422b081d2642362b355754ce05",
+      "symbol": "main"
+    },
+    {
+      "action": "AIHandoff",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "codeprepare_multisource",
+        "handoff_lifecycle",
+        "task_staging"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/handoff_input.py:main"
+      ],
+      "entry_line": 645,
+      "kind": "CLI",
+      "mode": "Input",
+      "module": "handoff_input",
+      "potential_module_sinks": [
+        "replace",
+        "unlink"
+      ],
+      "prefix": [],
+      "source": "construction/handoff_input.py",
+      "source_sha256": "91012cc75f77f09a645d43677ee3e991fac382958319394b8332787e142b49fa",
+      "symbol": "main"
+    },
+    {
+      "action": "AIHandoff",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "handoff_input",
+        "handoff_lifecycle",
+        "task_staging"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/ai_handoff_router.py:main"
+      ],
+      "entry_line": 423,
+      "kind": "CLI",
+      "mode": "Route",
+      "module": "ai_handoff_router",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "construction/ai_handoff_router.py",
+      "source_sha256": "189f9fefcd2d239c5ab90ddcde1c7821fa8fd68d0f93b75a0a484c7a6b930945",
+      "symbol": "main"
+    },
+    {
+      "action": "CodeValidate",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "ai_handoff_router",
+        "handoff_input",
+        "handoff_lifecycle",
+        "task_staging"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/codevalidate_staged.py:main"
+      ],
+      "entry_line": 496,
+      "kind": "CLI",
+      "mode": "Staged",
+      "module": "codevalidate_staged",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "construction/codevalidate_staged.py",
+      "source_sha256": "48236145f7bbe2821d8bf76ff056e04d61b44a625cb9eb96660aa889513e74e4",
+      "symbol": "main"
+    },
+    {
+      "action": "CodeSave",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "codevalidate_staged",
+        "handoff_input",
+        "handoff_lifecycle",
+        "task_staging"
+      ],
+      "effect": "PRIVATE_CES_METADATA_WRITE_OPT_IN",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/codesave_staged.py:main"
+      ],
+      "entry_line": 706,
+      "kind": "CLI",
+      "mode": "Staged",
+      "module": "codesave_staged",
+      "potential_module_sinks": [
+        "unlink"
+      ],
+      "prefix": [],
+      "source": "construction/codesave_staged.py",
+      "source_sha256": "88949085bd811f9fea212c3bbbfcb2e84bbe6eb5d61640dd7f435071197db57b",
+      "symbol": "main"
+    },
+    {
+      "action": "FindingSave",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "finding_schema",
+        "handoff_input",
+        "handoff_lifecycle",
+        "task_staging"
+      ],
+      "effect": "PRIVATE_CES_METADATA_WRITE_OPT_IN",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/finding_save.py:main"
+      ],
+      "entry_line": 883,
+      "kind": "CLI",
+      "mode": "Local",
+      "module": "finding_save",
+      "potential_module_sinks": [
+        "unlink"
+      ],
+      "prefix": [],
+      "source": "construction/finding_save.py",
+      "source_sha256": "f18b3663561f083f48887d0eb972bd67ea3be8f5968bb073d6d62a7910bbd3a6",
+      "symbol": "main"
+    },
+    {
+      "action": "FindingShow",
+      "boundary": "Independent host required; target symbol exists, not invoked",
+      "direct_local_imports": [
+        "finding_save",
+        "handoff_lifecycle",
+        "task_staging"
+      ],
+      "effect": "INDEPENDENT_HOST_BRIDGE_REQUIRED",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/finding_show.py:FindingShower.query"
+      ],
+      "entry_line": 262,
+      "kind": "HOST_REQUIRED",
+      "mode": "Query",
+      "module": "finding_show",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "construction/finding_show.py",
+      "source_sha256": "0cab0586fab7117d27d6fed54064b862b715b5fd8279d604719d27dc6e6d05a1",
+      "symbol": "FindingShower.query"
+    },
+    {
+      "action": "QualityDetect",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/quality_detect.py:main"
+      ],
+      "entry_line": 629,
+      "kind": "CLI",
+      "mode": "Observe",
+      "module": "quality_detect",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [],
+      "source": "construction/quality_detect.py",
+      "source_sha256": "3a514ec8fad9606d36df4d43853b25669ac177c23a9424dc16c9c6045357cd61",
+      "symbol": "main"
+    },
+    {
+      "action": "QualityReadCI",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/quality_read_ci.py:main"
+      ],
+      "entry_line": 567,
+      "kind": "CLI",
+      "mode": "Metadata",
+      "module": "quality_read_ci",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [],
+      "source": "construction/quality_read_ci.py",
+      "source_sha256": "25763b3997b3d075854827272e429aaab7a8256a66d50836b6af1efe47366d07",
+      "symbol": "main"
+    },
+    {
+      "action": "QualityReadCI",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "quality_read_ci"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/quality_sha_bind.py:main"
+      ],
+      "entry_line": 532,
+      "kind": "CLI",
+      "mode": "SHABinding",
+      "module": "quality_sha_bind",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "construction/quality_sha_bind.py",
+      "source_sha256": "13dcccca9ffd5e54b5d869016ed3f4542c16b0d933b9a680dd4161c097c51ea5",
+      "symbol": "main"
+    },
+    {
+      "action": "QualityReadCI",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "quality_read_ci",
+        "quality_sha_bind"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/quality_ci_evidence.py:main"
+      ],
+      "entry_line": 925,
+      "kind": "CLI",
+      "mode": "Evidence",
+      "module": "quality_ci_evidence",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [],
+      "source": "construction/quality_ci_evidence.py",
+      "source_sha256": "d910300a6c0a9108ff8e6cc828040dd92f75c48125664d7009638074e33411bf",
+      "symbol": "main"
+    },
+    {
+      "action": "QualityRun",
+      "boundary": "Independent host required; target symbol exists, not invoked",
+      "direct_local_imports": [
+        "quality_detect",
+        "quality_observation"
+      ],
+      "effect": "INDEPENDENT_HOST_BRIDGE_REQUIRED",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/quality_run_guard.py:QualityRunSafetyGate.prepare"
+      ],
+      "entry_line": 330,
+      "kind": "HOST_REQUIRED",
+      "mode": "Preflight",
+      "module": "quality_run_guard",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [],
+      "source": "construction/quality_run_guard.py",
+      "source_sha256": "03c88813607c67a53372ddcd42f0b4ab532e600bafb49e80ab78e603b26d4121",
+      "symbol": "QualityRunSafetyGate.prepare"
+    },
+    {
+      "action": "QualityRun",
+      "boundary": "Independent host required; target symbol exists, not invoked",
+      "direct_local_imports": [
+        "quality_detect",
+        "quality_run_guard"
+      ],
+      "effect": "INDEPENDENT_HOST_BRIDGE_REQUIRED",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/quality_run_budget.py:QualityRunBudgetController.run"
+      ],
+      "entry_line": 266,
+      "kind": "HOST_REQUIRED",
+      "mode": "Execute",
+      "module": "quality_run_budget",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "construction/quality_run_budget.py",
+      "source_sha256": "3c31b7710244609546610a5532a2caa3c151c86dda7fec0e19d0019519245ea4",
+      "symbol": "QualityRunBudgetController.run"
+    },
+    {
+      "action": "QualityShow",
+      "boundary": "Independent host required; target symbol exists, not invoked",
+      "direct_local_imports": [
+        "quality_ci_evidence",
+        "quality_detect",
+        "quality_observation",
+        "quality_read_ci",
+        "quality_run_budget",
+        "quality_run_guard",
+        "quality_sha_bind"
+      ],
+      "effect": "INDEPENDENT_HOST_BRIDGE_REQUIRED",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/quality_show.py:QualityShow.query"
+      ],
+      "entry_line": 620,
+      "kind": "HOST_REQUIRED",
+      "mode": "Query",
+      "module": "quality_show",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [],
+      "source": "construction/quality_show.py",
+      "source_sha256": "072325e1603dae9d6a857836fc4aa5b7ccf8c744238a59df5635757eaa25a8c0",
+      "symbol": "QualityShow.query"
+    },
+    {
+      "action": "Due",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/due_calendar.py:DueCalendar.evaluate"
+      ],
+      "entry_line": 213,
+      "kind": "API",
+      "mode": "Evaluate",
+      "module": "due_calendar",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [],
+      "source": "construction/due_calendar.py",
+      "source_sha256": "00effa33465b0f49212d367cb79cd755ca18af543d2d06d2edffb651619429a8",
+      "symbol": "DueCalendar.evaluate"
+    },
+    {
+      "action": "ReportPrepare",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "cross_repository_report_scope",
+        "report_evidence_metrics"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/report_prepare.py:ReportPrepare.bind"
+      ],
+      "entry_line": 329,
+      "kind": "API",
+      "mode": "Prepare",
+      "module": "report_prepare",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "construction/report_prepare.py",
+      "source_sha256": "74f6713234c97a6247b7845a60a88744172f5feda386b3c59d98391ffd05d59d",
+      "symbol": "ReportPrepare.bind"
+    },
+    {
+      "action": "ReportRender",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "report_evidence_metrics",
+        "report_writing_handoff"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/report_render.py:ReportRender.render"
+      ],
+      "entry_line": 720,
+      "kind": "API",
+      "mode": "Render",
+      "module": "report_render",
+      "potential_module_sinks": [
+        "mkdir",
+        "replace",
+        "unlink"
+      ],
+      "prefix": [],
+      "source": "construction/report_render.py",
+      "source_sha256": "d4b232e0c233084646aea84f3bdf218101d69be23e4fd7e401a402c9b82785ff",
+      "symbol": "ReportRender.render"
+    },
+    {
+      "action": "ReportRender",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "report_evidence_metrics",
+        "report_writing_handoff"
+      ],
+      "effect": "PRIVATE_CES_METADATA_WRITE_OPT_IN",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/report_render.py:ReportRender.save"
+      ],
+      "entry_line": 780,
+      "kind": "API",
+      "mode": "SaveLocal",
+      "module": "report_render",
+      "potential_module_sinks": [
+        "mkdir",
+        "replace",
+        "unlink"
+      ],
+      "prefix": [],
+      "source": "construction/report_render.py",
+      "source_sha256": "d4b232e0c233084646aea84f3bdf218101d69be23e4fd7e401a402c9b82785ff",
+      "symbol": "ReportRender.save"
+    },
+    {
+      "action": "ReportShow",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "report_evidence_metrics",
+        "report_render"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/report_history.py:ReportHistory.show"
+      ],
+      "entry_line": 505,
+      "kind": "API",
+      "mode": "History",
+      "module": "report_history",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "construction/report_history.py",
+      "source_sha256": "c31cf68b02dfda3b643bf1194ae9f7cbda2c1ee0f605abcafbff681444c1c45d",
+      "symbol": "ReportHistory.show"
+    },
+    {
+      "action": "KnowledgeBootstrap",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "knowledge_boundary"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/knowledge_bootstrap.py:KnowledgeBootstrap.binding_preview"
+      ],
+      "entry_line": 443,
+      "kind": "API",
+      "mode": "Preview",
+      "module": "knowledge_bootstrap",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "construction/knowledge_bootstrap.py",
+      "source_sha256": "4f4a14a45b52c03dcbd675a59c90859b33481a9d32c406993220c69a430b7072",
+      "symbol": "KnowledgeBootstrap.binding_preview"
+    },
+    {
+      "action": "KnowledgeBootstrap",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "knowledge_boundary"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/knowledge_bootstrap.py:KnowledgeBootstrap.read"
+      ],
+      "entry_line": 464,
+      "kind": "API",
+      "mode": "Read",
+      "module": "knowledge_bootstrap",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "construction/knowledge_bootstrap.py",
+      "source_sha256": "4f4a14a45b52c03dcbd675a59c90859b33481a9d32c406993220c69a430b7072",
+      "symbol": "KnowledgeBootstrap.read"
+    },
+    {
+      "action": "KnowledgeImpact",
+      "boundary": "Independent host required; target symbol exists, not invoked",
+      "direct_local_imports": [
+        "knowledge_bootstrap",
+        "knowledge_boundary",
+        "knowledge_target_binding"
+      ],
+      "effect": "INDEPENDENT_HOST_BRIDGE_REQUIRED",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/knowledge_impact.py:KnowledgeImpact.analyze"
+      ],
+      "entry_line": 325,
+      "kind": "HOST_REQUIRED",
+      "mode": "Analyze",
+      "module": "knowledge_impact",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "construction/knowledge_impact.py",
+      "source_sha256": "da3b70d8284487d02dfe21229737d0097957ed07ea122b04c25c347d997618b8",
+      "symbol": "KnowledgeImpact.analyze"
+    },
+    {
+      "action": "KnowledgeSave",
+      "boundary": "Independent host required; target symbol exists, not invoked",
+      "direct_local_imports": [
+        "knowledge_bootstrap",
+        "knowledge_boundary",
+        "knowledge_candidate_store",
+        "knowledge_chapters",
+        "knowledge_update_handoff",
+        "proposed_pr_evidence_store"
+      ],
+      "effect": "INDEPENDENT_HOST_BRIDGE_REQUIRED",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/knowledge_version_save.py:KnowledgeVersionSave.save"
+      ],
+      "entry_line": 833,
+      "kind": "HOST_REQUIRED",
+      "mode": "SaveLocal",
+      "module": "knowledge_version_save",
+      "potential_module_sinks": [
+        "mkdir"
+      ],
+      "prefix": [],
+      "source": "construction/knowledge_version_save.py",
+      "source_sha256": "abc6df7e650a714f063eeafe0a53c99a1adf2e0d7838177a8a36d45d3b04958f",
+      "symbol": "KnowledgeVersionSave.save"
+    },
+    {
+      "action": "KnowledgeQuery",
+      "boundary": "Independent host required; target symbol exists, not invoked",
+      "direct_local_imports": [
+        "knowledge_bootstrap",
+        "knowledge_boundary",
+        "knowledge_impact",
+        "knowledge_target_binding"
+      ],
+      "effect": "INDEPENDENT_HOST_BRIDGE_REQUIRED",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/knowledge_chapters.py:KnowledgeChapters.map_chapters"
+      ],
+      "entry_line": 426,
+      "kind": "HOST_REQUIRED",
+      "mode": "Chapters",
+      "module": "knowledge_chapters",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "construction/knowledge_chapters.py",
+      "source_sha256": "a532a517cd4000f83a0e3db0155cef0387b942012bb8ae4a382facd800f572b7",
+      "symbol": "KnowledgeChapters.map_chapters"
+    },
+    {
+      "action": "IssueSync",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "issue_provider"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/issue_sync.py:main"
+      ],
+      "entry_line": 450,
+      "kind": "CLI",
+      "mode": "Read",
+      "module": "issue_sync",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [],
+      "source": "construction/issue_sync.py",
+      "source_sha256": "e1051760be0c4082661e3dd7629866fbd1e9ef6ca928169ab25313cc255736b5",
+      "symbol": "main"
+    },
+    {
+      "action": "IssueShow",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "issue_provider",
+        "issue_sync"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/issue_show.py:main"
+      ],
+      "entry_line": 365,
+      "kind": "CLI",
+      "mode": "Read",
+      "module": "issue_show",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [],
+      "source": "construction/issue_show.py",
+      "source_sha256": "cc5c842047726da8dee31916bf9bc31be6b5b63ee755a204946e5a71cf563be3",
+      "symbol": "main"
+    },
+    {
+      "action": "IssueMatch",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "issue_provider",
+        "issue_sync"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/issue_match.py:main"
+      ],
+      "entry_line": 610,
+      "kind": "CLI",
+      "mode": "Match",
+      "module": "issue_match",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [],
+      "source": "construction/issue_match.py",
+      "source_sha256": "3b6086c5cb66dd5627fda45ac3180d3561bb63418806a40c636dbcd874c07ff7",
+      "symbol": "main"
+    },
+    {
+      "action": "IssueCreate",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "issue_match",
+        "issue_provider"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/issue_eligibility.py:main"
+      ],
+      "entry_line": 602,
+      "kind": "CLI",
+      "mode": "Eligibility",
+      "module": "issue_eligibility",
+      "potential_module_sinks": [],
+      "prefix": [
+        "--stdin-json"
+      ],
+      "source": "construction/issue_eligibility.py",
+      "source_sha256": "835864eeb4375aa62321d5b7464a4e069480f0af415cc1a1e71d6c236100871a",
+      "symbol": "main"
+    },
+    {
+      "action": "IssueCreate",
+      "boundary": "Independent host required; target symbol exists, not invoked",
+      "direct_local_imports": [
+        "issue_create_grant",
+        "issue_eligibility",
+        "issue_existing_readonly",
+        "issue_provider"
+      ],
+      "effect": "INDEPENDENT_HOST_BRIDGE_REQUIRED",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/issue_create_write.py:create_new_issue_once"
+      ],
+      "entry_line": 531,
+      "kind": "HOST_REQUIRED",
+      "mode": "Create",
+      "module": "issue_create_write",
+      "potential_module_sinks": [
+        "post_create"
+      ],
+      "prefix": [],
+      "source": "construction/issue_create_write.py",
+      "source_sha256": "ec2404369ef9ab321ae86620e59cc6c5a31216d626285d2a3bc668c766e30dfc",
+      "symbol": "create_new_issue_once"
+    },
+    {
+      "action": "DeliveryPreview",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "finding_show",
+        "report_history",
+        "report_render"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/delivery_preview.py:preview_delivery"
+      ],
+      "entry_line": 534,
+      "kind": "PREVIEW",
+      "mode": "Preview",
+      "module": "delivery_preview",
+      "potential_module_sinks": [],
+      "prefix": [],
+      "source": "construction/delivery_preview.py",
+      "source_sha256": "d45673f27ee474aecfb8d672016be8b2e21a079c9cd1d5432bda047710fd0f80",
+      "symbol": "preview_delivery"
+    },
+    {
+      "action": "DeliverySend",
+      "boundary": "Independent host required; target symbol exists, not invoked",
+      "direct_local_imports": [
+        "delivery_authorization",
+        "delivery_identity",
+        "delivery_preview",
+        "delivery_redaction"
+      ],
+      "effect": "INDEPENDENT_HOST_BRIDGE_REQUIRED",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/delivery_send.py:DeliverySender.send_once"
+      ],
+      "entry_line": 563,
+      "kind": "HOST_REQUIRED",
+      "mode": "Send",
+      "module": "delivery_send",
+      "potential_module_sinks": [
+        "mkdir",
+        "submit"
+      ],
+      "prefix": [],
+      "source": "construction/delivery_send.py",
+      "source_sha256": "41346c2a1319b29f53a95834a426dd0a473ab4e8fffcec96c6e8c792b2169cdf",
+      "symbol": "DeliverySender.send_once"
+    },
+    {
+      "action": "ReportPublish",
+      "boundary": "Independent host required; target symbol exists, not invoked",
+      "direct_local_imports": [
+        "delivery_authorization",
+        "delivery_preview",
+        "delivery_send",
+        "report_history",
+        "report_render"
+      ],
+      "effect": "INDEPENDENT_HOST_BRIDGE_REQUIRED",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/report_publish.py:ReportPublisher.publish_once"
+      ],
+      "entry_line": 573,
+      "kind": "HOST_REQUIRED",
+      "mode": "PrivateTest",
+      "module": "report_publish",
+      "potential_module_sinks": [
+        "mkdir",
+        "publish"
+      ],
+      "prefix": [],
+      "source": "construction/report_publish.py",
+      "source_sha256": "e51cafba28882235b792ca51140c7d376c74b8d33a061da378d42abb09ba2cd1",
+      "symbol": "ReportPublisher.publish_once"
+    },
+    {
+      "action": "DocsOnlyPublish",
+      "boundary": "Independent host required; target symbol exists, not invoked",
+      "direct_local_imports": [
+        "delivery_authorization",
+        "delivery_preview"
+      ],
+      "effect": "INDEPENDENT_HOST_BRIDGE_REQUIRED",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/docs_only_publish.py:DocsOnlyPublisher.publish_once"
+      ],
+      "entry_line": 782,
+      "kind": "HOST_REQUIRED",
+      "mode": "LocalSandbox",
+      "module": "docs_only_publish",
+      "potential_module_sinks": [
+        "mkdir",
+        "run"
+      ],
+      "prefix": [],
+      "source": "construction/docs_only_publish.py",
+      "source_sha256": "aab597c2474d6f32012d2c1648811c00b96b4cce1ba58ce113fca7d506168be4",
+      "symbol": "DocsOnlyPublisher.publish_once"
+    },
+    {
+      "action": "Cycle",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [],
+      "effect": "PRIVATE_CES_METADATA_WRITE_OPT_IN",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_run_metadata.py:main"
+      ],
+      "entry_line": 510,
+      "kind": "CLI",
+      "mode": "Create",
+      "module": "cycle_run_metadata",
+      "potential_module_sinks": [
+        "mkdir",
+        "replace"
+      ],
+      "prefix": [
+        "create"
+      ],
+      "source": "construction/cycle_run_metadata.py",
+      "source_sha256": "707e80ed7aaf84054e7dc724602724e44eb5a91683077338e44bd7bf09b66b6e",
+      "symbol": "main"
+    },
+    {
+      "action": "Cycle",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_run_metadata.py:main"
+      ],
+      "entry_line": 510,
+      "kind": "CLI",
+      "mode": "Inspect",
+      "module": "cycle_run_metadata",
+      "potential_module_sinks": [
+        "mkdir",
+        "replace"
+      ],
+      "prefix": [
+        "inspect"
+      ],
+      "source": "construction/cycle_run_metadata.py",
+      "source_sha256": "707e80ed7aaf84054e7dc724602724e44eb5a91683077338e44bd7bf09b66b6e",
+      "symbol": "main"
+    },
+    {
+      "action": "Cycle",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "cycle_run_metadata"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_dag.py:main"
+      ],
+      "entry_line": 244,
+      "kind": "CLI",
+      "mode": "DAG",
+      "module": "cycle_dag",
+      "potential_module_sinks": [],
+      "prefix": [
+        "check"
+      ],
+      "source": "construction/cycle_dag.py",
+      "source_sha256": "e76e67db2f2a1d87b8e06d48a3b0edb44074062f1326866cf3c3353804038f76",
+      "symbol": "main"
+    },
+    {
+      "action": "Cycle",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "action_registry",
+        "ai_handoff_router",
+        "cycle_dag",
+        "cycle_run_metadata"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_next.py:main"
+      ],
+      "entry_line": 313,
+      "kind": "CLI",
+      "mode": "Next",
+      "module": "cycle_next",
+      "potential_module_sinks": [],
+      "prefix": [
+        "next"
+      ],
+      "source": "construction/cycle_next.py",
+      "source_sha256": "b1a2e8e30b6edf64522bb947d46d6361b3af5f9a8da25282de90f44a5891afae",
+      "symbol": "main"
+    },
+    {
+      "action": "Cycle",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "cycle_next",
+        "cycle_run_metadata"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_budget.py:main"
+      ],
+      "entry_line": 427,
+      "kind": "CLI",
+      "mode": "Budget",
+      "module": "cycle_budget",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [
+        "inspect"
+      ],
+      "source": "construction/cycle_budget.py",
+      "source_sha256": "376e3ec026d2afa0319355aa1b04e389311f46faa8a819ebb8b201806ca84639",
+      "symbol": "main"
+    },
+    {
+      "action": "Cycle",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "cycle_budget",
+        "cycle_next",
+        "cycle_run_metadata"
+      ],
+      "effect": "PRIVATE_CES_METADATA_WRITE_OPT_IN",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_permission_pause.py:main"
+      ],
+      "entry_line": 473,
+      "kind": "CLI",
+      "mode": "Pause",
+      "module": "cycle_permission_pause",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [
+        "pause"
+      ],
+      "source": "construction/cycle_permission_pause.py",
+      "source_sha256": "86bdfb163827f04657579cf721323f3d61395b2c4af6937ec939b95f9c12da3b",
+      "symbol": "main"
+    },
+    {
+      "action": "Cycle",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "cycle_budget",
+        "cycle_next",
+        "cycle_run_metadata"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_permission_pause.py:main"
+      ],
+      "entry_line": 473,
+      "kind": "CLI",
+      "mode": "PauseInspect",
+      "module": "cycle_permission_pause",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [
+        "inspect"
+      ],
+      "source": "construction/cycle_permission_pause.py",
+      "source_sha256": "86bdfb163827f04657579cf721323f3d61395b2c4af6937ec939b95f9c12da3b",
+      "symbol": "main"
+    },
+    {
+      "action": "Resume",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "cycle_permission_pause",
+        "cycle_run_metadata"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_resume.py:main"
+      ],
+      "entry_line": 344,
+      "kind": "CLI",
+      "mode": "Restore",
+      "module": "cycle_resume",
+      "potential_module_sinks": [],
+      "prefix": [
+        "restore"
+      ],
+      "source": "construction/cycle_resume.py",
+      "source_sha256": "1d6a3e4534cb2cadbb578a8d29a37d509f136acbbbfd064778bedea848b9a9a6",
+      "symbol": "main"
+    },
+    {
+      "action": "Cycle",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "cycle_dag",
+        "cycle_next",
+        "cycle_permission_pause",
+        "cycle_run_metadata"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_summary.py:main"
+      ],
+      "entry_line": 456,
+      "kind": "CLI",
+      "mode": "Summary",
+      "module": "cycle_summary",
+      "potential_module_sinks": [],
+      "prefix": [
+        "summary"
+      ],
+      "source": "construction/cycle_summary.py",
+      "source_sha256": "cbc38b9b25e5492c12bbbd0b22406c55e6d42e2b766d83cfcba6f716c5a7efcc",
+      "symbol": "main"
+    },
+    {
+      "action": "Cycle",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "cycle_run_metadata",
+        "task_staging"
+      ],
+      "effect": "PRIVATE_CES_METADATA_WRITE_OPT_IN",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_cross_action.py:main"
+      ],
+      "entry_line": 562,
+      "kind": "CLI",
+      "mode": "CrossLink",
+      "module": "cycle_cross_action",
+      "potential_module_sinks": [],
+      "prefix": [
+        "link"
+      ],
+      "source": "construction/cycle_cross_action.py",
+      "source_sha256": "7b3800b06b091a4358c33eb1e1067d8fdfe8c10ab6b4f10580349155bd39e921",
+      "symbol": "main"
+    },
+    {
+      "action": "Cycle",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "cycle_run_metadata",
+        "task_staging"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_cross_action.py:main"
+      ],
+      "entry_line": 562,
+      "kind": "CLI",
+      "mode": "CrossCheck",
+      "module": "cycle_cross_action",
+      "potential_module_sinks": [],
+      "prefix": [
+        "check"
+      ],
+      "source": "construction/cycle_cross_action.py",
+      "source_sha256": "7b3800b06b091a4358c33eb1e1067d8fdfe8c10ab6b4f10580349155bd39e921",
+      "symbol": "main"
+    },
+    {
+      "action": "Cycle",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "cycle_cross_action",
+        "cycle_external_scheduler",
+        "cycle_run_metadata"
+      ],
+      "effect": "PRIVATE_CES_METADATA_WRITE_OPT_IN",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_conflict_guard.py:main"
+      ],
+      "entry_line": 677,
+      "kind": "CLI",
+      "mode": "CrossAttachGuarded",
+      "module": "cycle_conflict_guard",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [
+        "artifact_attach"
+      ],
+      "source": "construction/cycle_conflict_guard.py",
+      "source_sha256": "2d02f4ab5a4538bd9876da665e0c9ea4ba298d3074c834cb487c7a01b39c8c0f",
+      "symbol": "main"
+    },
+    {
+      "action": "Cycle",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "cycle_run_metadata",
+        "cycle_summary"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_external_scheduler.py:main"
+      ],
+      "entry_line": 296,
+      "kind": "CLI",
+      "mode": "SchedulePlan",
+      "module": "cycle_external_scheduler",
+      "potential_module_sinks": [],
+      "prefix": [
+        "plan"
+      ],
+      "source": "construction/cycle_external_scheduler.py",
+      "source_sha256": "b103a42052758cd66b781997d689f17721df392b359163de4a958710396c2b7c",
+      "symbol": "main"
+    },
+    {
+      "action": "Cycle",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "cycle_cross_action",
+        "cycle_external_scheduler",
+        "cycle_run_metadata"
+      ],
+      "effect": "PRIVATE_CES_METADATA_WRITE_OPT_IN",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_conflict_guard.py:main"
+      ],
+      "entry_line": 677,
+      "kind": "CLI",
+      "mode": "ScheduledSummaryGuarded",
+      "module": "cycle_conflict_guard",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [
+        "scheduled_summary"
+      ],
+      "source": "construction/cycle_conflict_guard.py",
+      "source_sha256": "2d02f4ab5a4538bd9876da665e0c9ea4ba298d3074c834cb487c7a01b39c8c0f",
+      "symbol": "main"
+    },
+    {
+      "action": "Cycle",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "cycle_cross_action",
+        "cycle_external_scheduler",
+        "cycle_run_metadata"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_conflict_guard.py:main"
+      ],
+      "entry_line": 677,
+      "kind": "CLI",
+      "mode": "GuardInspect",
+      "module": "cycle_conflict_guard",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [
+        "inspect"
+      ],
+      "source": "construction/cycle_conflict_guard.py",
+      "source_sha256": "2d02f4ab5a4538bd9876da665e0c9ea4ba298d3074c834cb487c7a01b39c8c0f",
+      "symbol": "main"
+    },
+    {
+      "action": "Cycle",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "cycle_cross_action",
+        "cycle_external_scheduler",
+        "cycle_run_metadata"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/cycle_conflict_guard.py:main"
+      ],
+      "entry_line": 677,
+      "kind": "CLI",
+      "mode": "BusinessWriteAttempt",
+      "module": "cycle_conflict_guard",
+      "potential_module_sinks": [
+        "replace"
+      ],
+      "prefix": [
+        "business_write_attempt"
+      ],
+      "source": "construction/cycle_conflict_guard.py",
+      "source_sha256": "2d02f4ab5a4538bd9876da665e0c9ea4ba298d3074c834cb487c7a01b39c8c0f",
+      "symbol": "main"
+    },
+    {
+      "action": "SchemaReview",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "schema_compat"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/schema_migration_review.py:main"
+      ],
+      "entry_line": 521,
+      "kind": "CLI",
+      "mode": "Inventory",
+      "module": "schema_migration_review",
+      "potential_module_sinks": [],
+      "prefix": [
+        "inventory"
+      ],
+      "source": "construction/schema_migration_review.py",
+      "source_sha256": "b2445ceb49c2c7b29b95a2746cd49b8d4f13db4b122005e4c0331ebbe2ab4b53",
+      "symbol": "main"
+    },
+    {
+      "action": "SchemaReview",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "schema_compat"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/schema_migration_review.py:main"
+      ],
+      "entry_line": 521,
+      "kind": "CLI",
+      "mode": "Audit",
+      "module": "schema_migration_review",
+      "potential_module_sinks": [],
+      "prefix": [
+        "audit"
+      ],
+      "source": "construction/schema_migration_review.py",
+      "source_sha256": "b2445ceb49c2c7b29b95a2746cd49b8d4f13db4b122005e4c0331ebbe2ab4b53",
+      "symbol": "main"
+    },
+    {
+      "action": "SchemaReview",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "schema_compat"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/schema_migration_review.py:main"
+      ],
+      "entry_line": 521,
+      "kind": "CLI",
+      "mode": "Inspect",
+      "module": "schema_migration_review",
+      "potential_module_sinks": [],
+      "prefix": [
+        "inspect"
+      ],
+      "source": "construction/schema_migration_review.py",
+      "source_sha256": "b2445ceb49c2c7b29b95a2746cd49b8d4f13db4b122005e4c0331ebbe2ab4b53",
+      "symbol": "main"
+    },
+    {
+      "action": "SchemaReview",
+      "boundary": "AST-mapped entry; transitive authority not proven",
+      "direct_local_imports": [
+        "schema_compat"
+      ],
+      "effect": "READ_ONLY_OR_LOCAL_PROPOSAL",
+      "entry_chain": [
+        "scripts/ces-v5.ps1",
+        "scripts/ces_router.py",
+        "construction/unified_action_router.py",
+        "construction/schema_migration_review.py:main"
+      ],
+      "entry_line": 521,
+      "kind": "CLI",
+      "mode": "Plan",
+      "module": "schema_migration_review",
+      "potential_module_sinks": [],
+      "prefix": [
+        "plan"
+      ],
+      "source": "construction/schema_migration_review.py",
+      "source_sha256": "b2445ceb49c2c7b29b95a2746cd49b8d4f13db4b122005e4c0331ebbe2ab4b53",
+      "symbol": "main"
+    }
+  ],
+  "schema": "ces.security_permission_audit.v1",
+  "snapshot_scope": "CURRENT_LOCAL_PACKAGE_UNAUTHENTICATED_SOURCE_ONLY_NOT_ENTERPRISE_OR_NATIVE_ACCEPTANCE",
+  "source_authority_authenticated": false,
+  "source_pin_count": 307,
+  "source_pin_matched": 307,
+  "source_pins": [
+    {
+      "match": true,
+      "source": "construction/action_registry.py"
+    },
+    {
+      "match": true,
+      "source": "construction/ai_handoff_router.py"
+    },
+    {
+      "match": true,
+      "source": "construction/codeprepare_multisource.py"
+    },
+    {
+      "match": true,
+      "source": "construction/codesave_staged.py"
+    },
+    {
+      "match": true,
+      "source": "construction/codevalidate_staged.py"
+    },
+    {
+      "match": true,
+      "source": "construction/cycle_budget.py"
+    },
+    {
+      "match": true,
+      "source": "construction/cycle_conflict_guard.py"
+    },
+    {
+      "match": true,
+      "source": "construction/cycle_cross_action.py"
+    },
+    {
+      "match": true,
+      "source": "construction/cycle_dag.py"
+    },
+    {
+      "match": true,
+      "source": "construction/cycle_external_scheduler.py"
+    },
+    {
+      "match": true,
+      "source": "construction/cycle_next.py"
+    },
+    {
+      "match": true,
+      "source": "construction/cycle_permission_pause.py"
+    },
+    {
+      "match": true,
+      "source": "construction/cycle_resume.py"
+    },
+    {
+      "match": true,
+      "source": "construction/cycle_run_metadata.py"
+    },
+    {
+      "match": true,
+      "source": "construction/cycle_summary.py"
+    },
+    {
+      "match": true,
+      "source": "construction/delivery_authorization.py"
+    },
+    {
+      "match": true,
+      "source": "construction/delivery_preview.py"
+    },
+    {
+      "match": true,
+      "source": "construction/delivery_send.py"
+    },
+    {
+      "match": true,
+      "source": "construction/docs_only_publish.py"
+    },
+    {
+      "match": true,
+      "source": "construction/due_calendar.py"
+    },
+    {
+      "match": true,
+      "source": "construction/finding_save.py"
+    },
+    {
+      "match": true,
+      "source": "construction/finding_show.py"
+    },
+    {
+      "match": true,
+      "source": "construction/handoff_input.py"
+    },
+    {
+      "match": true,
+      "source": "construction/handoff_lifecycle.py"
+    },
+    {
+      "match": true,
+      "source": "construction/issue_create_grant.py"
+    },
+    {
+      "match": true,
+      "source": "construction/issue_create_write.py"
+    },
+    {
+      "match": true,
+      "source": "construction/issue_eligibility.py"
+    },
+    {
+      "match": true,
+      "source": "construction/issue_existing_readonly.py"
+    },
+    {
+      "match": true,
+      "source": "construction/issue_match.py"
+    },
+    {
+      "match": true,
+      "source": "construction/issue_provider.py"
+    },
+    {
+      "match": true,
+      "source": "construction/issue_show.py"
+    },
+    {
+      "match": true,
+      "source": "construction/issue_sync.py"
+    },
+    {
+      "match": true,
+      "source": "construction/issue_unknown_recheck.py"
+    },
+    {
+      "match": true,
+      "source": "construction/knowledge_bootstrap.py"
+    },
+    {
+      "match": true,
+      "source": "construction/knowledge_chapters.py"
+    },
+    {
+      "match": true,
+      "source": "construction/knowledge_impact.py"
+    },
+    {
+      "match": true,
+      "source": "construction/knowledge_target_binding.py"
+    },
+    {
+      "match": true,
+      "source": "construction/knowledge_version_save.py"
+    },
+    {
+      "match": true,
+      "source": "construction/plan_guard.py"
+    },
+    {
+      "match": true,
+      "source": "construction/proposed_pr_evidence_store.py"
+    },
+    {
+      "match": true,
+      "source": "construction/proposed_pr_identity.py"
+    },
+    {
+      "match": true,
+      "source": "construction/proposed_pr_linear.py"
+    },
+    {
+      "match": true,
+      "source": "construction/proposed_pr_merge.py"
+    },
+    {
+      "match": true,
+      "source": "construction/proposed_pr_patch.py"
+    },
+    {
+      "match": true,
+      "source": "construction/proposed_pr_paths.py"
+    },
+    {
+      "match": true,
+      "source": "construction/proposed_pr_reconcile.py"
+    },
+    {
+      "match": true,
+      "source": "construction/proposed_pr_snapshot.py"
+    },
+    {
+      "match": true,
+      "source": "construction/proposed_pr_source.py"
+    },
+    {
+      "match": true,
+      "source": "construction/quality_ci_evidence.py"
+    },
+    {
+      "match": true,
+      "source": "construction/quality_detect.py"
+    },
+    {
+      "match": true,
+      "source": "construction/quality_read_ci.py"
+    },
+    {
+      "match": true,
+      "source": "construction/quality_run_budget.py"
+    },
+    {
+      "match": true,
+      "source": "construction/quality_run_guard.py"
+    },
+    {
+      "match": true,
+      "source": "construction/quality_sha_bind.py"
+    },
+    {
+      "match": true,
+      "source": "construction/quality_show.py"
+    },
+    {
+      "match": true,
+      "source": "construction/report_history.py"
+    },
+    {
+      "match": true,
+      "source": "construction/report_prepare.py"
+    },
+    {
+      "match": true,
+      "source": "construction/report_publish.py"
+    },
+    {
+      "match": true,
+      "source": "construction/report_render.py"
+    },
+    {
+      "match": true,
+      "source": "construction/response_contract.py"
+    },
+    {
+      "match": true,
+      "source": "construction/schema_compat.py"
+    },
+    {
+      "match": true,
+      "source": "construction/schema_migration_review.py"
+    },
+    {
+      "match": true,
+      "source": "construction/security_permission_audit.py"
+    },
+    {
+      "match": true,
+      "source": "construction/sequence_audit.py"
+    },
+    {
+      "match": true,
+      "source": "construction/source_audit.py"
+    },
+    {
+      "match": true,
+      "source": "construction/stage_a_gate.py"
+    },
+    {
+      "match": true,
+      "source": "construction/task_staging.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_action_registry.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_actor_report_subject.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_ai_handoff_router.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_codeprepare_multisource.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_codesave_staged.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_codevalidate_staged.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_cross_repository_report_scope.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_cycle_budget.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_cycle_conflict_guard.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_cycle_cross_action.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_cycle_dag.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_cycle_external_scheduler.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_cycle_next.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_cycle_permission_pause.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_cycle_resume.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_cycle_run_metadata.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_cycle_summary.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_delivery_authorization.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_delivery_identity.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_delivery_preview.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_delivery_reconcile.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_delivery_redaction.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_delivery_send.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_delivery_status.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_docs_only_publish.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_due_calendar.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_finding_correlate.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_finding_save.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_finding_schema.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_finding_show.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_handoff_input.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_handoff_lifecycle.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_issue_create_grant.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_issue_create_write.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_issue_eligibility.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_issue_existing_readonly.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_issue_match.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_issue_plan.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_issue_provider.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_issue_show.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_issue_sync.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_issue_unknown_recheck.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_knowledge_bootstrap.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_knowledge_boundary.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_knowledge_candidate_store.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_knowledge_chapters.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_knowledge_impact.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_knowledge_lifecycle.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_knowledge_save_retry.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_knowledge_target_binding.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_knowledge_update_handoff.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_knowledge_version_save.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_natural_period.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_outcome_consistency.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_plan_guard.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_proposed_pr_evidence_store.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_proposed_pr_identity.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_proposed_pr_linear.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_proposed_pr_merge.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_proposed_pr_patch.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_proposed_pr_paths.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_proposed_pr_reconcile.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_proposed_pr_snapshot.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_proposed_pr_source.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_publication_receipts.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_quality_ci_evidence.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_quality_detect.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_quality_finding_link.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_quality_mode_flow.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_quality_observation.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_quality_read_ci.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_quality_run_budget.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_quality_run_guard.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_quality_sha_bind.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_quality_show.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_report_evidence_metrics.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_report_history.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_report_prepare.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_report_publish.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_report_render.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_report_writing_handoff.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_repository_report_subject.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_response_contract.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_schema_compat.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_schema_migration_review.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_security_boundary.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_security_permission_audit.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_sequence_audit.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_stage_a_gate.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_task_staging.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_trace_actions.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_unified_action_router.py"
+    },
+    {
+      "match": true,
+      "source": "construction/test_upstream_gap.py"
+    },
+    {
+      "match": true,
+      "source": "construction/trace_actions.py"
+    },
+    {
+      "match": true,
+      "source": "construction/unified_action_router.py"
+    },
+    {
+      "match": true,
+      "source": "construction/upstream_gap.py"
+    },
+    {
+      "match": true,
+      "source": "scripts/ces-v5.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/ces.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/ces_router.py"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeanchorfocus.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codecompare.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codefindingfocus.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codefindingpairlookup.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codefindingpairrefs.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codefindingrefs.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codefindings.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codefocusjourney.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeoverview.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codepairfocus.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codepairoverview.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codepathtransitions.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprepare.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileatlas.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofiledecetwithholding.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileduodecetwithholding.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofilefamilies.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofilegraph.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofilejoint.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofilemaximal.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofilemotifs.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofilenonetwithholding.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileoctetwithholding.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofilepairwithholding.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofilepassages.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofilequartetwithholding.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofilequintetwithholding.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileresiliencefrontier.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointcreditgraph.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointdecupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointdominance.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointduodecupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointduoquadragintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointduoquinquagintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointduotrigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointduovigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointlinkimpact.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointnonupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointnovemdecupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointnovemquadragintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointnovemtrigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointnovemvigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointoctodecupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointoctoquadragintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointoctotrigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointoctovigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointoctupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointpairinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointquadragintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointquadrupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointquattuordecupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointquattuorquadragintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointquattuorquinquagintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointquattuortrigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointquattuorvigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointquindecupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointquinquagintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointquinquequadragintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointquinquequinquagintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointquinquetrigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointquinquevigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointquintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointreduction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointseptemquadragintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointseptemtrigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointseptemvigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointseptendecupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointseptupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointsexdecupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointsexquadragintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointsexquinquagintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointsextrigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointsextupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointsexvigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointtredecupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointtrequadragintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointtrequinquagintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointtretrigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointtrevigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointtrigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointtripleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointundecupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointunquadragintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointunquinquagintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointuntrigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointunvigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionendpointvigintupleinteraction.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionorders.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionpairadjacency.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionpairdecupleintervening.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionpairdistancespectrum.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionpairdoubleintervening.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionpairnonupleintervening.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionpairoctupleintervening.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionpairprecedence.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionpairquadrupleintervening.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionpairquintupleintervening.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionpairreciprocity.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionpairseptupleintervening.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionpairsextupleintervening.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionpairsingleintervening.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionpairtripleintervening.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionpivotality.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionrankconditioning.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionreporterpartner.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileretentionreporterroleexposure.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileseptetwithholding.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofilesextetwithholding.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofilesupportbasis.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofiletriple.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofiletriplewithholding.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofileundecetwithholding.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeprofilewithholding.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/coderecurrence.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codesave.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codesequence.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codeshow.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codetrace.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codetriage.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/codevalidate.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/collect.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/delivered.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/pathidentity.ps1"
+    },
+    {
+      "match": true,
+      "source": "scripts/reconcile.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/CodeCompare.Smoke.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/CodeFindings.Smoke.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/CodeOverview.Smoke.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/CodePrepare.Smoke.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/CodeRecurrence.Smoke.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/CodeSave.Smoke.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/CodeSecurity.EC157.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/CodeSequence.Smoke.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/CodeShow.Smoke.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/CodeTrace.Smoke.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/CodeTriage.Smoke.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/CodeValidate.Smoke.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/Collect.Smoke.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/DeliveredTarget.Smoke.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/Inspect.Smoke.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/PathIdentity.EC159.ps1"
+    },
+    {
+      "match": true,
+      "source": "tests/Reconcile.Smoke.ps1"
+    }
+  ],
+  "status": "PASS_STATIC_SOURCE_ONLY",
+  "violations": []
+}

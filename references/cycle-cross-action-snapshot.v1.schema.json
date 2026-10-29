@@ -1,0 +1,42 @@
+{
+  "type": "object",
+  "required": [
+    "schema",
+    "stage_run_id",
+    "handoff_id",
+    "source_context_sha256",
+    "source_identity_sha256"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.cycle_cross_action_snapshot.v1"
+    },
+    "stage_run_id": {
+      "type": "string",
+      "pattern": "^run_v1_[0-9a-f]{48}$",
+      "minLength": 55,
+      "maxLength": 55
+    },
+    "handoff_id": {
+      "type": "string",
+      "pattern": "^handoff_v1_[0-9a-f]{48}$",
+      "minLength": 59,
+      "maxLength": 59
+    },
+    "source_context_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "source_identity_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ces:cycle-cross-action-snapshot:v1"
+}

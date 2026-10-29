@@ -1,0 +1,18 @@
+{
+  "schema": "ces.baseline.v1",
+  "name": "CES Engineering Suite",
+  "version": "1.0.0",
+  "status": "LOCAL_BASELINE_WITH_KNOWN_LIMITATIONS",
+  "windows_entry": "ces.cmd",
+  "posix_entry": "ces-posix.cmd",
+  "native_action_families": 7,
+  "registered_routes": 74,
+  "external_host_enabled": false,
+  "production_acceptance": "NOT_PERFORMED",
+  "compatibility": "Existing protocol schemas, hash domains, route tokens and module import names remain for compatibility; they are not project milestone numbering.",
+  "known_issues": [
+    "CodeShow Sequence deep query Count property failure; excluded from supported local modes.",
+    "External AI/CI/Issue/Provider integration and production acceptance have not been performed.",
+    "QualityDetect metadata pins are bounded observations; same-timestamp directory changes may be indistinguishable."
+  ]
+}

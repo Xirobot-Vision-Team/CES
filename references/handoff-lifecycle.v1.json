@@ -1,0 +1,97 @@
+{
+  "schema": "ces.handoff_lifecycle.v1",
+  "introduced": "EC-171 / V4.81 / R171",
+  "implementation": "construction/handoff_lifecycle.py",
+  "documentation": "references/handoff-lifecycle.md",
+  "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+  "authority": "STANDALONE_IN_MEMORY_STATE_MODEL_NOT_NATIVE_AI_HANDOFF_EXECUTOR",
+  "input": {
+    "required": "successful_or_partial_ces.code_prepare_multisource.v1_result_with_valid_ces.ai_code_context.v1_hash",
+    "scope": "one_explicit_ec170_source_mode_and_source_identity_digest",
+    "task_kinds_this_round": ["code_analysis"],
+    "source_authentication": "EC170_INTERNAL_HASH_CONSISTENCY_ONLY_NO_EXTERNAL_AUTHENTICATION",
+    "source_context_max_bytes": 4194304,
+    "source_content_in_checkpoint": false,
+    "cross_source_rebinding_allowed": false
+  },
+  "identity": {
+    "run_id_format": "run_v1_<48_lowercase_hex_chars>",
+    "handoff_id_format": "handoff_v1_<48_lowercase_hex_chars>",
+    "randomness": "24_bytes_OS_CSPRNG_per_created_identity_192_bits",
+    "before_actual_creation": null,
+    "placeholder_or_deterministic_ids": "FORBIDDEN",
+    "run_vs_handoff_vs_source_vs_actor": "SEPARATE_NAMESPACES_AND_PROVENANCE",
+    "operator_claim": "human_or_external_declaration_only_verified_false_write_authorized_false"
+  },
+  "lifecycle": {
+    "run_states": ["CREATED", "READY", "ACTIVE", "COMPLETED", "PARTIAL", "UNAVAILABLE", "FAILED", "CANCELLED"],
+    "handoff_states": ["CREATED", "READY", "ACTIVE", "COMPLETED", "PARTIAL", "UNAVAILABLE", "FAILED", "CANCELLED"],
+    "transitions": {
+      "CREATED": ["READY", "UNAVAILABLE", "CANCELLED"],
+      "READY": ["ACTIVE", "UNAVAILABLE", "CANCELLED"],
+      "ACTIVE": ["COMPLETED", "PARTIAL", "UNAVAILABLE", "FAILED", "CANCELLED"],
+      "COMPLETED": [],
+      "PARTIAL": [],
+      "UNAVAILABLE": [],
+      "FAILED": [],
+      "CANCELLED": []
+    },
+    "early_unavailable_and_cancel": "EXPLICIT_TERMINAL_EXCEPTIONS_NOT_A_CLAIM_THAT_ACTIVE_EXECUTED",
+    "ready_on_partial_source": "MUST_EXPLICITLY_ACKNOWLEDGE_PARTIAL",
+    "source_partial_can_terminal_complete": false,
+    "completed_requires": "declared_result_sha256_AND_if_run_nonempty_all_handoffs_COMPLETED",
+    "complete_run_requires_at_least_one_completed_handoff": true,
+    "run_terminal_with_pending_handoffs": false,
+    "external_ai_success_authenticated": false,
+    "returned_status_semantics": "LOCAL_CALLER_DECLARED_LIFECYCLE_NOT_VERIFIED_EXTERNAL_EXECUTION"
+  },
+  "events": {
+    "operation_key": "explicit_8_to_64_safe_ASCII_not_a_secret",
+    "event_sequence": "1_based_monotonic_global",
+    "global_revision": "1_based_CAS_expected_revision_required_every_mutation",
+    "entity_revision": "1_based_per_entity",
+    "timestamp": "UTC_ISO8601_fixed_microseconds_Z_monotonic_non_decreasing",
+    "event_integrity": "SHA256_DOMAIN_SEPARATED_CANONICAL_JSON_PLUS_PREVIOUS_EVENT_SHA256",
+    "event_hash_authenticates_source_or_writer": false,
+    "duplicate_op_behavior": "REJECT_OPERATION_REPLAY",
+    "reused_op_with_conflicting_payload": "REJECT_OPERATION_CONFLICT",
+    "terminal_to_active_or_reversal": "REJECT_NO_MUTATION",
+    "max_events": 256,
+    "max_handoffs_per_run": 32,
+    "max_checkpoint_bytes": 262144,
+    "events_pruned_on_capacity": false
+  },
+  "recovery": {
+    "checkpoint_serialization": "STRICT_CANONICAL_JSON_NO_SOURCE_TEXT",
+    "read_only_structural_inspection": true,
+    "checkpoint_inspection_status": "unavailable/5_RECOVERY_NOT_ATTESTED_even_if_hashes_self_consistent",
+    "checkpoint_promoted_to_live_session": false,
+    "restart_without_trusted_store": "BLOCKED_UNAVAILABLE",
+    "trusted_no_clobber_staging_and_recovery": "PLANNED_EC172_NOT_IMPLEMENTED",
+    "no_restart_as_prior_success": true
+  },
+  "public_api": ["Lifecycle.preview", "Lifecycle.create", "Lifecycle.snapshot", "Lifecycle.checkpoint_json", "Lifecycle.advance_run", "Lifecycle.create_handoff", "Lifecycle.advance_handoff", "declared_actor", "inspect_checkpoint"],
+  "standalone_cli": ["--preview", "--create-run", "--inspect-checkpoint"],
+  "native_routes": {
+    "AIHandoff": "NOT_REGISTERED_NATIVE_POWERSHELL_ROUTE",
+    "CodePrepare:MultiSource": "NOT_REGISTERED_NATIVE_POWERSHELL_ROUTE",
+    "CodePrepare:Snapshot": "EXISTING_NATIVE_ROUTE_UNCHANGED",
+    "staged_input_builder": "PLANNED_EC173",
+    "handoff_execution_dispatch": "PLANNED_EC174"
+  },
+  "writes": {
+    "business_repo_or_git": false,
+    "provider_or_issue_or_delivery": false,
+    "ces_store_or_ec169_store": false,
+    "file_staging": false,
+    "stdout_json_only_cli": true
+  },
+  "offline_development_validation": {
+    "ec171_focused_cases": 43,
+    "native_powershell7": "NOT_RUN",
+    "existing_15_smoke": "NOT_RUN",
+    "live_ai_or_provider": "NOT_RUN",
+    "cross_os": "NOT_RUN",
+    "final_user_assisted_acceptance": "NOT_STARTED"
+  }
+}

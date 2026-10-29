@@ -1,0 +1,699 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/repository-report-subject-result.v1.schema.json",
+  "title": "EC193 explicit single-repository report subject: caller claims, bounded coverage, no authenticated source",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "subject",
+    "canonical_json",
+    "limitations"
+  ],
+  "$defs": {
+    "utcStamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$"
+    },
+    "localStamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?[+-]\\d{2}:\\d{2}(?::\\d{2}(?:\\.\\d{1,6})?)?$"
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "period_id",
+        "project_timezone",
+        "cadence",
+        "label",
+        "week_rule",
+        "period_index",
+        "calendar_anchor_date",
+        "actual_start_local_date",
+        "actual_end_exclusive_local_date",
+        "start_local",
+        "end_exclusive_local",
+        "start_utc",
+        "end_exclusive_utc",
+        "elapsed_seconds"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ces.natural_period.v1"
+        },
+        "period_id": {
+          "type": "string",
+          "minLength": 12,
+          "maxLength": 160,
+          "pattern": "^cesnp1:(day|week|month|year):[A-Za-z0-9_+./-]+:[0-9]{4}(?:-[0-9]{2}(?:-[0-9]{2})?|-W[0-9]{2})?$"
+        },
+        "project_timezone": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 96
+        },
+        "cadence": {
+          "enum": [
+            "day",
+            "week",
+            "month",
+            "year"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "pattern": "^[0-9]{4}(?:-[0-9]{2}(?:-[0-9]{2})?|-W[0-9]{2})?$"
+        },
+        "week_rule": {
+          "const": "ISO_MONDAY"
+        },
+        "period_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "calendar_anchor_date": {
+          "$ref": "#/$defs/date"
+        },
+        "actual_start_local_date": {
+          "$ref": "#/$defs/date"
+        },
+        "actual_end_exclusive_local_date": {
+          "$ref": "#/$defs/date"
+        },
+        "start_local": {
+          "$ref": "#/$defs/localStamp"
+        },
+        "end_exclusive_local": {
+          "$ref": "#/$defs/localStamp"
+        },
+        "start_utc": {
+          "$ref": "#/$defs/utcStamp"
+        },
+        "end_exclusive_utc": {
+          "$ref": "#/$defs/utcStamp"
+        },
+        "elapsed_seconds": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "selector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "key"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "checkout_key",
+            "delivery_key",
+            "proposal_key"
+          ]
+        },
+        "key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]*$"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "selector",
+        "git_object",
+        "receipt_sha256",
+        "observed_at_utc",
+        "provenance_state"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "WorkingTree",
+            "DeliveredTarget",
+            "ProposedPR"
+          ]
+        },
+        "selector": {
+          "$ref": "#/$defs/selector"
+        },
+        "git_object": {
+          "anyOf": [
+            {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "algorithm",
+                    "oid"
+                  ],
+                  "properties": {
+                    "algorithm": {
+                      "const": "sha1"
+                    },
+                    "oid": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{40}$"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "algorithm",
+                    "oid"
+                  ],
+                  "properties": {
+                    "algorithm": {
+                      "const": "sha256"
+                    },
+                    "oid": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "receipt_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "observed_at_utc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/utcStamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "provenance_state": {
+          "const": "CALLER_DECLARED_ONLY"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "WorkingTree"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "selector": {
+                "properties": {
+                  "kind": {
+                    "const": "checkout_key"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "DeliveredTarget"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "selector": {
+                "properties": {
+                  "kind": {
+                    "const": "delivery_key"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "ProposedPR"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "selector": {
+                "properties": {
+                  "kind": {
+                    "const": "proposal_key"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "namespace_key",
+        "project_key",
+        "repository_key",
+        "locator_kind",
+        "locator_sha256",
+        "repository_id",
+        "identity_state"
+      ],
+      "properties": {
+        "namespace_key": {
+          "$ref": "#/$defs/key"
+        },
+        "project_key": {
+          "$ref": "#/$defs/key"
+        },
+        "repository_key": {
+          "$ref": "#/$defs/key"
+        },
+        "locator_kind": {
+          "enum": [
+            "local_root",
+            "remote_repository",
+            "provider_repository_id"
+          ]
+        },
+        "locator_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "repository_id": {
+          "type": "string",
+          "pattern": "^cesrepo1:[0-9a-f]{64}$"
+        },
+        "identity_state": {
+          "const": "CALLER_DECLARED_ONLY"
+        }
+      }
+    },
+    "key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "pathSelector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "path"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "repository",
+            "directory",
+            "file"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "maxLength": 512
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "repository"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "path": {
+                "const": ""
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "path": {
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "window",
+        "includes",
+        "excludes",
+        "inventory_state",
+        "coverage_sha256",
+        "period_window_complete",
+        "path_scope"
+      ],
+      "properties": {
+        "window": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "start_utc",
+            "end_exclusive_utc"
+          ],
+          "properties": {
+            "start_utc": {
+              "$ref": "#/$defs/utcStamp"
+            },
+            "end_exclusive_utc": {
+              "$ref": "#/$defs/utcStamp"
+            }
+          }
+        },
+        "includes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/pathSelector"
+          }
+        },
+        "excludes": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/pathSelector"
+          }
+        },
+        "inventory_state": {
+          "enum": [
+            "unknown",
+            "partial_declared",
+            "complete_declared"
+          ]
+        },
+        "coverage_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "period_window_complete": {
+          "type": "boolean"
+        },
+        "path_scope": {
+          "enum": [
+            "ENTIRE_REPOSITORY_DECLARED",
+            "SELECTED_PATHS"
+          ]
+        }
+      }
+    },
+    "claims": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_identity_authenticated",
+        "locator_existence_verified",
+        "git_object_verified",
+        "source_provenance_verified",
+        "coverage_inventory_verified",
+        "activity_in_period_verified",
+        "remote_delivery_verified",
+        "timezone_rules_pinned",
+        "report_prepared_or_published",
+        "business_repository_written",
+        "native_powershell_report_registered"
+      ],
+      "properties": {
+        "repository_identity_authenticated": {
+          "const": false
+        },
+        "locator_existence_verified": {
+          "const": false
+        },
+        "git_object_verified": {
+          "const": false
+        },
+        "source_provenance_verified": {
+          "const": false
+        },
+        "coverage_inventory_verified": {
+          "const": false
+        },
+        "activity_in_period_verified": {
+          "const": false
+        },
+        "remote_delivery_verified": {
+          "const": false
+        },
+        "timezone_rules_pinned": {
+          "const": false
+        },
+        "report_prepared_or_published": {
+          "const": false
+        },
+        "business_repository_written": {
+          "const": false
+        },
+        "native_powershell_report_registered": {
+          "const": false
+        }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "report_subject_id",
+        "report_key",
+        "repository",
+        "period",
+        "source",
+        "coverage",
+        "coverage_gaps",
+        "claims",
+        "binding_sha256"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ces.repository_report_subject.v1"
+        },
+        "report_subject_id": {
+          "type": "string",
+          "pattern": "^cesrs1:[0-9a-f]{64}$"
+        },
+        "report_key": {
+          "$ref": "#/$defs/key"
+        },
+        "repository": {
+          "$ref": "#/$defs/repository"
+        },
+        "period": {
+          "$ref": "#/$defs/period"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "coverage": {
+          "$ref": "#/$defs/coverage"
+        },
+        "coverage_gaps": {
+          "type": "array",
+          "minItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "ACTIVITY_IN_WINDOW_UNVERIFIED",
+              "DELIVERY_NOT_AUTHENTICATED",
+              "GIT_OBJECT_CLAIM_MISSING",
+              "GIT_OBJECT_UNVERIFIED",
+              "PATH_EXCLUSIONS_DECLARED",
+              "PATH_INVENTORY_NOT_CLAIMED_COMPLETE",
+              "PATH_INVENTORY_UNVERIFIED",
+              "PATH_SCOPE_SELECTED_SUBSET",
+              "PROPOSED_PR_NOT_DELIVERED",
+              "REPOSITORY_KEYS_CALLER_DECLARED",
+              "REPOSITORY_LOCATOR_NOT_RESOLVED",
+              "SOURCE_RECEIPT_MISSING",
+              "SOURCE_RECEIPT_UNVERIFIED",
+              "SOURCE_SELECTOR_UNATTESTED",
+              "TIMEZONE_RULESET_NOT_PINNED",
+              "WINDOW_PARTIAL_PERIOD",
+              "WORKING_TREE_NOT_ATOMICALLY_PINNED"
+            ]
+          }
+        },
+        "claims": {
+          "$ref": "#/$defs/claims"
+        },
+        "binding_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  },
+  "properties": {
+    "schema": {
+      "const": "ces.repository_report_subject.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^REPORT_SUBJECT_[A-Z0-9_]{3,160}$"
+    },
+    "subject": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/subject"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "canonical_json": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "limitations": {
+      "$ref": "#/$defs/claims"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "subject": {
+            "$ref": "#/$defs/subject"
+          },
+          "canonical_json": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          },
+          "subject": {
+            "type": "null"
+          },
+          "canonical_json": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          },
+          "subject": {
+            "type": "null"
+          },
+          "canonical_json": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

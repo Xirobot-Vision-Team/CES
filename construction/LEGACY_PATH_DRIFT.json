@@ -1,0 +1,77 @@
+{
+  "schema_version": "ces.construction_source_drift.v1",
+  "ec": "EC-159",
+  "package_release": "V4.69/R159",
+  "previous_release": "V4.68/R158",
+  "source_baseline": "R150",
+  "evidence_level": "REVIEWED_SOURCE_PATCH_NOT_NATIVE_RUNTIME_OR_SECURITY_CERTIFICATION",
+  "immutable_original_fingerprints": "construction/SOURCE_BASELINE.json",
+  "preserved_prior_source_drift": "construction/LEGACY_SECURITY_DRIFT.json",
+  "preserved_ec157_sha256": "f9c6cdf919e062a733f353d77ef238140d52e8dd2458f25b9aa76fcd48be4021",
+  "changed_powershell_sources": {
+    "scripts/ces.ps1": {
+      "r150_sha256": "0dfda6adb40b2e76da68263db04dff4bb29f5643bb01db5b232c09ca455790ca",
+      "previous_sha256": "18ee14b7b28f9c0d98051307cbcd8425b47ac18d894a0d6240a8fa93c1291c50",
+      "current_sha256": "5a5d902b9d46de51255eed7f5de8a078ba47e196ae541ebac26332423750f189",
+      "scope": [
+        "single trusted dot-source of pathidentity.ps1 after Git-In",
+        "RepoPath normalization distinct from repository proof; no CLI wire or dispatcher edits"
+      ],
+      "wire_contract_changed": false,
+      "native_runtime_test": "NOT_RUN"
+    },
+    "scripts/reconcile.ps1": {
+      "r150_sha256": "8da70468dc3bb6aa32833abf1ae862b1774c11bd9777f70b98c9e1ac5912cb2e",
+      "previous_sha256": "8da70468dc3bb6aa32833abf1ae862b1774c11bd9777f70b98c9e1ac5912cb2e",
+      "current_sha256": "a5a9037229347fe986d9a6a08b5b0b04fc0afd2caaf4d816b02fcee258f7ea5c",
+      "scope": [
+        "untrusted Collect evidence file must have non-reparse ancestors before bounded read"
+      ],
+      "wire_contract_changed": false,
+      "native_runtime_test": "NOT_RUN"
+    },
+    "scripts/codevalidate.ps1": {
+      "r150_sha256": "d6e4d2f7dcfd908d2a9da14d0e92aa32571748868931a2f761079e1ff128cd2a",
+      "previous_sha256": "d6e4d2f7dcfd908d2a9da14d0e92aa32571748868931a2f761079e1ff128cd2a",
+      "current_sha256": "bacecc4758f5eab429329add9b0ec624b9b7215ee29306ba7b22c247b6020395",
+      "scope": [
+        "untrusted draft JSON file must have non-reparse ancestors before bounded read"
+      ],
+      "wire_contract_changed": false,
+      "native_runtime_test": "NOT_RUN"
+    },
+    "scripts/codesave.ps1": {
+      "r150_sha256": "91f10cd3bbbd8d6eb02c5ac6568ea8d525d08afed33e7f857610344dd2739a65",
+      "previous_sha256": "4aaf82c51043287354b07840aa14499153a8acaa48fbfc5c2252f81b41890962",
+      "current_sha256": "4c66ef33c0bf5a4ab181a2bcee9b7248149cbd17fb9b0f48431ab88db980542e",
+      "scope": [
+        "main worktree Git identity re-probed before store initialization and before no-clobber write",
+        "fixed CES store is containment/reparse checked; diagnostics redact known paths",
+        "legacy approval/validation/index/HEAD/pinned SHA/owner boundaries retained"
+      ],
+      "wire_contract_changed": false,
+      "native_runtime_test": "NOT_RUN"
+    },
+    "scripts/codeshow.ps1": {
+      "r150_sha256": "539e29ba2109c65f2f6dae36cd709aa29a3565edc8d5a315c5d1cbf0d6bc4420",
+      "previous_sha256": "539e29ba2109c65f2f6dae36cd709aa29a3565edc8d5a315c5d1cbf0d6bc4420",
+      "current_sha256": "03c4d1148421f5187cd37603ba2a587774b0f34739a94de659e352854715c23f",
+      "scope": [
+        "main worktree Git identity re-probed before CES read",
+        "fixed CES store containment checked; unsafe-store diagnostics redact known paths"
+      ],
+      "wire_contract_changed": false,
+      "native_runtime_test": "NOT_RUN"
+    }
+  },
+  "new_powershell_sources": {
+    "scripts/pathidentity.ps1": {
+      "sha256": "e7ddc101e03ec39c6dbc067c24ed7a4c8d960324d170d9c20130a529d940b5ae",
+      "purpose": "shared identity/path/actor primitives without new CLI action"
+    }
+  },
+  "original_15_smoke_suites_changed": false,
+  "history_or_frozen_r150_rewritten": false,
+  "source_review_is_not_security_certification": true,
+  "native_powershell7": "NOT_RUN"
+}

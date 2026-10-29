@@ -1,0 +1,708 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "reason_code",
+    "exit_code",
+    "read_state",
+    "issue_existence",
+    "filter_outcome",
+    "coverage",
+    "synthetic",
+    "scope",
+    "issue",
+    "source_origin",
+    "observed_at_utc",
+    "freshness_seconds",
+    "provider_read_invocations",
+    "maximum_possible_provider_gets",
+    "metadata_projection_only",
+    "full_issue_contents",
+    "snapshot_atomic",
+    "full_repository_inventory",
+    "caller_snapshot_trusted",
+    "organizational_grant_authenticated",
+    "provider_account_ownership_authenticated",
+    "native_issue_action_registered",
+    "issue_sync_performed",
+    "issue_created",
+    "issue_delivered_or_published",
+    "issue_or_provider_written",
+    "business_repository_written",
+    "knowledge_source_written",
+    "persisted",
+    "external_cache_mutated"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.issue_show.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "unavailable",
+        "invalid_input"
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^ISSUE_SHOW_[A-Z0-9_]+$"
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "read_state": {
+      "enum": [
+        "UNKNOWN",
+        "SYNTHETIC_OBSERVED",
+        "PROVIDER_OBSERVED"
+      ]
+    },
+    "issue_existence": {
+      "enum": [
+        "UNKNOWN",
+        "SYNTHETIC_FIXTURE_PRESENT",
+        "PROVIDER_REPORTED_PRESENT"
+      ]
+    },
+    "filter_outcome": {
+      "enum": [
+        "UNKNOWN",
+        "MATCHED",
+        "EXCLUDED_BY_FILTER"
+      ]
+    },
+    "coverage": {
+      "enum": [
+        "UNKNOWN",
+        "EXACT_ISSUE_SELECTED_METADATA_NONATOMIC"
+      ]
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "scope": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/scope"
+        }
+      ]
+    },
+    "issue": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/issue"
+        }
+      ]
+    },
+    "source_origin": {
+      "enum": [
+        null,
+        "synthetic_fixture",
+        "provider_https_response"
+      ]
+    },
+    "observed_at_utc": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/stamp"
+        }
+      ]
+    },
+    "freshness_seconds": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 120
+        }
+      ]
+    },
+    "provider_read_invocations": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "maximum_possible_provider_gets": {
+      "enum": [
+        0,
+        3
+      ]
+    },
+    "metadata_projection_only": {
+      "const": true
+    },
+    "full_issue_contents": {
+      "const": false
+    },
+    "snapshot_atomic": {
+      "const": false
+    },
+    "full_repository_inventory": {
+      "const": false
+    },
+    "caller_snapshot_trusted": {
+      "const": false
+    },
+    "organizational_grant_authenticated": {
+      "const": false
+    },
+    "provider_account_ownership_authenticated": {
+      "const": false
+    },
+    "native_issue_action_registered": {
+      "const": false
+    },
+    "issue_sync_performed": {
+      "const": false
+    },
+    "issue_created": {
+      "const": false
+    },
+    "issue_delivered_or_published": {
+      "const": false
+    },
+    "issue_or_provider_written": {
+      "const": false
+    },
+    "business_repository_written": {
+      "const": false
+    },
+    "knowledge_source_written": {
+      "const": false
+    },
+    "persisted": {
+      "const": false
+    },
+    "external_cache_mutated": {
+      "const": false
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ces/issue-show-result.v1.schema.json",
+  "title": "CES EC213 single IssueShow redacted read-only response",
+  "description": "Observed/filtered means only a bounded non-atomic projection of the exact selected provider Issue, not an atomic snapshot or full contents. No absence proof on 404, no authenticated organizational grant or source snapshot from caller.",
+  "$defs": {
+    "stamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+    },
+    "filters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "confidentiality",
+        "updated_not_before_utc",
+        "updated_before_utc"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "ANY",
+            "OPEN",
+            "CLOSED"
+          ]
+        },
+        "confidentiality": {
+          "enum": [
+            "ANY",
+            "NOT_REPORTED",
+            "STANDARD",
+            "CONFIDENTIAL"
+          ]
+        },
+        "updated_not_before_utc": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/stamp"
+            }
+          ]
+        },
+        "updated_before_utc": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/stamp"
+            }
+          ]
+        }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "api_host",
+        "repository_path",
+        "provider_repository_id",
+        "issue_number",
+        "provider_issue_id"
+      ],
+      "properties": {
+        "provider": {
+          "enum": [
+            "github",
+            "gitlab"
+          ]
+        },
+        "api_host": {
+          "enum": [
+            "api.github.com",
+            "gitlab.com"
+          ]
+        },
+        "repository_path": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 240,
+          "pattern": "^[A-Za-z0-9_][A-Za-z0-9_.-]{0,99}(?:/[A-Za-z0-9_][A-Za-z0-9_.-]{0,99}){1,11}$"
+        },
+        "provider_repository_id": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,18}$"
+        },
+        "issue_number": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "provider_issue_id": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,18}$"
+        }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identity",
+        "identity_sha256",
+        "snapshot_sha256",
+        "provider_state",
+        "provider_created_at_utc",
+        "provider_updated_at_utc",
+        "provider_closed_at_utc",
+        "provider_confidentiality",
+        "observed_at_utc",
+        "observation_origin",
+        "snapshot_semantics",
+        "source_limited_to_selected_metadata"
+      ],
+      "properties": {
+        "identity": {
+          "$ref": "#/$defs/identity"
+        },
+        "identity_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "snapshot_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "provider_state": {
+          "enum": [
+            "OPEN",
+            "CLOSED"
+          ]
+        },
+        "provider_created_at_utc": {
+          "$ref": "#/$defs/stamp"
+        },
+        "provider_updated_at_utc": {
+          "$ref": "#/$defs/stamp"
+        },
+        "provider_closed_at_utc": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/stamp"
+            }
+          ]
+        },
+        "provider_confidentiality": {
+          "enum": [
+            "NOT_REPORTED",
+            "STANDARD",
+            "CONFIDENTIAL"
+          ]
+        },
+        "observed_at_utc": {
+          "$ref": "#/$defs/stamp"
+        },
+        "observation_origin": {
+          "enum": [
+            "synthetic_fixture",
+            "provider_https_response"
+          ]
+        },
+        "snapshot_semantics": {
+          "const": "SELECTED_PROVIDER_METADATA_AND_UNEXPOSED_TITLE_DESCRIPTION_LABELS_V1"
+        },
+        "source_limited_to_selected_metadata": {
+          "const": true
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "api_host",
+        "repository",
+        "expected_repository_id",
+        "number",
+        "expected_provider_issue_id",
+        "filters",
+        "max_observation_age_seconds"
+      ],
+      "properties": {
+        "provider": {
+          "enum": [
+            "github",
+            "gitlab"
+          ]
+        },
+        "api_host": {
+          "enum": [
+            "api.github.com",
+            "gitlab.com"
+          ]
+        },
+        "repository": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 240,
+          "pattern": "^[A-Za-z0-9_][A-Za-z0-9_.-]{0,99}(?:/[A-Za-z0-9_][A-Za-z0-9_.-]{0,99}){1,11}$"
+        },
+        "expected_repository_id": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,18}$"
+        },
+        "number": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "expected_provider_issue_id": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,18}$"
+        },
+        "filters": {
+          "$ref": "#/$defs/filters"
+        },
+        "max_observation_age_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 120
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "filter_outcome": {
+            "enum": [
+              "MATCHED",
+              "EXCLUDED_BY_FILTER"
+            ]
+          },
+          "coverage": {
+            "const": "EXACT_ISSUE_SELECTED_METADATA_NONATOMIC"
+          },
+          "scope": {
+            "$ref": "#/$defs/scope"
+          },
+          "source_origin": {
+            "enum": [
+              "synthetic_fixture",
+              "provider_https_response"
+            ]
+          },
+          "observed_at_utc": {
+            "$ref": "#/$defs/stamp"
+          },
+          "freshness_seconds": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 120
+          },
+          "provider_read_invocations": {
+            "const": 1
+          },
+          "maximum_possible_provider_gets": {
+            "const": 3
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "unavailable",
+              "invalid_input"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "read_state": {
+            "const": "UNKNOWN"
+          },
+          "issue_existence": {
+            "const": "UNKNOWN"
+          },
+          "filter_outcome": {
+            "const": "UNKNOWN"
+          },
+          "coverage": {
+            "const": "UNKNOWN"
+          },
+          "scope": {
+            "type": "null"
+          },
+          "issue": {
+            "type": "null"
+          },
+          "source_origin": {
+            "type": "null"
+          },
+          "observed_at_utc": {
+            "type": "null"
+          },
+          "freshness_seconds": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "filter_outcome": {
+            "const": "MATCHED"
+          }
+        },
+        "required": [
+          "filter_outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "issue": {
+            "$ref": "#/$defs/issue"
+          },
+          "reason_code": {
+            "const": "ISSUE_SHOW_SELECTED_METADATA_OBSERVED"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "filter_outcome": {
+            "const": "EXCLUDED_BY_FILTER"
+          }
+        },
+        "required": [
+          "filter_outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "issue": {
+            "type": "null"
+          },
+          "reason_code": {
+            "const": "ISSUE_SHOW_FILTER_EXCLUDED"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          },
+          "synthetic": {
+            "const": true
+          }
+        },
+        "required": [
+          "status",
+          "synthetic"
+        ]
+      },
+      "then": {
+        "properties": {
+          "read_state": {
+            "const": "SYNTHETIC_OBSERVED"
+          },
+          "issue_existence": {
+            "const": "SYNTHETIC_FIXTURE_PRESENT"
+          },
+          "source_origin": {
+            "const": "synthetic_fixture"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          },
+          "synthetic": {
+            "const": false
+          }
+        },
+        "required": [
+          "status",
+          "synthetic"
+        ]
+      },
+      "then": {
+        "properties": {
+          "read_state": {
+            "const": "PROVIDER_OBSERVED"
+          },
+          "issue_existence": {
+            "const": "PROVIDER_REPORTED_PRESENT"
+          },
+          "source_origin": {
+            "const": "provider_https_response"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "provider_read_invocations": {
+            "const": 0
+          }
+        },
+        "required": [
+          "provider_read_invocations"
+        ]
+      },
+      "then": {
+        "properties": {
+          "maximum_possible_provider_gets": {
+            "const": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "provider_read_invocations": {
+            "const": 1
+          }
+        },
+        "required": [
+          "provider_read_invocations"
+        ]
+      },
+      "then": {
+        "properties": {
+          "maximum_possible_provider_gets": {
+            "const": 3
+          }
+        }
+      }
+    }
+  ]
+}

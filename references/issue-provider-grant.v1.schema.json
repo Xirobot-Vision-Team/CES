@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ces/issue-provider-grant.v1.schema.json",
+  "title": "CES EC211 declared Issue GET scope and host admission (not an authenticated organizational grant)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["context", "selection", "allow_network", "grant"],
+  "properties": {
+    "context": {
+      "oneOf": [
+        {"type": "object", "additionalProperties": false, "required": ["provider", "api_host", "account_ref"],
+         "properties": {"provider": {"const": "github"}, "api_host": {"const": "api.github.com"},
+                        "account_ref": {"$ref": "#/$defs/account"}}},
+        {"type": "object", "additionalProperties": false, "required": ["provider", "api_host", "account_ref"],
+         "properties": {"provider": {"const": "gitlab"}, "api_host": {"const": "gitlab.com"},
+                        "account_ref": {"$ref": "#/$defs/account"}}}
+      ]
+    },
+    "selection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["repository", "number", "expected_repository_id"],
+      "properties": {
+        "repository": {"type": "string", "minLength": 3, "maxLength": 240,
+                       "pattern": "^[A-Za-z0-9_.\\/-]+$"},
+        "number": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+        "expected_repository_id": {"oneOf": [{"type": "integer", "minimum": 1, "maximum": 9223372036854775807}, {"type": "null"}]}
+      }
+    },
+    "allow_network": {"const": true},
+    "grant": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "provider", "api_host", "account_ref", "repository", "number", "expires_at_utc", "authorized", "allow_write"],
+      "properties": {
+        "method": {"const": "READ_ISSUE_METADATA"},
+        "provider": {"enum": ["github", "gitlab"]},
+        "api_host": {"enum": ["api.github.com", "gitlab.com"]},
+        "account_ref": {"$ref": "#/$defs/account"},
+        "repository": {"type": "string", "minLength": 3, "maxLength": 240, "pattern": "^[A-Za-z0-9_.\\/-]+$"},
+        "number": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+        "expires_at_utc": {"type": "string", "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"},
+        "authorized": {"const": true},
+        "allow_write": {"const": false}
+      }
+    }
+  },
+  "$defs": {"account": {"type": "string", "minLength": 1, "maxLength": 128,
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"}},
+  "description": "Cross-field equality, date, host allowlist, path segments and scope expiration are checked by issue_provider.py, not expressed by this JSON schema. No credential or raw title/body should appear in this file."
+}

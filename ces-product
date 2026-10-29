@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+CES_INSTALL_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+if [ -n "${CES_PYTHON:-}" ]; then
+    exec "$CES_PYTHON" -B "$CES_INSTALL_ROOT/operator/ces_product.py" "$@"
+elif [ -x "$CES_INSTALL_ROOT/.venv/bin/python" ]; then
+    exec "$CES_INSTALL_ROOT/.venv/bin/python" -B "$CES_INSTALL_ROOT/operator/ces_product.py" "$@"
+else
+    exec python3 -B "$CES_INSTALL_ROOT/operator/ces_product.py" "$@"
+fi

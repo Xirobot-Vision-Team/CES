@@ -1,0 +1,767 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/contracts/cycle-resume-check.v1.schema.json",
+  "title": "EC236 bounded recovery-time DENY checkpoint inspection, not permission or execution",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "reason_code",
+    "next_action",
+    "run_id",
+    "checkpoint_verified",
+    "record_binding",
+    "fresh_input",
+    "saved_input",
+    "restored_checkpoint",
+    "permission_check",
+    "trust",
+    "effects"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.cycle_resume_check.v1"
+    },
+    "status": {
+      "enum": [
+        "PAUSED_PERMISSION_REQUIRED",
+        "REPREPARE_REQUIRED",
+        "UNKNOWN_BLOCKED"
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{2,63}$"
+    },
+    "next_action": {
+      "enum": [
+        "REVALIDATE_INDEPENDENT_PERMISSION_OUTSIDE_RESUME",
+        "CREATE_FRESH_RUN_AND_REPREPARE",
+        "MANUAL_REVIEW_NO_RECOVERY"
+      ]
+    },
+    "run_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^run_v1_[0-9a-f]{48}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "checkpoint_verified": {
+      "type": "boolean"
+    },
+    "record_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_sha256",
+        "action_set_sha256",
+        "graph_sha256",
+        "proposal_sha256",
+        "pause_sha256"
+      ],
+      "properties": {
+        "record_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "action_set_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "graph_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "proposal_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pause_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "fresh_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_ref",
+        "sha256",
+        "byte_length",
+        "bytes_match",
+        "source_ref_match"
+      ],
+      "properties": {
+        "source_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+\\-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "byte_length": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1048576
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bytes_match": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_ref_match": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "saved_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_ref",
+        "sha256",
+        "byte_length"
+      ],
+      "properties": {
+        "source_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+\\-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "byte_length": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1048576
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "restored_checkpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pause_id",
+        "step_id",
+        "operator_response",
+        "run_state",
+        "remaining_step_ids",
+        "step_states"
+      ],
+      "properties": {
+        "pause_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^pause_v1_[0-9a-f]{48}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "operator_response": {
+          "enum": [
+            "NOT_PROVIDED",
+            "DECLINED",
+            "UNKNOWN"
+          ]
+        },
+        "run_state": {
+          "enum": [
+            "NOT_STARTED",
+            "UNKNOWN"
+          ]
+        },
+        "remaining_step_ids": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "type": "string",
+            "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$"
+          },
+          "uniqueItems": true
+        },
+        "step_states": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "step_id",
+              "state"
+            ],
+            "properties": {
+              "step_id": {
+                "type": "string",
+                "pattern": "^step_[a-z0-9][a-z0-9_-]{0,47}$"
+              },
+              "state": {
+                "const": "NOT_STARTED"
+              }
+            }
+          }
+        }
+      }
+    },
+    "permission_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "saved_gate",
+        "explicit_native_gate_required",
+        "independent_approval_verified",
+        "native_gate_rechecked"
+      ],
+      "properties": {
+        "saved_gate": {
+          "enum": [
+            "DENY",
+            "UNKNOWN"
+          ]
+        },
+        "explicit_native_gate_required": {
+          "enum": [
+            "ApprovePersist",
+            null
+          ]
+        },
+        "independent_approval_verified": {
+          "const": false
+        },
+        "native_gate_rechecked": {
+          "const": false
+        }
+      }
+    },
+    "trust": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fresh_bytes_supplied",
+        "input_source_authenticated",
+        "actor_authenticated",
+        "metadata_authenticated",
+        "pause_authenticated",
+        "permission_authenticated",
+        "step_execution_proven"
+      ],
+      "properties": {
+        "fresh_bytes_supplied": {
+          "type": "boolean"
+        },
+        "input_source_authenticated": {
+          "const": false
+        },
+        "actor_authenticated": {
+          "const": false
+        },
+        "metadata_authenticated": {
+          "const": false
+        },
+        "pause_authenticated": {
+          "const": false
+        },
+        "permission_authenticated": {
+          "const": false
+        },
+        "step_execution_proven": {
+          "const": false
+        }
+      }
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "handler_invoked",
+        "steps_executed",
+        "dependencies_advanced",
+        "metadata_written",
+        "pause_written",
+        "new_run_created",
+        "approval_token_issued",
+        "permission_granted",
+        "write_authorized",
+        "can_dispatch",
+        "can_resume",
+        "native_cycle_registered"
+      ],
+      "properties": {
+        "handler_invoked": {
+          "const": false
+        },
+        "steps_executed": {
+          "const": false
+        },
+        "dependencies_advanced": {
+          "const": false
+        },
+        "metadata_written": {
+          "const": false
+        },
+        "pause_written": {
+          "const": false
+        },
+        "new_run_created": {
+          "const": false
+        },
+        "approval_token_issued": {
+          "const": false
+        },
+        "permission_granted": {
+          "const": false
+        },
+        "write_authorized": {
+          "const": false
+        },
+        "can_dispatch": {
+          "const": false
+        },
+        "can_resume": {
+          "const": false
+        },
+        "native_cycle_registered": {
+          "const": false
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "PAUSED_PERMISSION_REQUIRED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "checkpoint_verified": {
+            "const": true
+          },
+          "run_id": {
+            "type": "string"
+          },
+          "trust": {
+            "properties": {
+              "fresh_bytes_supplied": {
+                "const": true
+              }
+            }
+          },
+          "permission_check": {
+            "properties": {
+              "saved_gate": {
+                "const": "DENY"
+              },
+              "explicit_native_gate_required": {
+                "const": "ApprovePersist"
+              }
+            }
+          },
+          "restored_checkpoint": {
+            "properties": {
+              "run_state": {
+                "const": "NOT_STARTED"
+              },
+              "operator_response": {
+                "enum": [
+                  "NOT_PROVIDED",
+                  "DECLINED"
+                ]
+              },
+              "remaining_step_ids": {
+                "minItems": 1
+              },
+              "step_states": {
+                "minItems": 1
+              }
+            }
+          },
+          "record_binding": {
+            "properties": {
+              "record_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "action_set_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "graph_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "proposal_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "pause_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          },
+          "saved_input": {
+            "properties": {
+              "source_ref": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+\\-]{0,127}$"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "byte_length": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          },
+          "next_action": {
+            "const": "REVALIDATE_INDEPENDENT_PERMISSION_OUTSIDE_RESUME"
+          },
+          "fresh_input": {
+            "properties": {
+              "bytes_match": {
+                "const": true
+              },
+              "source_ref_match": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "REPREPARE_REQUIRED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "checkpoint_verified": {
+            "const": true
+          },
+          "run_id": {
+            "type": "string"
+          },
+          "trust": {
+            "properties": {
+              "fresh_bytes_supplied": {
+                "const": true
+              }
+            }
+          },
+          "permission_check": {
+            "properties": {
+              "saved_gate": {
+                "const": "DENY"
+              },
+              "explicit_native_gate_required": {
+                "const": "ApprovePersist"
+              }
+            }
+          },
+          "restored_checkpoint": {
+            "properties": {
+              "run_state": {
+                "const": "NOT_STARTED"
+              },
+              "operator_response": {
+                "enum": [
+                  "NOT_PROVIDED",
+                  "DECLINED"
+                ]
+              },
+              "remaining_step_ids": {
+                "minItems": 1
+              },
+              "step_states": {
+                "minItems": 1
+              }
+            }
+          },
+          "record_binding": {
+            "properties": {
+              "record_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "action_set_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "graph_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "proposal_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "pause_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          },
+          "saved_input": {
+            "properties": {
+              "source_ref": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+\\-]{0,127}$"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "byte_length": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          },
+          "next_action": {
+            "const": "CREATE_FRESH_RUN_AND_REPREPARE"
+          },
+          "fresh_input": {
+            "properties": {
+              "bytes_match": {
+                "type": "boolean"
+              },
+              "source_ref_match": {
+                "type": "boolean"
+              }
+            },
+            "anyOf": [
+              {
+                "properties": {
+                  "bytes_match": {
+                    "const": false
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "source_ref_match": {
+                    "const": false
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "UNKNOWN_BLOCKED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "checkpoint_verified": {
+            "const": false
+          },
+          "next_action": {
+            "const": "MANUAL_REVIEW_NO_RECOVERY"
+          },
+          "record_binding": {
+            "properties": {
+              "record_sha256": {
+                "type": "null"
+              },
+              "action_set_sha256": {
+                "type": "null"
+              },
+              "graph_sha256": {
+                "type": "null"
+              },
+              "proposal_sha256": {
+                "type": "null"
+              },
+              "pause_sha256": {
+                "type": "null"
+              }
+            }
+          },
+          "saved_input": {
+            "properties": {
+              "source_ref": {
+                "type": "null"
+              },
+              "sha256": {
+                "type": "null"
+              },
+              "byte_length": {
+                "type": "null"
+              }
+            }
+          },
+          "fresh_input": {
+            "properties": {
+              "bytes_match": {
+                "type": "null"
+              },
+              "source_ref_match": {
+                "type": "null"
+              }
+            }
+          },
+          "permission_check": {
+            "properties": {
+              "saved_gate": {
+                "const": "UNKNOWN"
+              },
+              "explicit_native_gate_required": {
+                "type": "null"
+              }
+            }
+          },
+          "restored_checkpoint": {
+            "properties": {
+              "pause_id": {
+                "type": "null"
+              },
+              "step_id": {
+                "type": "null"
+              },
+              "operator_response": {
+                "const": "UNKNOWN"
+              },
+              "run_state": {
+                "const": "UNKNOWN"
+              },
+              "remaining_step_ids": {
+                "maxItems": 0
+              },
+              "step_states": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,634 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "profile_id",
+    "limits",
+    "execution",
+    "resources",
+    "output",
+    "proof",
+    "effects",
+    "trust_boundary"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.quality_run_budget.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^QUALITYRUNBUDGET_[A-Z0-9_]{3,150}$",
+      "maxLength": 256
+    },
+    "profile_id": {
+      "anyOf": [
+        {
+          "enum": [
+            "python.pytest",
+            "python.ruff"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "limits": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "wall_ms",
+            "cpu_ms",
+            "memory_peak_bytes",
+            "io_bytes",
+            "processes",
+            "capture_bytes",
+            "poll_wait_ms"
+          ],
+          "properties": {
+            "wall_ms": {
+              "type": "integer",
+              "minimum": 100,
+              "maximum": 60000
+            },
+            "cpu_ms": {
+              "type": "integer",
+              "minimum": 100,
+              "maximum": 40000
+            },
+            "memory_peak_bytes": {
+              "type": "integer",
+              "minimum": 1048576,
+              "maximum": 268435456
+            },
+            "io_bytes": {
+              "type": "integer",
+              "minimum": 4096,
+              "maximum": 67108864
+            },
+            "processes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 32
+            },
+            "capture_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 12288
+            },
+            "poll_wait_ms": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 250
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "execution": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state",
+            "host_reported_exit_code",
+            "elapsed_ms_observed_locally",
+            "source_snapshot_sha256_host_claim",
+            "lease_consumption_only_host_reported",
+            "actual_process_exit_independently_verified",
+            "overall_pass_verified"
+          ],
+          "properties": {
+            "state": {
+              "enum": [
+                "not_started",
+                "running",
+                "interrupted_or_unverified",
+                "exited_host_reported"
+              ]
+            },
+            "host_reported_exit_code": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 255
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "elapsed_ms_observed_locally": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+            },
+            "source_snapshot_sha256_host_claim": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "lease_consumption_only_host_reported": {
+              "type": "boolean"
+            },
+            "actual_process_exit_independently_verified": {
+              "const": false
+            },
+            "overall_pass_verified": {
+              "const": false
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "resources": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "cpu_ms",
+            "memory_peak_bytes",
+            "io_bytes",
+            "processes",
+            "telemetry_host_reported_only"
+          ],
+          "properties": {
+            "cpu_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+            },
+            "memory_peak_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+            },
+            "io_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+            },
+            "processes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+            },
+            "telemetry_host_reported_only": {
+              "const": true
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "output": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "stdout_preview",
+            "stderr_preview",
+            "captured_bytes",
+            "observed_bytes",
+            "discarded_bytes",
+            "truncated",
+            "observed_content_sha256",
+            "complete"
+          ],
+          "properties": {
+            "stdout_preview": {
+              "type": "string",
+              "maxLength": 12288
+            },
+            "stderr_preview": {
+              "type": "string",
+              "maxLength": 12288
+            },
+            "captured_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 12288
+            },
+            "observed_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+            },
+            "discarded_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+            },
+            "truncated": {
+              "type": "boolean"
+            },
+            "observed_content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "complete": {
+              "type": "boolean"
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "proof": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_contents_independently_verified",
+            "kernel_isolation_independently_verified",
+            "broker_identity_independently_authenticated",
+            "test_execution_verified_by_ces",
+            "quality_pass_verified",
+            "budget_enforcement_guaranteed_by_ces",
+            "host_claims_only"
+          ],
+          "properties": {
+            "source_contents_independently_verified": {
+              "const": false
+            },
+            "kernel_isolation_independently_verified": {
+              "const": false
+            },
+            "broker_identity_independently_authenticated": {
+              "const": false
+            },
+            "test_execution_verified_by_ces": {
+              "const": false
+            },
+            "quality_pass_verified": {
+              "const": false
+            },
+            "budget_enforcement_guaranteed_by_ces": {
+              "const": false
+            },
+            "host_claims_only": {
+              "const": true
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "security_gate_authorized",
+        "execute_authorized",
+        "execution_grants_checked",
+        "additional_root_observations",
+        "external_broker_begin_called",
+        "external_broker_session_reported",
+        "lease_consumed_reported_by_host",
+        "commands_launched_by_ces",
+        "tests_verified_by_ces",
+        "real_kernel_isolation_verified_by_ces",
+        "writes_performed_by_ces",
+        "stop_requested",
+        "stop_acknowledged_by_host",
+        "reaped_reported_by_host",
+        "poll_count",
+        "output_events"
+      ],
+      "properties": {
+        "security_gate_authorized": {
+          "type": "boolean"
+        },
+        "execute_authorized": {
+          "type": "boolean"
+        },
+        "execution_grants_checked": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "additional_root_observations": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "external_broker_begin_called": {
+          "type": "boolean"
+        },
+        "external_broker_session_reported": {
+          "type": "boolean"
+        },
+        "lease_consumed_reported_by_host": {
+          "type": "boolean"
+        },
+        "commands_launched_by_ces": {
+          "const": false
+        },
+        "tests_verified_by_ces": {
+          "const": false
+        },
+        "real_kernel_isolation_verified_by_ces": {
+          "const": false
+        },
+        "writes_performed_by_ces": {
+          "const": false
+        },
+        "stop_requested": {
+          "type": "boolean"
+        },
+        "stop_acknowledged_by_host": {
+          "type": "boolean"
+        },
+        "reaped_reported_by_host": {
+          "type": "boolean"
+        },
+        "poll_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        },
+        "output_events": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        }
+      }
+    },
+    "trust_boundary": {
+      "enum": [
+        "NO_RUNNER_RESULT_AND_NO_QUALITY_PASS",
+        "HOST_SESSION_REPORT_ONLY_NO_ATTESTED_QUALITY_PASS"
+      ]
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ces/quality-run-budget-result.v1.schema.json",
+  "title": "CES EC187 QualityRun bounded external host session observation (not a verified PASS)",
+  "description": "Host adapter synthetic or real; only local bounded accounting, all results are partial/2 or denials; never quality PASS",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          },
+          "execution": {
+            "type": "null"
+          },
+          "resources": {
+            "type": "null"
+          },
+          "output": {
+            "type": "null"
+          },
+          "proof": {
+            "type": "null"
+          },
+          "profile_id": {
+            "type": "null"
+          },
+          "limits": {
+            "type": "null"
+          },
+          "trust_boundary": {
+            "const": "NO_RUNNER_RESULT_AND_NO_QUALITY_PASS"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          },
+          "execution": {
+            "type": "null"
+          },
+          "resources": {
+            "type": "null"
+          },
+          "output": {
+            "type": "null"
+          },
+          "proof": {
+            "type": "null"
+          },
+          "profile_id": {
+            "type": "null"
+          },
+          "limits": {
+            "type": "null"
+          },
+          "trust_boundary": {
+            "const": "NO_RUNNER_RESULT_AND_NO_QUALITY_PASS"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "execution"
+        ]
+      },
+      "then": {
+        "properties": {
+          "limits": {
+            "type": "object"
+          },
+          "resources": {
+            "type": "object"
+          },
+          "output": {
+            "type": "object"
+          },
+          "proof": {
+            "type": "object"
+          },
+          "status": {
+            "const": "partial"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "output": {
+            "type": "object",
+            "properties": {
+              "complete": {
+                "const": true
+              }
+            },
+            "required": [
+              "complete"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "execution": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "exited_host_reported"
+              }
+            }
+          },
+          "status": {
+            "const": "partial"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "type": "null"
+          }
+        },
+        "required": [
+          "execution"
+        ]
+      },
+      "then": {
+        "properties": {
+          "resources": {
+            "type": "null"
+          },
+          "output": {
+            "type": "null"
+          },
+          "proof": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "exited_host_reported"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          }
+        },
+        "required": [
+          "execution"
+        ]
+      },
+      "then": {
+        "properties": {
+          "execution": {
+            "type": "object",
+            "properties": {
+              "host_reported_exit_code": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 255
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

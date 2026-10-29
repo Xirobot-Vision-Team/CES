@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schema/delivery-send-result.v1.schema.json",
+  "title": "EC225 private single-sandbox-target one-use submission attempt; no delivery/acceptance certainty",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "status", "exit_code", "reason_code", "operation_id", "submission_receipt_id", "submission_state", "claim_committed", "provider_sandbox_capability_verified", "provider_probe_requested", "submission_post_attempted", "ready_to_send", "message_sent", "delivery_accepted", "delivered", "published", "effects"],
+  "properties": {
+    "schema": {"const": "ces.delivery_send.v1"},
+    "status": {"enum": ["partial", "blocked", "invalid_input", "unavailable"]},
+    "exit_code": {"enum": [2, 4, 5]},
+    "reason_code": {"type": "string", "pattern": "^DELIVERY_SEND_[A-Z0-9_]+$", "maxLength": 170},
+    "operation_id": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^[a-f0-9]{64}$"}]},
+    "submission_receipt_id": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^cesds1:[a-f0-9]{64}$"}]},
+    "submission_state": {"enum": ["NO_SUBMISSION_ATTEMPT", "UNKNOWN_UNCONFIRMED", "SUBMISSION_UNCONFIRMED"]},
+    "claim_committed": {"type": "boolean"},
+    "provider_sandbox_capability_verified": {"type": "boolean"},
+    "provider_probe_requested": {"type": "boolean"},
+    "submission_post_attempted": {"type": "boolean"},
+    "ready_to_send": {"const": false},
+    "message_sent": {"const": false},
+    "delivery_accepted": {"const": false},
+    "delivered": {"const": false},
+    "published": {"const": false},
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["external_network_requested", "recipient_contacted", "message_sent", "delivery_accepted", "delivered", "published", "issue_or_pr_created_or_modified", "git_or_business_files_written", "ces_records_written", "external_ai_invoked", "source_content_disclosed_in_preview", "recipient_identity_verified", "delivery_authorized"],
+      "properties": {
+        "external_network_requested": {"type": "boolean"},
+        "recipient_contacted": {"const": false},
+        "message_sent": {"const": false},
+        "delivery_accepted": {"const": false},
+        "delivered": {"const": false},
+        "published": {"const": false},
+        "issue_or_pr_created_or_modified": {"const": false},
+        "git_or_business_files_written": {"const": false},
+        "ces_records_written": {"const": false},
+        "external_ai_invoked": {"const": false},
+        "source_content_disclosed_in_preview": {"const": false},
+        "recipient_identity_verified": {"type": "boolean"},
+        "delivery_authorized": {"type": "boolean"}
+      }
+    }
+  },
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "partial"}}}, "then": {
+      "properties": {"exit_code": {"const": 2}, "submission_state": {"const": "SUBMISSION_UNCONFIRMED"}, "submission_receipt_id": {"type": "string"}, "operation_id": {"type": "string"}, "claim_committed": {"const": true}, "provider_sandbox_capability_verified": {"const": true}, "provider_probe_requested": {"const": true}, "submission_post_attempted": {"const": true}, "effects": {"properties": {"external_network_requested": {"const": true}, "delivery_authorized": {"const": true}, "recipient_identity_verified": {"const": true}}}}
+    }, "else": {"properties": {"submission_receipt_id": {"const": null}, "effects": {"properties": {"delivery_authorized": {"const": false}, "recipient_identity_verified": {"const": false}}}}}},
+    {"if": {"properties": {"status": {"const": "invalid_input"}}}, "then": {"properties": {"exit_code": {"const": 4}}}},
+    {"if": {"properties": {"status": {"enum": ["blocked", "unavailable"]}}}, "then": {"properties": {"exit_code": {"const": 5}}}},
+    {"if": {"properties": {"submission_post_attempted": {"const": true}, "status": {"not": {"const": "partial"}}}}, "then": {"properties": {"submission_state": {"const": "UNKNOWN_UNCONFIRMED"}}}},
+    {"if": {"properties": {"submission_post_attempted": {"const": false}}}, "then": {"properties": {"submission_state": {"const": "NO_SUBMISSION_ATTEMPT"}}}},
+    {"properties": {"effects": {"properties": {"external_network_requested": {"type": "boolean"}}}}}
+  ]
+}

@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schema/issue-eligibility-request.v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "repository",
+    "expected_repository_id",
+    "finding",
+    "privacy",
+    "max_source_age_seconds"
+  ],
+  "properties": {
+    "repository": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 240,
+      "pattern": "^[A-Za-z0-9_][A-Za-z0-9_.-]{0,99}(?:/[A-Za-z0-9_][A-Za-z0-9_.-]{0,99}){1,11}$"
+    },
+    "expected_repository_id": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775807
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "finding_id",
+        "finding_record_sha256",
+        "source_binding_sha256",
+        "source_mode",
+        "source_revision",
+        "evidence_anchor_set_sha256",
+        "positive_anchor_count",
+        "counter_anchor_count",
+        "assessment_state",
+        "selected_source_count",
+        "observed_source_count",
+        "source_coverage",
+        "observed_at_utc"
+      ],
+      "properties": {
+        "finding_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "finding_record_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_binding_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_mode": {
+          "enum": [
+            "DeliveredTarget",
+            "WorkingTree",
+            "ProposedPR"
+          ]
+        },
+        "source_revision": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_anchor_set_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "positive_anchor_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16
+        },
+        "counter_anchor_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16
+        },
+        "assessment_state": {
+          "enum": [
+            "REVIEWED",
+            "UNVERIFIED",
+            "INCONCLUSIVE",
+            "REJECTED"
+          ]
+        },
+        "selected_source_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "observed_source_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32
+        },
+        "source_coverage": {
+          "enum": [
+            "COMPLETE_SELECTED",
+            "PARTIAL_SELECTED",
+            "UNKNOWN"
+          ]
+        },
+        "observed_at_utc": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+        }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classification",
+        "target_visibility",
+        "decision",
+        "policy_revision_sha256"
+      ],
+      "properties": {
+        "classification": {
+          "enum": [
+            "PUBLIC",
+            "INTERNAL",
+            "CONFIDENTIAL",
+            "RESTRICTED",
+            "UNKNOWN"
+          ]
+        },
+        "target_visibility": {
+          "enum": [
+            "PUBLIC",
+            "PRIVATE",
+            "UNKNOWN"
+          ]
+        },
+        "decision": {
+          "enum": [
+            "ALLOW_REDACTED_LOCAL_REVIEW",
+            "NEEDS_REVIEW",
+            "DENY",
+            "UNKNOWN"
+          ]
+        },
+        "policy_revision_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "max_source_age_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 86400
+    }
+  },
+  "description": "EC215 caller declarations only; actual IssueMatchRequest and EC214 receipt are separate API/CLI inputs, bound by the evaluation fingerprint. No source/reviewer organizational authentication asserted by this schema."
+}

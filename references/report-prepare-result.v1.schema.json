@@ -1,0 +1,603 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/report-prepare-result.v1.schema.json",
+  "title": "EC197 bounded read-only report writing context (no egress authorization attestation or dispatch)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "subject",
+    "canonical_json",
+    "limitations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.report_prepare.v1"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "invalid_input",
+        "partial",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^REPORT_PREPARE_[A-Z0-9_]+$"
+    },
+    "subject": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/record"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "canonical_json": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 524288
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "limitations": {
+      "$ref": "#/$defs/claims"
+    }
+  },
+  "$defs": {
+    "sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "repository": {
+      "type": "string",
+      "pattern": "^cesrepo1:[0-9a-f]{64}$"
+    },
+    "report": {
+      "type": "string",
+      "pattern": "^cesrs1:[0-9a-f]{64}$"
+    },
+    "scope": {
+      "type": "string",
+      "pattern": "^cesmrs1:[0-9a-f]{64}$"
+    },
+    "citation_ref": {
+      "type": "string",
+      "pattern": "^cesrc1:[0-9a-f]{64}$"
+    },
+    "period_id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 200,
+      "pattern": "^cesnp1:[^\\s]+$"
+    },
+    "utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "reason": {
+      "type": "string",
+      "pattern": "^[A-Z0-9_]{3,128}$"
+    },
+    "claims": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "external_authorization_or_release_receipts_authenticated",
+        "data_egress_privacy_review_completed",
+        "repository_identity_or_source_authenticated",
+        "period_or_repository_universe_completeness_verified",
+        "git_activity_or_delivery_verified",
+        "ai_conclusions_verified_as_facts",
+        "ci_execution_or_pass_verified",
+        "people_identity_or_evidence_attribution_verified",
+        "individual_performance_assessed",
+        "human_approval_completed",
+        "ai_handoff_or_model_invoked",
+        "report_drafted_rendered_or_published",
+        "native_powershell_action_registered",
+        "filesystem_network_or_business_repository_written"
+      ],
+      "properties": {
+        "external_authorization_or_release_receipts_authenticated": {
+          "const": false
+        },
+        "data_egress_privacy_review_completed": {
+          "const": false
+        },
+        "repository_identity_or_source_authenticated": {
+          "const": false
+        },
+        "period_or_repository_universe_completeness_verified": {
+          "const": false
+        },
+        "git_activity_or_delivery_verified": {
+          "const": false
+        },
+        "ai_conclusions_verified_as_facts": {
+          "const": false
+        },
+        "ci_execution_or_pass_verified": {
+          "const": false
+        },
+        "people_identity_or_evidence_attribution_verified": {
+          "const": false
+        },
+        "individual_performance_assessed": {
+          "const": false
+        },
+        "human_approval_completed": {
+          "const": false
+        },
+        "ai_handoff_or_model_invoked": {
+          "const": false
+        },
+        "report_drafted_rendered_or_published": {
+          "const": false
+        },
+        "native_powershell_action_registered": {
+          "const": false
+        },
+        "filesystem_network_or_business_repository_written": {
+          "const": false
+        }
+      }
+    },
+    "citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "citation_ref",
+        "kind",
+        "provenance_class",
+        "claim_state"
+      ],
+      "properties": {
+        "citation_ref": {
+          "$ref": "#/$defs/citation_ref"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "analysis_claim",
+            "canceled_claim",
+            "change_claim",
+            "commit_claim",
+            "completed_fail_claim",
+            "completed_inconclusive_claim",
+            "completed_pass_claim",
+            "finding_claim",
+            "not_collected",
+            "not_run_claim",
+            "pull_request_claim",
+            "recommendation_claim",
+            "redacted",
+            "running_claim",
+            "unattributable",
+            "unavailable"
+          ]
+        },
+        "provenance_class": {
+          "type": "string",
+          "enum": [
+            "AI_OUTPUT_REFERENCE_CLAIM_UNVERIFIED",
+            "DECLARED_INFORMATION_GAP_UNVERIFIED",
+            "EXTERNAL_CI_RUN_CLAIM_UNVERIFIED",
+            "EXTERNAL_GIT_RECORD_CLAIM_UNVERIFIED"
+          ]
+        },
+        "claim_state": {
+          "const": "UNVERIFIED_DECLARED_REFERENCE"
+        }
+      }
+    },
+    "channel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "coverage_state",
+        "coverage_reason_codes",
+        "release_state",
+        "ci_completion_signal",
+        "released_reference_count",
+        "citations"
+      ],
+      "properties": {
+        "channel": {
+          "type": "string",
+          "enum": [
+            "ai_conclusion",
+            "ci_execution",
+            "git_activity",
+            "unknown_signal"
+          ]
+        },
+        "coverage_state": {
+          "type": "string",
+          "enum": [
+            "COMPLETE_DECLARED",
+            "PARTIAL_DECLARED",
+            "UNKNOWN",
+            "WITHHELD_BY_RELEASE_POLICY"
+          ]
+        },
+        "coverage_reason_codes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reason"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        },
+        "release_state": {
+          "type": "string",
+          "enum": [
+            "ALL_SUBMITTED_REFERENCES_RELEASED",
+            "CHANNEL_NOT_RELEASED",
+            "EMPTY_SUBMITTED_NOT_VERIFIED_ZERO",
+            "SELECTED_REFERENCES_ONLY"
+          ]
+        },
+        "ci_completion_signal": {
+          "type": "string",
+          "enum": [
+            "CI_NOT_RELEASED",
+            "CONFLICTING_COMPLETION_CLAIMS_UNVERIFIED",
+            "FAILURE_COMPLETION_CLAIM_UNVERIFIED",
+            "INCONCLUSIVE_COMPLETION_CLAIM_UNVERIFIED",
+            "NOT_APPLICABLE",
+            "NO_CI_COMPLETION_CLAIM",
+            "PASS_COMPLETION_CLAIM_UNVERIFIED",
+            "REDACTED_CI_COMPLETION_UNKNOWN"
+          ]
+        },
+        "released_reference_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 512
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/citation"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        }
+      }
+    },
+    "repository_projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_ref",
+        "report_subject_ref",
+        "source_mode",
+        "source_binding_sha256",
+        "people_binding_sha256",
+        "period_window_complete_declared",
+        "path_scope",
+        "inventory_state",
+        "scope_gap_codes",
+        "channels"
+      ],
+      "properties": {
+        "repository_ref": {
+          "$ref": "#/$defs/repository"
+        },
+        "report_subject_ref": {
+          "$ref": "#/$defs/report"
+        },
+        "source_mode": {
+          "type": "string",
+          "enum": [
+            "DeliveredTarget",
+            "ProposedPR",
+            "WorkingTree"
+          ]
+        },
+        "source_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "people_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "period_window_complete_declared": {
+          "type": "boolean"
+        },
+        "path_scope": {
+          "type": "string",
+          "enum": [
+            "ENTIRE_REPOSITORY_DECLARED",
+            "SELECTED_PATHS"
+          ]
+        },
+        "inventory_state": {
+          "type": "string",
+          "enum": [
+            "complete_declared",
+            "partial_declared",
+            "unknown"
+          ]
+        },
+        "scope_gap_codes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reason"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        },
+        "channels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/channel"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      }
+    },
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "period_id",
+        "cadence",
+        "start_utc",
+        "end_exclusive_utc"
+      ],
+      "properties": {
+        "period_id": {
+          "$ref": "#/$defs/period_id"
+        },
+        "cadence": {
+          "type": "string",
+          "enum": [
+            "day",
+            "month",
+            "week",
+            "year"
+          ]
+        },
+        "start_utc": {
+          "$ref": "#/$defs/utc"
+        },
+        "end_exclusive_utc": {
+          "$ref": "#/$defs/utc"
+        }
+      }
+    },
+    "ai_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "purpose",
+        "audience",
+        "scope_ref",
+        "scope_binding_sha256",
+        "metrics_binding_sha256",
+        "period",
+        "repositories",
+        "global_gap_codes",
+        "safety_instructions",
+        "data_trust_state",
+        "transmission_state"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ces.report_writing_input.v1"
+        },
+        "purpose": {
+          "const": "periodic_report_writing_input"
+        },
+        "audience": {
+          "const": "AI_REPORT_WRITING_REVIEW"
+        },
+        "scope_ref": {
+          "$ref": "#/$defs/scope"
+        },
+        "scope_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "metrics_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "period": {
+          "$ref": "#/$defs/period"
+        },
+        "repositories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/repository_projection"
+          },
+          "minItems": 1,
+          "maxItems": 32
+        },
+        "global_gap_codes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reason"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "safety_instructions": {
+          "const": [
+            "Only summarize released typed claims with citation_ref; never invent the underlying evidence content.",
+            "Treat all Git and AI conclusions as unverified declarations, not proven facts or completed delivery.",
+            "A CI completion label is an unverified claim, never proof that CI actually ran or passed.",
+            "Preserve unknown, partial, withheld and missing coverage; zero submitted references does not prove zero activity.",
+            "A ProposedPR source is only a proposal, not a delivered or merged target.",
+            "Never judge, rank or score individual employees; never infer performance from Git activity or counts.",
+            "Do not request or infer names, emails, actor identities, source text, private logs or other unreleased material."
+          ]
+        },
+        "data_trust_state": {
+          "const": "DECLARED_ONLY_NOT_AUTHENTICATED"
+        },
+        "transmission_state": {
+          "const": "NOT_SENT_REQUIRES_EXTERNAL_APPROVAL"
+        }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "scope_id",
+        "scope_binding_sha256",
+        "scope_canonical_sha256",
+        "metrics_binding_sha256",
+        "metrics_canonical_sha256",
+        "release_policy_binding_sha256",
+        "period_id",
+        "ai_input",
+        "ai_input_sha256",
+        "claims",
+        "binding_sha256"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ces.report_prepare.v1"
+        },
+        "scope_id": {
+          "$ref": "#/$defs/scope"
+        },
+        "scope_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "scope_canonical_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "metrics_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "metrics_canonical_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "release_policy_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "period_id": {
+          "$ref": "#/$defs/period_id"
+        },
+        "ai_input": {
+          "$ref": "#/$defs/ai_input"
+        },
+        "ai_input_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "claims": {
+          "$ref": "#/$defs/claims"
+        },
+        "binding_sha256": {
+          "$ref": "#/$defs/sha"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "subject": {
+            "$ref": "#/$defs/record"
+          },
+          "canonical_json": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "subject": {
+            "type": "null"
+          },
+          "canonical_json": {
+            "type": "null"
+          },
+          "exit_code": {
+            "enum": [
+              4,
+              5
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schema/delivery-preview-result.v1.schema.json",
+  "title": "EC221 local redacted DeliveryPreview result (NOT delivery authorization)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "status", "exit_code", "reason_code", "preview_id", "preview", "preview_markdown", "preview_content_sha256", "delivery_state", "effects"],
+  "properties": {
+    "schema": {"const": "ces.delivery_preview.v1"},
+    "status": {"enum": ["partial", "unavailable", "invalid_input"]},
+    "exit_code": {"enum": [2, 4, 5]},
+    "reason_code": {"type": "string", "pattern": "^DELIVERY_PREVIEW_[A-Z0-9_]+$"},
+    "preview_id": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^cesdp1:[a-f0-9]{64}$"}]},
+    "preview": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/preview"}]},
+    "preview_markdown": {"oneOf": [{"type": "null"}, {"type": "string", "maxLength": 12288}]},
+    "preview_content_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha"}]},
+    "delivery_state": {"const": "NO_DELIVERY_OR_PUBLICATION"},
+    "effects": {
+      "type": "object", "additionalProperties": false,
+      "required": ["external_network_requested", "recipient_contacted", "message_sent", "delivery_accepted", "delivered", "published", "issue_or_pr_created_or_modified", "git_or_business_files_written", "ces_records_written", "external_ai_invoked", "source_content_disclosed_in_preview", "recipient_identity_verified", "delivery_authorized"],
+      "properties": {
+        "external_network_requested": {"const": false},
+        "recipient_contacted": {"const": false},
+        "message_sent": {"const": false},
+        "delivery_accepted": {"const": false},
+        "delivered": {"const": false},
+        "published": {"const": false},
+        "issue_or_pr_created_or_modified": {"const": false},
+        "git_or_business_files_written": {"const": false},
+        "ces_records_written": {"const": false},
+        "external_ai_invoked": {"const": false},
+        "source_content_disclosed_in_preview": {"const": false},
+        "recipient_identity_verified": {"const": false},
+        "delivery_authorized": {"const": false}
+      }
+    }
+  },
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "partial"}}}, "then": {"properties": {"exit_code": {"const": 2}, "preview": {"$ref": "#/$defs/preview"}, "preview_id": {"type": "string"}, "preview_markdown": {"type": "string"}, "preview_content_sha256": {"$ref": "#/$defs/sha"}}}},
+    {"if": {"properties": {"status": {"const": "invalid_input"}}}, "then": {"properties": {"exit_code": {"const": 4}, "preview": {"type": "null"}, "preview_id": {"type": "null"}, "preview_markdown": {"type": "null"}, "preview_content_sha256": {"type": "null"}}}},
+    {"if": {"properties": {"status": {"const": "unavailable"}}}, "then": {"properties": {"exit_code": {"const": 5}, "preview": {"type": "null"}, "preview_id": {"type": "null"}, "preview_markdown": {"type": "null"}, "preview_content_sha256": {"type": "null"}}}}
+  ],
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "maybeSha": {"oneOf": [{"$ref": "#/$defs/sha"}, {"type": "null"}]},
+    "gap": {"type": "string", "pattern": "^[A-Z0-9_]+$", "maxLength": 100},
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_kind", "source_version", "latest_observed_version", "source_record_sha256", "source_content_sha256", "content_digest_kind", "content_format", "source_version_sha256", "store_revision_sha256", "store_read_trust", "privacy_minimum", "coverage", "gap_codes", "is_remote_delivery_evidence"],
+      "properties": {
+        "source_kind": {"enum": ["REPORT", "FINDING"]},
+        "source_version": {"type": "integer", "minimum": 1, "maximum": 128},
+        "latest_observed_version": {"oneOf": [{"type": "integer", "minimum": 1, "maximum": 64}, {"type": "null"}]},
+        "source_record_sha256": {"$ref": "#/$defs/sha"},
+        "source_content_sha256": {"$ref": "#/$defs/sha"},
+        "content_digest_kind": {"enum": ["RENDERED_MARKDOWN_SHA256", "ORIGINAL_FINDING_DECLARATION_SHA256_NOT_RAW_TEXT"]},
+        "content_format": {"enum": ["text/markdown;charset=utf-8", "application/vnd.ces.finding-declaration-metadata+json"]},
+        "source_version_sha256": {"$ref": "#/$defs/sha"},
+        "store_revision_sha256": {"$ref": "#/$defs/sha"},
+        "store_read_trust": {"enum": ["EC200_LOCAL_HASH_LINKS_ONLY_NOT_EXTERNAL_AUTHORITY", "EC179_LOCAL_HMAC_HASH_CHAIN_ONLY_NOT_EXTERNAL_AUTHORITY"]},
+        "privacy_minimum": {"enum": ["INTERNAL", "CONFIDENTIAL"]},
+        "coverage": {
+          "type": "object", "additionalProperties": false,
+          "required": ["source_units_count", "evidence_reference_count", "incomplete_source_units_count", "incomplete_channel_count", "not_fully_released_channel_count"],
+          "properties": {
+            "source_units_count": {"type": "integer", "minimum": 1, "maximum": 32},
+            "evidence_reference_count": {"type": "integer", "minimum": 0, "maximum": 100000},
+            "incomplete_source_units_count": {"type": "integer", "minimum": 0, "maximum": 32},
+            "incomplete_channel_count": {"type": "integer", "minimum": 0, "maximum": 128},
+            "not_fully_released_channel_count": {"type": "integer", "minimum": 0, "maximum": 128}
+          }
+        },
+        "gap_codes": {"type": "array", "items": {"$ref": "#/$defs/gap"}, "maxItems": 20, "uniqueItems": true},
+        "is_remote_delivery_evidence": {"const": false}
+      }
+    },
+    "preview": {
+      "type": "object", "additionalProperties": false,
+      "required": ["preview_id", "render_format", "destination", "sources", "privacy", "coverage_and_permission_gaps", "required_future_approvals", "source_bytes_emitted", "cross_source_atomic_snapshot", "identity_or_source_trust_authenticated", "is_deliverable_payload", "ready_to_send", "delivery_evidence_present", "preview_manifest_sha256"],
+      "properties": {
+        "preview_id": {"type": "string", "pattern": "^cesdp1:[a-f0-9]{64}$"},
+        "render_format": {"const": "text/markdown;charset=utf-8"},
+        "destination": {
+          "type": "object", "additionalProperties": false,
+          "required": ["audience_kind", "channel_kind", "audience_identity_sha256", "channel_identity_sha256", "recipient_identity_sha256", "destination_binding_sha256", "audience_verified", "channel_verified", "recipient_verified"],
+          "properties": {
+            "audience_kind": {"enum": ["INTERNAL_REVIEW", "NAMED_EXTERNAL", "PUBLIC_DISTRIBUTION"]},
+            "channel_kind": {"enum": ["EMAIL", "CHAT", "DOCUMENT_PORTAL", "MANUAL_EXPORT"]},
+            "audience_identity_sha256": {"$ref": "#/$defs/maybeSha"},
+            "channel_identity_sha256": {"$ref": "#/$defs/maybeSha"},
+            "recipient_identity_sha256": {"$ref": "#/$defs/maybeSha"},
+            "destination_binding_sha256": {"$ref": "#/$defs/sha"},
+            "audience_verified": {"const": false},
+            "channel_verified": {"const": false},
+            "recipient_verified": {"const": false}
+          }
+        },
+        "sources": {"type": "array", "minItems": 1, "maxItems": 8, "items": {"$ref": "#/$defs/source"}},
+        "privacy": {
+          "type": "object", "additionalProperties": false,
+          "required": ["requested_floor", "effective_minimum_class", "independently_declassified", "content_policy_reviewed"],
+          "properties": {
+            "requested_floor": {"enum": ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"]},
+            "effective_minimum_class": {"enum": ["INTERNAL", "CONFIDENTIAL", "RESTRICTED"]},
+            "independently_declassified": {"const": false},
+            "content_policy_reviewed": {"const": false}
+          }
+        },
+        "coverage_and_permission_gaps": {"type": "array", "items": {"$ref": "#/$defs/gap"}, "minItems": 6, "maxItems": 50, "uniqueItems": true},
+        "required_future_approvals": {"type": "array", "prefixItems": [{"const": "EC222_SENSITIVE_CONTENT_REVIEW"}, {"const": "EC223_RECIPIENT_AND_CHANNEL_VERIFICATION"}, {"const": "EC224_EXACT_CONTENT_AND_DESTINATION_APPROVAL"}, {"const": "EC225_CONTROLLED_SEND_ADAPTER"}], "items": false, "minItems": 4, "maxItems": 4},
+        "source_bytes_emitted": {"const": false},
+        "cross_source_atomic_snapshot": {"const": false},
+        "identity_or_source_trust_authenticated": {"const": false},
+        "is_deliverable_payload": {"const": false},
+        "ready_to_send": {"const": false},
+        "delivery_evidence_present": {"const": false},
+        "preview_manifest_sha256": {"$ref": "#/$defs/sha"}
+      }
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "schema": "ces.proposed_pr_patch.v1",
+  "introduced": "EC-164 / V4.74 / R164",
+  "entry": "construction/proposed_pr_patch.py",
+  "implementation": "standalone Python read-only consumer; NOT ces.cli.v1, NOT native Collect:ProposedPR",
+  "providers": ["github.com", "gitlab.com"],
+  "default": {
+    "allow_network": false,
+    "include_patch_content": false,
+    "acknowledge_provider_permission": false,
+    "response": "EC163 path metadata nested under path_evidence; patches=[]; patch_content_collected=false"
+  },
+  "content_gate_all_required": [
+    "Valid prior full ces.proposed_pr_identity.v1 result, with expected pin and matching request locator",
+    "Explicit allow_network true, TLS-authenticated fixed-provider read and valid token supplied separately",
+    "Explicit include_patch_content true at the call site",
+    "Explicit acknowledge_provider_permission true: caller declaration, NOT independent provider entitlement proof",
+    "Explicit ContentPolicy with 1..5 exact safe changed destination or deleted origin paths; no glob, no sensitive paths",
+    "Explicit bounded positive per-file and total UTF-8 output budgets",
+    "EC163 pre AND post immutable pin match, provider change-count stability, safe path/status/pagination, coverage.state COMPLETE",
+    "All selected paths exactly match the verified sanitized changed-path metadata",
+    "Full bounded text passes binary/size/control-character/sensitive-pattern/syntax refusal policies"
+  ],
+  "limits": {
+    "max_selected_files": 5,
+    "default_patch_bytes_per_file": 4096,
+    "hard_patch_bytes_per_file": 8192,
+    "default_total_patch_bytes": 8192,
+    "hard_total_patch_bytes": 32768,
+    "transport_per_page_max_bytes": 2097152,
+    "transport_total_bytes": 12582912,
+    "transport_max_pages": 30,
+    "transport_max_files": 3000
+  },
+  "response": {
+    "required_keys": [
+      "schema", "status", "exit_code", "reason_code", "message",
+      "path_evidence", "patch_content_requested", "patch_content_collected",
+      "patches", "content_policy", "native_cli_action_registered",
+      "diff_snapshot_proven", "delivery_or_merge_proven", "provider_actor_verified",
+      "write_authorized", "synthetic"
+    ],
+    "status_to_exit_code": {"success": 0, "partial": 2, "invalid_input": 4, "unavailable": 5},
+    "path_evidence": "Unmodified ces.proposed_pr_paths.v1 result, or null for preflight denial. Its patch_content_collected flag remains false by design.",
+    "patches_item_keys": ["path", "availability", "patch_text", "utf8_bytes"],
+    "patch_text": "Only non-null for explicitly selected, fully bounded AVAILABLE entries after all EC163 guards complete",
+    "content_policy_keys": [
+      "max_selected_files", "selected_files", "max_patch_bytes", "max_total_bytes",
+      "emitted_utf8_bytes", "caller_permission_acknowledged",
+      "provider_permission_independently_verified"
+    ],
+    "synthetic_forces_partial": true,
+    "content_granted_success_means": "Only limited selected patch text was emitted following completed path and pin observations; not an authenticated/atomic diff snapshot, provider permission proof, merge or delivery attestation"
+  },
+  "availability_states": {
+    "AVAILABLE": "Whitelisted bounded patch string emitted",
+    "MISSING_OR_BINARY_UNKNOWN": "Provider omitted patch/diff or sent null; cannot distinguish binary without positive marker",
+    "EMPTY": "Present empty string; no content emitted",
+    "BINARY": "Provider content explicitly contained binary-diff marker",
+    "BINARY_OR_BINARY_SUSPECTED": "Selected file has binary-typical suffix or provider binary flag; conservative block, not positive binary proof",
+    "PROVIDER_COLLAPSED": "GitLab collapsed file diff; no expansion/read of another endpoint",
+    "PROVIDER_TOO_LARGE": "GitLab too_large flag; no expansion/read of another endpoint",
+    "TOO_LARGE": "UTF-8 patch byte count exceeds selected per-file cap; no prefix emitted",
+    "TOTAL_BUDGET_EXHAUSTED": "Total visible output budget exhausted; no suffix or prefix emitted",
+    "TRUNCATED": "Declared unified diff hunk lengths were not satisfied by the provided snippet; no content emitted",
+    "UNVERIFIED_FORMAT": "Nonempty text fails conservative syntax check; no content emitted",
+    "SENSITIVE_CONTENT_BLOCKED": "Potential secret literal detected; entire snippet blocked",
+    "SENSITIVE_PATH_BLOCKED": "Known private path denied before transfer/read, not emitted as a patch entry",
+    "UNSAFE_TEXT_BLOCKED": "Forbidden control/format text; no content emitted",
+    "INVALID_PROVIDER_CONTENT": "Provider patch/diff field had invalid type or encoding",
+    "COVERAGE_INCOMPLETE": "EC163 source count/path pagination incomplete or unknown; ALL patches suppressed"
+  },
+  "refusal_semantics": {
+    "preflight_invalid_input": "No provider/token requests. reason_code identifies input gate.",
+    "provider_or_pin_error": "Mirror EC163 status and reason; suppress ALL captured content, release no patch entries.",
+    "incomplete_coverage": "Return partial/2, each selected availability COVERAGE_INCOMPLETE, every patch_text=null.",
+    "any_selected_path_missing": "Return invalid_input/4, patches=[]; suppress content from other selected paths.",
+    "some_files_withheld": "Return partial/2, explicit availability for each selected path; only AVAILABLE paths contain text.",
+    "synthetic": "Even a complete simulated fixture may only return partial/2; is not a live authorization example."
+  },
+  "integrity_limitations": [
+    "Two matching EC162 pin observations plus count/coverage do not prove a cross-page atomic snapshot; EC165 remains unimplemented.",
+    "A syntactically well-formed patch may still omit entire hunks or be stale; availability AVAILABLE does not mean complete file diff.",
+    "GitHub may omit patch for binary or other reasons; omission is deliberately not labeled definitely binary.",
+    "Caller permission acknowledgment and successful API read do NOT cryptographically attest source-code sharing rights or user identity.",
+    "Secret/path heuristics are defense in depth, not comprehensive data loss prevention; treat authorized stdout as sensitive.",
+    "Provider JSON pages may already carry patch/diff fields even when content output is disabled; bounded in-memory transport and parse is unavoidable for these APIs.",
+    "No patch bytes are cached, persisted, logged, fetched via raw-diff endpoint or written to a local code repository by the tool."
+  ],
+  "always_false": [
+    "content_policy.provider_permission_independently_verified", "native_cli_action_registered",
+    "diff_snapshot_proven", "provider_actor_verified", "delivery_or_merge_proven",
+    "write_authorized"
+  ],
+  "online_provider_validation": "NOT_RUN",
+  "native_powershell_validation": "NOT_RUN",
+  "final_user_assisted_acceptance": "NOT_STARTED"
+}

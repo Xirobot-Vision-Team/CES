@@ -1,0 +1,449 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "operation",
+    "status",
+    "reason_code",
+    "run_id",
+    "request_id",
+    "receipt",
+    "source_observation",
+    "effects",
+    "guarantees"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.cycle_conflict_guard.v1"
+    },
+    "operation": {
+      "enum": [
+        "scheduled_summary",
+        "artifact_attach",
+        "inspect",
+        "business_write_attempt"
+      ]
+    },
+    "status": {
+      "enum": [
+        "RECORDED_OBSERVATION",
+        "RECORDED_CHECK_BLOCK",
+        "RECORDED_LOCAL_ATTACHMENT",
+        "REPLAY_SUPPRESSED",
+        "NO_RECEIPT",
+        "RECEIPT_OBSERVED",
+        "REJECTED",
+        "CONFLICT_BLOCKED",
+        "OVERLAP_BLOCKED",
+        "PERMISSION_DENIED",
+        "UNKNOWN_BLOCKED"
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{2,127}$"
+    },
+    "run_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^run_v1_[0-9a-f]{48}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "request_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^(evt_|upl_)[A-Za-z0-9_-]{12,80}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "receipt": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "slot_sha256",
+            "intent_sha256",
+            "phase",
+            "first_request_id",
+            "started_at_utc_unverified",
+            "finalized_at_utc_unverified"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "scheduled_summary",
+                "artifact_attach"
+              ]
+            },
+            "slot_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "intent_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "phase": {
+              "enum": [
+                "RESERVED",
+                "FINAL"
+              ]
+            },
+            "first_request_id": {
+              "type": "string",
+              "pattern": "^(evt_|upl_)[A-Za-z0-9_-]{12,80}$"
+            },
+            "started_at_utc_unverified": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}Z$"
+            },
+            "finalized_at_utc_unverified": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}Z$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source_observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reason_code",
+        "result_sha256",
+        "called_now",
+        "returned_prior_result"
+      ],
+      "properties": {
+        "status": {
+          "anyOf": [
+            {
+              "enum": [
+                "CHECK_OBSERVED_ONLY",
+                "CHECK_BLOCKED",
+                "ATTACHED_LOCAL_ONLY"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]{2,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "result_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "called_now": {
+          "type": "boolean"
+        },
+        "returned_prior_result": {
+          "const": false
+        }
+      }
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ec239_summary_called",
+        "ec238_local_artifact_attach_called",
+        "new_guard_reservation_persisted",
+        "new_guard_final_receipt_persisted",
+        "repeat_operation_suppressed",
+        "business_code_executed",
+        "business_write_performed",
+        "native_action_dispatched",
+        "permission_granted",
+        "external_scheduler_installed"
+      ],
+      "properties": {
+        "ec239_summary_called": {
+          "type": "boolean"
+        },
+        "ec238_local_artifact_attach_called": {
+          "type": "boolean"
+        },
+        "new_guard_reservation_persisted": {
+          "type": "boolean"
+        },
+        "new_guard_final_receipt_persisted": {
+          "type": "boolean"
+        },
+        "repeat_operation_suppressed": {
+          "type": "boolean"
+        },
+        "business_code_executed": {
+          "const": false
+        },
+        "business_write_performed": {
+          "const": false
+        },
+        "native_action_dispatched": {
+          "const": false
+        },
+        "permission_granted": {
+          "const": false
+        },
+        "external_scheduler_installed": {
+          "const": false
+        }
+      }
+    },
+    "guarantees": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "cross_process_advisory_lock",
+        "local_receipt_self_hash_not_signature",
+        "automatic_retry_on_ambiguity",
+        "exactly_once_business_effects_proven",
+        "source_actor_permission_authenticated",
+        "unguarded_old_entrypoints_protected",
+        "same_uid_rollback_nfs_multihost_os_crash_proven",
+        "native_cycle_routing"
+      ],
+      "properties": {
+        "scope": {
+          "const": "GUARDED_EC239_EC238_LOCAL_POSIX_PROCESS_ONLY"
+        },
+        "cross_process_advisory_lock": {
+          "const": true
+        },
+        "local_receipt_self_hash_not_signature": {
+          "const": true
+        },
+        "automatic_retry_on_ambiguity": {
+          "const": false
+        },
+        "exactly_once_business_effects_proven": {
+          "const": false
+        },
+        "source_actor_permission_authenticated": {
+          "const": false
+        },
+        "unguarded_old_entrypoints_protected": {
+          "const": false
+        },
+        "same_uid_rollback_nfs_multihost_os_crash_proven": {
+          "const": false
+        },
+        "native_cycle_routing": {
+          "const": false
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "RECORDED_OBSERVATION",
+              "RECORDED_CHECK_BLOCK",
+              "RECORDED_LOCAL_ATTACHMENT"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "receipt": {
+            "type": "object",
+            "properties": {
+              "phase": {
+                "const": "FINAL"
+              }
+            }
+          },
+          "run_id": {
+            "type": "string",
+            "pattern": "^run_v1_[0-9a-f]{48}$"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^(evt_|upl_)[A-Za-z0-9_-]{12,80}$"
+          },
+          "effects": {
+            "properties": {
+              "new_guard_reservation_persisted": {
+                "const": true
+              },
+              "new_guard_final_receipt_persisted": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "REPLAY_SUPPRESSED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "receipt": {
+            "type": "object",
+            "properties": {
+              "phase": {
+                "const": "FINAL"
+              }
+            }
+          },
+          "effects": {
+            "properties": {
+              "repeat_operation_suppressed": {
+                "const": true
+              },
+              "ec239_summary_called": {
+                "const": false
+              },
+              "ec238_local_artifact_attach_called": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "UNKNOWN_BLOCKED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "run_id": {
+            "type": "null"
+          },
+          "request_id": {
+            "type": "null"
+          },
+          "receipt": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "NO_RECEIPT"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "receipt": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "PERMISSION_DENIED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "operation": {
+            "const": "business_write_attempt"
+          },
+          "receipt": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source_observation": {
+            "properties": {
+              "called_now": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source_observation": {
+            "properties": {
+              "status": {
+                "type": "string"
+              },
+              "reason_code": {
+                "type": "string"
+              },
+              "result_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schemas/cycle-conflict-result.v1.schema.json",
+  "title": "EC240 local guarded invocation result, never business success",
+  "description": "One bounded ASCII JSON line; exit 2 is observed/suppressed, 3 rejected/known conflict, 5 unknown. The receipt has no authority outside this POSIX local guard."
+}

@@ -1,0 +1,27 @@
+{
+  "name": "CES Engineering Suite",
+  "operator_version": "1.7.0",
+  "core_protocol_version": "1.0.0",
+  "entry": "ces-product.cmd",
+  "pillars": [
+    "periodic_reports",
+    "deep_issue_analysis",
+    "repository_knowledge"
+  ],
+  "notification_channel": "github_account_assignment_and_mentions",
+  "notification_cc": "per-profile GitHub member mentions; separate from primary recipients and assignees; empty by default",
+  "repository_specific_implementation": false,
+  "default_git_commit_or_push": false,
+  "scheduler_enabled_by_default": false,
+  "legacy_posix_signed_hosts": "preserved_separate_authority",
+  "issue_tracking": "persistent source-and-test-bound lifecycle; guarded state changes",
+  "analysis_lifecycle": "configured ff-only pull, actual build-only, authorized managed-doc auto commit/push",
+  "runtime_tests_default": false,
+  "project_testing": "opt-in source-reviewed contracts, bounded execution/results, Codex analysis and CC test-report Issues; independent fix gate",
+  "test_ownership": "explicit versioned function/feature-to-case developer mappings; run-bound snapshots and matched failure CC; no blame inference",
+  "knowledge_expansion": "manual scoped batches, source-bound chapters and repository coverage/backlog",
+  "daily_report_evidence": "run-bound source review and actual build in archive and published Markdown",
+  "work_audit": "exclude verified CES managed-document publications; preserve human and mixed work",
+  "license": "Apache-2.0",
+  "public_source_preparation": "privacy-checked projection, read-only CI, external project profiles, legacy bytes retained"
+}

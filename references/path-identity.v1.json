@@ -1,0 +1,66 @@
+{
+  "schema_version": "ces.path_identity_contract.v1",
+  "ec": "EC-159",
+  "package": "V4.69/R159",
+  "module": "scripts/pathidentity.ps1",
+  "native_cli_wire": "ces.cli.v1_UNCHANGED",
+  "available_helpers": [
+    "Normalize-FullPath",
+    "Paths-Equal",
+    "Resolve-CesUserPath",
+    "Assert-CesNoReparseAncestry",
+    "Assert-CesContainedPath",
+    "Resolve-CesEvidencePath",
+    "Read-CommonGitDirectory",
+    "Find-VerifiedStableRoot",
+    "Assert-CesVerifiedMainWorktree",
+    "Get-CesScopedOpaqueKey",
+    "Resolve-CesActorIdentity",
+    "Assert-CesVerifiedActor",
+    "Format-CesPathForLog",
+    "Redact-CesKnownPaths"
+  ],
+  "repo_path": {
+    "origin": "USER_EXPLICIT",
+    "relative_supported": true,
+    "absolute_supported": true,
+    "normalization_grants_authority": false
+  },
+  "local_repo_scope": {
+    "proof": "independent_main_worktree_git_dir_common_dir_cross_checks_plus_reparse_ancestry",
+    "local_key": "path_scoped_only; changes_when_common_git_dir_moves",
+    "global_remote_identity_authenticated": false,
+    "automatic_write_authorization": false
+  },
+  "actor": {
+    "minimum_tuple": ["provider", "tenant", "immutable_subject_id"],
+    "missing": "unknown",
+    "partial": "REJECT",
+    "complete_unattested": "declared_unverified",
+    "name_or_git_author_fallback": "FORBIDDEN",
+    "actor_key_without_provider_attestation": null,
+    "declared_actor_key_is_authentication": false,
+    "write_authorized": false,
+    "provider_attestation_available": false
+  },
+  "path_rules": {
+    "contained_store_requires_absolute_root": true,
+    "parent_traversal": "REJECT",
+    "outside_root": "REJECT",
+    "symlink_or_reparse_ancestry": "REJECT",
+    "evidence_allowed_outside_repository": true,
+    "evidence_is_authenticated": false,
+    "windows_macos_alias_case_checks": "CONSERVATIVE_NOT_FILESYSTEM_PROOF",
+    "atomic_race_protection": false
+  },
+  "integrations": [
+    "scripts/ces.ps1:Inspect-Repository",
+    "scripts/reconcile.ps1:Read-ReconcileSnapshotFile",
+    "scripts/codevalidate.ps1:Read-CodeValidateDraft",
+    "scripts/codesave.ps1:CodeSave-Snapshot and storage writer",
+    "scripts/codeshow.ps1:Get-CodeShowStore"
+  ],
+  "native_validation": "NOT_RUN",
+  "original_15_smoke": "NOT_RUN",
+  "final_user_assisted_acceptance": "DEFERRED"
+}

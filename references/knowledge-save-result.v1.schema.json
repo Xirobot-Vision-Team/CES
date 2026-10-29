@@ -1,0 +1,399 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ces.local/knowledge-save-result.v1.schema.json",
+  "title": "knowledge-save-result",
+  "description": "Partial/invalid/unavailable only; result boolean flags distinguish local metadata from any source or remote action",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "subject",
+    "local_version_metadata_written",
+    "local_write_outcome_unknown",
+    "private_store_initialized",
+    "source_knowledge_file_written",
+    "business_repository_written",
+    "existing_version_overwritten",
+    "issue_or_provider_written",
+    "published",
+    "candidate_promoted_to_verified_fact",
+    "organizational_signer_identity_authenticated",
+    "current_architecture_or_delivery_verified",
+    "native_knowledge_route_registered"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "ces.knowledge_version_save.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^KNOWLEDGE_SAVE_[A-Z0-9_]+$"
+    },
+    "subject": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "store_instance_id",
+            "store_scope_binding_sha256",
+            "baseline_snapshot_version",
+            "baseline_manifest_sha256",
+            "baseline_chapter_sha256",
+            "version_count",
+            "save_permission_granted"
+          ],
+          "properties": {
+            "store_instance_id": {
+              "type": "string"
+            },
+            "store_scope_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "baseline_snapshot_version": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+            },
+            "baseline_manifest_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "baseline_chapter_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "version_count": {
+              "const": 0
+            },
+            "save_permission_granted": {
+              "const": false
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "store_instance_id",
+            "store_scope_binding_sha256",
+            "authorization_scope_sha256",
+            "save_key",
+            "state",
+            "version_count",
+            "expected_parent_version_id",
+            "expected_new_chapter_sha256",
+            "restricted_content",
+            "write_authorized",
+            "body_disclosed"
+          ],
+          "properties": {
+            "store_instance_id": {
+              "type": "string"
+            },
+            "store_scope_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "authorization_scope_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "save_key": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9._-]{2,63}$"
+            },
+            "state": {
+              "enum": [
+                "ALREADY_PERSISTED",
+                "NEW_VERSION"
+              ]
+            },
+            "version_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 64
+            },
+            "expected_parent_version_id": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "expected_new_chapter_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "restricted_content": {
+              "type": "boolean"
+            },
+            "write_authorized": {
+              "const": false
+            },
+            "body_disclosed": {
+              "const": false
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "save_key",
+            "version_id",
+            "version_number",
+            "idempotent"
+          ],
+          "properties": {
+            "save_key": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9._-]{2,63}$"
+            },
+            "version_id": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "version_number": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "idempotent": {
+              "const": true
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "save_key",
+            "version_id",
+            "version_number",
+            "parent_version_id",
+            "chapter_content_sha256",
+            "metadata_store_scope_binding_sha256",
+            "reviewer_and_owner_signatures_locally_verified",
+            "organizational_approval_authority_unverified",
+            "source_knowledge_snapshot_untouched",
+            "content_projected",
+            "idempotent"
+          ],
+          "properties": {
+            "save_key": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9._-]{2,63}$"
+            },
+            "version_id": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "version_number": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "parent_version_id": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "chapter_content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "metadata_store_scope_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "reviewer_and_owner_signatures_locally_verified": {
+              "const": true
+            },
+            "organizational_approval_authority_unverified": {
+              "const": true
+            },
+            "source_knowledge_snapshot_untouched": {
+              "const": true
+            },
+            "content_projected": {
+              "const": false
+            },
+            "idempotent": {
+              "const": false
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "store_instance_id",
+            "store_scope_binding_sha256",
+            "chapter_path",
+            "baseline_snapshot_version",
+            "baseline_chapter_sha256",
+            "version_count",
+            "head_version_id",
+            "head_content_sha256",
+            "version_receipts",
+            "draft_content_disclosed",
+            "organizational_authority_verified"
+          ],
+          "properties": {
+            "store_instance_id": {
+              "type": "string"
+            },
+            "store_scope_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "chapter_path": {
+              "type": "string",
+              "minLength": 4,
+              "maxLength": 256,
+              "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.?/)[A-Za-z0-9_][A-Za-z0-9._/-]*\\.(?:md|markdown)$"
+            },
+            "baseline_snapshot_version": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+            },
+            "baseline_chapter_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "version_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "head_version_id": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "head_content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "version_receipts": {
+              "type": "array",
+              "maxItems": 64,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "sequence",
+                  "version_id",
+                  "parent_version_id",
+                  "content_sha256"
+                ],
+                "properties": {
+                  "sequence": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "version_id": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "parent_version_id": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "content_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  }
+                }
+              }
+            },
+            "draft_content_disclosed": {
+              "const": false
+            },
+            "organizational_authority_verified": {
+              "const": false
+            }
+          }
+        }
+      ]
+    },
+    "local_version_metadata_written": {
+      "type": "boolean"
+    },
+    "private_store_initialized": {
+      "type": "boolean"
+    },
+    "source_knowledge_file_written": {
+      "const": false
+    },
+    "business_repository_written": {
+      "const": false
+    },
+    "existing_version_overwritten": {
+      "const": false
+    },
+    "issue_or_provider_written": {
+      "const": false
+    },
+    "published": {
+      "const": false
+    },
+    "candidate_promoted_to_verified_fact": {
+      "const": false
+    },
+    "organizational_signer_identity_authenticated": {
+      "const": false
+    },
+    "current_architecture_or_delivery_verified": {
+      "const": false
+    },
+    "native_knowledge_route_registered": {
+      "const": false
+    },
+    "local_write_outcome_unknown": {
+      "type": "boolean"
+    }
+  }
+}

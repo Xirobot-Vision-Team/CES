@@ -1,0 +1,91 @@
+{
+  "schema_version": "ces.ec153.upstream_gap.v1",
+  "construction_release": "V4.63/R153/EC-153",
+  "origin_checkpoint": "R150/EC-150; source inventory audited in EC-151; CLI route evidence mapped in EC-152",
+  "blocker_id": "B-001",
+  "blocker_state_at_delivery": "OPEN_NON_BLOCKING_FOR_PROVISIONAL_PLAN",
+  "original_inventory_path_count": 305,
+  "visible_evidence_scope": {
+    "provided_baseline": "V4.62/R152/EC-152 full ces/ package supplied for this round",
+    "r150_paths": "construction/LEGACY_SOURCE_INVENTORY.json (305 original_paths)",
+    "sha_authorities_immutable": [
+      "construction/SOURCE_BASELINE.json (139 PS/Smoke source hashes)",
+      "construction/LEGACY_RELOCATIONS.json (156 relocation hashes)"
+    ],
+    "inherited_legacy_statement": "history/legacy-docs/BUILD_STATE-R150.json:reference_authority_note says neither artifact was in V3.28/R018 upstream archive",
+    "early_round_note": "history/legacy-rounds/EC-002.md explicitly notes ROUNDS.json absent from original baseline",
+    "routing_evidence_not_original_spec": "construction/ACTION_TRACE.json",
+    "current_plan_not_original": "construction/LEGACY_PLAN.json",
+    "cannot_prove": "Material outside provided CES package, independent archived V3.28/R018 bytes, any historical approval/signature or definitive identity of a later user-provided file."
+  },
+  "unavailable_originals": [
+    {
+      "key": "V3_10_FROZEN_MASTER_SPEC",
+      "original_identifier": "V3.10 frozen master specification",
+      "original_exact_filename": null,
+      "evidence_status": "HISTORICALLY_REPORTED_MISSING_NOT_IN_RECEIVED_PACKAGE",
+      "positive_byte_evidence": false,
+      "proof_limit": "Do not infer the original exact requirements, scope, signoffs, precedence or acceptance gates from newer docs. Unknown filename means an absence-of-named-path check cannot prove global absence.",
+      "required_recovery_evidence": "An original raw file, provenance/owner/source archive, timestamp/context, cryptographic digest and human assessment of its upstream authority."
+    },
+    {
+      "key": "ORIGINAL_ROUNDS_JSON",
+      "original_identifier": "Original ROUNDS.json from the frozen upstream plan",
+      "original_exact_filename": "ROUNDS.json",
+      "evidence_status": "ABSENT_FROM_305_PATH_R150_INVENTORY_AND_RECEIVED_PACKAGE",
+      "positive_byte_evidence": false,
+      "proof_limit": "Current LEGACY_PLAN.json is a new corrective plan, not original ROUNDS.json. No exact round-by-round equivalence or original acceptance chronology can be claimed.",
+      "required_recovery_evidence": "Original raw ROUNDS.json with authenticated source context; compare independently before revising the new plan."
+    }
+  ],
+  "claims_grounded_in_visible_package": [
+    {
+      "id": "OBS-01",
+      "claim": "R150 received-path inventory records 305 original paths: 139 source or Smoke, 156 relocated history/reference material, and 10 EC151-fingerprinted references.",
+      "evidence": ["construction/LEGACY_SOURCE_INVENTORY.json", "construction/SOURCE_BASELINE.json", "construction/LEGACY_RELOCATIONS.json"],
+      "caveat": "R150 provenance receipts, not independent attestation of V3.10."
+    },
+    {
+      "id": "OBS-02",
+      "claim": "No original ROUNDS.json entry appears among those 305 original or relocated paths.",
+      "evidence": ["construction/LEGACY_SOURCE_INVENTORY.json"],
+      "caveat": "Only the referenced received package inventory, not all possible external archives."
+    },
+    {
+      "id": "OBS-03",
+      "claim": "Legacy R150 note and early EC-002 both identify absent upstream planning material.",
+      "evidence": ["history/legacy-docs/BUILD_STATE-R150.json", "history/legacy-rounds/EC-002.md"],
+      "caveat": "Historical self-report, not independent upstream file custody."
+    },
+    {
+      "id": "OBS-04",
+      "claim": "The recovery plan consists of new EC-151 to EC-250 tasks and explicitly states unknown_original; it is not an original-plan reproduction.",
+      "evidence": ["construction/LEGACY_PLAN.json", "construction/TRACEABILITY.md", "construction/LEGACY_PROJECT_STATE.json"],
+      "caveat": "The recovery plan is an authorized continuation direction, not upstream acceptance evidence."
+    }
+  ],
+  "conclusions_prohibited_without_authenticated_originals": [
+    "That the current 100 rounds reproduce the upstream frozen schedule, priority order, dependencies or all requirements",
+    "That R150 source behavior fully conforms to the unseen V3.10 frozen specification",
+    "That any upstream acceptance criterion was satisfied, approved or waived",
+    "That text or filename similarity establishes candidate source authenticity",
+    "That the new recovery plan may be silently rewritten on receipt of candidate originals"
+  ],
+  "recovery_protocol": {
+    "candidate_state": "UNAUTHENTICATED_UNTIL_MANUALLY_ATTESTED",
+    "read_only_tool": "construction/upstream_gap.py --spec FILE --rounds FILE --json",
+    "reconciliation_type": "EXACT_ID_OVERLAP_ONLY_NOT_SEMANTIC_EQUIVALENCE",
+    "workflow": [
+      "Obtain the original raw V3.10 and ROUNDS.json files plus who supplied them, original archive, authority and custody trail; avoid publishing sensitive contents.",
+      "Hash original bytes and record immutable source metadata outside the R150/EC151 historical hash ledgers.",
+      "Run the read-only candidate comparison and review its schema warnings; no overlap or malformed schema must not be treated as equivalence.",
+      "Have a human confirm file authenticity, interpret incomparable fields and review gaps by old requirement/round against new EC-151..250 with explicit change proposals.",
+      "Amend the plan in a separately authorized EC/revision; record status, owner and rationale. Close B-001 only with supporting original evidence and reviewed reconciliation, not through script execution."
+    ],
+    "required_human_decision": "Source owner/authenticity and any plan amendment must be explicitly attested",
+    "preserve_original_fingerprints": true,
+    "never_automatically_close_blocker": true
+  },
+  "other_deferred_blocks_unchanged": ["B-002", "B-003"],
+  "native_acceptance": "NOT_RUN"
+}

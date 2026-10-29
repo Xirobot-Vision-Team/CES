@@ -1,0 +1,802 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/quality-finding-link-result.v1.schema.json",
+  "title": "CES EC189 Quality/Finding exact-scoped non-causal read-only linkage response",
+  "description": "Strict observable shape; code enforces authorization, source matching, expiry, MAC verification and revisions. Local finding HMAC and upstream receipt hashes do NOT authenticate CI or prove a defect.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "scope",
+    "quality_revision_sha256",
+    "finding_revision_sha256",
+    "link_revision_sha256",
+    "counts",
+    "links",
+    "coverage",
+    "effects",
+    "trust_boundary"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.quality_finding_link.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^QUALITYFINDING_[A-Z0-9_]{3,160}$"
+    },
+    "scope": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_mode",
+            "quality_scope_sha256",
+            "finding_binding_sha256",
+            "bridge_sha256",
+            "bridge_authorized_by_host_not_source_equivalence_proof",
+            "historical_proposal_only"
+          ],
+          "properties": {
+            "source_mode": {
+              "enum": [
+                "WorkingTree",
+                "DeliveredTarget",
+                "ProposedPR"
+              ]
+            },
+            "quality_scope_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "finding_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "bridge_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "bridge_authorized_by_host_not_source_equivalence_proof": {
+              "const": true
+            },
+            "historical_proposal_only": {
+              "type": "boolean"
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "quality_revision_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "finding_revision_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "link_revision_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "counts": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "links",
+            "distinct_findings",
+            "scoped_quality_receipts_read",
+            "possible_support_claim_links",
+            "possible_counterevidence_claim_links",
+            "context_only_links"
+          ],
+          "properties": {
+            "links": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 24
+            },
+            "distinct_findings": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 24
+            },
+            "scoped_quality_receipts_read": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 96
+            },
+            "possible_support_claim_links": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 24
+            },
+            "possible_counterevidence_claim_links": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 24
+            },
+            "context_only_links": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 24
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "finding",
+          "quality",
+          "relationship",
+          "reproduction",
+          "declared_defect_confirmed",
+          "actual_test_or_ci_execution_independently_verified",
+          "link_id"
+        ],
+        "properties": {
+          "finding": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "finding_id",
+              "assessment_state",
+              "review_is_local_key_holder_declaration_only",
+              "severity_claim",
+              "confidence_claim",
+              "positive_anchor_count",
+              "counter_evidence_count",
+              "counter_evidence_annotation_sha256",
+              "coverage_complete_for_selected_source",
+              "coverage_missing_requirements_count",
+              "historical_proposal_only",
+              "path_index_state",
+              "saved_at_utc",
+              "expires_at_utc"
+            ],
+            "properties": {
+              "finding_id": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "assessment_state": {
+                "enum": [
+                  "UNVERIFIED",
+                  "REVIEWED",
+                  "REJECTED",
+                  "INCONCLUSIVE"
+                ]
+              },
+              "review_is_local_key_holder_declaration_only": {
+                "const": true
+              },
+              "severity_claim": {
+                "enum": [
+                  "info",
+                  "low",
+                  "medium",
+                  "high",
+                  "critical"
+                ]
+              },
+              "confidence_claim": {
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ]
+              },
+              "positive_anchor_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000
+              },
+              "counter_evidence_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 96
+              },
+              "counter_evidence_annotation_sha256": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "maxItems": 96
+              },
+              "coverage_complete_for_selected_source": {
+                "type": "boolean"
+              },
+              "coverage_missing_requirements_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100000
+              },
+              "historical_proposal_only": {
+                "type": "boolean"
+              },
+              "path_index_state": {
+                "enum": [
+                  "LEGACY_V1_UNAVAILABLE",
+                  "COMPLETE",
+                  "PARTIAL_OR_UNPATHED"
+                ]
+              },
+              "saved_at_utc": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$"
+              },
+              "expires_at_utc": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$"
+              }
+            }
+          },
+          "quality": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "evidence_id",
+              "kind",
+              "classification",
+              "declared_claim_signal",
+              "signal_boundary",
+              "binding_strength",
+              "recorded_at_utc_caller_supplied",
+              "incompleteness"
+            ],
+            "properties": {
+              "evidence_id": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "kind": {
+                "enum": [
+                  "config",
+                  "ci_metadata",
+                  "sha_binding",
+                  "ci_evidence",
+                  "observation",
+                  "run_preflight",
+                  "run_session"
+                ]
+              },
+              "classification": {
+                "enum": [
+                  "pass",
+                  "fail",
+                  "partial",
+                  "not_run",
+                  "missing",
+                  "not_applicable",
+                  "unverified"
+                ]
+              },
+              "declared_claim_signal": {
+                "enum": [
+                  "PASS_CLAIM",
+                  "FAILURE_CLAIM",
+                  "UNDETERMINED"
+                ]
+              },
+              "signal_boundary": {
+                "enum": [
+                  "PROVIDER_CONTENT_NOT_INDEPENDENTLY_REPRODUCED",
+                  "PROVIDER_JOB_METADATA_ONLY_NOT_TEST_PROOF",
+                  "PROVIDER_RUN_JOB_MIXED_OR_INCOMPLETE",
+                  "HOST_EXIT_OR_INTERRUPTION_NOT_ATTESTED_TEST_OUTCOME",
+                  "CONFIG_BINDING_OR_PREFLIGHT_NOT_TEST_OUTCOME"
+                ]
+              },
+              "binding_strength": {
+                "type": "string",
+                "pattern": "^[A-Z0-9_]{3,100}$"
+              },
+              "recorded_at_utc_caller_supplied": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$"
+              },
+              "incompleteness": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Z0-9_]{3,110}$",
+                  "maxLength": 110
+                },
+                "maxItems": 30
+              }
+            }
+          },
+          "relationship": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "direction_is_caller_hypothesis",
+              "rationale_is_caller_hypothesis",
+              "assessment",
+              "underlying_causal_link_proven"
+            ],
+            "properties": {
+              "direction_is_caller_hypothesis": {
+                "enum": [
+                  "support",
+                  "counter",
+                  "context"
+                ]
+              },
+              "rationale_is_caller_hypothesis": {
+                "enum": [
+                  "SHARED_HYPOTHESIS_UNVERIFIED",
+                  "POSSIBLY_UNRELATED",
+                  "UNDETERMINED"
+                ]
+              },
+              "assessment": {
+                "enum": [
+                  "POTENTIAL_SUPPORT_NEVER_DEFECT_PROOF",
+                  "POTENTIAL_COUNTEREVIDENCE_NEVER_EXONERATION",
+                  "CONTEXT_ONLY_NO_CAUSAL_FINDING"
+                ]
+              },
+              "underlying_causal_link_proven": {
+                "const": false
+              }
+            }
+          },
+          "reproduction": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "state",
+              "reported_at_utc_caller_supplied",
+              "private_statement_reference_mac_sha256",
+              "statement_state",
+              "reproduced_or_disproved_by_ces"
+            ],
+            "properties": {
+              "state": {
+                "enum": [
+                  "NOT_ATTEMPTED",
+                  "ATTEMPT_REPORTED_UNVERIFIED",
+                  "REPRODUCED_REPORTED_UNVERIFIED",
+                  "NOT_REPRODUCED_REPORTED_UNVERIFIED"
+                ]
+              },
+              "reported_at_utc_caller_supplied": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "private_statement_reference_mac_sha256": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "statement_state": {
+                "enum": [
+                  "NO_REPRODUCTION_ATTEMPT_REPORTED",
+                  "CALLER_REPRODUCTION_DECLARATION_NOT_INDEPENDENTLY_VERIFIED"
+                ]
+              },
+              "reproduced_or_disproved_by_ces": {
+                "const": false
+              }
+            }
+          },
+          "declared_defect_confirmed": {
+            "const": false
+          },
+          "actual_test_or_ci_execution_independently_verified": {
+            "const": false
+          },
+          "link_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      },
+      "maxItems": 24
+    },
+    "coverage": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "selected_quality_receipts_are_full_provider_history",
+            "complete_repository_or_test_suite_coverage",
+            "findings_all_exist_in_real_exact_source_hmac_store",
+            "independent_same_source_content_attestation",
+            "read_consistency_is_cross_system_atomic",
+            "ci_failure_is_defect_proof",
+            "ci_pass_is_defect_disproof",
+            "reproduction_statement_independently_verified",
+            "source_currentness_verified",
+            "unauthorized_cross_mode_comparison"
+          ],
+          "properties": {
+            "selected_quality_receipts_are_full_provider_history": {
+              "const": false
+            },
+            "complete_repository_or_test_suite_coverage": {
+              "const": false
+            },
+            "findings_all_exist_in_real_exact_source_hmac_store": {
+              "const": true
+            },
+            "independent_same_source_content_attestation": {
+              "const": false
+            },
+            "read_consistency_is_cross_system_atomic": {
+              "const": false
+            },
+            "ci_failure_is_defect_proof": {
+              "const": false
+            },
+            "ci_pass_is_defect_disproof": {
+              "const": false
+            },
+            "reproduction_statement_independently_verified": {
+              "const": false
+            },
+            "source_currentness_verified": {
+              "const": false
+            },
+            "unauthorized_cross_mode_comparison": {
+              "const": false
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "read_only",
+        "finding_created_or_modified",
+        "finding_review_state_changed",
+        "ces_store_written",
+        "business_repository_written",
+        "git_or_issue_written",
+        "provider_requests_or_tests_executed_by_linker",
+        "model_or_source_text_disclosed",
+        "defect_confirmed",
+        "test_or_quality_pass_verified",
+        "cross_source_equivalence_proven"
+      ],
+      "properties": {
+        "read_only": {
+          "const": true
+        },
+        "finding_created_or_modified": {
+          "const": false
+        },
+        "finding_review_state_changed": {
+          "const": false
+        },
+        "ces_store_written": {
+          "const": false
+        },
+        "business_repository_written": {
+          "const": false
+        },
+        "git_or_issue_written": {
+          "const": false
+        },
+        "provider_requests_or_tests_executed_by_linker": {
+          "const": false
+        },
+        "model_or_source_text_disclosed": {
+          "const": false
+        },
+        "defect_confirmed": {
+          "const": false
+        },
+        "test_or_quality_pass_verified": {
+          "const": false
+        },
+        "cross_source_equivalence_proven": {
+          "const": false
+        }
+      }
+    },
+    "trust_boundary": {
+      "const": "EC179_HMAC_LOCAL_FINDING_DECLARATION_AND_EC188_CALLER_SUPPLIED_CI_HOST_CLAIMS; HOST_BRIDGE_AUTHORISATION_IS_NOT_SOURCE_EQUIVALENCE_OR_CAUSAL_PROOF; NO_AUTOMATIC_DEFECT_CREATION_TEST_PASS_REVIEW_PROMOTION_OR_WRITE"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "reason_code": {
+            "const": "QUALITYFINDING_READ_ONLY_CONTEXT_NOT_CONFIRMED_DEFECT"
+          },
+          "scope": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_mode",
+              "quality_scope_sha256",
+              "finding_binding_sha256",
+              "bridge_sha256",
+              "bridge_authorized_by_host_not_source_equivalence_proof",
+              "historical_proposal_only"
+            ],
+            "properties": {
+              "source_mode": {
+                "enum": [
+                  "WorkingTree",
+                  "DeliveredTarget",
+                  "ProposedPR"
+                ]
+              },
+              "quality_scope_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "finding_binding_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "bridge_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "bridge_authorized_by_host_not_source_equivalence_proof": {
+                "const": true
+              },
+              "historical_proposal_only": {
+                "type": "boolean"
+              }
+            }
+          },
+          "quality_revision_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "finding_revision_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "link_revision_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "counts": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "links",
+              "distinct_findings",
+              "scoped_quality_receipts_read",
+              "possible_support_claim_links",
+              "possible_counterevidence_claim_links",
+              "context_only_links"
+            ],
+            "properties": {
+              "links": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 24
+              },
+              "distinct_findings": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 24
+              },
+              "scoped_quality_receipts_read": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 96
+              },
+              "possible_support_claim_links": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 24
+              },
+              "possible_counterevidence_claim_links": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 24
+              },
+              "context_only_links": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 24
+              }
+            }
+          },
+          "coverage": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "selected_quality_receipts_are_full_provider_history",
+              "complete_repository_or_test_suite_coverage",
+              "findings_all_exist_in_real_exact_source_hmac_store",
+              "independent_same_source_content_attestation",
+              "read_consistency_is_cross_system_atomic",
+              "ci_failure_is_defect_proof",
+              "ci_pass_is_defect_disproof",
+              "reproduction_statement_independently_verified",
+              "source_currentness_verified",
+              "unauthorized_cross_mode_comparison"
+            ],
+            "properties": {
+              "selected_quality_receipts_are_full_provider_history": {
+                "const": false
+              },
+              "complete_repository_or_test_suite_coverage": {
+                "const": false
+              },
+              "findings_all_exist_in_real_exact_source_hmac_store": {
+                "const": true
+              },
+              "independent_same_source_content_attestation": {
+                "const": false
+              },
+              "read_consistency_is_cross_system_atomic": {
+                "const": false
+              },
+              "ci_failure_is_defect_proof": {
+                "const": false
+              },
+              "ci_pass_is_defect_disproof": {
+                "const": false
+              },
+              "reproduction_statement_independently_verified": {
+                "const": false
+              },
+              "source_currentness_verified": {
+                "const": false
+              },
+              "unauthorized_cross_mode_comparison": {
+                "const": false
+              }
+            }
+          },
+          "links": {
+            "minItems": 1,
+            "maxItems": 24
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "status": {
+            "enum": [
+              "invalid_input",
+              "unavailable"
+            ]
+          },
+          "scope": {
+            "type": "null"
+          },
+          "quality_revision_sha256": {
+            "type": "null"
+          },
+          "finding_revision_sha256": {
+            "type": "null"
+          },
+          "link_revision_sha256": {
+            "type": "null"
+          },
+          "counts": {
+            "type": "null"
+          },
+          "coverage": {
+            "type": "null"
+          },
+          "links": {
+            "maxItems": 0
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "invalid_input"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "exit_code": {
+                  "const": 4
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "exit_code": {
+                  "const": 5
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

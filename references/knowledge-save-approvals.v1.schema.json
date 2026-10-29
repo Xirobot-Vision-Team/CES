@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ces.local/knowledge-save-approvals.v1.schema.json",
+  "title": "knowledge-save-approvals",
+  "description": "Exactly two independent Ed25519 signatures; distinct keys and public bytes validated in code",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "statements"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "ces.knowledge_save_approvals.v1"
+    },
+    "statements": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "prefixItems": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "statement",
+                "signature_base64"
+              ],
+              "properties": {
+                "statement": {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$id": "https://schemas.ces.local/knowledge-save-approval-statement.v1.schema.json",
+                  "title": "knowledge-save-approval-statement",
+                  "description": "Exact scope Ed25519 reviewer or owner statement: sign domain bytes plus canonical JSON",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "schema",
+                    "purpose",
+                    "signer_key_id",
+                    "role",
+                    "authorization_scope_sha256",
+                    "review_state",
+                    "issued_at_utc",
+                    "expires_at_utc"
+                  ],
+                  "properties": {
+                    "schema": {
+                      "type": "string",
+                      "const": "ces.knowledge_save_approval_statement.v1"
+                    },
+                    "purpose": {
+                      "type": "string",
+                      "const": "approve_exact_local_ces_knowledge_metadata_version"
+                    },
+                    "signer_key_id": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+                    },
+                    "role": {
+                      "enum": [
+                        "independent_reviewer",
+                        "knowledge_owner"
+                      ]
+                    },
+                    "authorization_scope_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "review_state": {
+                      "type": "string",
+                      "const": "REVIEWED_APPROVED_FOR_THIS_VERSION_ONLY"
+                    },
+                    "issued_at_utc": {
+                      "type": "string",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+                    },
+                    "expires_at_utc": {
+                      "type": "string",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+                    }
+                  }
+                },
+                "signature_base64": {
+                  "type": "string",
+                  "minLength": 88,
+                  "maxLength": 88
+                }
+              }
+            },
+            {
+              "properties": {
+                "statement": {
+                  "properties": {
+                    "role": {
+                      "type": "string",
+                      "const": "independent_reviewer"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "statement",
+                "signature_base64"
+              ],
+              "properties": {
+                "statement": {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$id": "https://schemas.ces.local/knowledge-save-approval-statement.v1.schema.json",
+                  "title": "knowledge-save-approval-statement",
+                  "description": "Exact scope Ed25519 reviewer or owner statement: sign domain bytes plus canonical JSON",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "schema",
+                    "purpose",
+                    "signer_key_id",
+                    "role",
+                    "authorization_scope_sha256",
+                    "review_state",
+                    "issued_at_utc",
+                    "expires_at_utc"
+                  ],
+                  "properties": {
+                    "schema": {
+                      "type": "string",
+                      "const": "ces.knowledge_save_approval_statement.v1"
+                    },
+                    "purpose": {
+                      "type": "string",
+                      "const": "approve_exact_local_ces_knowledge_metadata_version"
+                    },
+                    "signer_key_id": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+                    },
+                    "role": {
+                      "enum": [
+                        "independent_reviewer",
+                        "knowledge_owner"
+                      ]
+                    },
+                    "authorization_scope_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "review_state": {
+                      "type": "string",
+                      "const": "REVIEWED_APPROVED_FOR_THIS_VERSION_ONLY"
+                    },
+                    "issued_at_utc": {
+                      "type": "string",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+                    },
+                    "expires_at_utc": {
+                      "type": "string",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+                    }
+                  }
+                },
+                "signature_base64": {
+                  "type": "string",
+                  "minLength": 88,
+                  "maxLength": 88
+                }
+              }
+            },
+            {
+              "properties": {
+                "statement": {
+                  "properties": {
+                    "role": {
+                      "type": "string",
+                      "const": "knowledge_owner"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "items": false
+    }
+  }
+}

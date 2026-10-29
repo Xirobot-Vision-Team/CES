@@ -1,0 +1,576 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_update_handoff.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^KNOWLEDGE_HANDOFF_[A-Z0-9_]+$"
+    },
+    "subject": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "model_revision": {
+              "const": "EC207_CANDIDATE_ONLY_LOCAL_AI_DRAFT"
+            },
+            "handoff_key": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9._-]{2,63}$"
+            },
+            "selection_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "handoff_authorization_scope_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "store_instance_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "store_scope_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "candidate_count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "restricted_candidate_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 8
+            },
+            "potential_conflicting_association_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 8
+            },
+            "ai_input_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "ai_input": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "task_kind": {
+                  "const": "knowledge_update"
+                },
+                "task_stage": {
+                  "const": "LOCAL_UNEXECUTED_HUMAN_REVIEW_DRAFT"
+                },
+                "instructions": {
+                  "type": "array",
+                  "minItems": 7,
+                  "maxItems": 7,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "source_scope": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "repository_ref": {
+                      "type": "string",
+                      "pattern": "^cesrepo1:[0-9a-f]{64}$"
+                    },
+                    "knowledge_space_key": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "period_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "source_policy_revision": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "request_binding_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "scope_binding_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "repository_ref",
+                    "knowledge_space_key",
+                    "period_id",
+                    "source_policy_revision",
+                    "request_binding_sha256",
+                    "scope_binding_sha256"
+                  ]
+                },
+                "candidate_evidence": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 8,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "candidate_key": {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9._-]{2,63}$"
+                      },
+                      "record_id": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$"
+                      },
+                      "candidate_binding_sha256": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$"
+                      },
+                      "review_state": {
+                        "const": "AWAITING_HUMAN_REVIEW"
+                      },
+                      "sensitivity": {
+                        "enum": [
+                          "INTERNAL",
+                          "RESTRICTED"
+                        ]
+                      },
+                      "origin": {
+                        "enum": [
+                          "ec205_chapter_mapping",
+                          "ec204_selected_change",
+                          "manual_proposal"
+                        ]
+                      },
+                      "source_key": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+                      },
+                      "section_ref": {
+                        "oneOf": [
+                          {
+                            "const": null
+                          },
+                          {
+                            "type": "string",
+                            "pattern": "^cesksection1:[0-9a-f]{64}$"
+                          }
+                        ]
+                      },
+                      "section_ref_is_current_version_proof": {
+                        "const": false
+                      },
+                      "source_result_sha256": {
+                        "oneOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{64}$"
+                          }
+                        ]
+                      },
+                      "source_result_schema": {
+                        "enum": [
+                          null,
+                          "ces.knowledge_chapters.v1",
+                          "ces.knowledge_impact.v1"
+                        ]
+                      },
+                      "selection_kind": {
+                        "enum": [
+                          "MANUAL_UNVERIFIED_ASSERTION",
+                          "EXPLICIT_EXISTING_CHAPTER_ASSOCIATION",
+                          "SELECTED_GIT_CHANGE_OBSERVATION"
+                        ]
+                      },
+                      "reported_delivery_state": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "reported_selected_change_kind": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80
+                      },
+                      "reported_comparison_state": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "proposed_at_utc_unverified": {
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+                      },
+                      "quarantined_at_utc_unverified": {
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+                      },
+                      "claim_text": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4096
+                      },
+                      "reason_text": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1024
+                      },
+                      "evidence_caveats": {
+                        "type": "array",
+                        "minItems": 5,
+                        "maxItems": 12,
+                        "items": {
+                          "type": "string",
+                          "pattern": "^[A-Z0-9_]+$"
+                        }
+                      },
+                      "claim_is_verified_fact": {
+                        "const": false
+                      }
+                    },
+                    "required": [
+                      "candidate_key",
+                      "record_id",
+                      "candidate_binding_sha256",
+                      "review_state",
+                      "sensitivity",
+                      "origin",
+                      "source_key",
+                      "section_ref",
+                      "section_ref_is_current_version_proof",
+                      "source_result_sha256",
+                      "source_result_schema",
+                      "selection_kind",
+                      "reported_delivery_state",
+                      "reported_selected_change_kind",
+                      "reported_comparison_state",
+                      "proposed_at_utc_unverified",
+                      "quarantined_at_utc_unverified",
+                      "claim_text",
+                      "reason_text",
+                      "evidence_caveats",
+                      "claim_is_verified_fact"
+                    ]
+                  }
+                },
+                "potentially_conflicting_associations": {
+                  "type": "array",
+                  "maxItems": 8,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "source_key": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "section_ref": {
+                        "oneOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "type": "string",
+                            "pattern": "^cesksection1:[0-9a-f]{64}$"
+                          }
+                        ]
+                      },
+                      "candidate_count": {
+                        "type": "integer",
+                        "minimum": 2,
+                        "maximum": 8
+                      }
+                    },
+                    "required": [
+                      "source_key",
+                      "section_ref",
+                      "candidate_count"
+                    ]
+                  }
+                },
+                "limitations": {
+                  "type": "array",
+                  "minItems": 7,
+                  "maxItems": 7,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "requested_ai_output": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "const": "UNVERIFIED_PROPOSED_EDITS_FOR_HUMAN_REVIEW_ONLY"
+                    },
+                    "required_fields_per_proposed_edit": {
+                      "type": "array",
+                      "minItems": 9,
+                      "maxItems": 9,
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "require_explicit_unknown_for_unbound_chapters": {
+                      "const": true
+                    },
+                    "authoritative_save_authorized": {
+                      "const": false
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "required_fields_per_proposed_edit",
+                    "require_explicit_unknown_for_unbound_chapters",
+                    "authoritative_save_authorized"
+                  ]
+                }
+              },
+              "required": [
+                "task_kind",
+                "task_stage",
+                "instructions",
+                "source_scope",
+                "candidate_evidence",
+                "potentially_conflicting_associations",
+                "limitations",
+                "requested_ai_output"
+              ]
+            },
+            "draft_only": {
+              "const": true
+            },
+            "approval_state": {
+              "const": "AWAITING_INDEPENDENT_HUMAN_REVIEW"
+            },
+            "knowledge_update_authorized": {
+              "const": false
+            },
+            "knowledge_sections_to_update": {
+              "type": "array",
+              "maxItems": 0
+            },
+            "verified_delivered_facts": {
+              "type": "array",
+              "maxItems": 0
+            },
+            "no_write_actions_performed": {
+              "const": true
+            }
+          },
+          "required": [
+            "model_revision",
+            "handoff_key",
+            "selection_binding_sha256",
+            "handoff_authorization_scope_sha256",
+            "store_instance_id",
+            "store_scope_binding_sha256",
+            "candidate_count",
+            "restricted_candidate_count",
+            "potential_conflicting_association_count",
+            "ai_input_sha256",
+            "ai_input",
+            "draft_only",
+            "approval_state",
+            "knowledge_update_authorized",
+            "knowledge_sections_to_update",
+            "verified_delivered_facts",
+            "no_write_actions_performed"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "model_revision": {
+              "const": "EC207_CANDIDATE_ONLY_LOCAL_AI_DRAFT"
+            },
+            "task_kind": {
+              "const": "knowledge_update"
+            },
+            "store_instance_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "store_scope_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "source_request_scope": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "request_binding_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "scope_binding_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "request_binding_sha256",
+                "scope_binding_sha256"
+              ]
+            },
+            "selection_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "handoff_authorization_scope_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "candidate_record_pins": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 8,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "candidate_key": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9._-]{2,63}$"
+                  },
+                  "candidate_binding_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "record_id": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "read_authorization_scope_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  }
+                },
+                "required": [
+                  "candidate_key",
+                  "candidate_binding_sha256",
+                  "record_id",
+                  "read_authorization_scope_sha256"
+                ]
+              }
+            },
+            "draft_prepared": {
+              "const": false
+            },
+            "claim_text_disclosed": {
+              "const": false
+            },
+            "external_ai_transfer_permitted": {
+              "const": false
+            }
+          },
+          "required": [
+            "model_revision",
+            "task_kind",
+            "store_instance_id",
+            "store_scope_binding_sha256",
+            "source_request_scope",
+            "selection_binding_sha256",
+            "handoff_authorization_scope_sha256",
+            "candidate_record_pins",
+            "draft_prepared",
+            "claim_text_disclosed",
+            "external_ai_transfer_permitted"
+          ]
+        }
+      ]
+    },
+    "canonical_json": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "maxLength": 65536
+        }
+      ]
+    },
+    "ai_executed": {
+      "const": false
+    },
+    "external_ai_transfer_performed": {
+      "const": false
+    },
+    "ai_result_verified": {
+      "const": false
+    },
+    "human_approval_verified": {
+      "const": false
+    },
+    "source_result_authenticated": {
+      "const": false
+    },
+    "candidate_is_authoritative": {
+      "const": false
+    },
+    "local_or_authoritative_write_performed": {
+      "const": false
+    },
+    "knowledge_saved_or_promoted": {
+      "const": false
+    },
+    "repository_issue_or_provider_written": {
+      "const": false
+    },
+    "published": {
+      "const": false
+    },
+    "native_knowledge_route_registered": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "subject",
+    "canonical_json",
+    "ai_executed",
+    "external_ai_transfer_performed",
+    "ai_result_verified",
+    "human_approval_verified",
+    "source_result_authenticated",
+    "candidate_is_authoritative",
+    "local_or_authoritative_write_performed",
+    "knowledge_saved_or_promoted",
+    "repository_issue_or_provider_written",
+    "published",
+    "native_knowledge_route_registered"
+  ]
+}

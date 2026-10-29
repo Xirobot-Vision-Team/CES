@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/ces/issue-create-approval.v1.schema.json",
+  "title": "EC217 independently signed human creation receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "method",
+    "action",
+    "grant_id",
+    "issuer_key_id",
+    "authority_revision_sha256",
+    "audience",
+    "challenge_sha256",
+    "plan_result_sha256",
+    "final_content_sha256",
+    "target_identity_sha256",
+    "policy_revision_sha256",
+    "decision",
+    "confirms_full_final_text_and_citations_reviewed",
+    "confirms_target_visibility_and_privacy_reviewed",
+    "confirms_create_not_edit",
+    "acknowledges_duplicate_absence_not_proven",
+    "issued_at_utc",
+    "expires_at_utc",
+    "signature_base64"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.issue_create_approval.v1"
+    },
+    "method": {
+      "const": "EXPLICIT_HUMAN_APPROVAL_OF_ONE_NEW_ISSUE"
+    },
+    "action": {
+      "const": "CREATE_NEW_ISSUE"
+    },
+    "grant_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{32}$"
+    },
+    "issuer_key_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$"
+    },
+    "authority_revision_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "audience": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{2,95}$"
+    },
+    "challenge_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "plan_result_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "final_content_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "target_identity_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "policy_revision_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "decision": {
+      "const": "APPROVE_EXACT_NEW_ISSUE_ONCE"
+    },
+    "confirms_full_final_text_and_citations_reviewed": {
+      "const": true
+    },
+    "confirms_target_visibility_and_privacy_reviewed": {
+      "const": true
+    },
+    "confirms_create_not_edit": {
+      "const": true
+    },
+    "acknowledges_duplicate_absence_not_proven": {
+      "const": true
+    },
+    "issued_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "signature_base64": {
+      "type": "string",
+      "minLength": 88,
+      "maxLength": 88
+    }
+  }
+}

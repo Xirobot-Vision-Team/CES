@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ces.local/knowledge-lifecycle-save-admission.v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "purpose",
+    "store_instance_id",
+    "store_scope_binding_sha256",
+    "workflow_authorization_scope_sha256",
+    "permission_receipt_sha256",
+    "permit_evidence_bound_save_dispatch",
+    "permit_local_metadata_append_dispatch",
+    "permit_candidate_store_write",
+    "permit_source_knowledge_overwrite",
+    "permit_business_repository_write",
+    "permit_issue_or_provider_write",
+    "permit_docs_only_publish",
+    "permit_publish"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_lifecycle_save_admission.v1"
+    },
+    "purpose": {
+      "const": "knowledge_lifecycle_independently_authorized_local_save_dispatch"
+    },
+    "store_instance_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "store_scope_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "workflow_authorization_scope_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permission_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permit_evidence_bound_save_dispatch": {
+      "const": true
+    },
+    "permit_local_metadata_append_dispatch": {
+      "const": true
+    },
+    "permit_candidate_store_write": {
+      "const": false
+    },
+    "permit_source_knowledge_overwrite": {
+      "const": false
+    },
+    "permit_business_repository_write": {
+      "const": false
+    },
+    "permit_issue_or_provider_write": {
+      "const": false
+    },
+    "permit_docs_only_publish": {
+      "const": false
+    },
+    "permit_publish": {
+      "const": false
+    }
+  }
+}

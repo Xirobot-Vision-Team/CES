@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.example.invalid/schema/issue-existing-readonly-result.v1.schema.json",
+  "title": "CES EC220 Existing Issue Exact Read-Only Observation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "exit_code", "reason_code", "read_state", "issue_existence",
+    "source", "synthetic", "provider_get_count", "private_issue_content_may_have_been_read",
+    "provider_token_scope_independently_verified", "host_organizational_role_cryptographically_verified",
+    "existing_issue_edit_authorized", "issue_mutated", "issue_closed", "issue_reopened",
+    "comment_created", "labels_changed", "assignees_changed", "provider_post_invoked",
+    "new_issue_created", "old_create_grant_reused", "absence_proven", "all_issues_enumerated",
+    "hidden_issues_ruled_out", "native_issue_action_registered", "business_repository_written",
+    "external_ai_called", "git_or_knowledge_written", "published_or_delivered"
+  ],
+  "properties": {
+    "schema": {"const": "ces.issue_existing_readonly.v1"},
+    "status": {"enum": ["partial", "unavailable", "invalid_input"]},
+    "exit_code": {"enum": [2, 4, 5]},
+    "reason_code": {"type": "string", "pattern": "^ISSUE_EXISTING_READONLY_[A-Z0-9_]{1,100}$"},
+    "read_state": {"enum": ["UNKNOWN", "SYNTHETIC_PINNED_ISSUE_OBSERVED", "PROVIDER_PINNED_ISSUE_OBSERVED"]},
+    "issue_existence": {"enum": ["UNKNOWN", "SYNTHETIC_PRESENT", "PROVIDER_REPORTED_PRESENT"]},
+    "source": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["identity_sha256", "selected_metadata_sha256", "provider_state",
+                       "privacy", "provider_claim_not_atomic", "title_body_labels_disclosed",
+                       "repository_identity_double_checked", "provider_issue_global_id_pinned", "origin"],
+          "properties": {
+            "identity_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "selected_metadata_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "provider_state": {"enum": ["OPEN", "CLOSED"]},
+            "privacy": {"enum": ["NOT_REPORTED", "STANDARD", "CONFIDENTIAL"]},
+            "provider_claim_not_atomic": {"const": true},
+            "title_body_labels_disclosed": {"const": false},
+            "repository_identity_double_checked": {"const": true},
+            "provider_issue_global_id_pinned": {"const": true},
+            "origin": {"enum": ["synthetic_fixture", "provider_https_response"]}
+          }
+        }
+      ]
+    },
+    "synthetic": {"type": "boolean"},
+    "provider_get_count": {"type": "integer", "minimum": 0, "maximum": 3},
+    "private_issue_content_may_have_been_read": {"type": "boolean"},
+    "provider_token_scope_independently_verified": {"const": false},
+    "host_organizational_role_cryptographically_verified": {"const": false},
+    "existing_issue_edit_authorized": {"const": false},
+    "issue_mutated": {"const": false},
+    "issue_closed": {"const": false},
+    "issue_reopened": {"const": false},
+    "comment_created": {"const": false},
+    "labels_changed": {"const": false},
+    "assignees_changed": {"const": false},
+    "provider_post_invoked": {"const": false},
+    "new_issue_created": {"const": false},
+    "old_create_grant_reused": {"const": false},
+    "absence_proven": {"const": false},
+    "all_issues_enumerated": {"const": false},
+    "hidden_issues_ruled_out": {"const": false},
+    "native_issue_action_registered": {"const": false},
+    "business_repository_written": {"const": false},
+    "external_ai_called": {"const": false},
+    "git_or_knowledge_written": {"const": false},
+    "published_or_delivered": {"const": false}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "partial"}}, "required": ["status"]},
+      "then": {"properties": {"exit_code": {"const": 2}, "source": {"type": "object"}}},
+      "else": {"properties": {"source": {"type": "null"}}}
+    },
+    {
+      "if": {"properties": {"status": {"const": "unavailable"}}, "required": ["status"]},
+      "then": {"properties": {"exit_code": {"const": 5}, "read_state": {"const": "UNKNOWN"},
+                             "issue_existence": {"const": "UNKNOWN"}}}
+    },
+    {
+      "if": {"properties": {"status": {"const": "invalid_input"}}, "required": ["status"]},
+      "then": {"properties": {"exit_code": {"const": 4}, "read_state": {"const": "UNKNOWN"},
+                             "issue_existence": {"const": "UNKNOWN"}}}
+    },
+    {
+      "if": {"properties": {"source": {"type": "object"}}, "required": ["source"]},
+      "then": {
+        "if": {"properties": {"synthetic": {"const": true}}, "required": ["synthetic"]},
+        "then": {"properties": {"read_state": {"const": "SYNTHETIC_PINNED_ISSUE_OBSERVED"},
+                               "issue_existence": {"const": "SYNTHETIC_PRESENT"},
+                               "source": {"properties": {"origin": {"const": "synthetic_fixture"}}}}},
+        "else": {"properties": {"read_state": {"const": "PROVIDER_PINNED_ISSUE_OBSERVED"},
+                               "issue_existence": {"const": "PROVIDER_REPORTED_PRESENT"},
+                               "source": {"properties": {"origin": {"const": "provider_https_response"}}}}}
+      }
+    }
+  ]
+}

@@ -1,0 +1,1069 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/report-writing-handoff-result.v1.schema.json",
+  "title": "EC198 read-only source- and privacy-pinned report_writing review Handoff draft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "subject",
+    "canonical_json",
+    "limitations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.report_writing_handoff.v1"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^REPORT_WRITING_HANDOFF_[A-Z0-9_]+$"
+    },
+    "subject": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ec198_record"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "canonical_json": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1048576
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "limitations": {
+      "$ref": "#/$defs/ec198_claims"
+    }
+  },
+  "$defs": {
+    "sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "repository": {
+      "type": "string",
+      "pattern": "^cesrepo1:[0-9a-f]{64}$"
+    },
+    "report": {
+      "type": "string",
+      "pattern": "^cesrs1:[0-9a-f]{64}$"
+    },
+    "scope": {
+      "type": "string",
+      "pattern": "^cesmrs1:[0-9a-f]{64}$"
+    },
+    "citation_ref": {
+      "type": "string",
+      "pattern": "^cesrc1:[0-9a-f]{64}$"
+    },
+    "period_id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 200,
+      "pattern": "^cesnp1:[^\\s]+$"
+    },
+    "utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "reason": {
+      "type": "string",
+      "pattern": "^[A-Z0-9_]{3,128}$"
+    },
+    "claims": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "external_authorization_or_release_receipts_authenticated",
+        "data_egress_privacy_review_completed",
+        "repository_identity_or_source_authenticated",
+        "period_or_repository_universe_completeness_verified",
+        "git_activity_or_delivery_verified",
+        "ai_conclusions_verified_as_facts",
+        "ci_execution_or_pass_verified",
+        "people_identity_or_evidence_attribution_verified",
+        "individual_performance_assessed",
+        "human_approval_completed",
+        "ai_handoff_or_model_invoked",
+        "report_drafted_rendered_or_published",
+        "native_powershell_action_registered",
+        "filesystem_network_or_business_repository_written"
+      ],
+      "properties": {
+        "external_authorization_or_release_receipts_authenticated": {
+          "const": false
+        },
+        "data_egress_privacy_review_completed": {
+          "const": false
+        },
+        "repository_identity_or_source_authenticated": {
+          "const": false
+        },
+        "period_or_repository_universe_completeness_verified": {
+          "const": false
+        },
+        "git_activity_or_delivery_verified": {
+          "const": false
+        },
+        "ai_conclusions_verified_as_facts": {
+          "const": false
+        },
+        "ci_execution_or_pass_verified": {
+          "const": false
+        },
+        "people_identity_or_evidence_attribution_verified": {
+          "const": false
+        },
+        "individual_performance_assessed": {
+          "const": false
+        },
+        "human_approval_completed": {
+          "const": false
+        },
+        "ai_handoff_or_model_invoked": {
+          "const": false
+        },
+        "report_drafted_rendered_or_published": {
+          "const": false
+        },
+        "native_powershell_action_registered": {
+          "const": false
+        },
+        "filesystem_network_or_business_repository_written": {
+          "const": false
+        }
+      }
+    },
+    "citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "citation_ref",
+        "kind",
+        "provenance_class",
+        "claim_state"
+      ],
+      "properties": {
+        "citation_ref": {
+          "$ref": "#/$defs/citation_ref"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "analysis_claim",
+            "canceled_claim",
+            "change_claim",
+            "commit_claim",
+            "completed_fail_claim",
+            "completed_inconclusive_claim",
+            "completed_pass_claim",
+            "finding_claim",
+            "not_collected",
+            "not_run_claim",
+            "pull_request_claim",
+            "recommendation_claim",
+            "redacted",
+            "running_claim",
+            "unattributable",
+            "unavailable"
+          ]
+        },
+        "provenance_class": {
+          "type": "string",
+          "enum": [
+            "AI_OUTPUT_REFERENCE_CLAIM_UNVERIFIED",
+            "DECLARED_INFORMATION_GAP_UNVERIFIED",
+            "EXTERNAL_CI_RUN_CLAIM_UNVERIFIED",
+            "EXTERNAL_GIT_RECORD_CLAIM_UNVERIFIED"
+          ]
+        },
+        "claim_state": {
+          "const": "UNVERIFIED_DECLARED_REFERENCE"
+        }
+      }
+    },
+    "channel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "coverage_state",
+        "coverage_reason_codes",
+        "release_state",
+        "ci_completion_signal",
+        "released_reference_count",
+        "citations"
+      ],
+      "properties": {
+        "channel": {
+          "type": "string",
+          "enum": [
+            "ai_conclusion",
+            "ci_execution",
+            "git_activity",
+            "unknown_signal"
+          ]
+        },
+        "coverage_state": {
+          "type": "string",
+          "enum": [
+            "COMPLETE_DECLARED",
+            "PARTIAL_DECLARED",
+            "UNKNOWN",
+            "WITHHELD_BY_RELEASE_POLICY"
+          ]
+        },
+        "coverage_reason_codes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reason"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        },
+        "release_state": {
+          "type": "string",
+          "enum": [
+            "ALL_SUBMITTED_REFERENCES_RELEASED",
+            "CHANNEL_NOT_RELEASED",
+            "EMPTY_SUBMITTED_NOT_VERIFIED_ZERO",
+            "SELECTED_REFERENCES_ONLY"
+          ]
+        },
+        "ci_completion_signal": {
+          "type": "string",
+          "enum": [
+            "CI_NOT_RELEASED",
+            "CONFLICTING_COMPLETION_CLAIMS_UNVERIFIED",
+            "FAILURE_COMPLETION_CLAIM_UNVERIFIED",
+            "INCONCLUSIVE_COMPLETION_CLAIM_UNVERIFIED",
+            "NOT_APPLICABLE",
+            "NO_CI_COMPLETION_CLAIM",
+            "PASS_COMPLETION_CLAIM_UNVERIFIED",
+            "REDACTED_CI_COMPLETION_UNKNOWN"
+          ]
+        },
+        "released_reference_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 512
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/citation"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        }
+      }
+    },
+    "repository_projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_ref",
+        "report_subject_ref",
+        "source_mode",
+        "source_binding_sha256",
+        "people_binding_sha256",
+        "period_window_complete_declared",
+        "path_scope",
+        "inventory_state",
+        "scope_gap_codes",
+        "channels"
+      ],
+      "properties": {
+        "repository_ref": {
+          "$ref": "#/$defs/repository"
+        },
+        "report_subject_ref": {
+          "$ref": "#/$defs/report"
+        },
+        "source_mode": {
+          "type": "string",
+          "enum": [
+            "DeliveredTarget",
+            "ProposedPR",
+            "WorkingTree"
+          ]
+        },
+        "source_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "people_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "period_window_complete_declared": {
+          "type": "boolean"
+        },
+        "path_scope": {
+          "type": "string",
+          "enum": [
+            "ENTIRE_REPOSITORY_DECLARED",
+            "SELECTED_PATHS"
+          ]
+        },
+        "inventory_state": {
+          "type": "string",
+          "enum": [
+            "complete_declared",
+            "partial_declared",
+            "unknown"
+          ]
+        },
+        "scope_gap_codes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reason"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        },
+        "channels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/channel"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      }
+    },
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "period_id",
+        "cadence",
+        "start_utc",
+        "end_exclusive_utc"
+      ],
+      "properties": {
+        "period_id": {
+          "$ref": "#/$defs/period_id"
+        },
+        "cadence": {
+          "type": "string",
+          "enum": [
+            "day",
+            "month",
+            "week",
+            "year"
+          ]
+        },
+        "start_utc": {
+          "$ref": "#/$defs/utc"
+        },
+        "end_exclusive_utc": {
+          "$ref": "#/$defs/utc"
+        }
+      }
+    },
+    "ai_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "purpose",
+        "audience",
+        "scope_ref",
+        "scope_binding_sha256",
+        "metrics_binding_sha256",
+        "period",
+        "repositories",
+        "global_gap_codes",
+        "safety_instructions",
+        "data_trust_state",
+        "transmission_state"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ces.report_writing_input.v1"
+        },
+        "purpose": {
+          "const": "periodic_report_writing_input"
+        },
+        "audience": {
+          "const": "AI_REPORT_WRITING_REVIEW"
+        },
+        "scope_ref": {
+          "$ref": "#/$defs/scope"
+        },
+        "scope_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "metrics_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "period": {
+          "$ref": "#/$defs/period"
+        },
+        "repositories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/repository_projection"
+          },
+          "minItems": 1,
+          "maxItems": 32
+        },
+        "global_gap_codes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reason"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "safety_instructions": {
+          "const": [
+            "Only summarize released typed claims with citation_ref; never invent the underlying evidence content.",
+            "Treat all Git and AI conclusions as unverified declarations, not proven facts or completed delivery.",
+            "A CI completion label is an unverified claim, never proof that CI actually ran or passed.",
+            "Preserve unknown, partial, withheld and missing coverage; zero submitted references does not prove zero activity.",
+            "A ProposedPR source is only a proposal, not a delivered or merged target.",
+            "Never judge, rank or score individual employees; never infer performance from Git activity or counts.",
+            "Do not request or infer names, emails, actor identities, source text, private logs or other unreleased material."
+          ]
+        },
+        "data_trust_state": {
+          "const": "DECLARED_ONLY_NOT_AUTHENTICATED"
+        },
+        "transmission_state": {
+          "const": "NOT_SENT_REQUIRES_EXTERNAL_APPROVAL"
+        }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "scope_id",
+        "scope_binding_sha256",
+        "scope_canonical_sha256",
+        "metrics_binding_sha256",
+        "metrics_canonical_sha256",
+        "release_policy_binding_sha256",
+        "period_id",
+        "ai_input",
+        "ai_input_sha256",
+        "claims",
+        "binding_sha256"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ces.report_prepare.v1"
+        },
+        "scope_id": {
+          "$ref": "#/$defs/scope"
+        },
+        "scope_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "scope_canonical_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "metrics_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "metrics_canonical_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "release_policy_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "period_id": {
+          "$ref": "#/$defs/period_id"
+        },
+        "ai_input": {
+          "$ref": "#/$defs/ai_input"
+        },
+        "ai_input_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "claims": {
+          "$ref": "#/$defs/claims"
+        },
+        "binding_sha256": {
+          "$ref": "#/$defs/sha"
+        }
+      }
+    },
+    "ec198_claims": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "independent_review_receipts_authenticated",
+        "ec197_release_or_privacy_egress_permission_verified",
+        "repository_source_or_actor_identity_authenticated",
+        "complete_repository_universe_or_evidence_verified",
+        "git_delivery_or_ai_conclusions_verified",
+        "ci_executed_or_passed_verified",
+        "individual_employee_performance_assessed",
+        "ec171_live_run_or_handoff_created",
+        "ec174_report_writing_route_executed",
+        "external_ai_or_adapter_invoked",
+        "external_transfer_authorized_or_performed",
+        "human_review_or_report_approval_completed",
+        "report_rendered_saved_or_published",
+        "native_powershell_route_registered",
+        "filesystem_network_or_business_repository_written"
+      ],
+      "properties": {
+        "independent_review_receipts_authenticated": {
+          "const": false
+        },
+        "ec197_release_or_privacy_egress_permission_verified": {
+          "const": false
+        },
+        "repository_source_or_actor_identity_authenticated": {
+          "const": false
+        },
+        "complete_repository_universe_or_evidence_verified": {
+          "const": false
+        },
+        "git_delivery_or_ai_conclusions_verified": {
+          "const": false
+        },
+        "ci_executed_or_passed_verified": {
+          "const": false
+        },
+        "individual_employee_performance_assessed": {
+          "const": false
+        },
+        "ec171_live_run_or_handoff_created": {
+          "const": false
+        },
+        "ec174_report_writing_route_executed": {
+          "const": false
+        },
+        "external_ai_or_adapter_invoked": {
+          "const": false
+        },
+        "external_transfer_authorized_or_performed": {
+          "const": false
+        },
+        "human_review_or_report_approval_completed": {
+          "const": false
+        },
+        "report_rendered_saved_or_published": {
+          "const": false
+        },
+        "native_powershell_route_registered": {
+          "const": false
+        },
+        "filesystem_network_or_business_repository_written": {
+          "const": false
+        }
+      }
+    },
+    "ec198_source_pins": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prepare_binding_sha256",
+        "prepare_canonical_sha256",
+        "ai_input_sha256",
+        "scope_ref",
+        "scope_binding_sha256",
+        "metrics_binding_sha256",
+        "release_policy_binding_sha256",
+        "period_id"
+      ],
+      "properties": {
+        "prepare_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "prepare_canonical_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "ai_input_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "scope_ref": {
+          "$ref": "#/$defs/scope"
+        },
+        "scope_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "metrics_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "release_policy_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "period_id": {
+          "$ref": "#/$defs/period_id"
+        }
+      }
+    },
+    "ec198_evidence_slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel",
+        "heading",
+        "draft_note",
+        "coverage_state",
+        "coverage_reason_codes",
+        "release_state",
+        "ci_completion_signal",
+        "citations",
+        "evidence_claim_state"
+      ],
+      "properties": {
+        "channel": {
+          "type": "string",
+          "enum": [
+            "git_activity",
+            "ai_conclusion",
+            "ci_execution",
+            "unknown_signal"
+          ]
+        },
+        "heading": {
+          "type": "string",
+          "enum": [
+            "Declared Git references",
+            "Declared AI observations",
+            "Declared CI signals",
+            "Unknowns and evidence limitations"
+          ]
+        },
+        "draft_note": {
+          "type": "string",
+          "enum": [
+            "Only listed Git references are available; no verified change, delivery, effort or individual achievement follows.",
+            "These are references to unverified AI claims, not established technical or personnel facts.",
+            "CI completion is a declaration, never proof of executed or passing tests; omitted evidence prevents a pass conclusion.",
+            "Unknown, unavailable, uncollected and withheld evidence must remain unresolved, not be treated as zero."
+          ]
+        },
+        "coverage_state": {
+          "type": "string",
+          "enum": [
+            "COMPLETE_DECLARED",
+            "PARTIAL_DECLARED",
+            "UNKNOWN",
+            "WITHHELD_BY_RELEASE_POLICY"
+          ]
+        },
+        "coverage_reason_codes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reason"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        },
+        "release_state": {
+          "type": "string",
+          "enum": [
+            "ALL_SUBMITTED_REFERENCES_RELEASED",
+            "CHANNEL_NOT_RELEASED",
+            "EMPTY_SUBMITTED_NOT_VERIFIED_ZERO",
+            "SELECTED_REFERENCES_ONLY"
+          ]
+        },
+        "ci_completion_signal": {
+          "type": "string",
+          "enum": [
+            "CI_NOT_RELEASED",
+            "CONFLICTING_COMPLETION_CLAIMS_UNVERIFIED",
+            "FAILURE_COMPLETION_CLAIM_UNVERIFIED",
+            "INCONCLUSIVE_COMPLETION_CLAIM_UNVERIFIED",
+            "NOT_APPLICABLE",
+            "NO_CI_COMPLETION_CLAIM",
+            "PASS_COMPLETION_CLAIM_UNVERIFIED",
+            "REDACTED_CI_COMPLETION_UNKNOWN"
+          ]
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/citation"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "evidence_claim_state": {
+          "type": "string",
+          "enum": [
+            "UNVERIFIED_RELEASED_REFERENCES_ONLY",
+            "NO_RELEASED_REFERENCES_NOT_EVIDENCE_OF_NO_ACTIVITY"
+          ]
+        }
+      }
+    },
+    "ec198_repository_section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_ref",
+        "report_subject_ref",
+        "source_mode",
+        "source_binding_sha256",
+        "people_binding_sha256",
+        "period_window_complete_declared",
+        "path_scope",
+        "inventory_state",
+        "scope_gap_codes",
+        "source_notice",
+        "section_state",
+        "evidence_slots"
+      ],
+      "properties": {
+        "repository_ref": {
+          "$ref": "#/$defs/repository"
+        },
+        "report_subject_ref": {
+          "$ref": "#/$defs/report"
+        },
+        "source_mode": {
+          "type": "string",
+          "enum": [
+            "WorkingTree",
+            "DeliveredTarget",
+            "ProposedPR"
+          ]
+        },
+        "source_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "people_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "period_window_complete_declared": {
+          "type": "boolean"
+        },
+        "path_scope": {
+          "type": "string",
+          "enum": [
+            "ENTIRE_REPOSITORY_DECLARED",
+            "SELECTED_PATHS"
+          ]
+        },
+        "inventory_state": {
+          "type": "string",
+          "enum": [
+            "complete_declared",
+            "partial_declared",
+            "unknown"
+          ]
+        },
+        "scope_gap_codes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reason"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        },
+        "source_notice": {
+          "enum": [
+            "WorkingTree is a declared local working-tree scope, not an authenticated current snapshot.",
+            "DeliveredTarget is a source-mode claim; verified delivery or deployment is not established.",
+            "ProposedPR is a proposal, not a merged, delivered or deployed change."
+          ]
+        },
+        "section_state": {
+          "const": "PLACEHOLDER_NO_FACTUAL_NARRATIVE"
+        },
+        "evidence_slots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ec198_evidence_slot"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      }
+    },
+    "ec198_opening": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "heading",
+        "draft_note",
+        "scope_ref",
+        "period"
+      ],
+      "properties": {
+        "heading": {
+          "const": "Scope and reporting period"
+        },
+        "draft_note": {
+          "const": "This review covers only the explicitly named, declaration-bound repositories and UTC reporting period. Completeness and source authenticity are unverified."
+        },
+        "scope_ref": {
+          "$ref": "#/$defs/scope"
+        },
+        "period": {
+          "$ref": "#/$defs/period"
+        }
+      }
+    },
+    "ec198_closing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "heading",
+        "draft_note",
+        "global_gap_codes"
+      ],
+      "properties": {
+        "heading": {
+          "const": "Gaps, review decisions and outstanding proof"
+        },
+        "draft_note": {
+          "const": "Before factual narrative or any external transfer, verify source claims, permission, privacy and evidence; retain each listed unknown or withheld gap."
+        },
+        "global_gap_codes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reason"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        }
+      }
+    },
+    "ec198_outline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "opening",
+        "repository_sections",
+        "closing"
+      ],
+      "properties": {
+        "opening": {
+          "$ref": "#/$defs/ec198_opening"
+        },
+        "repository_sections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ec198_repository_section"
+          },
+          "minItems": 1,
+          "maxItems": 32
+        },
+        "closing": {
+          "$ref": "#/$defs/ec198_closing"
+        }
+      }
+    },
+    "ec198_draft": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "task_kind",
+        "route_id",
+        "route_state",
+        "review_state",
+        "external_transfer_state",
+        "source_pins",
+        "ai_input",
+        "outline",
+        "editor_rules"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ces.report_writing_handoff_draft.v1"
+        },
+        "task_kind": {
+          "const": "report_writing"
+        },
+        "route_id": {
+          "const": "ces.route.report_writing.v1"
+        },
+        "route_state": {
+          "const": "STANDALONE_REVIEW_DRAFT_NOT_EC174_DISPATCH"
+        },
+        "review_state": {
+          "const": "PENDING_HUMAN_SOURCE_AND_PRIVACY_REVIEW"
+        },
+        "external_transfer_state": {
+          "const": "NOT_AUTHORIZED_NOT_DISPATCHED"
+        },
+        "source_pins": {
+          "$ref": "#/$defs/ec198_source_pins"
+        },
+        "ai_input": {
+          "$ref": "#/$defs/ai_input"
+        },
+        "outline": {
+          "$ref": "#/$defs/ec198_outline"
+        },
+        "editor_rules": {
+          "const": [
+            "This is a review-only outline, not factual report prose or a model request authorized for transmission.",
+            "Keep every repository separate, with its own source/people binding and period; do not silently combine actors or counts.",
+            "Use only the copied released citation references and typed claims; never manufacture evidence descriptions or conclusions.",
+            "Preserve withheld, partial, unknown, missing and empty-not-zero states visibly for human review.",
+            "CI PASS, even if present as a claim, is NOT independently verified execution or a successful test result.",
+            "A ProposedPR is not delivery; Git events are not proof of productivity or a human contribution.",
+            "Never generate, rank, score or imply individual employee performance; no personal identities are supplied.",
+            "Request separate trusted proof and privacy/egress approval before any model transfer or publication."
+          ]
+        }
+      }
+    },
+    "ec198_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "task_kind",
+        "route_id",
+        "source_pins",
+        "review_policy_binding_sha256",
+        "handoff_draft",
+        "trust_claims",
+        "draft_ref",
+        "binding_sha256"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ces.report_writing_handoff.v1"
+        },
+        "task_kind": {
+          "const": "report_writing"
+        },
+        "route_id": {
+          "const": "ces.route.report_writing.v1"
+        },
+        "source_pins": {
+          "$ref": "#/$defs/ec198_source_pins"
+        },
+        "review_policy_binding_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "handoff_draft": {
+          "$ref": "#/$defs/ec198_draft"
+        },
+        "trust_claims": {
+          "$ref": "#/$defs/ec198_claims"
+        },
+        "draft_ref": {
+          "type": "string",
+          "pattern": "^cesrhd1:[0-9a-f]{64}$"
+        },
+        "binding_sha256": {
+          "$ref": "#/$defs/sha"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "subject": {
+            "$ref": "#/$defs/ec198_record"
+          },
+          "canonical_json": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "exit_code": {
+            "enum": [
+              4,
+              5
+            ]
+          },
+          "subject": {
+            "type": "null"
+          },
+          "canonical_json": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          }
+        }
+      }
+    }
+  ]
+}

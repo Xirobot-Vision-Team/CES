@@ -1,0 +1,151 @@
+{
+  "$id": "https://ces.local/schemas/knowledge-bootstrap-read-policy.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "knowledge_root_binding_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "knowledge_space_key": {
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+      "type": "string"
+    },
+    "period_id": {
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+      "type": "string"
+    },
+    "permit_bootstrap_read": {
+      "type": "boolean"
+    },
+    "permit_business_source_write": {
+      "const": false
+    },
+    "permit_content_projection": {
+      "type": "boolean"
+    },
+    "permit_issue_write": {
+      "const": false
+    },
+    "permit_knowledge_read": {
+      "type": "boolean"
+    },
+    "permit_knowledge_write": {
+      "const": false
+    },
+    "permit_manifest_read": {
+      "type": "boolean"
+    },
+    "permit_provenance_projection": {
+      "type": "boolean"
+    },
+    "permit_publish": {
+      "const": false
+    },
+    "permit_repository_read": {
+      "type": "boolean"
+    },
+    "permit_repository_write": {
+      "const": false
+    },
+    "purpose": {
+      "const": "knowledge_bootstrap_local_read_only"
+    },
+    "read_receipt_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "repository_ref": {
+      "pattern": "^cesrepo1:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "repository_root_binding_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "request_binding_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "ces.knowledge_bootstrap_read_policy.v1"
+    },
+    "scope_binding_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "source_grants": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "permit_content_projection": {
+            "type": "boolean"
+          },
+          "permit_source_read": {
+            "type": "boolean"
+          },
+          "read_receipt_sha256": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_binding_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "source_key": {
+            "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_key",
+          "source_binding_sha256",
+          "permit_source_read",
+          "permit_content_projection",
+          "read_receipt_sha256"
+        ],
+        "type": "object"
+      },
+      "maxItems": 32,
+      "type": "array"
+    },
+    "source_policy_revision": {
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "purpose",
+    "repository_ref",
+    "knowledge_space_key",
+    "period_id",
+    "source_policy_revision",
+    "request_binding_sha256",
+    "scope_binding_sha256",
+    "repository_root_binding_sha256",
+    "knowledge_root_binding_sha256",
+    "permit_bootstrap_read",
+    "permit_repository_read",
+    "permit_knowledge_read",
+    "permit_manifest_read",
+    "permit_provenance_projection",
+    "permit_content_projection",
+    "permit_knowledge_write",
+    "permit_repository_write",
+    "permit_business_source_write",
+    "permit_issue_write",
+    "permit_publish",
+    "read_receipt_sha256",
+    "source_grants"
+  ],
+  "title": "knowledge-bootstrap-read-policy.v1",
+  "type": "object"
+}

@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/unified-action-router-result.v1.schema.json",
+  "title": "EC241 unified handler dispatch result, not a business success envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "build",
+    "action",
+    "mode",
+    "status",
+    "reason_code",
+    "route_kind",
+    "handler",
+    "effect_class",
+    "handler_invoked",
+    "handler_exit_code",
+    "handler_status",
+    "handler_result",
+    "business_effect_verified",
+    "external_identity_authenticated_by_router",
+    "permissions_granted_by_router",
+    "tasks_advanced_by_router",
+    "native_powershell_runtime_tested",
+    "limitations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.unified_action_router.v1"
+    },
+    "version": {
+      "const": "V5.52"
+    },
+    "build": {
+      "const": "R242"
+    },
+    "action": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mode": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "route_kind": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "CLI",
+        "API",
+        "PREVIEW",
+        "HOST_REQUIRED",
+        null
+      ]
+    },
+    "handler": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "effect_class": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "handler_invoked": {
+      "type": "boolean"
+    },
+    "handler_exit_code": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "handler_status": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "handler_result": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "business_effect_verified": {
+      "const": false
+    },
+    "external_identity_authenticated_by_router": {
+      "const": false
+    },
+    "permissions_granted_by_router": {
+      "const": false
+    },
+    "tasks_advanced_by_router": {
+      "const": false
+    },
+    "native_powershell_runtime_tested": {
+      "const": false
+    },
+    "limitations": {
+      "type": "string"
+    }
+  }
+}

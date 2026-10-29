@@ -1,0 +1,76 @@
+{
+  "schema": "ces.proposed_pr_reconcile.v1",
+  "introduced": "EC-166 / V4.76 / R166",
+  "entry": "construction/proposed_pr_reconcile.py",
+  "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
+  "native_reconcile_remote": "NOT_IMPLEMENTED",
+  "native_collect_proposed_pr": "NOT_IMPLEMENTED",
+  "input": {
+    "required": "Valid prior EC162 pin or internally consistent EC165 receipt; both may be supplied if pins and provenance match",
+    "ec162_schema": "ces.proposed_pr_identity.v1",
+    "ec165_schema": "ces.proposed_pr_snapshot.v1",
+    "request_locator": ["provider", "repository", "number"],
+    "prior_pin_max_bytes": 65536,
+    "prior_snapshot_max_bytes": 4194304,
+    "duplicate_json_keys_rejected": true,
+    "network_by_default": "DENIED",
+    "network_opt_in": "--allow-network",
+    "credential_env": {"github": "CES_GITHUB_TOKEN", "gitlab": "CES_GITLAB_TOKEN"},
+    "synthetic_live_provenance_must_match": true,
+    "hashes_prove_remote_authenticity": false
+  },
+  "remote_read": {
+    "only_one_metadata_get_per_run": true,
+    "github_endpoint_family": "https://api.github.com/repos/{owner}/{repo}/pulls/{number}",
+    "gitlab_endpoint_family": "https://gitlab.com/api/v4/projects/{path}/merge_requests/{iid}",
+    "read_only": true,
+    "no_provider_files_or_diffs_pages": true,
+    "no_raw_patch_or_etag_reuse": true,
+    "compared_pin_fields": [
+      "provider", "target_repository_id", "proposal_object_id", "source_repository_id",
+      "request_number", "repository_locator", "source_repository_path", "cross_fork",
+      "object_format", "head_sha", "base_sha", "target_tip_sha", "base_semantics",
+      "head_semantics", "target_tip_semantics", "provider_state", "provider_reports_merged"
+    ],
+    "ec165_extra_comparisons": ["provider_reported_changed_files", "provider_change_count_quality"],
+    "gitlab_target_tip_meaning": "diff_refs.start_sha at provider's diff-version observation, not necessarily latest current target branch tip"
+  },
+  "output_keys": [
+    "schema", "status", "exit_code", "reconciliation_state", "reason_code", "message",
+    "prior", "current_observation", "comparison", "evidence_policy", "synthetic",
+    "native_cli_action_registered", "diff_snapshot_proven", "provider_actor_verified",
+    "delivery_or_merge_proven", "write_authorized"
+  ],
+  "states": {
+    "FRESH_OBSERVATION": "New metadata matches prior full pin, plus an exact advertised file count when prior EC165 exists; old pages/patches do NOT become current",
+    "STALE_BY_DRIFT": "At least one mandatory prior identity/OID/state/merge/count/quality claim differs; prior EC165 controlled output invalidated for current use",
+    "UNAVAILABLE_UNKNOWN": "No complete comparable observation: denied read, missing fork or diff_refs, unsupported state, count unavailable/capped, incompatible origin or invalid input"
+  },
+  "status_exit_code": {"partial": 2, "invalid_input": 4, "unavailable": 5},
+  "success_status_supported": false,
+  "comparison_fields": [
+    "pin_state", "count_state", "changed_fields", "changes",
+    "prior_evidence_invalidated_by_metadata"
+  ],
+  "count_states": ["NOT_CHECKED", "NOT_BASELINED", "CHANGED", "INDETERMINATE", "MATCHED_EXACT_CLAIM"],
+  "prior_observation_authentication": "NOT_PROVEN",
+  "old_snapshot_currentness": "NEVER_PROVEN_BY_METADATA_RECHECK",
+  "always_false": [
+    "native_cli_action_registered", "diff_snapshot_proven", "provider_actor_verified",
+    "delivery_or_merge_proven", "write_authorized",
+    "evidence_policy.old_file_pages_reused", "evidence_policy.old_patch_content_reused",
+    "evidence_policy.old_etags_used_as_remote_proof",
+    "evidence_policy.old_local_git_objects_used_as_remote_proof",
+    "evidence_policy.prior_snapshot_currentness_proven",
+    "evidence_policy.cross_page_atomicity_proven",
+    "evidence_policy.provider_immutable_diff_version_proven",
+    "evidence_policy.provider_actor_verified",
+    "evidence_policy.delivery_or_merge_proven",
+    "evidence_policy.write_authorized"
+  ],
+  "development_fixtures": "construction/test_proposed_pr_reconcile.py",
+  "focused_offline_dev_cases": 25,
+  "actual_provider_online_validation": "NOT_RUN",
+  "native_powershell_validation": "NOT_RUN",
+  "final_user_assisted_acceptance": "NOT_STARTED"
+}

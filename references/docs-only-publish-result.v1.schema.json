@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ces/docs-only-publish-result.v1.schema.json",
+  "title": "CES EC229 private local DocsOnlyPublish attempt result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "operation_id",
+    "local_candidate_commit_sha",
+    "private_sandbox_ref",
+    "local_candidate_state",
+    "claim_committed",
+    "isolated_worktree_created",
+    "local_commit_created",
+    "private_push_attempted",
+    "private_sandbox_ref_observed",
+    "original_repository_intact_verified",
+    "published",
+    "production_or_public_published",
+    "external_publication_confirmed",
+    "native_action_registered",
+    "effects"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.docs_only_publish.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "blocked",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^DOCS_ONLY_[A-Z0-9_]{5,128}$"
+    },
+    "operation_id": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      ]
+    },
+    "local_candidate_commit_sha": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      ]
+    },
+    "private_sandbox_ref": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^refs/heads/ces-docs-private/[0-9a-f]{64}$"
+        }
+      ]
+    },
+    "local_candidate_state": {
+      "enum": [
+        "NOT_STARTED",
+        "UNKNOWN_AFTER_EFFECT",
+        "PRIVATE_LOCAL_REF_OBSERVED_ONCE"
+      ]
+    },
+    "claim_committed": {
+      "type": "boolean"
+    },
+    "isolated_worktree_created": {
+      "type": "boolean"
+    },
+    "local_commit_created": {
+      "type": "boolean"
+    },
+    "private_push_attempted": {
+      "type": "boolean"
+    },
+    "private_sandbox_ref_observed": {
+      "type": "boolean"
+    },
+    "original_repository_intact_verified": {
+      "type": "boolean"
+    },
+    "published": {
+      "const": false
+    },
+    "production_or_public_published": {
+      "const": false
+    },
+    "external_publication_confirmed": {
+      "const": false
+    },
+    "native_action_registered": {
+      "const": false
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "original_worktree_or_index_edited",
+        "business_ci_schema_path_staged",
+        "existing_ref_overwritten",
+        "production_network_or_remote_requested",
+        "private_local_sandbox_ref_write_attempted",
+        "automatic_cleanup_or_retry"
+      ],
+      "properties": {
+        "original_worktree_or_index_edited": {
+          "const": false
+        },
+        "business_ci_schema_path_staged": {
+          "const": false
+        },
+        "existing_ref_overwritten": {
+          "const": false
+        },
+        "production_network_or_remote_requested": {
+          "const": false
+        },
+        "automatic_cleanup_or_retry": {
+          "const": false
+        },
+        "private_local_sandbox_ref_write_attempted": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "private_sandbox_ref_observed": {
+            "const": true
+          },
+          "local_candidate_state": {
+            "const": "PRIVATE_LOCAL_REF_OBSERVED_ONCE"
+          },
+          "claim_committed": {
+            "const": true
+          },
+          "private_push_attempted": {
+            "const": true
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "private_sandbox_ref_observed": {
+            "const": false
+          },
+          "local_candidate_commit_sha": {
+            "type": "null"
+          },
+          "private_sandbox_ref": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

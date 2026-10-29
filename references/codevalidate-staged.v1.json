@@ -1,0 +1,130 @@
+{
+  "schema": "ces.codevalidate_staged_contract.v1",
+  "introduced_in": "V4.85/R175/EC-175",
+  "implementation": "construction/codevalidate_staged.py",
+  "api": "StagedCodeValidator.validate(prepared, route_result, *, expected_parent_pin, run_id, handoff_id, expected_revision, expected_event_sha256, input_operation_key, validation_operation_key, authorize_validate, authorize_read, validate_content_for, expected_candidate_sha256, draft=None, allow_historical_proposal=False, max_source_age_seconds=600, manual_review=None, authorize_manual_review=False, manual_review_content_for=None, trusted_verifier_id=None, trusted_verifier_key=None)",
+  "mode": "Staged",
+  "result_schema": "ces.codevalidate_staged_result.v1",
+  "draft_schema": "ces.codevalidate_staged_draft.v1",
+  "optional_manual_review_schema": "ces.codevalidate_manual_review.v1",
+  "required_real_predecessors": [
+    "EC170 single authorized bounded source with explicit source permission",
+    "EC171 genuinely created ACTIVE RunId and READY HandoffId",
+    "EC172 sealed committed private stage revision/last-event hash",
+    "EC173 immutable HMAC-sealed input and independent reentrant input read permission",
+    "EC174 route result from dispatch with a schema/anchor checked unverified candidate"
+  ],
+  "independent_authorization": [
+    "authorize_validate=true (not inherited from EC174 route)",
+    "authorize_read=true and validate_content_for=exact EC173 source mode",
+    "input_operation_key=exact EC173 input-create key",
+    "validation_operation_key=separate valid key; does not change EC173 store",
+    "expected_candidate_sha256=externally pinned exact EC174 normalized candidate digest",
+    "parent_pin/run_id/handoff_id/stage_revision/last_event_sha256",
+    "historical ProposePR opt-in and exact source age limit"
+  ],
+  "accepted_route_result": {
+    "schema": "ces.ai_handoff_route_result.v1",
+    "route_id": "ces.route.code_analysis.v1",
+    "task_kind": "code_analysis",
+    "action": "dispatch",
+    "status": "partial",
+    "exit_code": 2,
+    "reason_code": "AI_CANDIDATE_RECEIVED_UNVERIFIED",
+    "provider_callback_invoked_and_candidate_received": true,
+    "provider_or_actor_authenticated": false,
+    "source_currentness_proven": false,
+    "semantic_validation": "NOT_PERFORMED",
+    "persisted_finding_created": false,
+    "source_binding_fields": ["run_id", "handoff_id", "stage_revision", "stage_event_sha256", "source_mode", "task_kind", "source_context_sha256", "source_identity_sha256", "evidence_hash", "material_sha256"],
+    "draft_evidence": "source anchors rebuilt directly from EC173 segments and full-line quote; normalized candidate_sha256 recomputed and pinned",
+    "not_accepted": ["schema_only", "malformed route", "edited draft", "unknown candidate SHA", "untrusted success flags", "unsupported task_kind", "HMAC tamper/expired/revision drift", "invalid or unconsented source grant"]
+  },
+  "draft_exact_fields": ["schema", "source_binding", "candidate_sha256", "summary", "findings", "actor_claim"],
+  "draft_rule": "if supplied, draft must canonically match EC174 normalized result exactly; no post-approval text edits; absence reconstructs same immutable view in memory",
+  "deterministic_validations": [
+    "strict exact v1 route and normalized finding field sets",
+    "source context+identity+evidence+material sha mode task run handoff revision event exact match",
+    "EC173 record/stage private HMAC expiry source age permissions checked before and after",
+    "coverage/quality/missingRequirements/source-currentness limitations unchanged",
+    "all summary/text bounds, evidence segment+item+full line+anchor SHA+provenance rechecked",
+    "normalized whole candidate digest and optional draft exact equality",
+    "manual attestation bound to operation key, source, candidate, every finding, review time, expiry and configured HMAC verifier"
+  ],
+  "manual_review_attestation": {
+    "available_only_with": ["authorize_manual_review=true", "manual_review_content_for matches source mode", "trusted_verifier_id is an operator-pinned ASCII id", "trusted_verifier_key is independently provisioned 32-64 byte secret", "complete signed review record"],
+    "schema": "ces.codevalidate_manual_review.v1",
+    "fields": ["schema", "method", "verifier_id", "source_binding", "candidate_sha256", "validation_operation_key", "reviewed_at_utc", "expires_at_utc", "decisions", "mac_sha256"],
+    "method": "independent_manual_source_review",
+    "decision_fields": ["ordinal", "finding_sha256", "verdict", "review_notes"],
+    "verdicts": ["confirm", "reject", "inconclusive"],
+    "review_mac": "HMAC_SHA256(key, b'CES-EC175-TRUSTED-REVIEW-v1\\x00' + canonical_json(record_without_mac)); expected verifier key NEVER from draft, EC172 key, AI callback or source",
+    "proof_scope": "local possession of separately configured key only; independent reviewer identity and semantic truth NOT cryptographically or empirically established",
+    "signer_does_not_prove": ["current source", "authenticated AI/provider", "a real CI/test execution", "any Git or business write permission", "a Finding record or CodeSave approval"],
+    "review_max_age_seconds": 300,
+    "review_max_ttl_seconds": 300,
+    "review_time_must_not_precede_source_observation": true,
+    "record_must_expire_before_input_and_validation_window": true
+  },
+  "status_and_exit": {
+    "valid_structurally_anchored_unreviewed_draft": {"status": "partial", "exit_code": 2, "reason_code": "CODEVALIDATE_DRAFT_STRUCTURALLY_CHECKED_SEMANTICS_UNVERIFIED"},
+    "valid_structurally_anchored_with_pinned_manual_review": {"status": "partial", "exit_code": 2, "reason_code": "CODEVALIDATE_PINNED_MANUAL_REVIEW_RECORDED_NOT_SOURCE_PROOF"},
+    "invalid_or_unknown_candidate_or_missing_grant": {"status": "invalid_input", "exit_code": 4},
+    "unavailable_or_stale_sealed_input_or_bad_manual_signature": {"status": "unavailable", "exit_code": 5},
+    "success_0": "UNAVAILABLE_IN_EC175_NO_PROOF_OF_CURRENT_SOURCE_OR_REAL_TEST_RUN"
+  },
+  "finding_review_states": [
+    "UNVERIFIED_SEMANTIC_ASSERTION",
+    "UNVERIFIED_REVIEW_INCONCLUSIVE",
+    "REJECTED_BY_PINNED_MANUAL_REVIEW",
+    "VERIFIED_BY_PINNED_MANUAL_REVIEW_SIGNATURE"
+  ],
+  "result_fields": [
+    "schema", "mode", "status", "exit_code", "reason_code", "validation_operation_key", "source_binding", "source", "coverage", "validated_at_utc", "expires_at_utc", "candidate", "manual_review", "proof", "effects", "trust_boundary", "validation_receipt_sha256"
+  ],
+  "candidate_fields": ["state", "route_result_sha256", "draft_sha256", "candidate_sha256", "findings", "findings_count", "manual_verified_count", "manual_rejected_count", "semantic_or_test_execution_verified"],
+  "per_finding_output": ["ordinal", "finding_sha256", "source_anchor_sha256", "review_state", "manual_review_note_sha256", "text_persisted", "live_git_line_proven"],
+  "limits": {
+    "route_result_bytes": 393216,
+    "draft_bytes": 262144,
+    "signed_manual_review_bytes": 32768,
+    "max_validity_seconds": 300,
+    "source_and_input_expiry_also_apply": true,
+    "max_findings": 32,
+    "max_anchors_per_finding": 5,
+    "review_note_chars": 1200
+  },
+  "effects": {
+    "source_code_executed": false,
+    "ces_record_or_finding_saved": false,
+    "business_repository_written": false,
+    "git_or_issue_written": false,
+    "third_party_transfer_by_validator": false,
+    "codesave_authorized": false,
+    "eligible_for_automatic_codesave": false
+  },
+  "trust_boundaries": {
+    "local_stage_hmac_not_git_or_actor_authentication": true,
+    "caller_supplied_ec174_result_and_sha_not_origin_authentication": true,
+    "source_anchor_match_not_defect_proof": true,
+    "operator_hmac_not_independent_human_identity_or_real_test_execution": true,
+    "validation_receipt_sha256_is_unkeyed_digest_not_proof_or_save_permission": true,
+    "manual_verdict_cannot_change_partial_to_success": true,
+    "positive_result_must_be_revalidated_by_future_ec176": true,
+    "native_powershell_route_not_registered": true
+  },
+  "cli": {
+    "entrypoint": "python construction/codevalidate_staged.py --prepared ... --route-result ... [source, operation and authorization flags]",
+    "external_review_key_not_supported_on_cli": true,
+    "output": "bounded metadata/digests only; not raw segment lines/draft text",
+    "no_side_effects": true
+  },
+  "validation_scope": {
+    "ec175_disposable_local_synthetic": "DEVELOPMENT_ONLY",
+    "real_external_ai_or_authenticated_human": "NOT_RUN",
+    "actual_git_source_reobservation_and_ci_test": "NOT_RUN",
+    "native_powershell7_and_15_smoke": "NOT_RUN",
+    "cross_os_actual_races_failures_power_loss": "NOT_RUN",
+    "final_combined_user_assisted_acceptance": "NOT_STARTED"
+  }
+}

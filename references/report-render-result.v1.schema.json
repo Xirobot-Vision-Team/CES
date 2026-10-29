@@ -1,0 +1,878 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/references/report-render-result.v1.schema.json",
+  "title": "CES EC199 offline ReportRender response (not publish)",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.report_render.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^REPORT_RENDER_[A-Z0-9_]+$",
+      "maxLength": 128
+    },
+    "subject": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "schema": {
+              "const": "ces.internal_report_document.v1"
+            },
+            "document_state": {
+              "const": "UNPUBLISHED_INTERNAL_REVIEW_ARTIFACT"
+            },
+            "trust_state": {
+              "const": "DECLARED_ONLY_NOT_AUTHENTICATED"
+            },
+            "render_format": {
+              "const": "text/markdown;charset=utf-8"
+            },
+            "report_slot_ref": {
+              "type": "string",
+              "pattern": "^cesrslot1:[0-9a-f]{64}$"
+            },
+            "slot_key": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+            },
+            "period_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "slot_members": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 32,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "repository_ref": {
+                    "type": "string",
+                    "pattern": "^cesrepo1:[0-9a-f]{64}$"
+                  },
+                  "report_subject_ref": {
+                    "type": "string",
+                    "pattern": "^cesrs1:[0-9a-f]{64}$"
+                  }
+                },
+                "required": [
+                  "repository_ref",
+                  "report_subject_ref"
+                ]
+              }
+            },
+            "source_pins": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "prepare_binding_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "prepare_canonical_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "ai_input_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "scope_binding_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "metrics_binding_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "release_policy_binding_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "scope_ref": {
+                  "type": "string",
+                  "maxLength": 256
+                },
+                "period_id": {
+                  "type": "string",
+                  "maxLength": 256
+                }
+              },
+              "required": [
+                "prepare_binding_sha256",
+                "prepare_canonical_sha256",
+                "ai_input_sha256",
+                "scope_binding_sha256",
+                "metrics_binding_sha256",
+                "release_policy_binding_sha256",
+                "scope_ref",
+                "period_id"
+              ]
+            },
+            "handoff_draft_ref": {
+              "type": "string",
+              "pattern": "^cesrhd1:[0-9a-f]{64}$"
+            },
+            "handoff_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "render_policy_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "sections_manifest": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 128,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "repository_ref": {
+                    "type": "string",
+                    "pattern": "^cesrepo1:[0-9a-f]{64}$"
+                  },
+                  "channel": {
+                    "enum": [
+                      "ai_conclusion",
+                      "ci_execution",
+                      "git_activity",
+                      "unknown_signal"
+                    ]
+                  },
+                  "coverage_state": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "release_state": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "ci_completion_signal": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "citation_refs": {
+                    "type": "array",
+                    "maxItems": 512,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^cesrc1:[0-9a-f]{64}$"
+                    },
+                    "uniqueItems": true
+                  },
+                  "report_subject_ref": {
+                    "type": "string",
+                    "pattern": "^cesrs1:[0-9a-f]{64}$"
+                  },
+                  "source_mode": {
+                    "enum": [
+                      "WorkingTree",
+                      "DeliveredTarget",
+                      "ProposedPR"
+                    ]
+                  },
+                  "source_binding_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "people_binding_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "period_window_complete_declared": {
+                    "type": "boolean"
+                  },
+                  "path_scope": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "inventory_state": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "scope_gap_codes": {
+                    "type": "array",
+                    "maxItems": 64,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "uniqueItems": true
+                  },
+                  "coverage_reason_codes": {
+                    "type": "array",
+                    "maxItems": 64,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "uniqueItems": true
+                  }
+                },
+                "required": [
+                  "repository_ref",
+                  "channel",
+                  "coverage_state",
+                  "release_state",
+                  "ci_completion_signal",
+                  "citation_refs",
+                  "report_subject_ref",
+                  "source_mode",
+                  "source_binding_sha256",
+                  "people_binding_sha256",
+                  "period_window_complete_declared",
+                  "path_scope",
+                  "inventory_state",
+                  "scope_gap_codes",
+                  "coverage_reason_codes"
+                ]
+              }
+            },
+            "rendered_markdown": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 524288
+            },
+            "rendered_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "limitations": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "external_authorization_or_review_receipts_authenticated": {
+                  "const": false
+                },
+                "report_contents_or_source_claims_independently_verified": {
+                  "const": false
+                },
+                "ci_execution_or_pass_verified": {
+                  "const": false
+                },
+                "repository_universe_or_identity_authenticated": {
+                  "const": false
+                },
+                "personal_performance_assessed_or_scored": {
+                  "const": false
+                },
+                "ai_model_or_external_provider_invoked": {
+                  "const": false
+                },
+                "external_publication_or_egress_authorized": {
+                  "const": false
+                },
+                "report_published": {
+                  "const": false
+                },
+                "native_powershell_report_render_registered": {
+                  "const": false
+                },
+                "local_storage_attacker_proof_or_cross_os_verified": {
+                  "const": false
+                }
+              },
+              "required": [
+                "external_authorization_or_review_receipts_authenticated",
+                "report_contents_or_source_claims_independently_verified",
+                "ci_execution_or_pass_verified",
+                "repository_universe_or_identity_authenticated",
+                "personal_performance_assessed_or_scored",
+                "ai_model_or_external_provider_invoked",
+                "external_publication_or_egress_authorized",
+                "report_published",
+                "native_powershell_report_render_registered",
+                "local_storage_attacker_proof_or_cross_os_verified"
+              ]
+            },
+            "report_ref": {
+              "type": "string",
+              "pattern": "^cesrr1:[0-9a-f]{64}$"
+            },
+            "binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "schema",
+            "document_state",
+            "trust_state",
+            "render_format",
+            "report_slot_ref",
+            "slot_key",
+            "period_id",
+            "slot_members",
+            "source_pins",
+            "handoff_draft_ref",
+            "handoff_binding_sha256",
+            "render_policy_binding_sha256",
+            "sections_manifest",
+            "rendered_markdown",
+            "rendered_sha256",
+            "limitations",
+            "report_ref",
+            "binding_sha256"
+          ]
+        }
+      ]
+    },
+    "canonical_json": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "maxLength": 1048576
+    },
+    "storage": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "state": {
+              "enum": [
+                "SAVED_NEW_VERSION",
+                "REPLAY_ALREADY_SAVED",
+                "IDENTICAL_RENDER_EXISTS"
+              ]
+            },
+            "durability": {
+              "const": "LOCAL_POSIX_ATOMIC_INDEX_ADVISORY_LOCK_NOT_AUTHENTICATED"
+            },
+            "report_slot_ref": {
+              "type": "string",
+              "pattern": "^cesrslot1:[0-9a-f]{64}$"
+            },
+            "report_ref": {
+              "type": "string",
+              "pattern": "^cesrr1:[0-9a-f]{64}$"
+            },
+            "version": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 64
+            },
+            "version_count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 64
+            },
+            "index_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "entry_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "report_record_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "rendered_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "publication_state": {
+              "const": "NOT_PUBLISHED"
+            }
+          },
+          "required": [
+            "state",
+            "durability",
+            "report_slot_ref",
+            "report_ref",
+            "version",
+            "version_count",
+            "index_binding_sha256",
+            "entry_sha256",
+            "report_record_sha256",
+            "rendered_sha256",
+            "publication_state"
+          ]
+        }
+      ]
+    },
+    "limitations": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "external_authorization_or_review_receipts_authenticated": {
+          "const": false
+        },
+        "report_contents_or_source_claims_independently_verified": {
+          "const": false
+        },
+        "ci_execution_or_pass_verified": {
+          "const": false
+        },
+        "repository_universe_or_identity_authenticated": {
+          "const": false
+        },
+        "personal_performance_assessed_or_scored": {
+          "const": false
+        },
+        "ai_model_or_external_provider_invoked": {
+          "const": false
+        },
+        "external_publication_or_egress_authorized": {
+          "const": false
+        },
+        "report_published": {
+          "const": false
+        },
+        "native_powershell_report_render_registered": {
+          "const": false
+        },
+        "local_storage_attacker_proof_or_cross_os_verified": {
+          "const": false
+        }
+      },
+      "required": [
+        "external_authorization_or_review_receipts_authenticated",
+        "report_contents_or_source_claims_independently_verified",
+        "ci_execution_or_pass_verified",
+        "repository_universe_or_identity_authenticated",
+        "personal_performance_assessed_or_scored",
+        "ai_model_or_external_provider_invoked",
+        "external_publication_or_egress_authorized",
+        "report_published",
+        "native_powershell_report_render_registered",
+        "local_storage_attacker_proof_or_cross_os_verified"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "subject",
+    "canonical_json",
+    "storage",
+    "limitations"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "subject": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "schema": {
+                "const": "ces.internal_report_document.v1"
+              },
+              "document_state": {
+                "const": "UNPUBLISHED_INTERNAL_REVIEW_ARTIFACT"
+              },
+              "trust_state": {
+                "const": "DECLARED_ONLY_NOT_AUTHENTICATED"
+              },
+              "render_format": {
+                "const": "text/markdown;charset=utf-8"
+              },
+              "report_slot_ref": {
+                "type": "string",
+                "pattern": "^cesrslot1:[0-9a-f]{64}$"
+              },
+              "slot_key": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+              },
+              "period_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "slot_members": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 32,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "repository_ref": {
+                      "type": "string",
+                      "pattern": "^cesrepo1:[0-9a-f]{64}$"
+                    },
+                    "report_subject_ref": {
+                      "type": "string",
+                      "pattern": "^cesrs1:[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "repository_ref",
+                    "report_subject_ref"
+                  ]
+                }
+              },
+              "source_pins": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "prepare_binding_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "prepare_canonical_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "ai_input_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "scope_binding_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "metrics_binding_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "release_policy_binding_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "scope_ref": {
+                    "type": "string",
+                    "maxLength": 256
+                  },
+                  "period_id": {
+                    "type": "string",
+                    "maxLength": 256
+                  }
+                },
+                "required": [
+                  "prepare_binding_sha256",
+                  "prepare_canonical_sha256",
+                  "ai_input_sha256",
+                  "scope_binding_sha256",
+                  "metrics_binding_sha256",
+                  "release_policy_binding_sha256",
+                  "scope_ref",
+                  "period_id"
+                ]
+              },
+              "handoff_draft_ref": {
+                "type": "string",
+                "pattern": "^cesrhd1:[0-9a-f]{64}$"
+              },
+              "handoff_binding_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "render_policy_binding_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "sections_manifest": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 128,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "repository_ref": {
+                      "type": "string",
+                      "pattern": "^cesrepo1:[0-9a-f]{64}$"
+                    },
+                    "channel": {
+                      "enum": [
+                        "ai_conclusion",
+                        "ci_execution",
+                        "git_activity",
+                        "unknown_signal"
+                      ]
+                    },
+                    "coverage_state": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "release_state": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "ci_completion_signal": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "citation_refs": {
+                      "type": "array",
+                      "maxItems": 512,
+                      "items": {
+                        "type": "string",
+                        "pattern": "^cesrc1:[0-9a-f]{64}$"
+                      },
+                      "uniqueItems": true
+                    },
+                    "report_subject_ref": {
+                      "type": "string",
+                      "pattern": "^cesrs1:[0-9a-f]{64}$"
+                    },
+                    "source_mode": {
+                      "enum": [
+                        "WorkingTree",
+                        "DeliveredTarget",
+                        "ProposedPR"
+                      ]
+                    },
+                    "source_binding_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "people_binding_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "period_window_complete_declared": {
+                      "type": "boolean"
+                    },
+                    "path_scope": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "inventory_state": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "scope_gap_codes": {
+                      "type": "array",
+                      "maxItems": 64,
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "uniqueItems": true
+                    },
+                    "coverage_reason_codes": {
+                      "type": "array",
+                      "maxItems": 64,
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "uniqueItems": true
+                    }
+                  },
+                  "required": [
+                    "repository_ref",
+                    "channel",
+                    "coverage_state",
+                    "release_state",
+                    "ci_completion_signal",
+                    "citation_refs",
+                    "report_subject_ref",
+                    "source_mode",
+                    "source_binding_sha256",
+                    "people_binding_sha256",
+                    "period_window_complete_declared",
+                    "path_scope",
+                    "inventory_state",
+                    "scope_gap_codes",
+                    "coverage_reason_codes"
+                  ]
+                }
+              },
+              "rendered_markdown": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 524288
+              },
+              "rendered_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "limitations": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "external_authorization_or_review_receipts_authenticated": {
+                    "const": false
+                  },
+                  "report_contents_or_source_claims_independently_verified": {
+                    "const": false
+                  },
+                  "ci_execution_or_pass_verified": {
+                    "const": false
+                  },
+                  "repository_universe_or_identity_authenticated": {
+                    "const": false
+                  },
+                  "personal_performance_assessed_or_scored": {
+                    "const": false
+                  },
+                  "ai_model_or_external_provider_invoked": {
+                    "const": false
+                  },
+                  "external_publication_or_egress_authorized": {
+                    "const": false
+                  },
+                  "report_published": {
+                    "const": false
+                  },
+                  "native_powershell_report_render_registered": {
+                    "const": false
+                  },
+                  "local_storage_attacker_proof_or_cross_os_verified": {
+                    "const": false
+                  }
+                },
+                "required": [
+                  "external_authorization_or_review_receipts_authenticated",
+                  "report_contents_or_source_claims_independently_verified",
+                  "ci_execution_or_pass_verified",
+                  "repository_universe_or_identity_authenticated",
+                  "personal_performance_assessed_or_scored",
+                  "ai_model_or_external_provider_invoked",
+                  "external_publication_or_egress_authorized",
+                  "report_published",
+                  "native_powershell_report_render_registered",
+                  "local_storage_attacker_proof_or_cross_os_verified"
+                ]
+              },
+              "report_ref": {
+                "type": "string",
+                "pattern": "^cesrr1:[0-9a-f]{64}$"
+              },
+              "binding_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "schema",
+              "document_state",
+              "trust_state",
+              "render_format",
+              "report_slot_ref",
+              "slot_key",
+              "period_id",
+              "slot_members",
+              "source_pins",
+              "handoff_draft_ref",
+              "handoff_binding_sha256",
+              "render_policy_binding_sha256",
+              "sections_manifest",
+              "rendered_markdown",
+              "rendered_sha256",
+              "limitations",
+              "report_ref",
+              "binding_sha256"
+            ]
+          },
+          "canonical_json": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          },
+          "subject": {
+            "type": "null"
+          },
+          "canonical_json": {
+            "type": "null"
+          },
+          "storage": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          },
+          "subject": {
+            "type": "null"
+          },
+          "canonical_json": {
+            "type": "null"
+          },
+          "storage": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,754 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/cross-mode-quality-flow-result.v1.schema.json",
+  "title": "CES EC190 Cross Source Mode Quality Flow (read only, unverified)",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "ces.cross_mode_quality_flow.v1"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "type": "integer",
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "flow_revision_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_mode": {
+            "type": "string",
+            "enum": [
+              "ProposedPR",
+              "DeliveredTarget",
+              "WorkingTree",
+              "CodeInsight"
+            ]
+          },
+          "source_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "scope_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "captured_at_utc_caller_supplied": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$"
+          },
+          "quality_revision_sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "quality_evidence_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "code_insight_record_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^ci-[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "code_insight_static_finding_count": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "historical_proposal_only": {
+            "type": "boolean"
+          },
+          "source_currentness_verified": {
+            "const": false
+          },
+          "test_execution_verified": {
+            "const": false
+          }
+        },
+        "required": [
+          "source_mode",
+          "source_id",
+          "scope_sha256",
+          "captured_at_utc_caller_supplied",
+          "quality_revision_sha256",
+          "quality_evidence_count",
+          "code_insight_record_id",
+          "code_insight_static_finding_count",
+          "historical_proposal_only",
+          "source_currentness_verified",
+          "test_execution_verified"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 4
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "event_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "from_mode": {
+            "type": "string",
+            "enum": [
+              "ProposedPR",
+              "DeliveredTarget",
+              "WorkingTree",
+              "CodeInsight"
+            ]
+          },
+          "to_mode": {
+            "type": "string",
+            "enum": [
+              "ProposedPR",
+              "DeliveredTarget",
+              "WorkingTree",
+              "CodeInsight"
+            ]
+          },
+          "from_source_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "to_source_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "relationship": {
+            "type": "string",
+            "enum": [
+              "PROPOSAL_TO_DELIVERED",
+              "DELIVERED_TO_WORKTREE",
+              "CODE_INSIGHT_TO_SOURCE",
+              "CONTEXT_COMPARISON"
+            ]
+          },
+          "claim": {
+            "type": "string",
+            "enum": [
+              "SUPPORTED",
+              "DISPUTED"
+            ]
+          },
+          "occurred_at_utc_host_declared": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$"
+          },
+          "recorded_at_utc_host_declared": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$"
+          },
+          "capture_order": {
+            "type": "string",
+            "enum": [
+              "CALLER_CAPTURE_ORDER_CONSISTENT",
+              "CALLER_CAPTURE_ORDER_CONTRADICTED",
+              "NOT_ORDERED_CONTEXT_COMPARISON"
+            ]
+          },
+          "from_evidence": {
+            "type": "object",
+            "properties": {
+              "selected_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "maxItems": 8
+              },
+              "evidence_kind": {
+                "type": "string",
+                "enum": [
+                  "EC188_QUALITY_CLAIMS",
+                  "STATIC_CODE_INSIGHT"
+                ]
+              },
+              "failure_claims": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "pass_claims": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "context_only": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "static_findings_are_not_test_results": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "selected_ids",
+              "evidence_kind",
+              "failure_claims",
+              "pass_claims",
+              "context_only",
+              "static_findings_are_not_test_results"
+            ],
+            "additionalProperties": false
+          },
+          "to_evidence": {
+            "type": "object",
+            "properties": {
+              "selected_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "maxItems": 8
+              },
+              "evidence_kind": {
+                "type": "string",
+                "enum": [
+                  "EC188_QUALITY_CLAIMS",
+                  "STATIC_CODE_INSIGHT"
+                ]
+              },
+              "failure_claims": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "pass_claims": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "context_only": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "static_findings_are_not_test_results": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "selected_ids",
+              "evidence_kind",
+              "failure_claims",
+              "pass_claims",
+              "context_only",
+              "static_findings_are_not_test_results"
+            ],
+            "additionalProperties": false
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "CONTEXT_ASSOCIATION_ONLY",
+              "REVOKED_NOT_ACTIVE",
+              "TEMPORAL_CONTRADICTION_NOT_ACTIVE",
+              "DISPUTED_NOT_ACTIVE",
+              "CONTRADICTED_NOT_ACTIVE"
+            ]
+          },
+          "revoked_by_sha256": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "maxItems": 16
+          },
+          "conflicting_active_evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "maxItems": 16
+          },
+          "source_event_verified_by_ces_git": {
+            "const": false
+          },
+          "independent_source_equivalence_proven": {
+            "const": false
+          },
+          "quality_state_transferred": {
+            "const": false
+          },
+          "tests_executed_by_relation": {
+            "const": false
+          }
+        },
+        "required": [
+          "event_sha256",
+          "from_mode",
+          "to_mode",
+          "from_source_id",
+          "to_source_id",
+          "relationship",
+          "claim",
+          "occurred_at_utc_host_declared",
+          "recorded_at_utc_host_declared",
+          "capture_order",
+          "from_evidence",
+          "to_evidence",
+          "status",
+          "revoked_by_sha256",
+          "conflicting_active_evidence_ids",
+          "source_event_verified_by_ces_git",
+          "independent_source_equivalence_proven",
+          "quality_state_transferred",
+          "tests_executed_by_relation"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 16
+    },
+    "revocations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "event_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "revocation_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "SOURCE_RETRACTED",
+              "EVIDENCE_SUPERSEDED",
+              "HOST_PERMISSION_WITHDRAWN",
+              "MAPPING_CORRECTED"
+            ]
+          },
+          "revoked_at_utc_host_declared": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$"
+          },
+          "recorded_at_utc_host_declared": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$"
+          },
+          "host_revocation_verified_by_ces": {
+            "const": false
+          }
+        },
+        "required": [
+          "event_sha256",
+          "revocation_sha256",
+          "reason",
+          "revoked_at_utc_host_declared",
+          "recorded_at_utc_host_declared",
+          "host_revocation_verified_by_ces"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 16
+    },
+    "counts": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "source_modes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "relations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "context_only_relations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "revoked_relations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "contradicted_relations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "time_inconsistent_relations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "revocation_records": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "source_modes",
+            "relations",
+            "context_only_relations",
+            "revoked_relations",
+            "contradicted_relations",
+            "time_inconsistent_relations",
+            "revocation_records"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "coverage": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "all_caller_supplied_quality_receipts_scoped_and_requeried": {
+              "const": true
+            },
+            "code_insight_original_bytes_inspected_when_selected": {
+              "type": "boolean"
+            },
+            "host_event_records_revalidated_at_finalization": {
+              "const": true
+            },
+            "source_event_host_authorization_is_git_proof": {
+              "const": false
+            },
+            "source_or_ci_currentness_independently_verified": {
+              "const": false
+            },
+            "historical_proposed_pr_auto_promoted_to_delivery": {
+              "const": false
+            },
+            "static_code_insight_promoted_to_executed_test": {
+              "const": false
+            },
+            "quality_or_finding_state_transferred_across_modes": {
+              "const": false
+            },
+            "rechecks_are_cross_system_atomic": {
+              "const": false
+            },
+            "full_provider_or_repository_coverage": {
+              "const": false
+            }
+          },
+          "required": [
+            "all_caller_supplied_quality_receipts_scoped_and_requeried",
+            "code_insight_original_bytes_inspected_when_selected",
+            "host_event_records_revalidated_at_finalization",
+            "source_event_host_authorization_is_git_proof",
+            "source_or_ci_currentness_independently_verified",
+            "historical_proposed_pr_auto_promoted_to_delivery",
+            "static_code_insight_promoted_to_executed_test",
+            "quality_or_finding_state_transferred_across_modes",
+            "rechecks_are_cross_system_atomic",
+            "full_provider_or_repository_coverage"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "effects": {
+      "type": "object",
+      "properties": {
+        "read_only": {
+          "const": true
+        },
+        "ces_store_written": {
+          "const": false
+        },
+        "business_repository_or_git_written": {
+          "const": false
+        },
+        "provider_or_issue_written": {
+          "const": false
+        },
+        "test_or_ci_executed_by_flow": {
+          "const": false
+        },
+        "quality_pass_verified": {
+          "const": false
+        },
+        "defect_confirmed": {
+          "const": false
+        },
+        "finding_or_review_state_modified": {
+          "const": false
+        },
+        "proposed_pr_declared_delivered": {
+          "const": false
+        },
+        "deployment_or_currentness_verified": {
+          "const": false
+        },
+        "cross_mode_source_equivalence_proven": {
+          "const": false
+        },
+        "code_insight_semantics_or_authorship_verified": {
+          "const": false
+        },
+        "source_text_or_model_summary_exposed": {
+          "const": false
+        }
+      },
+      "required": [
+        "read_only",
+        "ces_store_written",
+        "business_repository_or_git_written",
+        "provider_or_issue_written",
+        "test_or_ci_executed_by_flow",
+        "quality_pass_verified",
+        "defect_confirmed",
+        "finding_or_review_state_modified",
+        "proposed_pr_declared_delivered",
+        "deployment_or_currentness_verified",
+        "cross_mode_source_equivalence_proven",
+        "code_insight_semantics_or_authorship_verified",
+        "source_text_or_model_summary_exposed"
+      ],
+      "additionalProperties": false
+    },
+    "trust_boundary": {
+      "const": "HOST_REVALIDATED_BOUND_SOURCE_EVENT_IS_HOST_DECLARATION_NOT_CES_GIT_MERGE_OR_DEPLOYMENT_AUTHENTICATION; EC188_RECEIPTS_ARE_CALLER_SUPPLIED_CHECKSUMS; CODE_INSIGHT_IS_STATIC_UNVERIFIED_V1_SAVED_BYTES; NO_EXECUTED_TEST_CONFIRMED_DEFECT_SOURCE_EQUIVALENCE_QUALITY_PASS_OR_WRITES"
+    }
+  },
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "flow_revision_sha256",
+    "sources",
+    "relations",
+    "revocations",
+    "counts",
+    "coverage",
+    "effects",
+    "trust_boundary"
+  ],
+  "additionalProperties": false,
+  "oneOf": [
+    {
+      "properties": {
+        "status": {
+          "const": "partial"
+        },
+        "exit_code": {
+          "const": 2
+        },
+        "flow_revision_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "counts": {
+          "type": "object",
+          "properties": {
+            "source_modes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "relations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "context_only_relations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "revoked_relations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "contradicted_relations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "time_inconsistent_relations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "revocation_records": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "source_modes",
+            "relations",
+            "context_only_relations",
+            "revoked_relations",
+            "contradicted_relations",
+            "time_inconsistent_relations",
+            "revocation_records"
+          ],
+          "additionalProperties": false
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "all_caller_supplied_quality_receipts_scoped_and_requeried": {
+              "const": true
+            },
+            "code_insight_original_bytes_inspected_when_selected": {
+              "type": "boolean"
+            },
+            "host_event_records_revalidated_at_finalization": {
+              "const": true
+            },
+            "source_event_host_authorization_is_git_proof": {
+              "const": false
+            },
+            "source_or_ci_currentness_independently_verified": {
+              "const": false
+            },
+            "historical_proposed_pr_auto_promoted_to_delivery": {
+              "const": false
+            },
+            "static_code_insight_promoted_to_executed_test": {
+              "const": false
+            },
+            "quality_or_finding_state_transferred_across_modes": {
+              "const": false
+            },
+            "rechecks_are_cross_system_atomic": {
+              "const": false
+            },
+            "full_provider_or_repository_coverage": {
+              "const": false
+            }
+          },
+          "required": [
+            "all_caller_supplied_quality_receipts_scoped_and_requeried",
+            "code_insight_original_bytes_inspected_when_selected",
+            "host_event_records_revalidated_at_finalization",
+            "source_event_host_authorization_is_git_proof",
+            "source_or_ci_currentness_independently_verified",
+            "historical_proposed_pr_auto_promoted_to_delivery",
+            "static_code_insight_promoted_to_executed_test",
+            "quality_or_finding_state_transferred_across_modes",
+            "rechecks_are_cross_system_atomic",
+            "full_provider_or_repository_coverage"
+          ],
+          "additionalProperties": false
+        },
+        "reason_code": {
+          "const": "QUALITYFLOW_SOURCE_SCOPED_CONTEXT_ONLY"
+        },
+        "sources": {
+          "minItems": 2
+        },
+        "relations": {
+          "minItems": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "status": {
+          "const": "invalid_input"
+        },
+        "exit_code": {
+          "const": 4
+        },
+        "flow_revision_sha256": {
+          "type": "null"
+        },
+        "counts": {
+          "type": "null"
+        },
+        "coverage": {
+          "type": "null"
+        },
+        "sources": {
+          "maxItems": 0
+        },
+        "relations": {
+          "maxItems": 0
+        },
+        "revocations": {
+          "maxItems": 0
+        }
+      }
+    },
+    {
+      "properties": {
+        "status": {
+          "const": "unavailable"
+        },
+        "exit_code": {
+          "const": 5
+        },
+        "flow_revision_sha256": {
+          "type": "null"
+        },
+        "counts": {
+          "type": "null"
+        },
+        "coverage": {
+          "type": "null"
+        },
+        "sources": {
+          "maxItems": 0
+        },
+        "relations": {
+          "maxItems": 0
+        },
+        "revocations": {
+          "maxItems": 0
+        }
+      }
+    }
+  ]
+}

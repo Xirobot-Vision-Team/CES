@@ -1,0 +1,113 @@
+{
+  "schema": "ces.ai_handoff_router_contract.v1",
+  "introduced_in": "V4.84/R174/EC-174",
+  "implementation": "construction/ai_handoff_router.py",
+  "response_schema": "ces.ai_handoff_route_result.v1",
+  "dispatch_schema": "ces.ai_handoff_dispatch.v1",
+  "candidate_schema": "ces.ai_handoff_candidate.v1",
+  "registered_task_routes": {
+    "code_analysis": {"route_id": "ces.route.code_analysis.v1", "ec173_input_supported": true},
+    "report_writing": {"route_id": "ces.route.report_writing.v1", "ec173_input_supported": false},
+    "knowledge_update": {"route_id": "ces.route.knowledge_update.v1", "ec173_input_supported": false},
+    "finding_analysis": {"route_id": "ces.route.finding_analysis.v1", "ec173_input_supported": false}
+  },
+  "routing_rule": "EXPLICIT_EXACT_REQUESTED_TASK_KIND_MATCHES_SEALED_EC173_MATERIAL_AND_STAGE; NO_SUBJECT_OR_NATURAL_LANGUAGE_ROUTE_INFERENCE",
+  "authorization": {
+    "precondition": "EC170_PERMITTED_BOUNDED_SINGLE_SOURCE -> EC171_ACTIVE_RUN_READY_HANDOFF -> EC172_COMMITTED_SEALED_STAGE -> EC173_PRIVATE_IMMUTABLE_INPUT",
+    "every_call": ["authorize_route=true", "authorize_read=true", "read_content_for=exact_material_source_mode", "parent_pin", "RunId", "HandoffId", "stage_revision", "stage_event_sha256", "operation_key", "valid_source_age_stage_and_input_expiry"],
+    "dispatch_additional": ["action=dispatch", "approve_external_transfer=true", "transfer_content_for=read_content_for", "bridge_id=operator_callback_v1", "nonempty_provider_claim", "explicit_callable_adapter"],
+    "no_permission_inheritance_from_stage_or_input_create": true,
+    "proposed_pr_historical_grant_still_required": true,
+    "unsupported_or_unregistered_kind": "UNAVAILABLE_OR_INVALID_INPUT_BEFORE_ANY_CALLBACK",
+    "external_by_default": "DISABLED",
+    "automatic_provider_discovery_or_credentials": false,
+    "built_in_http_or_network_calls": false,
+    "cli_only": "SCHEMA_ONLY_METADATA_NO_SOURCE_OR_MODEL_TEXT"
+  },
+  "route_source_binding": [
+    "run_id", "handoff_id", "stage_revision", "stage_event_sha256",
+    "task_kind", "source_mode", "source_context_sha256",
+    "source_identity_sha256", "evidence_hash", "material_sha256"
+  ],
+  "candidate_strict_fields": [
+    "schema", "route_id", "task_kind", "source_binding",
+    "coverage_assessment", "summary", "findings", "actor_claim"
+  ],
+  "candidate_coverage_echo_fields": [
+    "source_quality", "complete_for_selected_source", "missing_requirements"
+  ],
+  "candidate_finding_fields": [
+    "title", "severity", "confidence", "analysis", "suggested_action", "anchors"
+  ],
+  "candidate_anchor_fields": ["segment_index", "item_index", "line_number", "quote"],
+  "candidate_anchor_semantics": {
+    "segment_index": "ZERO_BASED_INDEX_IN_EC173_AUTHORIZED_SEGMENTS",
+    "patch": "ITEM_INDEX_NULL_AND_PATH_NULL; LINE_NUMBER_ONE_BASED_IN_PATCH_SEGMENT_NOT_GIT_FILE_LINE",
+    "files_or_selected_patches": "ITEM_INDEX_ZERO_BASED_IN_SEGMENT_CONTENT; LOCAL_MATCHED_ITEM_PATH_AND_LINE_NUMBER_IN_ITEM",
+    "quote": "EXACT_SPLITLINES_LINE_MATCH_REQUIRED; NO_ARBITRARY_SUBSTRING_OR_LINE_RELOCATION",
+    "local_output_fields": [
+      "segment_index", "segment_label", "item_index", "source_path",
+      "line_number_in_segment_or_item", "quote", "anchor_sha256",
+      "line_number_is_git_file_line", "evidence_provenance"
+    ],
+    "anchor_sha256": "DOMAIN_SEPARATED_SHA256_OF_INDEX_AND_QUOTE_NOT_EXTERNAL_SOURCE_ATTESTATION",
+    "semantic_verification": false
+  },
+  "limits": {
+    "dispatch_request_bytes": 3145728,
+    "candidate_response_bytes": 196608,
+    "candidate_max_findings": 32,
+    "anchors_per_finding": {"min": 1, "max": 5},
+    "summary_characters": 4000,
+    "finding_text_characters": 1600,
+    "title_characters": 120,
+    "anchor_quote_characters": 512,
+    "timeout_hint_seconds": {"min": 1, "max": 120},
+    "timeout_enforced_in_module": false,
+    "json": "STRICT_UTF8_NO_DUPLICATE_OR_CASE_COLLIDING_KEYS_NONFINITE_VALUES_REJECTED"
+  },
+  "response_fields": [
+    "schema", "status", "exit_code", "reason_code", "action",
+    "route_id", "task_kind", "source_binding", "source",
+    "coverage", "provider", "result", "effects", "trust_boundary"
+  ],
+  "status_and_exit": {
+    "schema_only_valid": {"status": "partial", "exit_code": 2, "reason_code": "ROUTE_SCHEMA_ONLY_NO_AI_DISPATCH"},
+    "candidate_received_and_locally_checked": {"status": "partial", "exit_code": 2, "reason_code": "AI_CANDIDATE_RECEIVED_UNVERIFIED"},
+    "bad_route_or_missing_grant": {"status": "invalid_input", "exit_code": 4},
+    "unavailable_stage_or_callback_or_bad_model_response": {"status": "unavailable", "exit_code": 5},
+    "success_0": "IMPOSSIBLE_UNDER_EC174_BECAUSE_AI_OR_CODE_CANNOT_BE_OBJECTIVELY_VALIDATED_HERE"
+  },
+  "trust_semantics": {
+    "provider_claim": "OPERATOR_TEXT_ONLY_NOT_AUTHENTICATION",
+    "actor_claim": "MODEL_CANDIDATE_TEXT_ONLY_NOT_AUTHENTICATION",
+    "callback_invoked": "OBSERVED_IN_PROCESS_CALL_ONLY_NOT_CONFIRMED_REMOTE_RECEIPT_OR_EXECUTION",
+    "candidate_received_and_schema_checked": "LOCAL_JSON_AND_ANCHOR_SHAPE_ONLY_NOT_SEMANTIC_VALIDATION",
+    "external_model_execution_verified": false,
+    "actor_or_provider_authenticated": false,
+    "source_currentness_proven": false,
+    "candidate_findings_semantically_verified": false,
+    "persisted_finding_created": false,
+    "business_repository_written": false,
+    "git_or_issue_written": false,
+    "pre_or_postflight_expiry_and_source_drift": "FAIL_CLOSED_IF_STALE; EXTERNAL_DATA_ALREADY_RELEASED_TO_CALLBACK_CANNOT_BE_RECALLED",
+    "callback_exceptions": "REDACT_EXCEPTION_TEXT; RETURN_UNAVAILABLE_WITH_RELEASED_TO_CALLBACK_TRUE",
+    "no_trusted_network_credentials_or_builtin_remote_transport": true,
+    "local_hmac_is_not_actor_or_git_source_proof": true
+  },
+  "api": {
+    "class": "HandoffRouter",
+    "constructor": ["root", "business_repo_root", "clock_optional"],
+    "method": "route(prepared, requested_task_kind, expected_parent_pin, run_id, handoff_id, expected_revision, expected_event_sha256, operation_key, authorize_route, authorize_read, read_content_for, action=schema_only, allow_historical_proposal=false, max_source_age_seconds=600, approve_external_transfer=false, transfer_content_for=None, provider_claim=None, bridge_id=None, adapter=None, timeout_seconds=30)",
+    "adapter_signature": "adapter(request_json_bytes:bytes, provider_claim:str, timeout_hint_seconds:int)->bytes",
+    "adapter_egress_proof": "NOT_AVAILABLE; CUSTOM_ADAPTER_IS_CALLER_OWNED_UNTRUSTED_BOUNDARY",
+    "cli": "--schema-only EC170_JSON + EC172_173_STAGE_AND_ID_GRANTS; NO_DISPATCH_ARGUMENT"
+  },
+  "validation_boundary": {
+    "focused_ec174_synthetic_and_temp_posix": "28_PASSED_DEVELOPMENT_ONLY",
+    "real_AI_provider_identity_connection": "NOT_RUN",
+    "native_PowerShell_and_Smoke": "NOT_RUN",
+    "cross_OS_secrets_prompt_injection_true_races_power_fail": "NOT_RUN",
+    "final_user_assisted_acceptance": "NOT_STARTED"
+  }
+}

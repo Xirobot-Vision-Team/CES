@@ -1,0 +1,422 @@
+{
+  "schema": "ces.ec245.negative_cases.v1",
+  "test_level": "LOCAL_SYNTHETIC_ONLY",
+  "cases": [
+    {
+      "id": "NET-01",
+      "family": "offline",
+      "boundary": "EC243 Router → Collect.ProposedPR",
+      "fault": "Network flag without independent router opt-in must not launch child",
+      "expected": {
+        "status": "denied",
+        "reason_code": "ROUTER_NETWORK_OPT_IN_REQUIRED",
+        "exit_code": 3,
+        "injected_calls": 0,
+        "handler_attempted": false,
+        "handler_invoked": false,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "NET-02",
+      "family": "offline",
+      "boundary": "EC161 ProposedPR.fetch",
+      "fault": "Default network-off must not query token supplier or injected HTTP transport",
+      "expected": {
+        "status": "unavailable",
+        "reason_code": "NETWORK_NOT_AUTHORIZED",
+        "exit_code": 5,
+        "injected_calls": 0,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "NET-03",
+      "family": "offline",
+      "boundary": "EC161 ProposedPR.fetch",
+      "fault": "Injected unreachable provider exception with synthetic credential canary",
+      "expected": {
+        "status": "unavailable",
+        "reason_code": "PROVIDER_READ_FAILED",
+        "exit_code": 5,
+        "injected_calls": 1,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "NET-04",
+      "family": "offline",
+      "boundary": "EC161 StrictHttpsTransport",
+      "fault": "Injected 302 redirect with credential-bearing diagnostic (never followed)",
+      "expected": {
+        "status": "unavailable",
+        "reason_code": "PROVIDER_REDIRECT_REFUSED",
+        "exit_code": 5,
+        "injected_calls": 1,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "NET-05",
+      "family": "offline",
+      "boundary": "EC182 QualityCIReader",
+      "fault": "Host callback revocation at FINALIZE after synthetic GETs discards metadata",
+      "expected": {
+        "status": "unavailable",
+        "reason_code": "QUALITYREADCI_SCOPE_PERMISSION_DENIED",
+        "exit_code": 5,
+        "injected_calls": 3,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "NET-06",
+      "family": "offline",
+      "boundary": "EC182 QualityCIReader",
+      "fault": "Explicit allow_network=false while credential and fake transport exist",
+      "expected": {
+        "status": "invalid_input",
+        "reason_code": "QUALITYREADCI_EXPLICIT_READ_OPTIN_REQUIRED",
+        "exit_code": 4,
+        "injected_calls": 0,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "PRV-01",
+      "family": "privacy",
+      "boundary": "EC243 Router → DeliverySend.Send",
+      "fault": "Host-only sensitive egress refused without independent host authority",
+      "expected": {
+        "status": "denied",
+        "reason_code": "ROUTER_INDEPENDENT_HOST_AUTHORITY_REQUIRED",
+        "exit_code": 3,
+        "injected_calls": 0,
+        "handler_attempted": false,
+        "handler_invoked": false,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "PRV-02",
+      "family": "privacy",
+      "boundary": "EC243 Router → CodeSave.Staged",
+      "fault": "Private CES write without explicit local opt-in refused before invocation",
+      "expected": {
+        "status": "denied",
+        "reason_code": "ROUTER_PRIVATE_WRITE_EXPLICIT_OPT_IN_REQUIRED",
+        "exit_code": 3,
+        "injected_calls": 0,
+        "handler_attempted": false,
+        "handler_invoked": false,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "PRV-03",
+      "family": "privacy",
+      "boundary": "EC243 Router request gate",
+      "fault": "Unrecognized credential/canary field refused and never echoed",
+      "expected": {
+        "status": "invalid",
+        "reason_code": "ROUTER_REQUEST_FIELDS_INVALID",
+        "exit_code": 4,
+        "injected_calls": 0,
+        "handler_attempted": false,
+        "handler_invoked": false,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "PRV-04",
+      "family": "privacy",
+      "boundary": "EC243 Router subprocess output parser",
+      "fault": "Case-colliding JSON key plus canary denied with no raw child object",
+      "expected": {
+        "status": "unavailable",
+        "reason_code": "ROUTER_HANDLER_NONJSON_OUTPUT",
+        "exit_code": 5,
+        "injected_calls": 0,
+        "handler_attempted": true,
+        "handler_invoked": false,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "PRV-05",
+      "family": "privacy",
+      "boundary": "EC243 Router → Due.Evaluate",
+      "fault": "In-memory API exception mentions fake private data but response is opaque",
+      "expected": {
+        "status": "unavailable",
+        "reason_code": "ROUTER_HANDLER_REJECTED_OR_UNAVAILABLE",
+        "exit_code": 5,
+        "injected_calls": 0,
+        "handler_attempted": true,
+        "handler_invoked": false,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "PRV-06",
+      "family": "privacy",
+      "boundary": "EC182 QualityCIReader",
+      "fault": "Injected transport exception contains fake credential canary; erased",
+      "expected": {
+        "status": "unavailable",
+        "reason_code": "QUALITYREADCI_TRANSPORT_FAILED",
+        "exit_code": 5,
+        "injected_calls": 1,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "PRV-07",
+      "family": "privacy",
+      "boundary": "EC221 DeliveryPreview",
+      "fault": "No independent preview permission must emit no source/destination payload",
+      "expected": {
+        "status": "unavailable",
+        "reason_code": "DELIVERY_PREVIEW_INDEPENDENT_LOCAL_PREVIEW_AND_PRIVATE_READ_PERMISSION_REQUIRED",
+        "exit_code": 5,
+        "injected_calls": 0,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "PRV-08",
+      "family": "privacy",
+      "boundary": "EC222 DeliveryRedaction",
+      "fault": "Credential-bearing text classified; only reason code emitted",
+      "expected": {
+        "status": "denied",
+        "reason_code": "CREDENTIAL_OR_TOKEN_MATERIAL",
+        "exit_code": 3,
+        "injected_calls": 0,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "PRV-09",
+      "family": "privacy",
+      "boundary": "EC222 DeliveryRedaction",
+      "fault": "Repository filename/path classified and refused",
+      "expected": {
+        "status": "denied",
+        "reason_code": "REPOSITORY_PATH_OR_SOURCE_FILENAME",
+        "exit_code": 3,
+        "injected_calls": 0,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "PRV-10",
+      "family": "privacy",
+      "boundary": "EC222 DeliveryRedaction",
+      "fault": "Bidirectional Unicode obfuscation classified and refused",
+      "expected": {
+        "status": "denied",
+        "reason_code": "OBFUSCATED_OR_UNCLASSIFIABLE_CONTENT",
+        "exit_code": 3,
+        "injected_calls": 0,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "PRV-11",
+      "family": "privacy",
+      "boundary": "EC222 DeliveryRedaction",
+      "fault": "Contact email classified and refused",
+      "expected": {
+        "status": "denied",
+        "reason_code": "PERSON_OR_CONTACT_CONTENT",
+        "exit_code": 3,
+        "injected_calls": 0,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "RES-01",
+      "family": "resource",
+      "boundary": "EC243 Router argv boundary",
+      "fault": "Over MAX_ARG argument refused pre-launch",
+      "expected": {
+        "status": "invalid",
+        "reason_code": "ROUTER_CLI_ARGV_INVALID",
+        "exit_code": 4,
+        "injected_calls": 0,
+        "handler_attempted": false,
+        "handler_invoked": false,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "RES-02",
+      "family": "resource",
+      "boundary": "EC243 Router child timeout",
+      "fault": "Synthetic timeout discards child output and preserves attempted flag",
+      "expected": {
+        "status": "unavailable",
+        "reason_code": "ROUTER_HANDLER_TIMEOUT_OUTCOME_UNKNOWN",
+        "exit_code": 5,
+        "injected_calls": 0,
+        "handler_attempted": true,
+        "handler_invoked": false,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "RES-03",
+      "family": "resource",
+      "boundary": "EC243 Router temp output budget",
+      "fault": "Simulated oversized stdout refused with no retained handler object",
+      "expected": {
+        "status": "unavailable",
+        "reason_code": "ROUTER_HANDLER_OUTPUT_TOO_LARGE",
+        "exit_code": 5,
+        "injected_calls": 0,
+        "handler_attempted": true,
+        "handler_invoked": false,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "RES-04",
+      "family": "resource",
+      "boundary": "EC161 StrictHttpsTransport",
+      "fault": "In-memory 1MiB+1B response refused under streaming cap",
+      "expected": {
+        "status": "unavailable",
+        "reason_code": "PROVIDER_PAYLOAD_TOO_LARGE",
+        "exit_code": 5,
+        "injected_calls": 1,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "RES-05",
+      "family": "resource",
+      "boundary": "EC182 QualityCIReader page count",
+      "fault": "Unbounded jobs metadata count refused after two fake GET calls",
+      "expected": {
+        "status": "unavailable",
+        "reason_code": "QUALITYREADCI_JOBS_PAGE_INCOMPLETE_OR_AMBIGUOUS",
+        "exit_code": 5,
+        "injected_calls": 2,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "RES-06",
+      "family": "resource",
+      "boundary": "EC221 DeliveryPreview source count",
+      "fault": "MAX_SOURCES+1 source slots rejected pre-private read",
+      "expected": {
+        "status": "invalid_input",
+        "reason_code": "DELIVERY_PREVIEW_SOURCES_COUNT_INVALID",
+        "exit_code": 4,
+        "injected_calls": 0,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "RES-07",
+      "family": "resource",
+      "boundary": "EC199 ReportRender",
+      "fault": "Oversized handoff bytes refused before source replay or local save",
+      "expected": {
+        "status": "invalid_input",
+        "reason_code": "REPORT_RENDER_HANDOFF_SIZE_INVALID",
+        "exit_code": 4,
+        "injected_calls": 0,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": false
+      },
+      "needs_external": true
+    },
+    {
+      "id": "CON-01",
+      "family": "consistency",
+      "boundary": "EC243 Router partial coverage",
+      "fault": "Handler JSON success/exit 0 only becomes partial; no business success proof",
+      "expected": {
+        "status": "partial",
+        "reason_code": "ROUTER_HANDLER_SUCCESS_CLAIM_NOT_BUSINESS_PROOF",
+        "exit_code": 2,
+        "injected_calls": 0,
+        "handler_attempted": true,
+        "handler_invoked": true,
+        "payload_retained": true
+      },
+      "needs_external": true
+    },
+    {
+      "id": "CON-02",
+      "family": "consistency",
+      "boundary": "EC182 QualityCIReader synthetic success",
+      "fault": "Complete in-memory CI metadata remains partial and explicitly SYNTHETIC",
+      "expected": {
+        "status": "partial",
+        "reason_code": "QUALITYREADCI_CI_METADATA_OBSERVED",
+        "exit_code": 2,
+        "injected_calls": 3,
+        "handler_attempted": null,
+        "handler_invoked": null,
+        "payload_retained": true
+      },
+      "needs_external": true
+    }
+  ]
+}

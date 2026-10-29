@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ces.local/knowledge-lifecycle-result.v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "subject",
+    "candidate_metadata_written",
+    "local_version_metadata_written",
+    "local_write_outcome_unknown",
+    "source_knowledge_file_written",
+    "business_repository_written",
+    "issue_or_provider_written",
+    "docs_only_publish_invoked",
+    "published",
+    "candidate_promoted_to_verified_fact",
+    "organizational_authority_authenticated",
+    "live_git_delivery_currentness_proven",
+    "native_knowledge_route_registered"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_lifecycle.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^KNOWLEDGE_LIFECYCLE_"
+    },
+    "subject": {
+      "anyOf": [
+        {
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "candidate_metadata_written": {
+      "type": "boolean"
+    },
+    "local_version_metadata_written": {
+      "type": "boolean"
+    },
+    "local_write_outcome_unknown": {
+      "type": "boolean"
+    },
+    "source_knowledge_file_written": {
+      "const": false
+    },
+    "business_repository_written": {
+      "const": false
+    },
+    "issue_or_provider_written": {
+      "const": false
+    },
+    "docs_only_publish_invoked": {
+      "const": false
+    },
+    "published": {
+      "const": false
+    },
+    "candidate_promoted_to_verified_fact": {
+      "const": false
+    },
+    "organizational_authority_authenticated": {
+      "const": false
+    },
+    "live_git_delivery_currentness_proven": {
+      "const": false
+    },
+    "native_knowledge_route_registered": {
+      "const": false
+    }
+  }
+}

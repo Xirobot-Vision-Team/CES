@@ -1,0 +1,1102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/quality-read-ci-result.v1.schema.json",
+  "title": "CES EC182 read-only CI provider metadata observation (not a Git/test attestation)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "source",
+    "observation",
+    "permission",
+    "coverage",
+    "observation_sha256",
+    "effects",
+    "trust_boundary"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.quality_read_ci.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^QUALITYREADCI_[A-Z0-9_]{3,100}$",
+      "maxLength": 130
+    },
+    "source": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/source"
+        }
+      ]
+    },
+    "observation": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/observation"
+        }
+      ]
+    },
+    "permission": {
+      "$ref": "#/$defs/permission"
+    },
+    "coverage": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/coverage"
+        }
+      ]
+    },
+    "observation_sha256": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      ]
+    },
+    "effects": {
+      "$ref": "#/$defs/effects"
+    },
+    "trust_boundary": {
+      "const": "CI_METADATA_ONLY_NO_LOCAL_GIT_SHA_BINDING_OR_EXECUTION"
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "repository",
+        "project_id",
+        "workflow_id",
+        "run_id",
+        "attempt",
+        "job_id",
+        "branch",
+        "commit_sha",
+        "api_version",
+        "observed_at"
+      ],
+      "properties": {
+        "provider": {
+          "enum": [
+            "github",
+            "gitlab"
+          ]
+        },
+        "repository": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 240
+        },
+        "project_id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        "workflow_id": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9223372036854775807
+            }
+          ]
+        },
+        "run_id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        "attempt": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9223372036854775807
+            }
+          ]
+        },
+        "job_id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        "branch": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "commit_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "api_version": {
+          "enum": [
+            "github-2026-03-10",
+            "gitlab-v4-field-validated-unpinned"
+          ]
+        },
+        "observed_at": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d\\.\\d{6}Z$",
+          "maxLength": 27
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run",
+        "job"
+      ],
+      "properties": {
+        "run": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state",
+            "conclusion",
+            "created_at",
+            "updated_at",
+            "attempt"
+          ],
+          "properties": {
+            "state": {
+              "enum": [
+                "completed",
+                "success",
+                "failed"
+              ]
+            },
+            "conclusion": {
+              "enum": [
+                "success",
+                "failure"
+              ]
+            },
+            "created_at": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d\\.\\d{6}Z$",
+              "maxLength": 27
+            },
+            "updated_at": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d\\.\\d{6}Z$",
+              "maxLength": 27
+            },
+            "attempt": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9223372036854775807
+                }
+              ]
+            }
+          }
+        },
+        "job": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state",
+            "conclusion",
+            "started_at",
+            "completed_at",
+            "allow_failure"
+          ],
+          "properties": {
+            "state": {
+              "enum": [
+                "completed",
+                "success",
+                "failed"
+              ]
+            },
+            "conclusion": {
+              "enum": [
+                "success",
+                "failure"
+              ]
+            },
+            "started_at": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d\\.\\d{6}Z$",
+              "maxLength": 27
+            },
+            "completed_at": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d\\.\\d{6}Z$",
+              "maxLength": 27
+            },
+            "allow_failure": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "permission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "host_scope",
+        "provider_read",
+        "transport",
+        "credential_identity"
+      ],
+      "properties": {
+        "host_scope": {
+          "enum": [
+            "NOT_ATTESTED",
+            "HOST_CALLBACK_ALLOWED"
+          ]
+        },
+        "provider_read": {
+          "enum": [
+            "NOT_ESTABLISHED",
+            "NOT_PROVEN_SYNTHETIC",
+            "HTTPS_200_TOKEN_PRESENT"
+          ]
+        },
+        "transport": {
+          "enum": [
+            "SYNTHETIC",
+            "LIVE_HTTPS"
+          ]
+        },
+        "credential_identity": {
+          "const": "NOT_ATTESTED"
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exact_project_id",
+        "exact_repository_path",
+        "workflow_run_identity",
+        "attempt_bound",
+        "exact_job_identity",
+        "branch_field_equal",
+        "commit_field_equal",
+        "run_final",
+        "job_final",
+        "within_requested_age",
+        "rechecked_run_for_drift",
+        "bounded_endpoint_kinds",
+        "git_sha_binding_verified",
+        "job_logs_inspected",
+        "test_execution_by_ces",
+        "cross_request_atomic_snapshot"
+      ],
+      "properties": {
+        "exact_project_id": {
+          "const": true
+        },
+        "exact_repository_path": {
+          "const": true
+        },
+        "workflow_run_identity": {
+          "const": true
+        },
+        "attempt_bound": {
+          "type": "boolean"
+        },
+        "exact_job_identity": {
+          "const": true
+        },
+        "branch_field_equal": {
+          "const": true
+        },
+        "commit_field_equal": {
+          "const": true
+        },
+        "run_final": {
+          "const": true
+        },
+        "job_final": {
+          "const": true
+        },
+        "within_requested_age": {
+          "const": true
+        },
+        "rechecked_run_for_drift": {
+          "const": true
+        },
+        "bounded_endpoint_kinds": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "RUN",
+              "ATTEMPT_JOBS",
+              "RUN_RECHECK",
+              "PROJECT",
+              "PIPELINE",
+              "JOB",
+              "PIPELINE_RECHECK"
+            ]
+          }
+        },
+        "git_sha_binding_verified": {
+          "const": false
+        },
+        "job_logs_inspected": {
+          "const": false
+        },
+        "test_execution_by_ces": {
+          "const": false
+        },
+        "cross_request_atomic_snapshot": {
+          "const": false
+        }
+      }
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "read_only",
+        "network_get_only",
+        "executed_commands",
+        "read_logs",
+        "read_artifacts",
+        "git_operations",
+        "writes_performed",
+        "transport_get_calls",
+        "live_network_get_requests"
+      ],
+      "properties": {
+        "read_only": {
+          "const": true
+        },
+        "network_get_only": {
+          "const": true
+        },
+        "executed_commands": {
+          "const": false
+        },
+        "read_logs": {
+          "const": false
+        },
+        "read_artifacts": {
+          "const": false
+        },
+        "git_operations": {
+          "const": false
+        },
+        "writes_performed": {
+          "const": false
+        },
+        "transport_get_calls": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "live_network_get_requests": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "reason_code": {
+            "const": "QUALITYREADCI_CI_METADATA_OBSERVED"
+          },
+          "source": {
+            "$ref": "#/$defs/source"
+          },
+          "observation": {
+            "$ref": "#/$defs/observation"
+          },
+          "coverage": {
+            "$ref": "#/$defs/coverage"
+          },
+          "observation_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "permission": {
+            "properties": {
+              "host_scope": {
+                "const": "HOST_CALLBACK_ALLOWED"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "source": {
+            "type": "null"
+          },
+          "observation": {
+            "type": "null"
+          },
+          "coverage": {
+            "type": "null"
+          },
+          "observation_sha256": {
+            "type": "null"
+          },
+          "permission": {
+            "properties": {
+              "host_scope": {
+                "const": "NOT_ATTESTED"
+              },
+              "provider_read": {
+                "const": "NOT_ESTABLISHED"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          }
+        }
+      },
+      "else": {
+        "if": {
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "exit_code": {
+              "const": 5
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "provider": {
+                "const": "github"
+              }
+            },
+            "required": [
+              "provider"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "properties": {
+              "workflow_id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9223372036854775807
+              },
+              "attempt": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9223372036854775807
+              },
+              "api_version": {
+                "const": "github-2026-03-10"
+              }
+            }
+          },
+          "observation": {
+            "properties": {
+              "run": {
+                "properties": {
+                  "state": {
+                    "const": "completed"
+                  },
+                  "attempt": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9223372036854775807
+                  }
+                }
+              },
+              "job": {
+                "properties": {
+                  "state": {
+                    "const": "completed"
+                  },
+                  "allow_failure": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          },
+          "coverage": {
+            "properties": {
+              "attempt_bound": {
+                "const": true
+              },
+              "bounded_endpoint_kinds": {
+                "const": [
+                  "RUN",
+                  "ATTEMPT_JOBS",
+                  "RUN_RECHECK"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "provider": {
+                "const": "gitlab"
+              }
+            },
+            "required": [
+              "provider"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "properties": {
+              "workflow_id": {
+                "type": "null"
+              },
+              "attempt": {
+                "type": "null"
+              },
+              "api_version": {
+                "const": "gitlab-v4-field-validated-unpinned"
+              }
+            }
+          },
+          "observation": {
+            "properties": {
+              "run": {
+                "properties": {
+                  "state": {
+                    "enum": [
+                      "success",
+                      "failed"
+                    ]
+                  },
+                  "attempt": {
+                    "type": "null"
+                  }
+                }
+              },
+              "job": {
+                "properties": {
+                  "state": {
+                    "enum": [
+                      "success",
+                      "failed"
+                    ]
+                  },
+                  "allow_failure": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          },
+          "coverage": {
+            "properties": {
+              "attempt_bound": {
+                "const": false
+              },
+              "bounded_endpoint_kinds": {
+                "const": [
+                  "PROJECT",
+                  "PIPELINE",
+                  "JOB",
+                  "PIPELINE_RECHECK"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "permission": {
+            "properties": {
+              "transport": {
+                "const": "SYNTHETIC"
+              }
+            },
+            "required": [
+              "transport"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "permission": {
+            "properties": {
+              "provider_read": {
+                "enum": [
+                  "NOT_ESTABLISHED",
+                  "NOT_PROVEN_SYNTHETIC"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "permission": {
+            "properties": {
+              "transport": {
+                "const": "LIVE_HTTPS"
+              }
+            },
+            "required": [
+              "transport"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "permission": {
+            "properties": {
+              "provider_read": {
+                "enum": [
+                  "NOT_ESTABLISHED",
+                  "HTTPS_200_TOKEN_PRESENT"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "const": "gitlab"
+              }
+            },
+            "required": [
+              "provider"
+            ]
+          },
+          "observation": {
+            "type": "object",
+            "properties": {
+              "run": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "const": "failed"
+                  }
+                },
+                "required": [
+                  "state"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "source",
+          "observation"
+        ]
+      },
+      "then": {
+        "properties": {
+          "observation": {
+            "properties": {
+              "run": {
+                "properties": {
+                  "conclusion": {
+                    "const": "failure"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "const": "gitlab"
+              }
+            },
+            "required": [
+              "provider"
+            ]
+          },
+          "observation": {
+            "type": "object",
+            "properties": {
+              "run": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "const": "success"
+                  }
+                },
+                "required": [
+                  "state"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "source",
+          "observation"
+        ]
+      },
+      "then": {
+        "properties": {
+          "observation": {
+            "properties": {
+              "run": {
+                "properties": {
+                  "conclusion": {
+                    "const": "success"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "const": "gitlab"
+              }
+            },
+            "required": [
+              "provider"
+            ]
+          },
+          "observation": {
+            "type": "object",
+            "properties": {
+              "job": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "const": "failed"
+                  }
+                },
+                "required": [
+                  "state"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "source",
+          "observation"
+        ]
+      },
+      "then": {
+        "properties": {
+          "observation": {
+            "properties": {
+              "job": {
+                "properties": {
+                  "conclusion": {
+                    "const": "failure"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "const": "gitlab"
+              }
+            },
+            "required": [
+              "provider"
+            ]
+          },
+          "observation": {
+            "type": "object",
+            "properties": {
+              "job": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "const": "success"
+                  }
+                },
+                "required": [
+                  "state"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "source",
+          "observation"
+        ]
+      },
+      "then": {
+        "properties": {
+          "observation": {
+            "properties": {
+              "job": {
+                "properties": {
+                  "conclusion": {
+                    "const": "success"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          },
+          "permission": {
+            "type": "object",
+            "properties": {
+              "transport": {
+                "const": "SYNTHETIC"
+              }
+            },
+            "required": [
+              "transport"
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "permission"
+        ]
+      },
+      "then": {
+        "properties": {
+          "permission": {
+            "properties": {
+              "provider_read": {
+                "const": "NOT_PROVEN_SYNTHETIC"
+              }
+            }
+          },
+          "effects": {
+            "properties": {
+              "live_network_get_requests": {
+                "const": 0
+              },
+              "transport_get_calls": {
+                "minimum": 3
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          },
+          "permission": {
+            "type": "object",
+            "properties": {
+              "transport": {
+                "const": "LIVE_HTTPS"
+              }
+            },
+            "required": [
+              "transport"
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "permission"
+        ]
+      },
+      "then": {
+        "properties": {
+          "permission": {
+            "properties": {
+              "provider_read": {
+                "const": "HTTPS_200_TOKEN_PRESENT"
+              }
+            }
+          },
+          "effects": {
+            "properties": {
+              "live_network_get_requests": {
+                "minimum": 3
+              },
+              "transport_get_calls": {
+                "minimum": 3
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "permission": {
+            "type": "object",
+            "properties": {
+              "transport": {
+                "const": "SYNTHETIC"
+              }
+            },
+            "required": [
+              "transport"
+            ]
+          }
+        },
+        "required": [
+          "permission"
+        ]
+      },
+      "then": {
+        "properties": {
+          "effects": {
+            "properties": {
+              "live_network_get_requests": {
+                "const": 0
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

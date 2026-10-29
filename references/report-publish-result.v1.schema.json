@@ -1,0 +1,329 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schemas/report-publish-result.v1.schema.json",
+  "title": "CES EC228 private sandbox ReportPublish outcome (NOT external publication proof)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "operation_id",
+    "attempt_receipt_id",
+    "publication_state",
+    "claim_committed",
+    "provider_capability_verified",
+    "network_requested",
+    "publish_post_attempted",
+    "published",
+    "provider_accepted",
+    "external_visibility_verified",
+    "external_publication_confirmed",
+    "resent",
+    "effects"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.report_publish.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "blocked",
+        "unavailable",
+        "invalid_input"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^REPORT_PUBLISH_[A-Z0-9_]+$",
+      "maxLength": 150
+    },
+    "operation_id": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      ]
+    },
+    "attempt_receipt_id": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^cesrp1:[a-f0-9]{64}$"
+        }
+      ]
+    },
+    "publication_state": {
+      "enum": [
+        "NOT_ATTEMPTED",
+        "UNKNOWN_UNCONFIRMED",
+        "SUBMISSION_UNCONFIRMED"
+      ]
+    },
+    "claim_committed": {
+      "type": "boolean"
+    },
+    "provider_capability_verified": {
+      "type": "boolean"
+    },
+    "network_requested": {
+      "type": "boolean"
+    },
+    "publish_post_attempted": {
+      "type": "boolean"
+    },
+    "published": {
+      "const": false
+    },
+    "provider_accepted": {
+      "const": false
+    },
+    "external_visibility_verified": {
+      "const": false
+    },
+    "external_publication_confirmed": {
+      "const": false
+    },
+    "resent": {
+      "const": false
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider_publish_post_requested",
+        "external_network_requested",
+        "git_or_business_files_written",
+        "existing_remote_content_modified",
+        "ces_report_store_modified",
+        "delivery_submit_requested"
+      ],
+      "properties": {
+        "provider_publish_post_requested": {
+          "type": "boolean"
+        },
+        "external_network_requested": {
+          "type": "boolean"
+        },
+        "git_or_business_files_written": {
+          "const": false
+        },
+        "existing_remote_content_modified": {
+          "const": false
+        },
+        "ces_report_store_modified": {
+          "const": false
+        },
+        "delivery_submit_requested": {
+          "const": false
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "publication_state": {
+            "const": "SUBMISSION_UNCONFIRMED"
+          },
+          "claim_committed": {
+            "const": true
+          },
+          "network_requested": {
+            "const": true
+          },
+          "publish_post_attempted": {
+            "const": true
+          },
+          "provider_capability_verified": {
+            "const": true
+          },
+          "effects": {
+            "properties": {
+              "provider_publish_post_requested": {
+                "const": true
+              }
+            }
+          },
+          "attempt_receipt_id": {
+            "type": "string",
+            "pattern": "^cesrp1:[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "attempt_receipt_id"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "blocked"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          },
+          "attempt_receipt_id": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          },
+          "attempt_receipt_id": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          },
+          "attempt_receipt_id": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "publish_post_attempted": {
+            "const": true
+          }
+        },
+        "required": [
+          "publish_post_attempted"
+        ]
+      },
+      "then": {
+        "properties": {
+          "claim_committed": {
+            "const": true
+          },
+          "network_requested": {
+            "const": true
+          },
+          "effects": {
+            "properties": {
+              "provider_publish_post_requested": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "publication_state": {
+            "const": "NOT_ATTEMPTED"
+          }
+        },
+        "required": [
+          "publication_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "publish_post_attempted": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "publish_post_attempted": {
+            "const": false
+          }
+        },
+        "required": [
+          "publish_post_attempted"
+        ]
+      },
+      "then": {
+        "properties": {
+          "attempt_receipt_id": {
+            "type": "null"
+          },
+          "effects": {
+            "properties": {
+              "provider_publish_post_requested": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

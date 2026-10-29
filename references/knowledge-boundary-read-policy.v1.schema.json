@@ -1,0 +1,118 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_boundary_read_policy.v1"
+    },
+    "purpose": {
+      "const": "knowledge_boundary_read_only"
+    },
+    "repository_ref": {
+      "type": "string",
+      "pattern": "^cesrepo1:[0-9a-f]{64}$"
+    },
+    "knowledge_space_key": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "period_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "source_policy_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "request_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "scope_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permit_boundary_read": {
+      "type": "boolean"
+    },
+    "permit_provenance_projection": {
+      "type": "boolean"
+    },
+    "permit_content_digest": {
+      "type": "boolean"
+    },
+    "permit_knowledge_write": {
+      "type": "boolean"
+    },
+    "permit_business_source_write": {
+      "type": "boolean"
+    },
+    "permit_issue_write": {
+      "type": "boolean"
+    },
+    "permit_publish": {
+      "type": "boolean"
+    },
+    "read_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "observation_grants": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "observation_key": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+          },
+          "observation_binding_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "permit_observation_read": {
+            "type": "boolean"
+          },
+          "permit_content_digest": {
+            "type": "boolean"
+          },
+          "read_receipt_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "observation_key",
+          "observation_binding_sha256",
+          "permit_observation_read",
+          "permit_content_digest",
+          "read_receipt_sha256"
+        ]
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "purpose",
+    "repository_ref",
+    "knowledge_space_key",
+    "period_id",
+    "source_policy_revision",
+    "request_binding_sha256",
+    "scope_binding_sha256",
+    "permit_boundary_read",
+    "permit_provenance_projection",
+    "permit_content_digest",
+    "permit_knowledge_write",
+    "permit_business_source_write",
+    "permit_issue_write",
+    "permit_publish",
+    "read_receipt_sha256",
+    "observation_grants"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ces.local/knowledge-boundary-read-policy.v1.schema.json",
+  "title": "EC201 separate read policy; receipts are declarations, not identity authentication"
+}

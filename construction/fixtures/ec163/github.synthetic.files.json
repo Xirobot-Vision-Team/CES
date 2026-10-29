@@ -1,0 +1,26 @@
+[
+  {
+    "filename": "src/service.py",
+    "status": "modified",
+    "additions": 4,
+    "deletions": 2,
+    "changes": 6,
+    "patch": "SECRET_PATCH_MUST_NEVER_ESCAPE"
+  },
+  {
+    "filename": "src/renamed.py",
+    "previous_filename": "src/old.py",
+    "status": "renamed",
+    "additions": 1,
+    "deletions": 1,
+    "changes": 2,
+    "raw_url": "https://provider.example/secret"
+  },
+  {
+    "filename": "docs/start.md",
+    "status": "added",
+    "additions": 5,
+    "deletions": 0,
+    "changes": 5
+  }
+]

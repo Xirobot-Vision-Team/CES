@@ -1,0 +1,1544 @@
+{
+  "schema": "ces.ec242.schema_catalog.v1",
+  "created_for": "EC242 V5.52/R242",
+  "selection_rule": "ONLY_PINNED_LOCAL_CONTRACT_AND_EXACT_ROOT_MARKER; NEVER_REMOTE_RESOLUTION_OR_AUTOMIGRATION",
+  "legacy_codeinsight": {
+    "policy_path": "references/schema-compatibility.v1.json",
+    "policy_sha256": "7538ea39d17be06f3add0ee28dd920ed637bf3a40da6107f2879953bfab58756",
+    "reader_path": "construction/schema_compat.py",
+    "reader_sha256": "1643ee95777f4a95a5fe0699193d5e67755be65d4d22284031243c58bdb29456",
+    "kinds": [
+      "cli_response",
+      "collect_snapshot",
+      "code_packet",
+      "code_insight_draft",
+      "code_insight_saved",
+      "local_store_owner"
+    ]
+  },
+  "contracts": [
+    {
+      "domain": "Report",
+      "contract": "actor-report-subject-result.v1",
+      "path": "references/actor-report-subject-result.v1.schema.json",
+      "sha256": "7ee6e0b4c2afe87b1567ab86aebc7ec42966d877a4fae63e6312322f5fe378a1",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.actor_report_subject.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/actor-report-subject-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Quality",
+      "contract": "cross-mode-quality-flow-result.v1",
+      "path": "references/cross-mode-quality-flow-result.v1.schema.json",
+      "sha256": "67b52ea1c2b04dd0274f7cc0e78157da7dc545a734d827bfaa23130113975602",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.cross_mode_quality_flow.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/cross-mode-quality-flow-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Report",
+      "contract": "cross-repository-report-scope-result.v1",
+      "path": "references/cross-repository-report-scope-result.v1.schema.json",
+      "sha256": "caf8cd79f6a2558cf164b7a31b4412404265f16f3ae7203840dc84110041c778",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.cross_repository_report_scope.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/cross-repository-report-scope-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Cycle",
+      "contract": "cycle-budget-result.v1",
+      "path": "references/cycle-budget-result.v1.schema.json",
+      "sha256": "0064469fe766972587845b431464dcf4964d560990651150dea5ee92d6d646c9",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.cycle_budget_result.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schemas/cycle-budget-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Cycle",
+      "contract": "cycle-conflict-ledger.v1",
+      "path": "references/cycle-conflict-ledger.v1.schema.json",
+      "sha256": "f6c383572bab71b999b6a7f70a660721567c88f46a951d216b39436a1b8dd3f5",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.cycle_conflict_ledger.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schemas/cycle-conflict-ledger.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Cycle",
+      "contract": "cycle-conflict-result.v1",
+      "path": "references/cycle-conflict-result.v1.schema.json",
+      "sha256": "d3e4603219cdd71bd86b7e1e3507ab274c286b7bc6ae16b154cb08ce0539b66c",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.cycle_conflict_guard.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schemas/cycle-conflict-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Cycle",
+      "contract": "cycle-cross-action-result.v1",
+      "path": "references/cycle-cross-action-result.v1.schema.json",
+      "sha256": "0a9638d55d4227f693f94fabadf0592c5686aa480e54181d461d1bf29b6e8c05",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.cycle_cross_action.v1"
+        }
+      ],
+      "declared_id": "urn:ces:cycle-cross-action-result:v1",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Cycle",
+      "contract": "cycle-cross-action-snapshot.v1",
+      "path": "references/cycle-cross-action-snapshot.v1.schema.json",
+      "sha256": "9454e534ff18ba30d5f5b8a89c5ca7b456a119c5720c5027ab3acff0aec1b2d2",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.cycle_cross_action_snapshot.v1"
+        }
+      ],
+      "declared_id": "urn:ces:cycle-cross-action-snapshot:v1",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Cycle",
+      "contract": "cycle-dag-result.v1",
+      "path": "references/cycle-dag-result.v1.schema.json",
+      "sha256": "af0035a4fde1e03c3970a3d3948ca56a0d7c8fb55182821e6c9ce45cea5da3ad",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.cycle_dag_result.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schemas/cycle-dag-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Cycle",
+      "contract": "cycle-external-scheduler.v1",
+      "path": "references/cycle-external-scheduler.v1.schema.json",
+      "sha256": "09d2deb7734608272c73d1c642a92a82551565ccce26cab43bfb548a4b0e14ca",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.cycle_external_scheduler_boundary.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/cycle-external-scheduler.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Cycle",
+      "contract": "cycle-next-result.v1",
+      "path": "references/cycle-next-result.v1.schema.json",
+      "sha256": "b703f28e3dce09540109070ce8423c039b83e2986b62a28459cd9e494fc23117",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.cycle_next_result.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schemas/cycle-next-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Cycle",
+      "contract": "cycle-permission-pause.v1",
+      "path": "references/cycle-permission-pause.v1.schema.json",
+      "sha256": "4de86a4a087eaac8b7397a6da456009651d0338fe74cf7ed01ef1cddd24b842c",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.cycle_permission_pause.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schemas/cycle-permission-pause.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Cycle",
+      "contract": "cycle-resume-check.v1",
+      "path": "references/cycle-resume-check.v1.schema.json",
+      "sha256": "8ed507da8dee1f7af143219ddf1b3c4be4903e912de636ca9f28dd4bea16d63c",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.cycle_resume_check.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/contracts/cycle-resume-check.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Cycle",
+      "contract": "cycle-run-metadata.v1",
+      "path": "references/cycle-run-metadata.v1.schema.json",
+      "sha256": "9711a5b6a1ccbae6105af4615b4e7a5198491e6fb2c5c4c639949e3b62800ac6",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.cycle_run_metadata.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schemas/cycle-run-metadata.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Cycle",
+      "contract": "cycle-summary.v1",
+      "path": "references/cycle-summary.v1.schema.json",
+      "sha256": "351cbdc0b7ccad7236ca0d0ac037e35a42459a76f08aac11736f10f1d5040ea5",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.cycle_summary.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schemas/cycle-summary.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Delivery",
+      "contract": "delivery-authorization-result.v1",
+      "path": "references/delivery-authorization-result.v1.schema.json",
+      "sha256": "c5d015535593951df3a90693fd85a5f476e27d2ce3864bfb26a2bcee82e40550",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.delivery_authorization.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schema/delivery-authorization-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Delivery",
+      "contract": "delivery-identity-result.v1",
+      "path": "references/delivery-identity-result.v1.schema.json",
+      "sha256": "608f91b617037109e556471b756fb6511fbdfd3952f7d7b5f0c6b6b30b04af0b",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.delivery_identity.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schema/delivery-identity-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Delivery",
+      "contract": "delivery-preview-result.v1",
+      "path": "references/delivery-preview-result.v1.schema.json",
+      "sha256": "710f5a7d959a674e2a41d4933ea067eddf485e3cb80ce513ab3b44bc49c49fda",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.delivery_preview.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schema/delivery-preview-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Delivery",
+      "contract": "delivery-reconcile-audit.v1",
+      "path": "references/delivery-reconcile-audit.v1.schema.json",
+      "sha256": "9bcf4d0d4c54f57ed34d6276a42117f3778d46cff191b69ba18b70328c88cdf4",
+      "markers": [],
+      "declared_id": "https://ces.invalid/schema/delivery-reconcile-audit.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Delivery",
+      "contract": "delivery-reconcile-result.v1",
+      "path": "references/delivery-reconcile-result.v1.schema.json",
+      "sha256": "8d30b714ac4a81bcd3277e2c34bbe3c391f15b1974456d7253bbff933e16221f",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.delivery_reconcile.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schema/delivery-reconcile-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Delivery",
+      "contract": "delivery-redaction-result.v1",
+      "path": "references/delivery-redaction-result.v1.schema.json",
+      "sha256": "9dee3ec5d58f98b1bcccbe29300f06d16d6cef7e17fafd2a3d17df7aa35dff5a",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.delivery_redaction.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schema/delivery-redaction-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Delivery",
+      "contract": "delivery-send-result.v1",
+      "path": "references/delivery-send-result.v1.schema.json",
+      "sha256": "e68b601ebc6e550689fa25881d970773394908696a3de9d32f144e38a86940bc",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.delivery_send.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schema/delivery-send-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Delivery",
+      "contract": "delivery-status-result.v1",
+      "path": "references/delivery-status-result.v1.schema.json",
+      "sha256": "78698c90cdb9b5a1639f4dff8356fca45347828364c874d8e5e516eccffa2709",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.delivery_status.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schema/delivery-status-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Delivery",
+      "contract": "docs-only-publish-result.v1",
+      "path": "references/docs-only-publish-result.v1.schema.json",
+      "sha256": "9fd6e2a7eab5152aa21cb8ddd4bc1d81a3abdb059a4b784faa9f23e5b2f82c6f",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.docs_only_publish.v1"
+        }
+      ],
+      "declared_id": "https://example.invalid/ces/docs-only-publish-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Finding",
+      "contract": "finding-correlation-result.v1",
+      "path": "references/finding-correlation-result.v1.schema.json",
+      "sha256": "7ff032f0c1f889d97b7b548316f34b4d14e43d197d43afda2babd01d2fe2a840",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.finding_correlation_result.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schema/finding-correlation-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Finding",
+      "contract": "finding-save-batch.v1",
+      "path": "references/finding-save-batch.v1.schema.json",
+      "sha256": "69dd8fe4a4ff29425484b6e35f83de3cee05a70a7778b40acd45ca757d5d05ce",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.finding_save_batch.v1"
+        }
+      ],
+      "declared_id": "https://schemas.local.ces.invalid/ec178/finding-save-batch.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Finding",
+      "contract": "finding-save-batch.v2",
+      "path": "references/finding-save-batch.v2.schema.json",
+      "sha256": "6c1f0cca64f15e1ad0293bb64368ed8e37c14b6c6b56cd0c8c90c2b63edfbf46",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.finding_save_batch.v2"
+        }
+      ],
+      "declared_id": "https://schemas.local.ces.invalid/ec178/finding-save-batch.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Finding",
+      "contract": "finding-schema.v1",
+      "path": "references/finding-schema.v1.schema.json",
+      "sha256": "158ec1009268fa772059474207013615936e3e99f2390c6b4c96c55562b16930",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.finding_projection.v1"
+        }
+      ],
+      "declared_id": "urn:ces:finding-projection:v1",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Finding",
+      "contract": "finding-show-result.v1",
+      "path": "references/finding-show-result.v1.schema.json",
+      "sha256": "d77c7e98c64ec4a6d69e579a1536c6d73a6208ec09882f3e2670ece54cc303f0",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.finding_show_result.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schema/finding-show-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-create-approval.v1",
+      "path": "references/issue-create-approval.v1.schema.json",
+      "sha256": "fb41226783da755cb0dbee7f30fd6394c819261a20e6625a1f6eff36e8b8a9be",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.issue_create_approval.v1"
+        }
+      ],
+      "declared_id": "https://schemas.example.invalid/ces/issue-create-approval.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-create-content.v1",
+      "path": "references/issue-create-content.v1.schema.json",
+      "sha256": "93a3f683cee0304f2757046468721401fe9fe002907a82243ed9d27e7f4225c3",
+      "markers": [],
+      "declared_id": "https://schemas.example.invalid/ces/issue-create-content.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-create-grant-result.v1",
+      "path": "references/issue-create-grant-result.v1.schema.json",
+      "sha256": "12ef794a62c092cbeea9b6dc7afa4b7b7668af404909b447990e20fd0a7fdac8",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.issue_create_grant.v1"
+        }
+      ],
+      "declared_id": "https://schemas.example.invalid/ces/issue-create-grant-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-create-write-result.v1",
+      "path": "references/issue-create-write-result.v1.schema.json",
+      "sha256": "ee885ee4850b9afe1530c3bb0664257cf0a7acb14f8fceea7930db16aff2492b",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.issue_create_write.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/issue-create-write-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-eligibility-request.v1",
+      "path": "references/issue-eligibility-request.v1.schema.json",
+      "sha256": "86b30263eb5c53aeb9301544e31ebee61e3358343333cda722f4f9ba21323a0a",
+      "markers": [],
+      "declared_id": "https://ces.local/schema/issue-eligibility-request.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-eligibility-result.v1",
+      "path": "references/issue-eligibility-result.v1.schema.json",
+      "sha256": "befe3c5b149e7537e9af2334d0dc2d7778dd049324d39916e0ac5529f2b88fb9",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.issue_eligibility.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schema/issue-eligibility-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-eligibility-review.v1",
+      "path": "references/issue-eligibility-review.v1.schema.json",
+      "sha256": "630b1901dd345260e3945a618fb484475749ac0e2bc4c4eb29a6cab3bdcfbf47",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.issue_eligibility_review.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schema/issue-eligibility-review.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-existing-readonly-result.v1",
+      "path": "references/issue-existing-readonly-result.v1.schema.json",
+      "sha256": "6864cb60995c8ed4f91eecde74bf38970e5621cd5fc0b983daf7215b4f033eba",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.issue_existing_readonly.v1"
+        }
+      ],
+      "declared_id": "https://ces.example.invalid/schema/issue-existing-readonly-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-match-grant.v1",
+      "path": "references/issue-match-grant.v1.schema.json",
+      "sha256": "a4e8e6bcea351c1d579ecafdaa6cb6b54e417bb3bb56d4f077cb060ee7f4bc24",
+      "markers": [],
+      "declared_id": "https://ces.local/schema/issue-match-grant.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-match-request.v1",
+      "path": "references/issue-match-request.v1.schema.json",
+      "sha256": "30567e0a79853bf36f3476c27e0d70455ce30a89f4dedf8dcaed3986aa6a45ab",
+      "markers": [],
+      "declared_id": "https://ces.local/schema/issue-match-request.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-match-result.v1",
+      "path": "references/issue-match-result.v1.schema.json",
+      "sha256": "76ead420bada65c6dd5327aae3b78a15d72e9495c803ef87137681b02dbbe3be",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.issue_match.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schema/issue-match-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-plan-request.v1",
+      "path": "references/issue-plan-request.v1.schema.json",
+      "sha256": "d657b6cb5812fa5b5f82818708300680fd5e2fe34751f840c1a2ab1ba68eb9ef",
+      "markers": [],
+      "declared_id": "https://ces.local/schema/issue-plan-request.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-plan-result.v1",
+      "path": "references/issue-plan-result.v1.schema.json",
+      "sha256": "e840fa831ac279eaa9dabb398f09aafb1f46bfc9af32a15e4190caad20df7954",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.issue_plan.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schema/issue-plan-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-provider-grant.v1",
+      "path": "references/issue-provider-grant.v1.schema.json",
+      "sha256": "3d451ba3a14ce84b81d3a1248f8b310a4672d37ce12505dc6451160e3136c116",
+      "markers": [],
+      "declared_id": "https://example.invalid/ces/issue-provider-grant.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-provider-result.v1",
+      "path": "references/issue-provider-result.v1.schema.json",
+      "sha256": "8596c666543b222e7134179d1a7af1aa346aa19b577f51467f3fd1eb715b7c3d",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.issue_provider.v1"
+        }
+      ],
+      "declared_id": "https://example.invalid/ces/issue-provider-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-show-grant.v1",
+      "path": "references/issue-show-grant.v1.schema.json",
+      "sha256": "c3e5bb20a0f0d0b256e5f8a3aab312c9f8f05c998bcb3b1075dc80a8ac2ce7d8",
+      "markers": [],
+      "declared_id": "https://example.invalid/ces/issue-show-grant.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-show-result.v1",
+      "path": "references/issue-show-result.v1.schema.json",
+      "sha256": "01e4f20ec23ca0b183ff9925db003fb6315840f48880667c33095abe49c5daff",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.issue_show.v1"
+        }
+      ],
+      "declared_id": "https://example.invalid/ces/issue-show-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-sync-grant.v1",
+      "path": "references/issue-sync-grant.v1.schema.json",
+      "sha256": "897620c50c4d82160e8c959ca50b908962c11c728772616320bc8af43a2ffcd8",
+      "markers": [],
+      "declared_id": "https://example.invalid/ces/issue-sync-grant.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-sync-result.v1",
+      "path": "references/issue-sync-result.v1.schema.json",
+      "sha256": "41f8497962b81f235f3e2dc78fcb104e12721ffae237e7356dd631767a34fc31",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.issue_sync.v1"
+        }
+      ],
+      "declared_id": "https://example.invalid/ces/issue-sync-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Issue",
+      "contract": "issue-unknown-recheck-result.v1",
+      "path": "references/issue-unknown-recheck-result.v1.schema.json",
+      "sha256": "5f910a16289dcd8cc78dfa35df9de4f1b9cf0e147de1af3ba6c4bfdaaf48be2a",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.issue_unknown_recheck.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/issue-unknown-recheck-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-bootstrap-read-policy.v1",
+      "path": "references/knowledge-bootstrap-read-policy.v1.schema.json",
+      "sha256": "3bb4d01a658fbdddc201ab443831aad0d56fe3fa48f6d9b3fd1f6b431051fbcc",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_bootstrap_read_policy.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/knowledge-bootstrap-read-policy.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-bootstrap-request.v1",
+      "path": "references/knowledge-bootstrap-request.v1.schema.json",
+      "sha256": "4742953d64cad79bccbdf982e836b0792982e5358b6099ea5b2cc954ba952f3f",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_bootstrap_request.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/knowledge-bootstrap-request.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-bootstrap-result.v1",
+      "path": "references/knowledge-bootstrap-result.v1.schema.json",
+      "sha256": "aec4b8e447d6efd88f2f24d08e95327079219ff77d6f167b2281af9e8db3767f",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_bootstrap.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/knowledge-bootstrap-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-boundary-read-policy.v1",
+      "path": "references/knowledge-boundary-read-policy.v1.schema.json",
+      "sha256": "dc4df8d318b4524c32544ca50b147ae38bd724b5d70bea4e666b0a9c597d7b84",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_boundary_read_policy.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-boundary-read-policy.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-boundary-request.v1",
+      "path": "references/knowledge-boundary-request.v1.schema.json",
+      "sha256": "629059512f83096c09c332dabe8b2f7303b86965cddb4a53414fcb1d53809637",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_boundary_request.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-boundary-request.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-boundary-result.v1",
+      "path": "references/knowledge-boundary-result.v1.schema.json",
+      "sha256": "ce46579851fd247c74f0d4f4b2676a5652b01aa822cdc5166952b579fe0a6202",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_boundary.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-boundary-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-candidate-append-policy.v1",
+      "path": "references/knowledge-candidate-append-policy.v1.schema.json",
+      "sha256": "5a41b1bd48145e379edfac5bc779c27cb97ed696fd1556b105b3be3806aad64a",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_candidate_append_policy.v1"
+        }
+      ],
+      "declared_id": null,
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-candidate-list-policy.v1",
+      "path": "references/knowledge-candidate-list-policy.v1.schema.json",
+      "sha256": "f6d0557be5a721db5a9e3e92c724e5ac184aee9daa6fd7b78c61ebba13ac5258",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_candidate_list_policy.v1"
+        }
+      ],
+      "declared_id": null,
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-candidate-proposal.v1",
+      "path": "references/knowledge-candidate-proposal.v1.schema.json",
+      "sha256": "3e75670289d45dcdd5d0236bd559a6ae836d49f095dbcd9459156ecf9caafce2",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_candidate_proposal.v1"
+        }
+      ],
+      "declared_id": null,
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-candidate-read-policy.v1",
+      "path": "references/knowledge-candidate-read-policy.v1.schema.json",
+      "sha256": "95154247c646ba39c8c22b9ead29be4cc36ea9fc2f6f1ffc3f96a096cf194505",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_candidate_read_policy.v1"
+        }
+      ],
+      "declared_id": null,
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-candidate-result.v1",
+      "path": "references/knowledge-candidate-result.v1.schema.json",
+      "sha256": "e6df4bb1bca582c0c93cca1685491b94f6ee482b0eae48bba11573b5fcd1d207",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_candidate_store.v1"
+        }
+      ],
+      "declared_id": null,
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-chapter-read-policy.v1",
+      "path": "references/knowledge-chapter-read-policy.v1.schema.json",
+      "sha256": "0bddffeb31765b00c9a6994f880a35908cd380951bdaa920d4103210d4a1091e",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_chapter_read_policy.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/knowledge-chapter-read-policy.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-chapters-result.v1",
+      "path": "references/knowledge-chapters-result.v1.schema.json",
+      "sha256": "12d8e25ba219672969536795a7d52d00f553a3f7f6f67f85457693555d91ed98",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_chapters.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/knowledge-chapters-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-impact-baseline-statement.v1",
+      "path": "references/knowledge-impact-baseline-statement.v1.schema.json",
+      "sha256": "3e31a8e5568c6361c94a3d89ebdec1181526ba15b84d6348f82476aea505078e",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_impact_baseline_statement.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/knowledge-impact-baseline-statement.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-impact-read-policy.v1",
+      "path": "references/knowledge-impact-read-policy.v1.schema.json",
+      "sha256": "381cec4f54acc77002e5adbeec8af66a324d2a4a8b2c08c72310f6a788e79e53",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_impact_read_policy.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/knowledge-impact-read-policy.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-impact-result.v1",
+      "path": "references/knowledge-impact-result.v1.schema.json",
+      "sha256": "da681f1fd963db96c53ae985a2a3a2d5978aea566396c5d9a488b78932a7462e",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_impact.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/knowledge-impact-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-lifecycle-query-policy.v1",
+      "path": "references/knowledge-lifecycle-query-policy.v1.schema.json",
+      "sha256": "8f90daa6046de5232cf09d74a767c9a0029aa41e296cfe25d0cba93bb7007bce",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_lifecycle_query_policy.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-lifecycle-query-policy.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-lifecycle-query-request.v1",
+      "path": "references/knowledge-lifecycle-query-request.v1.schema.json",
+      "sha256": "f65c866231a18001d598c7efd3dba7695caf987c62527a03b1e28f459044edf7",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_lifecycle_query_request.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-lifecycle-query-request.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-lifecycle-result.v1",
+      "path": "references/knowledge-lifecycle-result.v1.schema.json",
+      "sha256": "c669400859536df14b416e20a9430b7aedab56cc99cbdff6ec246f5bbaa6c2c4",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_lifecycle.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-lifecycle-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-lifecycle-save-admission.v1",
+      "path": "references/knowledge-lifecycle-save-admission.v1.schema.json",
+      "sha256": "4d9ea21d5e488f751c8331d8dbdf157b6405aaaec04dfc4ccb16c0e510480b06",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_lifecycle_save_admission.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-lifecycle-save-admission.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-lifecycle-version-evidence.v1",
+      "path": "references/knowledge-lifecycle-version-evidence.v1.schema.json",
+      "sha256": "518d428ea45fa7cd915a185ccad31b64de02f8801f857464b7ba81d0e4bcfb6c",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_lifecycle_version_evidence.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-lifecycle-version-evidence.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-save-approvals.v1",
+      "path": "references/knowledge-save-approvals.v1.schema.json",
+      "sha256": "1e93a7ec21b4f1d3a16ffc855b431c137d655c407745baabfb4299b60483caae",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_save_approvals.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-save-approvals.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-save-manifest.v1",
+      "path": "references/knowledge-save-manifest.v1.schema.json",
+      "sha256": "2d3b64f4d53eada5c4fe85d03ad2a30b8da6b7cf12c8436d7417bd5222fca053",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_version_manifest.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-save-manifest.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-save-policy.v1",
+      "path": "references/knowledge-save-policy.v1.schema.json",
+      "sha256": "177dd621f57995336fee582bfdfaa19c8ea7177c6e45f1195448418c88bdd914",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_save_policy.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-save-policy.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-save-record.v1",
+      "path": "references/knowledge-save-record.v1.schema.json",
+      "sha256": "86f22fb52031a14281ab2f6c4d8f5453d60213c7197125af97853cc31ef27b34",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_version_record.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-save-record.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-save-request.v1",
+      "path": "references/knowledge-save-request.v1.schema.json",
+      "sha256": "98b38b99409663bb6b42b1fc3335ee26161d1db2e7aac90802615264c5b83d6e",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_save_request.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-save-request.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-save-result.v1",
+      "path": "references/knowledge-save-result.v1.schema.json",
+      "sha256": "42399d347d92186577ddce44c9d8f0c01d7db6042f093d3e829eb3906e4cb745",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_version_save.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-save-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-save-retry-intent.v1",
+      "path": "references/knowledge-save-retry-intent.v1.schema.json",
+      "sha256": "3b6ee5709119c7a337c4dafe421c5beac06c0fa5b6e0e4eb6eb6c49908e009a2",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_save_retry_intent.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-save-retry-intent.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-save-retry-policy.v1",
+      "path": "references/knowledge-save-retry-policy.v1.schema.json",
+      "sha256": "0d0b83847b29dec505cd0ebfa0688fcbb96b586732e04c7806bef020b0cc3e96",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_save_retry_policy.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-save-retry-policy.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-save-retry-result.v1",
+      "path": "references/knowledge-save-retry-result.v1.schema.json",
+      "sha256": "0d117940afb210f9a0246413c50dbaaaed1cf7db71405ba51f2166cb41083ddf",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_save_retry.v1"
+        }
+      ],
+      "declared_id": "https://schemas.ces.local/knowledge-save-retry-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-snapshot-manifest.v1",
+      "path": "references/knowledge-snapshot-manifest.v1.schema.json",
+      "sha256": "76b3aa08b44719da272694ad256e56e80ea8f92b165a1bb980227cd8a706f82c",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_snapshot_manifest.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/knowledge-snapshot-manifest.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-target-binding-result.v1",
+      "path": "references/knowledge-target-binding-result.v1.schema.json",
+      "sha256": "d50cc7fc3ff8713d780766c61ffc30bdbd9277182f429261b9cbd8f1a2f38992",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_target_binding.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/knowledge-target-binding-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-target-delivery-statement.v1",
+      "path": "references/knowledge-target-delivery-statement.v1.schema.json",
+      "sha256": "dd151d10bb4972632a93afeb1c4fabdf4fd1d5823d33af633ebb7989fb1e1b7a",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_target_delivery_statement.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/knowledge-target-delivery-statement.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-target-read-policy.v1",
+      "path": "references/knowledge-target-read-policy.v1.schema.json",
+      "sha256": "7e725f4f2f8b737554fcd3cdf3c454cc93319e94426995a65d027e4a295f1997",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_target_read_policy.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/knowledge-target-read-policy.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-update-handoff-candidate-reads.v1",
+      "path": "references/knowledge-update-handoff-candidate-reads.v1.schema.json",
+      "sha256": "aa62b5cb6dbd3d90e01c5a3aa8b65fad78e8fa3c0bcd8f69dc6518bc4a23863a",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_update_handoff_candidate_reads.v1"
+        }
+      ],
+      "declared_id": null,
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-update-handoff-policy.v1",
+      "path": "references/knowledge-update-handoff-policy.v1.schema.json",
+      "sha256": "1ea5e4db60230826aee828c8624b9a064e2b43acc0b835ed39f0e2fb28328fa9",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_update_handoff_policy.v1"
+        }
+      ],
+      "declared_id": null,
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-update-handoff-request.v1",
+      "path": "references/knowledge-update-handoff-request.v1.schema.json",
+      "sha256": "ee6f27e7543441bc5747bc5fd5f30286bd0fe1d32577986a368a921566debd4b",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_update_handoff_request.v1"
+        }
+      ],
+      "declared_id": null,
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Knowledge",
+      "contract": "knowledge-update-handoff-result.v1",
+      "path": "references/knowledge-update-handoff-result.v1.schema.json",
+      "sha256": "4cf9320ee60c514b3754b3a2e2a57a036b7cbbeb08230279f8466801c840684f",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.knowledge_update_handoff.v1"
+        }
+      ],
+      "declared_id": null,
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Report",
+      "contract": "natural-period-result.v1",
+      "path": "references/natural-period-result.v1.schema.json",
+      "sha256": "fc0e4f8e20b0d3a2f9d0741c5a4715e636a61fa9510be5f5e83b2f42b1f3181e",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.natural_period.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/natural-period-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Report",
+      "contract": "project-due-calendar-result.v1",
+      "path": "references/project-due-calendar-result.v1.schema.json",
+      "sha256": "0abcc8588a007f069c626a51961d6442edbf57128b1419460279be059347a853",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.project_due_calendar.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/project-due-calendar-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Delivery",
+      "contract": "publication-receipt-result.v1",
+      "path": "references/publication-receipt-result.v1.schema.json",
+      "sha256": "aa309bd2f895020b98a6b95a7cd75eb8792a26130f8292ff42288a15c59aa284",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.publication_receipt.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schemas/publication-receipt-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Quality",
+      "contract": "quality-ci-evidence-result.v1",
+      "path": "references/quality-ci-evidence-result.v1.schema.json",
+      "sha256": "33427c385160424c17148ab6abe1bdb5d8797a3bc9a70eb990ddb03c56724c3b",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.quality_ci_evidence.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/references/quality-ci-evidence-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Quality",
+      "contract": "quality-detect-result.v1",
+      "path": "references/quality-detect-result.v1.schema.json",
+      "sha256": "88c901ce463141d15225f2cd5aff598313ddd44449b870591f1c4f4ab83180e3",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.quality_detect.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/quality-detect-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Quality",
+      "contract": "quality-finding-link-result.v1",
+      "path": "references/quality-finding-link-result.v1.schema.json",
+      "sha256": "3342a23166ac364be986a9b5b525b51259c950848b23fdadb360fad21330b4a5",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.quality_finding_link.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/quality-finding-link-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Quality",
+      "contract": "quality-observation-result.v1",
+      "path": "references/quality-observation-result.v1.schema.json",
+      "sha256": "ab6dd31067bdc354f7fb1785e77fd6ced50552c5cea3cbdd67169b2683c79bdf",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.quality_observation.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/quality-observation-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Quality",
+      "contract": "quality-read-ci-result.v1",
+      "path": "references/quality-read-ci-result.v1.schema.json",
+      "sha256": "984144d60f2c0e31908a9366528fe0280c7bff2f3cb49748715497a4fd48101f",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.quality_read_ci.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/quality-read-ci-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Quality",
+      "contract": "quality-run-budget-result.v1",
+      "path": "references/quality-run-budget-result.v1.schema.json",
+      "sha256": "3d301c93f27cba62eccef41e663b5d08d60e9f7faeb33c9fc6d1afbbc726e632",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.quality_run_budget.v1"
+        }
+      ],
+      "declared_id": "https://example.invalid/ces/quality-run-budget-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Quality",
+      "contract": "quality-run-guard-result.v1",
+      "path": "references/quality-run-guard-result.v1.schema.json",
+      "sha256": "3cf914281350fe0e5a66f006d4b5d5bef1d3e9fe34c0d3f8baa74d569de77dc4",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.quality_run_guard.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/quality-run-guard-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Quality",
+      "contract": "quality-sha-bind-result.v1",
+      "path": "references/quality-sha-bind-result.v1.schema.json",
+      "sha256": "77a1b99676e5dd8b5c93a6d090dc9eaf97c5ffe201c4a09f830dc40e1b1f85de",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.quality_sha_bind.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/quality-sha-bind-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Quality",
+      "contract": "quality-show-result.v1",
+      "path": "references/quality-show-result.v1.schema.json",
+      "sha256": "71c13f2200ac06022db8a3a6c43d9ecc2f6bbf647b4403fc4ad197ecdf3e6602",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.quality_show.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/quality-show-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Report",
+      "contract": "report-evidence-metrics-result.v1",
+      "path": "references/report-evidence-metrics-result.v1.schema.json",
+      "sha256": "d6b8e5592369ebdc630c72c9a9bbc43c18f98d1c277ab2735fff8cf32abaaefc",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.report_evidence_metrics.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/report-evidence-metrics-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Report",
+      "contract": "report-history-correction-policy.v1",
+      "path": "references/report-history-correction-policy.v1.schema.json",
+      "sha256": "4c64406e03a9bc97292e85fe456de1cb81aea86fe98a13b83937ccc1ee3fe9df",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.report_history_correction_policy.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/references/report-history-correction-policy.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Report",
+      "contract": "report-history-read-policy.v1",
+      "path": "references/report-history-read-policy.v1.schema.json",
+      "sha256": "13ed2d94ecb1eb7510f765780504ddc5306762e42e389e9b31e3de9344078db3",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.report_history_read_policy.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/references/report-history-read-policy.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Report",
+      "contract": "report-history-result.v1",
+      "path": "references/report-history-result.v1.schema.json",
+      "sha256": "b66822e37f82819ee9ce2cdfec208cd5d51bd6c96ada2dddd39ed6e7e8292036",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.report_history.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/references/report-history-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Report",
+      "contract": "report-prepare-result.v1",
+      "path": "references/report-prepare-result.v1.schema.json",
+      "sha256": "09650f72f11d844bc7005905d1bc0bd5e64970eead2a0d44d5a793323ca6adbd",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.report_prepare.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/report-prepare-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Report",
+      "contract": "report-publish-result.v1",
+      "path": "references/report-publish-result.v1.schema.json",
+      "sha256": "2d7172b651bea64fc2e808c485e636c3be11d633184b5c7f79209ab44dccf210",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.report_publish.v1"
+        }
+      ],
+      "declared_id": "https://ces.invalid/schemas/report-publish-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Report",
+      "contract": "report-render-policy.v1",
+      "path": "references/report-render-policy.v1.schema.json",
+      "sha256": "35245cfeff5b99d8a555deebe34a0ade986675c6c2f8778c9110fd9edb133a1b",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.report_render_policy.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/references/report-render-policy.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Report",
+      "contract": "report-render-result.v1",
+      "path": "references/report-render-result.v1.schema.json",
+      "sha256": "178668d642d9e6c7eb90cd4b2f06a3ed4ff2a966fd759629b8f0e5014bdb793a",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.report_render.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/references/report-render-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Report",
+      "contract": "report-writing-handoff-result.v1",
+      "path": "references/report-writing-handoff-result.v1.schema.json",
+      "sha256": "4081dfb80eedcc0bbaa5c471b1e0e6ad3bac3493949701a3f353677755386289",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.report_writing_handoff.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/report-writing-handoff-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Report",
+      "contract": "repository-report-subject-result.v1",
+      "path": "references/repository-report-subject-result.v1.schema.json",
+      "sha256": "3083033ab91d97c7629716004d7f9cb56f3b95da4666cafa8fbf07609532b2c4",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.repository_report_subject.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/repository-report-subject-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Infrastructure",
+      "contract": "schema-migration-review-result.v1",
+      "path": "references/schema-migration-review-result.v1.schema.json",
+      "sha256": "bff595c72e09dfa3abdf7995fa6031b3d9117a4d106d6a109742b8804851830e",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.schema_migration_review.v1"
+        }
+      ],
+      "declared_id": "urn:ces:schema-migration-review-result:v1",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Infrastructure",
+      "contract": "unified-action-router-request.v1",
+      "path": "references/unified-action-router-request.v1.schema.json",
+      "sha256": "966637d4adb8bd855be1bdc33fc06d3ff422b55fdd3d3b4bd3f6ab03930e91c2",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.unified_action_router.request.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/unified-action-router-request.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    },
+    {
+      "domain": "Infrastructure",
+      "contract": "unified-action-router-result.v1",
+      "path": "references/unified-action-router-result.v1.schema.json",
+      "sha256": "2308421d688151fc387e7aceac48934df7d67c419aeaa8cb7f852d0092419ff6",
+      "markers": [
+        {
+          "field": "schema",
+          "value": "ces.unified_action_router.v1"
+        }
+      ],
+      "declared_id": "https://ces.local/schemas/unified-action-router-result.v1.schema.json",
+      "draft": "https://json-schema.org/draft/2020-12/schema"
+    }
+  ]
+}

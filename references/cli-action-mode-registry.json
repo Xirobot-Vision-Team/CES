@@ -1,0 +1,905 @@
+{
+  "schema_version": "ces.cli.action_mode_registry.v1",
+  "contract_kind": "READ_ONLY_SOURCE_DERIVED_DECLARATIVE_REGISTRY",
+  "runtime_authority": "scripts/ces.ps1; declarative registry grants no permissions",
+  "claim_level": "STATIC_SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+  "source_refs": {
+    "traced_routes": "construction/ACTION_TRACE.json",
+    "capability_matrix": "construction/CAPABILITY_MATRIX.json",
+    "cli_entrypoint": "scripts/ces.ps1",
+    "baseline_fingerprints": "construction/SOURCE_BASELINE.json"
+  },
+  "cli_defaults": {
+    "action": "Inspect",
+    "mode": "WorkingTree",
+    "mode_explicitness": "PSBoundParameters.ContainsKey(Mode)",
+    "match": "case_insensitive_no_trimming",
+    "unknown_action": {
+      "status": "not_implemented",
+      "reason_code": "NOT_IMPLEMENTED",
+      "exit_code": 3
+    }
+  },
+  "supported_actions": [
+    "Inspect",
+    "Collect",
+    "Reconcile",
+    "CodePrepare",
+    "CodeValidate",
+    "CodeSave",
+    "CodeShow"
+  ],
+  "action_modes": {
+    "Inspect": {
+      "rule": "IGNORE_MODE",
+      "modes": [],
+      "omitted_mode": "NO_MODE",
+      "explicit_mode": "ANY_VALUE_IGNORED",
+      "notes": "Mode is not read by Inspect dispatch, including explicit empty or unknown mode."
+    },
+    "Collect": {
+      "rule": "DEFAULT_OR_SELECT",
+      "modes": [
+        "WorkingTree",
+        "DeliveredTarget"
+      ],
+      "omitted_mode": "WorkingTree",
+      "explicit_mode": "SELECT_CASE_INSENSITIVE",
+      "reject": {
+        "status": "not_implemented",
+        "reason_code": "NOT_IMPLEMENTED",
+        "exit_code": 3
+      }
+    },
+    "CodeShow": {
+      "rule": "EXPLICIT_REQUIRED",
+      "modes": [
+        "List",
+        "Detail",
+        "Findings",
+        "Compare",
+        "Trace",
+        "Overview",
+        "Triage",
+        "Recurrence",
+        "Sequence"
+      ],
+      "omitted_mode": "REJECT",
+      "explicit_mode": "SELECT_CASE_INSENSITIVE",
+      "reject": {
+        "status": "invalid_input",
+        "reason_code": "CODE_SHOW_MODE_REQUIRED",
+        "exit_code": 4
+      }
+    },
+    "Reconcile": {
+      "rule": "IMPLICIT_SNAPSHOT",
+      "modes": [
+        "Snapshot"
+      ],
+      "omitted_mode": "Snapshot",
+      "explicit_mode": "SNAPSHOT_ONLY_CASE_INSENSITIVE",
+      "reject": {
+        "status": "invalid_input",
+        "reason_code": "SNAPSHOT_MODE_REQUIRED",
+        "exit_code": 4
+      }
+    },
+    "CodePrepare": {
+      "rule": "IMPLICIT_SNAPSHOT",
+      "modes": [
+        "Snapshot"
+      ],
+      "omitted_mode": "Snapshot",
+      "explicit_mode": "SNAPSHOT_ONLY_CASE_INSENSITIVE",
+      "reject": {
+        "status": "invalid_input",
+        "reason_code": "SNAPSHOT_MODE_REQUIRED",
+        "exit_code": 4
+      }
+    },
+    "CodeValidate": {
+      "rule": "IMPLICIT_SNAPSHOT",
+      "modes": [
+        "Snapshot"
+      ],
+      "omitted_mode": "Snapshot",
+      "explicit_mode": "SNAPSHOT_ONLY_CASE_INSENSITIVE",
+      "reject": {
+        "status": "invalid_input",
+        "reason_code": "SNAPSHOT_MODE_REQUIRED",
+        "exit_code": 4
+      }
+    },
+    "CodeSave": {
+      "rule": "IMPLICIT_SNAPSHOT",
+      "modes": [
+        "Snapshot"
+      ],
+      "omitted_mode": "Snapshot",
+      "explicit_mode": "SNAPSHOT_ONLY_CASE_INSENSITIVE",
+      "reject": {
+        "status": "invalid_input",
+        "reason_code": "SNAPSHOT_MODE_REQUIRED",
+        "exit_code": 4
+      }
+    }
+  },
+  "routes": [
+    {
+      "id": "Inspect",
+      "action": "Inspect",
+      "mode": null,
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/ces.ps1",
+        "symbol": "Inspect-Repository",
+        "line": 1123
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1899,
+        "callee": "Inspect-Repository"
+      },
+      "submode_handler": null,
+      "inputs": {
+        "required": [
+          "RepoPath"
+        ],
+        "optional": []
+      },
+      "effect": "READ_ONLY",
+      "primary_smoke": "tests/Inspect.Smoke.ps1",
+      "source_trace_route_id": "Inspect"
+    },
+    {
+      "id": "Collect:WorkingTree",
+      "action": "Collect",
+      "mode": "WorkingTree",
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/collect.ps1",
+        "symbol": "Collect-WorkingTree",
+        "line": 293
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1911,
+        "callee": "Collect-WorkingTree"
+      },
+      "submode_handler": null,
+      "inputs": {
+        "required": [
+          "RepoPath"
+        ],
+        "optional": [
+          "Mode (default WorkingTree)",
+          "IncludePatches",
+          "IncludeUntrackedContent"
+        ]
+      },
+      "effect": "READ_ONLY",
+      "primary_smoke": "tests/Collect.Smoke.ps1",
+      "source_trace_route_id": "Collect:WorkingTree"
+    },
+    {
+      "id": "Collect:DeliveredTarget",
+      "action": "Collect",
+      "mode": "DeliveredTarget",
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/delivered.ps1",
+        "symbol": "Collect-DeliveredTarget",
+        "line": 84
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1913,
+        "callee": "Collect-DeliveredTarget"
+      },
+      "submode_handler": null,
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode",
+          "BaseSha",
+          "TargetSha",
+          "TargetRef"
+        ],
+        "optional": [
+          "IncludePatches"
+        ]
+      },
+      "effect": "READ_ONLY",
+      "primary_smoke": "tests/DeliveredTarget.Smoke.ps1",
+      "source_trace_route_id": "Collect:DeliveredTarget"
+    },
+    {
+      "id": "Reconcile:Snapshot",
+      "action": "Reconcile",
+      "mode": "Snapshot",
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/reconcile.ps1",
+        "symbol": "Reconcile-Snapshot",
+        "line": 302
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1901,
+        "callee": "Reconcile-Snapshot"
+      },
+      "submode_handler": null,
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "EvidencePath"
+        ],
+        "optional": [
+          "Mode (Snapshot, optional)"
+        ]
+      },
+      "effect": "READ_ONLY",
+      "primary_smoke": "tests/Reconcile.Smoke.ps1",
+      "source_trace_route_id": "Reconcile:Snapshot"
+    },
+    {
+      "id": "CodePrepare:Snapshot",
+      "action": "CodePrepare",
+      "mode": "Snapshot",
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/codeprepare.ps1",
+        "symbol": "CodePrepare-Snapshot",
+        "line": 117
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1903,
+        "callee": "CodePrepare-Snapshot"
+      },
+      "submode_handler": null,
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "EvidencePath"
+        ],
+        "optional": [
+          "Mode (Snapshot, optional)",
+          "IncludePatches",
+          "IncludeUntrackedContent"
+        ]
+      },
+      "effect": "READ_ONLY",
+      "primary_smoke": "tests/CodePrepare.Smoke.ps1",
+      "source_trace_route_id": "CodePrepare:Snapshot"
+    },
+    {
+      "id": "CodeValidate:Snapshot",
+      "action": "CodeValidate",
+      "mode": "Snapshot",
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/codevalidate.ps1",
+        "symbol": "CodeValidate-Snapshot",
+        "line": 222
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1905,
+        "callee": "CodeValidate-Snapshot"
+      },
+      "submode_handler": null,
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "EvidencePath",
+          "InputPath"
+        ],
+        "optional": [
+          "Mode (Snapshot, optional)",
+          "IncludePatches",
+          "IncludeUntrackedContent"
+        ]
+      },
+      "effect": "READ_ONLY",
+      "primary_smoke": "tests/CodeValidate.Smoke.ps1",
+      "source_trace_route_id": "CodeValidate:Snapshot"
+    },
+    {
+      "id": "CodeSave:Snapshot",
+      "action": "CodeSave",
+      "mode": "Snapshot",
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/codesave.ps1",
+        "symbol": "CodeSave-Snapshot",
+        "line": 247
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1909,
+        "callee": "CodeSave-Snapshot"
+      },
+      "submode_handler": null,
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "EvidencePath",
+          "InputPath",
+          "ApprovePersist"
+        ],
+        "optional": [
+          "Mode (Snapshot, optional)",
+          "IncludePatches",
+          "IncludeUntrackedContent"
+        ]
+      },
+      "effect": "LOCAL_CES_METADATA_WRITE_WITH_EXPLICIT_AUTHORIZATION",
+      "primary_smoke": "tests/CodeSave.Smoke.ps1",
+      "source_trace_route_id": "CodeSave:Snapshot"
+    },
+    {
+      "id": "CodeShow:List",
+      "action": "CodeShow",
+      "mode": "List",
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "submode_handler": null,
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode"
+        ],
+        "optional": [
+          "Limit 1..100 (default 50)",
+          "AfterRecordId"
+        ]
+      },
+      "effect": "READ_ONLY",
+      "primary_smoke": "tests/CodeShow.Smoke.ps1",
+      "source_trace_route_id": "CodeShow:List"
+    },
+    {
+      "id": "CodeShow:Detail",
+      "action": "CodeShow",
+      "mode": "Detail",
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "submode_handler": null,
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode",
+          "RecordId"
+        ],
+        "optional": []
+      },
+      "effect": "READ_ONLY",
+      "primary_smoke": "tests/CodeShow.Smoke.ps1",
+      "source_trace_route_id": "CodeShow:Detail"
+    },
+    {
+      "id": "CodeShow:Findings",
+      "action": "CodeShow",
+      "mode": "Findings",
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "submode_handler": {
+        "invocation": {
+          "file": "scripts/codeshow.ps1",
+          "line": 1006,
+          "callee": "Get-CodeShowFindingsPage"
+        },
+        "definition": {
+          "file": "scripts/codefindings.ps1",
+          "symbol": "Get-CodeShowFindingsPage",
+          "line": 104
+        }
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode"
+        ],
+        "optional": [
+          "Limit 1..100",
+          "AfterFindingCursor",
+          "FindingsRecordIds",
+          "FindingSeverity",
+          "FindingLayer",
+          "FindingPath",
+          "FindingSourceMode"
+        ]
+      },
+      "effect": "READ_ONLY",
+      "primary_smoke": "tests/CodeFindings.Smoke.ps1",
+      "source_trace_route_id": "CodeShow:Findings"
+    },
+    {
+      "id": "CodeShow:Compare",
+      "action": "CodeShow",
+      "mode": "Compare",
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "submode_handler": {
+        "invocation": {
+          "file": "scripts/codeshow.ps1",
+          "line": 1004,
+          "callee": "Get-CodeShowCompare"
+        },
+        "definition": {
+          "file": "scripts/codecompare.ps1",
+          "symbol": "Get-CodeShowCompare",
+          "line": 90
+        }
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode",
+          "LeftRecordId",
+          "RightRecordId"
+        ],
+        "optional": []
+      },
+      "effect": "READ_ONLY",
+      "primary_smoke": "tests/CodeCompare.Smoke.ps1",
+      "source_trace_route_id": "CodeShow:Compare"
+    },
+    {
+      "id": "CodeShow:Trace",
+      "action": "CodeShow",
+      "mode": "Trace",
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "submode_handler": {
+        "invocation": {
+          "file": "scripts/codeshow.ps1",
+          "line": 1000,
+          "callee": "Get-CodeShowTracePage"
+        },
+        "definition": {
+          "file": "scripts/codetrace.ps1",
+          "symbol": "Get-CodeShowTracePage",
+          "line": 85
+        }
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode",
+          "RecordId",
+          "FindingId"
+        ],
+        "optional": [
+          "TraceRecordIds",
+          "AfterTraceCursor",
+          "Limit 1..100"
+        ]
+      },
+      "effect": "READ_ONLY",
+      "primary_smoke": "tests/CodeTrace.Smoke.ps1",
+      "source_trace_route_id": "CodeShow:Trace"
+    },
+    {
+      "id": "CodeShow:Overview",
+      "action": "CodeShow",
+      "mode": "Overview",
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "submode_handler": {
+        "invocation": {
+          "file": "scripts/codeshow.ps1",
+          "line": 996,
+          "callee": "Get-CodeShowOverviewPage"
+        },
+        "definition": {
+          "file": "scripts/codeoverview.ps1",
+          "symbol": "Get-CodeShowOverviewPage",
+          "line": 148
+        }
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode"
+        ],
+        "optional": [
+          "OverviewSourceMode",
+          "OverviewRecordIds",
+          "AfterOverviewCursor",
+          "Limit 1..100"
+        ]
+      },
+      "effect": "READ_ONLY",
+      "primary_smoke": "tests/CodeOverview.Smoke.ps1",
+      "source_trace_route_id": "CodeShow:Overview"
+    },
+    {
+      "id": "CodeShow:Triage",
+      "action": "CodeShow",
+      "mode": "Triage",
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "submode_handler": {
+        "invocation": {
+          "file": "scripts/codeshow.ps1",
+          "line": 992,
+          "callee": "Get-CodeShowTriagePage"
+        },
+        "definition": {
+          "file": "scripts/codetriage.ps1",
+          "symbol": "Get-CodeShowTriagePage",
+          "line": 183
+        }
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode"
+        ],
+        "optional": [
+          "TriageSourceMode",
+          "TriageRecordIds",
+          "AfterTriageCursor",
+          "TriageTop",
+          "Limit 1..100"
+        ]
+      },
+      "effect": "READ_ONLY",
+      "primary_smoke": "tests/CodeTriage.Smoke.ps1",
+      "source_trace_route_id": "CodeShow:Triage"
+    },
+    {
+      "id": "CodeShow:Recurrence",
+      "action": "CodeShow",
+      "mode": "Recurrence",
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "submode_handler": {
+        "invocation": {
+          "file": "scripts/codeshow.ps1",
+          "line": 986,
+          "callee": "Get-CodeShowRecurrencePage"
+        },
+        "definition": {
+          "file": "scripts/coderecurrence.ps1",
+          "symbol": "Get-CodeShowRecurrencePage",
+          "line": 141
+        }
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode"
+        ],
+        "optional": [
+          "RecurrenceSourceMode",
+          "RecurrenceRecordIds",
+          "AfterRecurrenceCursor",
+          "RecurrencePath",
+          "RecurrenceMinRecords",
+          "RecurrenceTop",
+          "Limit 1..100"
+        ]
+      },
+      "effect": "READ_ONLY",
+      "primary_smoke": "tests/CodeRecurrence.Smoke.ps1",
+      "source_trace_route_id": "CodeShow:Recurrence"
+    },
+    {
+      "id": "CodeShow:Sequence",
+      "action": "CodeShow",
+      "mode": "Sequence",
+      "implementation_state": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+      "handler": {
+        "file": "scripts/codeshow.ps1",
+        "symbol": "CodeShow-Local",
+        "line": 289
+      },
+      "dispatcher": {
+        "file": "scripts/ces.ps1",
+        "line": 1907,
+        "callee": "CodeShow-Local"
+      },
+      "submode_handler": {
+        "invocation": {
+          "file": "scripts/codeshow.ps1",
+          "line": 973,
+          "callee": "Get-CodeShowSequence"
+        },
+        "definition": {
+          "file": "scripts/codesequence.ps1",
+          "symbol": "Get-CodeShowSequence",
+          "line": 2409
+        }
+      },
+      "inputs": {
+        "required": [
+          "RepoPath",
+          "Mode",
+          "SequenceRecordIds (2..12个不同完整ci ID)"
+        ],
+        "optional": [
+          "SequenceTop 1..20",
+          "SequencePath",
+          "SequenceFindingRecordId + SequenceFindingId",
+          "SequenceAnchorIndex",
+          "SequencePairIndex",
+          "SequencePairOverviewIndex + 进阶索引"
+        ]
+      },
+      "effect": "READ_ONLY",
+      "primary_smoke": "tests/CodeSequence.Smoke.ps1",
+      "source_trace_route_id": "CodeShow:Sequence"
+    }
+  ],
+  "planned_capabilities": [
+    {
+      "name": "Collect:ProposedPR",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "161-170",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "Reconcile:Remote/DeliveryAssociation",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "161-170",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "CodePrepare:MultiSource",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "161-170",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "AIHandoff/RunId/HandoffId",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "171-180",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "CodeValidate:Staged",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "171-180",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "CodeSave:Staged",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "171-180",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "FindingSave",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "171-180",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "FindingShow",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "171-180",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "QualityDetect",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "181-190",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "QualityReadCI",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "181-190",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "QualityRun",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "181-190",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "QualityShow",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "181-190",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "Due",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "191-200",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "ReportPrepare",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "191-200",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "ReportRender",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "191-200",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "KnowledgeBootstrap",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "201-210",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "KnowledgeImpact",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "201-210",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "KnowledgeSave",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "201-210",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "IssueSync",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "211-220",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "IssueShow",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "211-220",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "IssueMatch",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "211-220",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "IssueCreate",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "211-220",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "DeliveryPreview",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "221-230",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "DeliverySend",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "221-230",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "ReportPublish",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "221-230",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "DocsOnlyPublish",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "221-230",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "Cycle:Next",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "231-240",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "Resume",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "231-240",
+      "cli_handler_registered": false
+    },
+    {
+      "name": "Cycle:Summary",
+      "status": "NOT_IMPLEMENTED",
+      "planned_range": "231-240",
+      "cli_handler_registered": false
+    }
+  ],
+  "safety": {
+    "only_existing_handler_claim": "SOURCE_AUTHORED_RUNTIME_UNVERIFIED",
+    "planned_never_callable": true,
+    "routing_performs_no_actions": true,
+    "runtime_only_authorized_write": {
+      "route": "CodeSave:Snapshot",
+      "requires_explicit_parameter": "ApprovePersist",
+      "destination": "CES_OWNED_METADATA_ONLY"
+    },
+    "no_external_side_effects": true,
+    "preserve_legacy_cli_envelope": true
+  },
+  "validation_boundary": {
+    "static_source_check": "SUPPORTED",
+    "native_powershell": "NOT_RUN",
+    "smoke_15": "NOT_RUN",
+    "final_user_assisted_acceptance": "DEFERRED"
+  },
+  "baseline": "1.0.0"
+}

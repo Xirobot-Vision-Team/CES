@@ -1,0 +1,188 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_chapter_read_policy.v1"
+    },
+    "purpose": {
+      "const": "knowledge_existing_chapters_read_only"
+    },
+    "repository_ref": {
+      "type": "string",
+      "pattern": "^cesrepo1:[0-9a-f]{64}$"
+    },
+    "knowledge_space_key": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "source_policy_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "period_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "request_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "scope_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "repository_root_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "knowledge_root_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "git_root_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "target_config_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "issuer_registry_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "baseline_issuer_registry_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "bootstrap_read_policy_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "target_read_policy_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "impact_read_policy_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "target_statement_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "baseline_statement_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "read_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permit_chapter_mapping": {
+      "type": "boolean"
+    },
+    "permit_section_title_projection": {
+      "type": "boolean"
+    },
+    "permit_section_digest_projection": {
+      "type": "boolean"
+    },
+    "permit_reference_digest_comparison": {
+      "type": "boolean"
+    },
+    "permit_repository_write": {
+      "const": false
+    },
+    "permit_knowledge_write": {
+      "const": false
+    },
+    "permit_business_source_write": {
+      "const": false
+    },
+    "permit_issue_write": {
+      "const": false
+    },
+    "permit_publish": {
+      "const": false
+    },
+    "source_grants": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "source_key": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+          },
+          "source_binding_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "permit_section_mapping": {
+            "type": "boolean"
+          },
+          "permit_repository_association": {
+            "type": "boolean"
+          },
+          "read_receipt_sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "source_key",
+          "source_binding_sha256",
+          "permit_section_mapping",
+          "permit_repository_association",
+          "read_receipt_sha256"
+        ]
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "purpose",
+    "repository_ref",
+    "knowledge_space_key",
+    "source_policy_revision",
+    "period_id",
+    "request_binding_sha256",
+    "scope_binding_sha256",
+    "repository_root_binding_sha256",
+    "knowledge_root_binding_sha256",
+    "git_root_binding_sha256",
+    "target_config_binding_sha256",
+    "issuer_registry_binding_sha256",
+    "baseline_issuer_registry_binding_sha256",
+    "bootstrap_read_policy_binding_sha256",
+    "target_read_policy_binding_sha256",
+    "impact_read_policy_binding_sha256",
+    "target_statement_binding_sha256",
+    "baseline_statement_binding_sha256",
+    "read_receipt_sha256",
+    "permit_chapter_mapping",
+    "permit_section_title_projection",
+    "permit_section_digest_projection",
+    "permit_reference_digest_comparison",
+    "permit_repository_write",
+    "permit_knowledge_write",
+    "permit_business_source_write",
+    "permit_issue_write",
+    "permit_publish",
+    "source_grants"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/knowledge-chapter-read-policy.v1.schema.json",
+  "title": "EC205 exact bound read-only chapter mapping grant"
+}

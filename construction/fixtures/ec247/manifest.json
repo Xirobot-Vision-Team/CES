@@ -1,0 +1,208 @@
+{
+  "schema": "ces.ec247.regression_manifest.v1",
+  "version": "V5.57",
+  "ec": "EC-247",
+  "native_scope": "15 original independent PowerShell Smoke scripts; each creates and removes its own scratch Git fixtures; EC247 does not execute or change them",
+  "native_smokes": [
+    {
+      "file": "tests/CodeCompare.Smoke.ps1",
+      "sha256": "e260f60efe2bbf90b53d86ea254e1c818ae9003e314de8c6e53b9f8975c7710c",
+      "legacy_action_mode": "CodeShow:Compare",
+      "focus": "compare_saved_record",
+      "execution": "NOT_RUN_NATIVE_PWSH7_GIT"
+    },
+    {
+      "file": "tests/CodeFindings.Smoke.ps1",
+      "sha256": "d88b0d58b5c9dd6dc8fdbfce6d4dff46323e73968c4f588c43d688d43bffcae6",
+      "legacy_action_mode": "CodeShow:Findings",
+      "focus": "finding_index",
+      "execution": "NOT_RUN_NATIVE_PWSH7_GIT"
+    },
+    {
+      "file": "tests/CodeOverview.Smoke.ps1",
+      "sha256": "92c405c1eb2cf877abc46463a5e07cde19fef78f97ec853cf50025e208a99c70",
+      "legacy_action_mode": "CodeShow:Overview",
+      "focus": "overview",
+      "execution": "NOT_RUN_NATIVE_PWSH7_GIT"
+    },
+    {
+      "file": "tests/CodePrepare.Smoke.ps1",
+      "sha256": "b233f30a7edbf2a1652094400b8cf99ba6e85ab9fb71283adf9e9e1516c69873",
+      "legacy_action_mode": "CodePrepare:Snapshot",
+      "focus": "preparation",
+      "execution": "NOT_RUN_NATIVE_PWSH7_GIT"
+    },
+    {
+      "file": "tests/CodeRecurrence.Smoke.ps1",
+      "sha256": "9536789d204fb1fff824380b4e0b73344ee2873914865189f4e222d07aff7b98",
+      "legacy_action_mode": "CodeShow:Recurrence",
+      "focus": "recurrence",
+      "execution": "NOT_RUN_NATIVE_PWSH7_GIT"
+    },
+    {
+      "file": "tests/CodeSave.Smoke.ps1",
+      "sha256": "662556e4fa369b42a800e2fb60e03d19e72c8c7c66ba377310513604ee7fcfaa",
+      "legacy_action_mode": "CodeSave:Snapshot",
+      "focus": "private_persistence",
+      "execution": "NOT_RUN_NATIVE_PWSH7_GIT"
+    },
+    {
+      "file": "tests/CodeSequence.Smoke.ps1",
+      "sha256": "3a389f42a473d76214e7801723269c5a308e7d9132c393c65bf3d5f2d015c7dd",
+      "legacy_action_mode": "CodeShow:Sequence",
+      "focus": "sequence_k1_to_k56",
+      "execution": "NOT_RUN_NATIVE_PWSH7_GIT"
+    },
+    {
+      "file": "tests/CodeShow.Smoke.ps1",
+      "sha256": "d0f8443d050cd7450e0fc20aa63fe22b07c141cf825034f295df71207f4b61e4",
+      "legacy_action_mode": "CodeShow:List",
+      "focus": "read_saved_history",
+      "execution": "NOT_RUN_NATIVE_PWSH7_GIT"
+    },
+    {
+      "file": "tests/CodeTrace.Smoke.ps1",
+      "sha256": "06fd33c32b9d5038ab397f96cd8c2fbad5f45b7a19538fa7c003061589673a75",
+      "legacy_action_mode": "CodeShow:Trace",
+      "focus": "finding_trace",
+      "execution": "NOT_RUN_NATIVE_PWSH7_GIT"
+    },
+    {
+      "file": "tests/CodeTriage.Smoke.ps1",
+      "sha256": "3e0de3bf47a311b3061980f0c0a924fc750585a4065864d74f8fc78f7d95735b",
+      "legacy_action_mode": "CodeShow:Triage",
+      "focus": "finding_triage",
+      "execution": "NOT_RUN_NATIVE_PWSH7_GIT"
+    },
+    {
+      "file": "tests/CodeValidate.Smoke.ps1",
+      "sha256": "f8b8d7e63842bd05b19638d6d101417c51e8d7bcdf5eb0999a434dec56d17731",
+      "legacy_action_mode": "CodeValidate:Snapshot",
+      "focus": "draft_validation",
+      "execution": "NOT_RUN_NATIVE_PWSH7_GIT"
+    },
+    {
+      "file": "tests/Collect.Smoke.ps1",
+      "sha256": "72a363971305d7b18ef493d917fb93f2bda5aaa6da319425e5de6d84318419f3",
+      "legacy_action_mode": "Collect:WorkingTree",
+      "focus": "working_tree_evidence",
+      "execution": "NOT_RUN_NATIVE_PWSH7_GIT"
+    },
+    {
+      "file": "tests/DeliveredTarget.Smoke.ps1",
+      "sha256": "27c1650ae165644f50f1592bcb78ba5bd341e551659a6c5524540efa33ab2274",
+      "legacy_action_mode": "Collect:DeliveredTarget",
+      "focus": "delivered_ref_evidence",
+      "execution": "NOT_RUN_NATIVE_PWSH7_GIT"
+    },
+    {
+      "file": "tests/Inspect.Smoke.ps1",
+      "sha256": "4b72867302144090a5f1a30a7873e296acccf80bd4b48c131cb76c95c9ac630e",
+      "legacy_action_mode": "Inspect",
+      "focus": "git_identity",
+      "execution": "NOT_RUN_NATIVE_PWSH7_GIT"
+    },
+    {
+      "file": "tests/Reconcile.Smoke.ps1",
+      "sha256": "f91cfe2785733a0a6cd7cc9cd90f877ffb48e0a1f63412db818299368f9de40a",
+      "legacy_action_mode": "Reconcile:Snapshot",
+      "focus": "local_drift",
+      "execution": "NOT_RUN_NATIVE_PWSH7_GIT"
+    }
+  ],
+  "fixtures_sha256": {
+    "cycle-actions.json": "a1f93be5df697bd89ebf9ed51af30990d3da25ffbf24439ae266b604790ed24b",
+    "cycle-input.txt": "0c5170b0736c7cb4d3789bcfd960e75c4612886e92f4271f3e5c1a77912b6bbd",
+    "offline-requests.json": "394e158bbcf2dc99da2f7bb818c781eb2f53adc0fb23bcd3b13229255c597360",
+    "schema-cycle-example.json": "1e3e03f49f09f9bcae5af9045bbcb110d44100c95a88bf72bc9df4a51a91af0c"
+  },
+  "flows": [
+    {
+      "id": "schema_admission",
+      "description": "SchemaReview Inventory -> Audit -> Inspect -> Plan read-only; original bytes unchanged",
+      "route_chain": [
+        "SchemaReview:Inventory",
+        "SchemaReview:Audit",
+        "SchemaReview:Inspect",
+        "SchemaReview:Plan"
+      ],
+      "type": "LOCAL_SYNTHETIC_ONLY",
+      "acceptance": "NOT_RUN_ENTERPRISE_NATIVE_OS_END_TO_END"
+    },
+    {
+      "id": "calendar_period",
+      "description": "Due evaluation -> EC192 natural-period exact UTC boundaries, not scheduler",
+      "route_chain": [
+        "Due:Evaluate",
+        "NaturalPeriod:from_instant"
+      ],
+      "type": "LOCAL_SYNTHETIC_ONLY",
+      "acceptance": "NOT_RUN_ENTERPRISE_NATIVE_OS_END_TO_END"
+    },
+    {
+      "id": "cycle_source_chain",
+      "description": "Cycle private test create -> Inspect -> Next -> Summary -> business-write refusal",
+      "route_chain": [
+        "Cycle:Create",
+        "Cycle:Inspect",
+        "Cycle:Next",
+        "Cycle:Summary",
+        "Cycle:BusinessWriteAttempt"
+      ],
+      "type": "LOCAL_SYNTHETIC_ONLY",
+      "acceptance": "NOT_RUN_ENTERPRISE_NATIVE_OS_END_TO_END"
+    },
+    {
+      "id": "code_save_gates",
+      "description": "CodePrepare MultiSource input fail -> CodeSave Staged explicit write gate -> R150 native CodeSave only",
+      "route_chain": [
+        "CodePrepare:MultiSource",
+        "CodeSave:Staged",
+        "CodeSave:Snapshot"
+      ],
+      "type": "LOCAL_SYNTHETIC_ONLY",
+      "acceptance": "NOT_RUN_ENTERPRISE_NATIVE_OS_END_TO_END"
+    },
+    {
+      "id": "issue_creation_boundary",
+      "description": "IssueCreate Eligibility synthetic-invalid request -> independent host-only Create rejection",
+      "route_chain": [
+        "IssueCreate:Eligibility",
+        "IssueCreate:Create"
+      ],
+      "type": "LOCAL_SYNTHETIC_ONLY",
+      "acceptance": "NOT_RUN_ENTERPRISE_NATIVE_OS_END_TO_END"
+    },
+    {
+      "id": "delivery_publication_boundary",
+      "description": "DeliveryPreview invalid request -> host-only DeliverySend / DocsOnlyPublish / ReportPublish rejection",
+      "route_chain": [
+        "DeliveryPreview:Preview",
+        "DeliverySend:Send",
+        "DocsOnlyPublish:LocalSandbox",
+        "ReportPublish:PrivateTest"
+      ],
+      "type": "LOCAL_SYNTHETIC_ONLY",
+      "acceptance": "NOT_RUN_ENTERPRISE_NATIVE_OS_END_TO_END"
+    },
+    {
+      "id": "provider_network_boundary",
+      "description": "Collect ProposedPR needs affirmative read-network opt-in; no transport called",
+      "route_chain": [
+        "Collect:ProposedPR"
+      ],
+      "type": "LOCAL_SYNTHETIC_ONLY",
+      "acceptance": "NOT_RUN_ENTERPRISE_NATIVE_OS_END_TO_END"
+    }
+  ],
+  "constraints": {
+    "business_repository_writes": false,
+    "network_egress_requested": false,
+    "host_credentials_included": false,
+    "native_smokes_executed": false,
+    "legacy_15_smokes_rewritten": false,
+    "real_provider_or_user_approval": false,
+    "final_acceptance_started": false
+  },
+  "last_planned_ec": "EC-250"
+}

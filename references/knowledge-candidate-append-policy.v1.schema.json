@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_candidate_append_policy.v1"
+    },
+    "purpose": {
+      "const": "append_private_candidate_only"
+    },
+    "store_instance_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "store_scope_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "candidate_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "authorization_scope_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permission_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "permit_candidate_append": {
+      "type": "boolean"
+    },
+    "permit_private_claim_store": {
+      "type": "boolean"
+    },
+    "permit_restricted_claim_store": {
+      "type": "boolean"
+    },
+    "permit_upstream_result_intake": {
+      "type": "boolean"
+    },
+    "permit_manual_proposal_intake": {
+      "type": "boolean"
+    },
+    "permit_repository_write": {
+      "const": false
+    },
+    "permit_authoritative_knowledge_write": {
+      "const": false
+    },
+    "permit_issue_write": {
+      "const": false
+    },
+    "permit_publish": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema",
+    "purpose",
+    "store_instance_id",
+    "store_scope_binding_sha256",
+    "candidate_binding_sha256",
+    "authorization_scope_sha256",
+    "permission_receipt_sha256",
+    "permit_candidate_append",
+    "permit_private_claim_store",
+    "permit_restricted_claim_store",
+    "permit_upstream_result_intake",
+    "permit_manual_proposal_intake",
+    "permit_repository_write",
+    "permit_authoritative_knowledge_write",
+    "permit_issue_write",
+    "permit_publish"
+  ]
+}

@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+"""EC364 offline cross-epoch continuation CLI; exact inherited EC363 arguments."""
+from __future__ import annotations
+
+import argparse
+import copy
+import json
+
+from ec295_delivery_anchor import anchor as errors
+from ec279_finding_query_host import protocol as io
+from ec363_source_history import operator as last_cli
+from . import continuity as core
+
+
+def parser():
+    # Clone the *existing exact* EC363 audit args rather than reimplementing
+    # its 100+ inherited flags by hand. The new parser has only EC364 commands.
+    inherited=last_cli.parser()
+    base=next(action for action in inherited._actions
+              if isinstance(action,argparse._SubParsersAction))
+    template=base.choices['audit-publication-history']
+    p=argparse.ArgumentParser(description='EC364 genuine historical parent replay and dual custodian bridge (offline unresolved)')
+    commands=p.add_subparsers(dest='command',required=True)
+    for command in ('derive-cross-epoch-handoff','audit-cross-epoch'):
+        sub=commands.add_parser(command,help='read-only; public identity and global history NOT_PROVEN')
+        for action in template._actions:
+            if action.dest!='help':sub._add_action(copy.deepcopy(action))
+        if command=='audit-cross-epoch':
+            sub.add_argument('--cross-epoch-evaluation-utc',required=True)
+            for key in core.NEW_OPTIONAL:
+                sub.add_argument('--'+key.replace('_','-'),
+                    **({'type':int} if key.startswith('minimum_') else {}))
+            for key,flag in core.NEW_REPEATS:
+                sub.add_argument(flag,dest=key,action='append',default=[])
+    return p
+
+
+def denial(command,exc):
+    if isinstance(exc,(errors.AnchorError,io.HostError)):
+        status,reason=exc.status,exc.code
+    else:status,reason='unavailable','EC364_LOCAL_IO_OR_UNEXPECTED_EXCEPTION'
+    return {'schema':core.DENIAL_SCHEMA,'command':command,'status':status,
+       'reason_code':reason,
+       'exit_code':{'permission_denied':3,'invalid_input':4,'unavailable':5}.get(status,5),
+       'actual_ec363_through_ec337_signed_originals_replayed':False,
+       'offline_unresolved_exit_code':2,**{k:False for k in core.NEGATIVES}}
+
+
+def main(argv=None):
+    parsed=vars(parser().parse_args(argv))
+    command=parsed.pop('command')
+    registry=last_cli.previous_cli.previous_cli.previous_cli.registry_cli
+    for key in (*registry.parent_cli.old_cli.old_cli.old_cli.PARENT_REPEATS,
+                *registry.parent_cli.old_cli.old_cli.old_cli.EXTRA_REPEATS):
+        flag=registry.parent_cli.old_cli.old_cli.old_cli.FLAGS[key]
+        if flag in parsed and flag!=key:parsed[key]=parsed.pop(flag)
+    try:
+        result=(core.checklist(**parsed) if command=='derive-cross-epoch-handoff'
+                else core.audit(**parsed))
+    except Exception as exc:
+        result=denial(command,exc)
+    print(json.dumps(result,ensure_ascii=True,allow_nan=False,sort_keys=True,
+                     separators=(',',':')))
+    return result['exit_code']
+
+if __name__=='__main__':
+    raise SystemExit(main())

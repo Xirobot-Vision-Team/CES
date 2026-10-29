@@ -1,0 +1,5 @@
+[
+  {"filename":"src/service.py","status":"modified","additions":4,"deletions":2,"changes":6,"patch":"@@ -1 +1 @@\n-old = 1\n+new = 2\n"},
+  {"filename":"src/renamed.py","previous_filename":"src/old.py","status":"renamed","additions":1,"deletions":1,"changes":2,"patch":"@@ -4 +4 @@\n-print('before')\n+print('after')\n"},
+  {"filename":"docs/start.md","status":"added","additions":5,"deletions":0,"changes":5}
+]

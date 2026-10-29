@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_candidate_proposal.v1"
+    },
+    "candidate_key": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._-]{2,63}$"
+    },
+    "repository_ref": {
+      "type": "string",
+      "pattern": "^cesrepo1:[0-9a-f]{64}$"
+    },
+    "knowledge_space_key": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "source_policy_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "period_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "scope_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "origin": {
+      "enum": [
+        "ec205_chapter_mapping",
+        "ec204_selected_change",
+        "manual_proposal"
+      ]
+    },
+    "source_key": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "section_ref": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^cesksection1:[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "claim_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "reason_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "sensitivity": {
+      "enum": [
+        "INTERNAL",
+        "RESTRICTED"
+      ]
+    },
+    "proposer_key": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"
+    },
+    "proposed_at_utc": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "request_binding_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "schema",
+    "candidate_key",
+    "repository_ref",
+    "knowledge_space_key",
+    "source_policy_revision",
+    "period_id",
+    "request_binding_sha256",
+    "scope_binding_sha256",
+    "origin",
+    "source_key",
+    "section_ref",
+    "claim_text",
+    "reason_text",
+    "sensitivity",
+    "proposer_key",
+    "proposed_at_utc"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "origin": {
+            "const": "ec205_chapter_mapping"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "section_ref": {
+            "type": "string",
+            "pattern": "^cesksection1:[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "origin": {
+            "enum": [
+              "ec204_selected_change",
+              "manual_proposal"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "section_ref": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

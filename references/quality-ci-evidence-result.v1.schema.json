@@ -1,0 +1,1474 @@
+{
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "ces.quality_ci_evidence.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^QUALITYCIEVIDENCE_[A-Z0-9_]+$"
+    },
+    "scope": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "enum": [
+                "github",
+                "gitlab"
+              ]
+            },
+            "repository": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "project_id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9223372036854775807
+            },
+            "run_id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9223372036854775807
+            },
+            "attempt": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9223372036854775807
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "job_id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9223372036854775807
+            },
+            "workflow_id": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9223372036854775807
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "branch": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "commit_sha": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "source_mode": {
+              "enum": [
+                "DeliveredTarget",
+                "ProposedPR"
+              ]
+            },
+            "proposal_number": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9223372036854775807
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "source_proposal_object_id": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9223372036854775807
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "association_receipt_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "ci_receipt_observation_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "observed_at": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "provider",
+            "repository",
+            "project_id",
+            "run_id",
+            "attempt",
+            "job_id",
+            "workflow_id",
+            "branch",
+            "commit_sha",
+            "source_mode",
+            "proposal_number",
+            "source_proposal_object_id",
+            "association_receipt_sha256",
+            "ci_receipt_observation_sha256",
+            "observed_at"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "test_evidence": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "availability": {
+              "enum": [
+                "present",
+                "missing"
+              ]
+            },
+            "byte_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 500000
+            },
+            "sha256": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "source_scope": {
+              "enum": [
+                "EXACT_JOB_ATTEMPT_CI_RECHECKED",
+                "EXACT_GITLAB_JOB_CI_RECHECKED"
+              ]
+            },
+            "state": {
+              "enum": [
+                "missing",
+                "not_run",
+                "partial",
+                "fail",
+                "pass"
+              ]
+            },
+            "parse_format": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "counts": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 500000
+                    },
+                    "passed": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 500000
+                    },
+                    "failed": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 500000
+                    },
+                    "skipped": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 500000
+                    }
+                  },
+                  "required": [
+                    "total",
+                    "passed",
+                    "failed",
+                    "skipped"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "job_conclusion": {
+              "enum": [
+                "success",
+                "failure"
+              ]
+            },
+            "provider_claim_only": {
+              "const": true
+            }
+          },
+          "required": [
+            "availability",
+            "byte_count",
+            "sha256",
+            "source_scope",
+            "state",
+            "parse_format",
+            "counts",
+            "job_conclusion",
+            "provider_claim_only"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "report_evidence": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "availability": {
+              "enum": [
+                "not_requested",
+                "missing",
+                "present"
+              ]
+            },
+            "byte_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 500000
+            },
+            "sha256": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "format": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "junit_xml",
+                    "coverage_json",
+                    "cobertura_xml"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "source_scope": {
+              "enum": [
+                "NOT_REQUESTED",
+                "RUN_ONLY_JOB_ATTEMPT_UNVERIFIED",
+                "EXACT_GITLAB_JOB"
+              ]
+            },
+            "state": {
+              "enum": [
+                "not_requested",
+                "missing",
+                "partial",
+                "not_run",
+                "fail",
+                "pass",
+                "measured"
+              ]
+            },
+            "parse_format": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "test_counts": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 500000
+                    },
+                    "passed": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 500000
+                    },
+                    "failed": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 500000
+                    },
+                    "skipped": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 500000
+                    }
+                  },
+                  "required": [
+                    "total",
+                    "passed",
+                    "failed",
+                    "skipped"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "coverage_metrics": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "lines_total": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 10000000
+                    },
+                    "lines_covered": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 10000000
+                    },
+                    "percent": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    }
+                  },
+                  "required": [
+                    "lines_total",
+                    "lines_covered",
+                    "percent"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "availability",
+            "byte_count",
+            "sha256",
+            "format",
+            "source_scope",
+            "state",
+            "parse_format",
+            "test_counts",
+            "coverage_metrics"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "classification": {
+      "anyOf": [
+        {
+          "enum": [
+            "missing",
+            "not_run",
+            "partial",
+            "fail",
+            "pass"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "coverage": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "job_log_availability_checked": {
+              "const": true
+            },
+            "exact_job_identity_rechecked": {
+              "const": true
+            },
+            "exact_run_attempt_rechecked": {
+              "type": "boolean"
+            },
+            "source_branch_commit_rechecked": {
+              "const": true
+            },
+            "association_freshness_checked": {
+              "const": true
+            },
+            "content_size_and_type_checked": {
+              "const": true
+            },
+            "report_requested": {
+              "type": "boolean"
+            },
+            "report_is_job_attributed": {
+              "type": "boolean"
+            },
+            "github_report_run_only": {
+              "type": "boolean"
+            },
+            "raw_content_disclosed": {
+              "const": false
+            },
+            "actual_tests_executed_by_ces": {
+              "const": false
+            },
+            "runner_integrity_verified": {
+              "const": false
+            },
+            "actor_identity_verified": {
+              "const": false
+            },
+            "git_object_bytes_verified": {
+              "const": false
+            },
+            "provider_cross_request_atomic": {
+              "const": false
+            },
+            "performance_measured": {
+              "const": false
+            }
+          },
+          "required": [
+            "job_log_availability_checked",
+            "exact_job_identity_rechecked",
+            "exact_run_attempt_rechecked",
+            "source_branch_commit_rechecked",
+            "association_freshness_checked",
+            "content_size_and_type_checked",
+            "report_requested",
+            "report_is_job_attributed",
+            "github_report_run_only",
+            "raw_content_disclosed",
+            "actual_tests_executed_by_ces",
+            "runner_integrity_verified",
+            "actor_identity_verified",
+            "git_object_bytes_verified",
+            "provider_cross_request_atomic",
+            "performance_measured"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "permission": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "transport": {
+              "enum": [
+                "SYNTHETIC",
+                "LIVE_HTTPS"
+              ]
+            },
+            "host_scope": {
+              "const": "HOST_CALLBACK_ALLOWED"
+            },
+            "source_and_ci_scopes": {
+              "const": "FRESHLY_RECHECKED"
+            },
+            "credential_identity": {
+              "const": "NOT_ATTESTED"
+            },
+            "content_endpoint_grants": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 8,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "JOB_LOG",
+                  "SIGNED_JOB_LOG",
+                  "JOB_REPORT",
+                  "ARTIFACT_META_BEFORE",
+                  "ARTIFACT_ARCHIVE",
+                  "SIGNED_ARTIFACT_ARCHIVE",
+                  "ARTIFACT_META_AFTER",
+                  "FINALIZE_EVIDENCE"
+                ]
+              }
+            }
+          },
+          "required": [
+            "transport",
+            "host_scope",
+            "source_and_ci_scopes",
+            "credential_identity",
+            "content_endpoint_grants"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "transport": {
+              "enum": [
+                "SYNTHETIC",
+                "UNDETERMINED"
+              ]
+            },
+            "host_scope": {
+              "const": "NOT_ATTESTED"
+            }
+          },
+          "required": [
+            "transport",
+            "host_scope"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "evidence_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "effects": {
+      "type": "object",
+      "properties": {
+        "read_only": {
+          "const": true
+        },
+        "content_get_calls": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "source_metadata_get_calls": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9223372036854775807
+        },
+        "ci_metadata_get_calls": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9223372036854775807
+        },
+        "live_content_get_requests": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "commands_executed": {
+          "const": false
+        },
+        "tests_executed_by_ces": {
+          "const": false
+        },
+        "archive_written_or_extracted": {
+          "const": false
+        },
+        "writes_performed": {
+          "const": false
+        }
+      },
+      "required": [
+        "read_only",
+        "content_get_calls",
+        "source_metadata_get_calls",
+        "ci_metadata_get_calls",
+        "live_content_get_requests",
+        "commands_executed",
+        "tests_executed_by_ces",
+        "archive_written_or_extracted",
+        "writes_performed"
+      ],
+      "additionalProperties": false
+    },
+    "trust_boundary": {
+      "enum": [
+        "NO_EVIDENCE_ON_REFUSAL",
+        "SYNTHETIC_NO_PROVIDER_PROOF",
+        "PROVIDER_LOG_AND_REPORT_CLAIMS_NO_TEST_EXECUTION_OR_ATOMICITY"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "scope",
+    "test_evidence",
+    "report_evidence",
+    "classification",
+    "coverage",
+    "permission",
+    "evidence_sha256",
+    "effects",
+    "trust_boundary"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/references/quality-ci-evidence-result.v1.schema.json",
+  "title": "CES EC184 read-only CI job evidence (v1)",
+  "description": "A successful read is always partial/2: parsed provider log and report claims do not prove CES executed tests, verified source Git bytes, authentic actor or atomic cross-endpoint observation.",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "reason_code": {
+            "const": "QUALITYCIEVIDENCE_BOUNDED_EVIDENCE_OBSERVED"
+          },
+          "scope": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "enum": [
+                  "github",
+                  "gitlab"
+                ]
+              },
+              "repository": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "project_id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9223372036854775807
+              },
+              "run_id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9223372036854775807
+              },
+              "attempt": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9223372036854775807
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "job_id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9223372036854775807
+              },
+              "workflow_id": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9223372036854775807
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "branch": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "commit_sha": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              },
+              "source_mode": {
+                "enum": [
+                  "DeliveredTarget",
+                  "ProposedPR"
+                ]
+              },
+              "proposal_number": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9223372036854775807
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "source_proposal_object_id": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9223372036854775807
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "association_receipt_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "ci_receipt_observation_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "observed_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "provider",
+              "repository",
+              "project_id",
+              "run_id",
+              "attempt",
+              "job_id",
+              "workflow_id",
+              "branch",
+              "commit_sha",
+              "source_mode",
+              "proposal_number",
+              "source_proposal_object_id",
+              "association_receipt_sha256",
+              "ci_receipt_observation_sha256",
+              "observed_at"
+            ],
+            "additionalProperties": false
+          },
+          "test_evidence": {
+            "type": "object",
+            "properties": {
+              "availability": {
+                "enum": [
+                  "present",
+                  "missing"
+                ]
+              },
+              "byte_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 500000
+              },
+              "sha256": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "source_scope": {
+                "enum": [
+                  "EXACT_JOB_ATTEMPT_CI_RECHECKED",
+                  "EXACT_GITLAB_JOB_CI_RECHECKED"
+                ]
+              },
+              "state": {
+                "enum": [
+                  "missing",
+                  "not_run",
+                  "partial",
+                  "fail",
+                  "pass"
+                ]
+              },
+              "parse_format": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "counts": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "total": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 500000
+                      },
+                      "passed": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 500000
+                      },
+                      "failed": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 500000
+                      },
+                      "skipped": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 500000
+                      }
+                    },
+                    "required": [
+                      "total",
+                      "passed",
+                      "failed",
+                      "skipped"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "job_conclusion": {
+                "enum": [
+                  "success",
+                  "failure"
+                ]
+              },
+              "provider_claim_only": {
+                "const": true
+              }
+            },
+            "required": [
+              "availability",
+              "byte_count",
+              "sha256",
+              "source_scope",
+              "state",
+              "parse_format",
+              "counts",
+              "job_conclusion",
+              "provider_claim_only"
+            ],
+            "additionalProperties": false
+          },
+          "report_evidence": {
+            "type": "object",
+            "properties": {
+              "availability": {
+                "enum": [
+                  "not_requested",
+                  "missing",
+                  "present"
+                ]
+              },
+              "byte_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 500000
+              },
+              "sha256": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "format": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "junit_xml",
+                      "coverage_json",
+                      "cobertura_xml"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "source_scope": {
+                "enum": [
+                  "NOT_REQUESTED",
+                  "RUN_ONLY_JOB_ATTEMPT_UNVERIFIED",
+                  "EXACT_GITLAB_JOB"
+                ]
+              },
+              "state": {
+                "enum": [
+                  "not_requested",
+                  "missing",
+                  "partial",
+                  "not_run",
+                  "fail",
+                  "pass",
+                  "measured"
+                ]
+              },
+              "parse_format": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "test_counts": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "total": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 500000
+                      },
+                      "passed": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 500000
+                      },
+                      "failed": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 500000
+                      },
+                      "skipped": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 500000
+                      }
+                    },
+                    "required": [
+                      "total",
+                      "passed",
+                      "failed",
+                      "skipped"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "coverage_metrics": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "lines_total": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 10000000
+                      },
+                      "lines_covered": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 10000000
+                      },
+                      "percent": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 100
+                      }
+                    },
+                    "required": [
+                      "lines_total",
+                      "lines_covered",
+                      "percent"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "availability",
+              "byte_count",
+              "sha256",
+              "format",
+              "source_scope",
+              "state",
+              "parse_format",
+              "test_counts",
+              "coverage_metrics"
+            ],
+            "additionalProperties": false
+          },
+          "classification": {
+            "enum": [
+              "missing",
+              "not_run",
+              "partial",
+              "fail",
+              "pass"
+            ]
+          },
+          "coverage": {
+            "type": "object",
+            "properties": {
+              "job_log_availability_checked": {
+                "const": true
+              },
+              "exact_job_identity_rechecked": {
+                "const": true
+              },
+              "exact_run_attempt_rechecked": {
+                "type": "boolean"
+              },
+              "source_branch_commit_rechecked": {
+                "const": true
+              },
+              "association_freshness_checked": {
+                "const": true
+              },
+              "content_size_and_type_checked": {
+                "const": true
+              },
+              "report_requested": {
+                "type": "boolean"
+              },
+              "report_is_job_attributed": {
+                "type": "boolean"
+              },
+              "github_report_run_only": {
+                "type": "boolean"
+              },
+              "raw_content_disclosed": {
+                "const": false
+              },
+              "actual_tests_executed_by_ces": {
+                "const": false
+              },
+              "runner_integrity_verified": {
+                "const": false
+              },
+              "actor_identity_verified": {
+                "const": false
+              },
+              "git_object_bytes_verified": {
+                "const": false
+              },
+              "provider_cross_request_atomic": {
+                "const": false
+              },
+              "performance_measured": {
+                "const": false
+              }
+            },
+            "required": [
+              "job_log_availability_checked",
+              "exact_job_identity_rechecked",
+              "exact_run_attempt_rechecked",
+              "source_branch_commit_rechecked",
+              "association_freshness_checked",
+              "content_size_and_type_checked",
+              "report_requested",
+              "report_is_job_attributed",
+              "github_report_run_only",
+              "raw_content_disclosed",
+              "actual_tests_executed_by_ces",
+              "runner_integrity_verified",
+              "actor_identity_verified",
+              "git_object_bytes_verified",
+              "provider_cross_request_atomic",
+              "performance_measured"
+            ],
+            "additionalProperties": false
+          },
+          "permission": {
+            "type": "object",
+            "properties": {
+              "transport": {
+                "enum": [
+                  "SYNTHETIC",
+                  "LIVE_HTTPS"
+                ]
+              },
+              "host_scope": {
+                "const": "HOST_CALLBACK_ALLOWED"
+              },
+              "source_and_ci_scopes": {
+                "const": "FRESHLY_RECHECKED"
+              },
+              "credential_identity": {
+                "const": "NOT_ATTESTED"
+              },
+              "content_endpoint_grants": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 8,
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "JOB_LOG",
+                    "SIGNED_JOB_LOG",
+                    "JOB_REPORT",
+                    "ARTIFACT_META_BEFORE",
+                    "ARTIFACT_ARCHIVE",
+                    "SIGNED_ARTIFACT_ARCHIVE",
+                    "ARTIFACT_META_AFTER",
+                    "FINALIZE_EVIDENCE"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "transport",
+              "host_scope",
+              "source_and_ci_scopes",
+              "credential_identity",
+              "content_endpoint_grants"
+            ],
+            "additionalProperties": false
+          },
+          "evidence_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "trust_boundary": {
+            "enum": [
+              "SYNTHETIC_NO_PROVIDER_PROOF",
+              "PROVIDER_LOG_AND_REPORT_CLAIMS_NO_TEST_EXECUTION_OR_ATOMICITY"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "invalid_input",
+              "unavailable"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "scope": {
+            "const": null
+          },
+          "test_evidence": {
+            "const": null
+          },
+          "report_evidence": {
+            "const": null
+          },
+          "classification": {
+            "const": null
+          },
+          "coverage": {
+            "const": null
+          },
+          "evidence_sha256": {
+            "const": null
+          },
+          "permission": {
+            "type": "object",
+            "properties": {
+              "transport": {
+                "enum": [
+                  "SYNTHETIC",
+                  "UNDETERMINED"
+                ]
+              },
+              "host_scope": {
+                "const": "NOT_ATTESTED"
+              }
+            },
+            "required": [
+              "transport",
+              "host_scope"
+            ],
+            "additionalProperties": false
+          },
+          "trust_boundary": {
+            "const": "NO_EVIDENCE_ON_REFUSAL"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "classification": {
+            "type": "string"
+          }
+        }
+      },
+      "then": {
+        "oneOf": [
+          {
+            "properties": {
+              "classification": {
+                "const": "missing"
+              },
+              "test_evidence": {
+                "properties": {
+                  "state": {
+                    "const": "missing"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "properties": {
+              "classification": {
+                "const": "not_run"
+              },
+              "test_evidence": {
+                "properties": {
+                  "state": {
+                    "const": "not_run"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "properties": {
+              "classification": {
+                "const": "partial"
+              },
+              "test_evidence": {
+                "properties": {
+                  "state": {
+                    "const": "partial"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "properties": {
+              "classification": {
+                "const": "fail"
+              },
+              "test_evidence": {
+                "properties": {
+                  "state": {
+                    "const": "fail"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "properties": {
+              "classification": {
+                "const": "pass"
+              },
+              "test_evidence": {
+                "properties": {
+                  "state": {
+                    "const": "pass"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "scope": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "const": "github"
+              }
+            }
+          }
+        },
+        "required": [
+          "scope"
+        ]
+      },
+      "then": {
+        "properties": {
+          "coverage": {
+            "properties": {
+              "exact_run_attempt_rechecked": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "scope": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "const": "gitlab"
+              }
+            }
+          }
+        },
+        "required": [
+          "scope"
+        ]
+      },
+      "then": {
+        "properties": {
+          "coverage": {
+            "properties": {
+              "exact_run_attempt_rechecked": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "permission": {
+            "type": "object",
+            "properties": {
+              "transport": {
+                "const": "SYNTHETIC"
+              }
+            }
+          }
+        },
+        "required": [
+          "permission"
+        ]
+      },
+      "then": {
+        "properties": {
+          "effects": {
+            "properties": {
+              "live_content_get_requests": {
+                "const": 0
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

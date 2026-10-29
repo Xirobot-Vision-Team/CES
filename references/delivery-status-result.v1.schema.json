@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schema/delivery-status-result.v1.schema.json",
+  "title": "EC226 signed single-operation sandbox status observation (not a submission or an audit ledger)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "status", "exit_code", "reason_code", "operation_id", "provider_state", "delivery_state", "provider_message_id_sha256", "read_grant_verified", "submit_attempt_marker_verified", "status_network_requested", "provider_evidence_verified", "inbox_evidence_verified", "provider_accepted", "recipient_delivery_observed", "message_sent_by_status_read", "resent", "published", "effects"],
+  "properties": {
+    "schema": {"const": "ces.delivery_status.v1"},
+    "status": {"enum": ["partial", "blocked", "invalid_input", "unavailable"]},
+    "exit_code": {"enum": [2, 4, 5]},
+    "reason_code": {"type": "string", "pattern": "^DELIVERY_STATUS_[A-Z0-9_]+$", "maxLength": 170},
+    "operation_id": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^[a-f0-9]{64}$"}]},
+    "provider_state": {"oneOf": [{"type": "null"}, {"enum": ["UNKNOWN", "PENDING", "ACCEPTED", "DELIVERED", "REJECTED", "FAILED"]}]},
+    "delivery_state": {"enum": ["UNKNOWN_UNCONFIRMED", "ACCEPTED_PROVIDER_ATTESTED", "DELIVERED_INBOX_OBSERVED", "PROVIDER_REJECTION_ATTESTED", "PROVIDER_FAILURE_ATTESTED"]},
+    "provider_message_id_sha256": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^[a-f0-9]{64}$"}]},
+    "read_grant_verified": {"type": "boolean"},
+    "submit_attempt_marker_verified": {"type": "boolean"},
+    "status_network_requested": {"type": "boolean"},
+    "provider_evidence_verified": {"type": "boolean"},
+    "inbox_evidence_verified": {"type": "boolean"},
+    "provider_accepted": {"type": "boolean"},
+    "recipient_delivery_observed": {"type": "boolean"},
+    "message_sent_by_status_read": {"const": false},
+    "resent": {"const": false},
+    "published": {"const": false},
+    "effects": {
+      "type": "object", "additionalProperties": false,
+      "required": ["external_network_requested", "provider_submit_requested", "recipient_contacted_by_status_read", "git_or_business_files_written", "ces_business_records_written"],
+      "properties": {
+        "external_network_requested": {"type": "boolean"},
+        "provider_submit_requested": {"const": false},
+        "recipient_contacted_by_status_read": {"const": false},
+        "git_or_business_files_written": {"const": false},
+        "ces_business_records_written": {"const": false}
+      }
+    }
+  },
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "partial"}}}, "then": {
+      "properties": {
+        "exit_code": {"const": 2}, "operation_id": {"type": "string"},
+        "provider_state": {"type": "string"},
+        "read_grant_verified": {"const": true},
+        "submit_attempt_marker_verified": {"const": true},
+        "status_network_requested": {"const": true},
+        "provider_evidence_verified": {"const": true},
+        "effects": {"properties": {"external_network_requested": {"const": true}}}
+      }
+    }, "else": {
+      "properties": {
+        "exit_code": {"enum": [4, 5]},
+        "provider_state": {"const": null},
+        "delivery_state": {"const": "UNKNOWN_UNCONFIRMED"},
+        "provider_message_id_sha256": {"const": null},
+        "provider_evidence_verified": {"const": false},
+        "inbox_evidence_verified": {"const": false},
+        "provider_accepted": {"const": false},
+        "recipient_delivery_observed": {"const": false}
+      }
+    }},
+    {"if": {"properties": {"delivery_state": {"const": "DELIVERED_INBOX_OBSERVED"}}}, "then": {
+      "properties": {
+        "provider_state": {"const": "DELIVERED"},
+        "inbox_evidence_verified": {"const": true},
+        "provider_accepted": {"const": true},
+        "recipient_delivery_observed": {"const": true},
+        "provider_message_id_sha256": {"type": "string"}
+      }
+    }, "else": {"properties": {"recipient_delivery_observed": {"const": false}, "inbox_evidence_verified": {"const": false}}}},
+    {"if": {"properties": {"delivery_state": {"enum": ["ACCEPTED_PROVIDER_ATTESTED", "DELIVERED_INBOX_OBSERVED"]}}}, "then": {
+      "properties": {
+        "provider_state": {"enum": ["ACCEPTED", "DELIVERED"]},
+        "provider_accepted": {"const": true},
+        "provider_message_id_sha256": {"type": "string"}
+      }
+    }, "else": {"properties": {"provider_accepted": {"const": false}}}},
+    {"if": {"properties": {"delivery_state": {"const": "PROVIDER_REJECTION_ATTESTED"}}}, "then": {
+      "properties": {"provider_state": {"const": "REJECTED"}, "provider_message_id_sha256": {"const": null}}
+    }},
+    {"if": {"properties": {"delivery_state": {"const": "PROVIDER_FAILURE_ATTESTED"}}}, "then": {
+      "properties": {"provider_state": {"const": "FAILED"}, "provider_message_id_sha256": {"const": null}}
+    }},
+    {"if": {"properties": {"delivery_state": {"const": "UNKNOWN_UNCONFIRMED"}, "status": {"const": "partial"}}}, "then": {
+      "properties": {"provider_state": {"enum": ["UNKNOWN", "PENDING"]}, "provider_message_id_sha256": {"const": null}}
+    }},
+    {"if": {"properties": {"status": {"const": "invalid_input"}}}, "then": {"properties": {"exit_code": {"const": 4}}}},
+    {"if": {"properties": {"status": {"enum": ["blocked", "unavailable"]}}}, "then": {"properties": {"exit_code": {"const": 5}}}},
+    {"properties": {"effects": {"properties": {"external_network_requested": {"type": "boolean"}}}}}
+  ]
+}

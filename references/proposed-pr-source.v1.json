@@ -1,0 +1,210 @@
+{
+  "schema": "ces.proposed_pr_source.v1",
+  "implemented_ec": "EC-161",
+  "construction_release": "V4.71/R161",
+  "native_cli_action": "NOT_REGISTERED",
+  "native_collect_proposed_pr": "NOT_IMPLEMENTED",
+  "source_adapters": {
+    "github": {
+      "provider_host": "api.github.com",
+      "path_template": "/repos/{owner}/{repo}/pulls/{number}",
+      "method": "GET",
+      "credential_from_environment": "CES_GITHUB_TOKEN",
+      "credential_header": "Authorization: Bearer [REDACTED]",
+      "api_version": "2026-03-10",
+      "required_fields": [
+        "id",
+        "number",
+        "state",
+        "merged",
+        "base.repo.id",
+        "base.repo.full_name",
+        "head.repo.id",
+        "head.repo.full_name",
+        "base.sha",
+        "head.sha"
+      ],
+      "base_sha_meaning": "base_branch_tip_at_provider_observation",
+      "head_sha_meaning": "head_branch_tip_at_provider_observation",
+      "repository_matching": "base.repo.full_name case-insensitively equals requested owner/repo",
+      "extra_consistency": "merged true requires closed; a null/deleted head.repo has no immutable source repository identity and must be unavailable; head/base id equality must match full-name equality in a single response"
+    },
+    "gitlab": {
+      "provider_host": "gitlab.com",
+      "path_template": "/api/v4/projects/{url_encoded_group_project_path}/merge_requests/{iid}",
+      "method": "GET",
+      "credential_from_environment": "CES_GITLAB_TOKEN",
+      "credential_header": "PRIVATE-TOKEN: [REDACTED]",
+      "required_fields": [
+        "id",
+        "iid",
+        "target_project_id",
+        "source_project_id",
+        "state",
+        "diff_refs.base_sha",
+        "diff_refs.head_sha",
+        "diff_refs.start_sha"
+      ],
+      "base_sha_meaning": "gitlab_diff_refs_merge_base_not_target_branch_tip",
+      "head_sha_meaning": "gitlab_diff_refs_head_at_provider_observation",
+      "crosscheck": "sha if present must equal diff_refs.head_sha; async unpopulated diff_refs is unavailable",
+      "extra_consistency": "project_id if present must equal target_project_id; references.full if present must equal requested_project!iid; locked state supported",
+      "target_tip_sha_meaning": "diff_refs.start_sha is target commit for the diff version, not necessarily current target tip"
+    }
+  },
+  "credentials": {
+    "network_default": "DENY",
+    "enable_network_flag": "--allow-network",
+    "inline_token_flag": "NOT_SUPPORTED",
+    "token_provider_injection": "Callable[[], str | None] for library users",
+    "other_hosts_enterprise": "NOT_IMPLEMENTED",
+    "synthetic_transport": "explicitly marked synthetic_fixture; never live evidence"
+  },
+  "bounded_transport": {
+    "verified_tls": true,
+    "environment_proxy_inheritance": false,
+    "redirects": false,
+    "retries": false,
+    "requests_per_fetch": 1,
+    "http_method": "GET",
+    "body_max_bytes": 1048576,
+    "timeout_default_seconds": 8,
+    "timeout_max_seconds": 30,
+    "raw_provider_body_emitted": false,
+    "files_patches_comments_actor_emitted": false,
+    "project_or_git_modified": false
+  },
+  "output": {
+    "status_values": [
+      "success",
+      "invalid_input",
+      "unavailable"
+    ],
+    "exit_codes": {
+      "success": 0,
+      "invalid_input": 4,
+      "unavailable": 5
+    },
+    "top_level_keys": [
+      "schema",
+      "status",
+      "reason_code",
+      "exit_code",
+      "message",
+      "source",
+      "synthetic",
+      "native_cli_action_registered",
+      "write_authorized"
+    ],
+    "successful_source_keys": [
+      "provider_object_id",
+      "provider_repository_id",
+      "provider_state",
+      "provider_reports_merged",
+      "base",
+      "head",
+      "provider",
+      "requested_repository",
+      "request_number",
+      "observed_at_utc",
+      "origin",
+      "identity_binding",
+      "diff_snapshot_binding",
+      "provider_actor_verification",
+      "file_paths_collected",
+      "patch_content_collected",
+      "delivery_or_merge_proven",
+      "provider_source_repository_id",
+      "provider_source_repository_path",
+      "target_tip",
+      "provider_reported_changed_files",
+      "provider_change_count_quality"
+    ],
+    "unavailable_source": null,
+    "identity_binding": "NOT_VERIFIED_EC162 (legacy source adapter field; identity binding is separate ces.proposed_pr_identity.v1 tool)",
+    "diff_snapshot_binding": "NOT_IMPLEMENTED_EC165",
+    "success_means": "one provider-shaped metadata response parsed, not a stable PR identity, commit attestation, or merge/delivery proof"
+  },
+  "reason_codes": {
+    "success": [
+      "PROVIDER_METADATA_READ"
+    ],
+    "invalid_input": [
+      "INVALID_PROVIDER",
+      "INVALID_REPOSITORY",
+      "INVALID_PR_NUMBER",
+      "INVALID_TIMEOUT"
+    ],
+    "unavailable": [
+      "NETWORK_NOT_AUTHORIZED",
+      "CREDENTIALS_UNAVAILABLE",
+      "PROVIDER_ENDPOINT_REJECTED",
+      "PROVIDER_REDIRECT_REFUSED",
+      "PROVIDER_AUTH_UNAVAILABLE",
+      "PROVIDER_OBJECT_NOT_ACCESSIBLE",
+      "PROVIDER_RATE_LIMITED",
+      "PROVIDER_UNAVAILABLE",
+      "PROVIDER_HTTP_UNAVAILABLE",
+      "PROVIDER_NETWORK_UNAVAILABLE",
+      "PROVIDER_PAYLOAD_INVALID",
+      "PROVIDER_PAYLOAD_TOO_LARGE",
+      "PROVIDER_METADATA_INCOMPLETE",
+      "PROVIDER_METADATA_INCONSISTENT",
+      "PROVIDER_SOURCE_MISMATCH",
+      "PROVIDER_READ_FAILED"
+    ]
+  },
+  "remaining_scope": {
+    "ec162": "IMPLEMENTED_SEPARATELY_IN_construction/proposed_pr_identity.py; v1 source response still metadata-only, no pin comparison or local Git",
+    "ec163": "IMPLEMENTED_SEPARATELY in construction/proposed_pr_paths.py; NOT a native Collect route; uses counts + pinned pre/post metadata and bounded pagination; no patch content output.",
+    "ec164": "not implemented: patch opt-in",
+    "ec165": "not implemented: snapshot pagination consistency",
+    "remote_write": "FORBIDDEN",
+    "user_assisted_native_provider_acceptance": "NOT_RUN"
+  },
+  "contract_amended_in": "EC-162 (V4.72/R162) required source repo IDs/start_sha; EC-163 (V4.73/R163) adds optional provider changed-file count/quality without changing source schema, required fields or metadata-only status meaning. EC-168 (V4.78/R168) adds default-disabled GitLab squash metadata projection without changing legacy successful output.",
+  "optional_ec163_count_metadata": {
+    "github": "changed_files: nonnegative int <=10,000,000 if present; absent/null -> count=None, NOT_REPORTED",
+    "gitlab": "changes_count: decimal string '0'..'999' if exact; empty/missing/null -> NOT_REPORTED; '1000+' -> CAPPED_PROVIDER_CLAIM; unexpected >=1000 -> CAPPED_OR_UNEXPECTED_PROVIDER_CLAIM",
+    "source_output_fields": [
+      "provider_reported_changed_files",
+      "provider_change_count_quality"
+    ],
+    "pin_v1_changed": false,
+    "source_v1_status_meaning_changed": false,
+    "completeness_inferred_by_source_alone": false
+  },
+  "ec167_optional_projection": {
+    "call_parameter": "include_merge_commit_claim: bool = False",
+    "default": "False: all EC161-EC166 callers keep prior successful_source_keys and output shape",
+    "enabled_for": "EC167 only after separate fresh EC162+EC166 preflight; requires Provider reported merged",
+    "additional_source_keys": [
+      "provider_merge_commit_sha",
+      "provider_merge_sha_quality"
+    ],
+    "merge_sha_semantics": "Complete provider merge_commit_sha claim only; never infer from GitHub temporary open-PR test merge or GitLab squash_commit_sha; not independent merge or deployment proof",
+    "valid_quality": [
+      "COMPLETE_PROVIDER_CLAIM",
+      "NOT_REPORTED"
+    ]
+  },
+  "ec168_optional_projection": {
+    "call_parameter": "include_squash_claim: bool = False",
+    "default": "False: EC161-EC167 normal output shape and success meaning preserved",
+    "enabled_for": "EC168 after independent merged EC162 pin + fresh EC166 preflight; uses existing metadata-only single GET",
+    "gitlab_normalized_fields": [
+      "provider_squash_on_merge",
+      "provider_squash_commit_sha",
+      "provider_squash_evidence_quality",
+      "provider_merge_method_claim"
+    ],
+    "github_normalized_fields": "provider_squash_on_merge=None; provider_squash_commit_sha=None; provider_squash_evidence_quality=NOT_SUPPORTED; provider_merge_method_claim=UNREPORTED",
+    "source_status_meaning_unchanged": true,
+    "method_semantics": "GitLab effective squash_on_merge + squash_commit_sha are provider claims. GitHub merge_commit_sha cannot identify squash versus last-rebased commit; neither independently attests merge method or remote delivery.",
+    "unavailable_extensions": [
+      "PROVIDER_SQUASH_POLICY_INVALID",
+      "PROVIDER_SQUASH_SHA_INVALID"
+    ],
+    "never_infer_from": "state==merged alone; missing squash SHA; GitHub merge_commit_sha; local head equality"
+  }
+}

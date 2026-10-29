@@ -1,0 +1,135 @@
+{
+  "schema": "ces.proposed_pr_identity.v1",
+  "pin_schema": "ces.proposed_pr_pin.v1",
+  "implemented_ec": "EC-162",
+  "construction_release": "V4.72/R162",
+  "native_cli_action": "NOT_REGISTERED",
+  "native_collect_proposed_pr": "NOT_IMPLEMENTED",
+  "entry": "construction/proposed_pr_identity.py",
+  "source_dependency": "construction/proposed_pr_source.py (EC161, strengthened provider IDs in EC162)",
+  "provider_api_calls_per_observation": 1,
+  "provider_git_checks": {
+    "github": {
+      "immutable_target_id": "base.repo.id",
+      "immutable_source_id": "head.repo.id",
+      "immutable_pr_id": "id",
+      "relative_number": "number (locator only)",
+      "base_sha": "base.sha (base branch tip at observation, NOT merge base)",
+      "head_sha": "head.sha (head branch tip at observation)",
+      "additional_checks": "base.repo.full_name matches requested path; head.repo.full_name required; merged cannot be true if state open",
+      "unavailable_when": "head.repo missing/deleted, full SHA missing, repo/number mismatch, metadata inconsistent"
+    },
+    "gitlab": {
+      "immutable_target_id": "target_project_id",
+      "immutable_source_id": "source_project_id",
+      "immutable_mr_id": "id",
+      "relative_iid": "iid (locator only)",
+      "merge_base_sha": "diff_refs.base_sha (merge base, NOT target branch tip)",
+      "head_sha": "diff_refs.head_sha (diff version head)",
+      "target_tip_sha": "diff_refs.start_sha (target commit of that diff version, NOT necessarily live branch tip)",
+      "additional_checks": "top-level sha when present equals diff_refs.head_sha; project_id when present equals target_project_id; references.full when present matches requested project!iid",
+      "unavailable_when": "asynchronous missing diff_refs/start_sha/source_project_id or mixed SHA lengths, project/reference mismatch"
+    }
+  },
+  "pin": {
+    "domain_separated_fingerprint": "sha256:hex(SHA256(ASCII 'CES-EC162-PROVIDER-METADATA-PIN-v1\\0' || canonical JSON sorted keys compact ASCII))",
+    "fingerprint_authentication": "NONE; detects accidental drift/corruption only and can be recomputed by any party",
+    "closed_fields": [
+      "schema",
+      "provider",
+      "repository_locator",
+      "request_number",
+      "target_repository_id",
+      "source_repository_id",
+      "proposal_object_id",
+      "source_repository_path",
+      "cross_fork",
+      "object_format",
+      "base_sha",
+      "base_semantics",
+      "head_sha",
+      "head_semantics",
+      "target_tip_sha",
+      "target_tip_semantics",
+      "provider_state",
+      "provider_reports_merged"
+    ],
+    "expected_pin": "previous complete ces.proposed_pr_identity.v1 JSON output, read-only, <=65536 bytes",
+    "differences_invalidate": "repository target/source/PR ID; locator or GH source path; cross-fork; exact base/head/target tip SHA; object algorithm; semantics; provider state/merged report; synthetic vs live",
+    "changed_fields": "names only, no old/new SHA values or raw provider text",
+    "not_used": "branch names, temporary PR refs, author display name/email, target HEAD name"
+  },
+  "local_git": {
+    "mode": "OPTIONAL; --local-git absolute directory, only when caller explicitly asks",
+    "command": "git --no-optional-locks -C DIR cat-file --batch-check=%(objectname) %(objecttype)",
+    "input": "Full exact base/head/target-tip hexadecimal commit OIDs via stdin, never refs",
+    "object_type": "commit only",
+    "privacy": "no stdout/stderr of Git or pathname in structured result",
+    "write_operations": false,
+    "repository_origin_attested": false,
+    "remote_git_fetch_authorized": false,
+    "safeguards": "5-second timeout, no optional locks/config overrides/replacement objects; GIT_NO_LAZY_FETCH=1; GIT_ALLOW_PROTOCOL=empty; no shell/hook/checkout/refs/index writes",
+    "missing_unavailable_semantics": "partial/2 and no write authority"
+  },
+  "output": {
+    "status_values": [
+      "success",
+      "partial",
+      "unavailable",
+      "invalid_input"
+    ],
+    "exit_codes": {
+      "success": 0,
+      "partial": 2,
+      "invalid_input": 4,
+      "unavailable": 5
+    },
+    "success_meaning": "same provider-claimed pin at two observations + all local commit OIDs exist in supplied Git object database + not synthetic; does NOT attest remote repo identity, race-free snapshot, merge/delivery or write eligibility",
+    "partial_meaning": "single provider claim, fixture/injected transport, absent previous pin, missing/unverified local commits, or prior match without local object check",
+    "unavailable_meaning": "input Provider read unavailable/inconsistent, or previously expected source facts drifted",
+    "invalid_input_meaning": "bad previous pin/file/path/arguments",
+    "returned_pin_when": "source metadata shaped, provider IDs+SHAs complete and prior absent/matched; withheld on source error or pin drift",
+    "top_level_keys": [
+      "schema",
+      "status",
+      "reason_code",
+      "exit_code",
+      "message",
+      "pin",
+      "pin_fingerprint",
+      "observed_at_utc",
+      "drift",
+      "local_git",
+      "evidence_level",
+      "synthetic",
+      "native_cli_action_registered",
+      "file_paths_collected",
+      "patch_content_collected",
+      "diff_snapshot_proven",
+      "provider_actor_verified",
+      "delivery_or_merge_proven",
+      "write_authorized"
+    ],
+    "sensitive_fields_never_emitted": "token, header, PR title/body/author, diff/patch, file path listing, raw API payload, raw subprocess stderr, local Git path"
+  },
+  "trust_limits": {
+    "live_provider_read_executed_this_round": false,
+    "provider_ids_are_provider_response_claims_not_offline_authentication": true,
+    "git_object_presence_does_not_prove_repository_affiliation": true,
+    "two_reads_are_not_atomic": true,
+    "pin_is_not_diff_or_content_snapshot": true,
+    "provider_merge_state_is_not_delivery": true,
+    "write_authorized": false,
+    "original_powershell_action_count": 7,
+    "original_powershell_mode_count": 16,
+    "future_action_modes_not_implemented": 29
+  },
+  "followup": {
+    "EC-163": "changed path metadata not yet implemented",
+    "EC-164": "patch opt-in not yet implemented",
+    "EC-165": "pagination/diff snapshot binding not yet implemented",
+    "native_PowerShell": "NOT_RUN",
+    "provider_live": "NOT_RUN",
+    "final_acceptance": "NOT_STARTED"
+  }
+}

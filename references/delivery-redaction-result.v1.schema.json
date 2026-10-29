@@ -1,0 +1,639 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.invalid/schema/delivery-redaction-result.v1.schema.json",
+  "title": "EC222 exact pinned LOCAL sensitive content policy result, never permission to send",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "review_id",
+    "review",
+    "redacted_markdown",
+    "redacted_markdown_sha256",
+    "delivery_state",
+    "effects"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "ces.delivery_redaction.v1"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "partial",
+        "blocked",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "type": "integer",
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^DELIVERY_REDACTION_[A-Z0-9_]+$"
+    },
+    "review_id": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^cesdr1:[0-9a-f]{64}$"
+        }
+      ]
+    },
+    "review": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "review_id",
+            "verdict",
+            "policy_revision_sha256",
+            "base_preview_id",
+            "base_preview_manifest_sha256",
+            "destination_binding_sha256",
+            "effective_minimum_privacy_class",
+            "source_assessments",
+            "reason_codes",
+            "source_bytes_emitted",
+            "fixed_local_policy_only_not_human_or_org_declassification",
+            "cross_source_atomic_snapshot",
+            "recipient_or_channel_verified",
+            "is_deliverable_payload",
+            "safe_for_external_send",
+            "ready_to_send",
+            "message_sent",
+            "published"
+          ],
+          "properties": {
+            "review_id": {
+              "type": "string",
+              "pattern": "^cesdr1:[0-9a-f]{64}$"
+            },
+            "verdict": {
+              "type": "string",
+              "enum": [
+                "BLOCKED",
+                "SAFE_REDACTED_SUMMARY"
+              ]
+            },
+            "policy_revision_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "base_preview_id": {
+              "type": "string",
+              "pattern": "^cesdp1:[0-9a-f]{64}$"
+            },
+            "base_preview_manifest_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "destination_binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "effective_minimum_privacy_class": {
+              "type": "string",
+              "enum": [
+                "INTERNAL",
+                "CONFIDENTIAL",
+                "RESTRICTED"
+              ]
+            },
+            "source_assessments": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 8,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "source_kind",
+                  "source_version_sha256",
+                  "source_content_sha256",
+                  "store_revision_sha256",
+                  "content_examined",
+                  "safe_under_fixed_local_policy",
+                  "reason_codes"
+                ],
+                "properties": {
+                  "source_kind": {
+                    "type": "string",
+                    "enum": [
+                      "REPORT",
+                      "FINDING"
+                    ]
+                  },
+                  "source_version_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "source_content_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "store_revision_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "content_examined": {
+                    "type": "boolean"
+                  },
+                  "safe_under_fixed_local_policy": {
+                    "type": "boolean"
+                  },
+                  "reason_codes": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "maxItems": 12,
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "CREDENTIAL_OR_TOKEN_MATERIAL",
+                        "FINDING_HISTORICAL_PROPOSAL",
+                        "FINDING_LOCAL_REVIEW_NOT_COMPLETE",
+                        "FINDING_METADATA_OR_WITNESS_MISMATCH",
+                        "FINDING_ORIGINAL_WITNESS_HASH_MISMATCH",
+                        "FINDING_TEXT_NOT_AVAILABLE_IN_PRIVATE_STORE",
+                        "FINDING_TEXT_OUTSIDE_NARROW_SAFE_VOCABULARY",
+                        "OBFUSCATED_OR_UNCLASSIFIABLE_CONTENT",
+                        "PATCH_OR_DIFF_CONTENT",
+                        "PERSON_OR_CONTACT_CONTENT",
+                        "REPORT_LINE_OUTSIDE_STRICT_TEMPLATE",
+                        "REPOSITORY_PATH_OR_SOURCE_FILENAME"
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "reason_codes": {
+              "type": "array",
+              "uniqueItems": true,
+              "maxItems": 12,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "CREDENTIAL_OR_TOKEN_MATERIAL",
+                  "FINDING_HISTORICAL_PROPOSAL",
+                  "FINDING_LOCAL_REVIEW_NOT_COMPLETE",
+                  "FINDING_METADATA_OR_WITNESS_MISMATCH",
+                  "FINDING_ORIGINAL_WITNESS_HASH_MISMATCH",
+                  "FINDING_TEXT_NOT_AVAILABLE_IN_PRIVATE_STORE",
+                  "FINDING_TEXT_OUTSIDE_NARROW_SAFE_VOCABULARY",
+                  "OBFUSCATED_OR_UNCLASSIFIABLE_CONTENT",
+                  "PATCH_OR_DIFF_CONTENT",
+                  "PERSON_OR_CONTACT_CONTENT",
+                  "REPORT_LINE_OUTSIDE_STRICT_TEMPLATE",
+                  "REPOSITORY_PATH_OR_SOURCE_FILENAME"
+                ]
+              }
+            },
+            "source_bytes_emitted": {
+              "const": false
+            },
+            "fixed_local_policy_only_not_human_or_org_declassification": {
+              "const": true
+            },
+            "cross_source_atomic_snapshot": {
+              "const": false
+            },
+            "recipient_or_channel_verified": {
+              "const": false
+            },
+            "is_deliverable_payload": {
+              "const": false
+            },
+            "safe_for_external_send": {
+              "const": false
+            },
+            "ready_to_send": {
+              "const": false
+            },
+            "message_sent": {
+              "const": false
+            },
+            "published": {
+              "const": false
+            }
+          }
+        }
+      ]
+    },
+    "redacted_markdown": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "maxLength": 8192
+        }
+      ]
+    },
+    "redacted_markdown_sha256": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      ]
+    },
+    "delivery_state": {
+      "const": "NO_DELIVERY_OR_PUBLICATION"
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "external_network_requested",
+        "recipient_contacted",
+        "message_sent",
+        "delivery_accepted",
+        "delivered",
+        "published",
+        "issue_or_pr_created_or_modified",
+        "git_or_business_files_written",
+        "ces_records_written",
+        "external_ai_invoked",
+        "source_content_disclosed_in_preview",
+        "recipient_identity_verified",
+        "delivery_authorized"
+      ],
+      "properties": {
+        "external_network_requested": {
+          "const": false
+        },
+        "recipient_contacted": {
+          "const": false
+        },
+        "message_sent": {
+          "const": false
+        },
+        "delivery_accepted": {
+          "const": false
+        },
+        "delivered": {
+          "const": false
+        },
+        "published": {
+          "const": false
+        },
+        "issue_or_pr_created_or_modified": {
+          "const": false
+        },
+        "git_or_business_files_written": {
+          "const": false
+        },
+        "ces_records_written": {
+          "const": false
+        },
+        "external_ai_invoked": {
+          "const": false
+        },
+        "source_content_disclosed_in_preview": {
+          "const": false
+        },
+        "recipient_identity_verified": {
+          "const": false
+        },
+        "delivery_authorized": {
+          "const": false
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "review": {
+            "$ref": "#/$defs/review"
+          },
+          "review_id": {
+            "type": "string"
+          },
+          "redacted_markdown": {
+            "type": "string"
+          },
+          "redacted_markdown_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "blocked"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          },
+          "review": {
+            "$ref": "#/$defs/review"
+          },
+          "review_id": {
+            "type": "string"
+          },
+          "redacted_markdown": {
+            "type": "null"
+          },
+          "redacted_markdown_sha256": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "invalid_input",
+              "unavailable"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "review": {
+            "type": "null"
+          },
+          "review_id": {
+            "type": "null"
+          },
+          "redacted_markdown": {
+            "type": "null"
+          },
+          "redacted_markdown_sha256": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "review_id",
+        "verdict",
+        "policy_revision_sha256",
+        "base_preview_id",
+        "base_preview_manifest_sha256",
+        "destination_binding_sha256",
+        "effective_minimum_privacy_class",
+        "source_assessments",
+        "reason_codes",
+        "source_bytes_emitted",
+        "fixed_local_policy_only_not_human_or_org_declassification",
+        "cross_source_atomic_snapshot",
+        "recipient_or_channel_verified",
+        "is_deliverable_payload",
+        "safe_for_external_send",
+        "ready_to_send",
+        "message_sent",
+        "published"
+      ],
+      "properties": {
+        "review_id": {
+          "type": "string",
+          "pattern": "^cesdr1:[0-9a-f]{64}$"
+        },
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "BLOCKED",
+            "SAFE_REDACTED_SUMMARY"
+          ]
+        },
+        "policy_revision_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "base_preview_id": {
+          "type": "string",
+          "pattern": "^cesdp1:[0-9a-f]{64}$"
+        },
+        "base_preview_manifest_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "destination_binding_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "effective_minimum_privacy_class": {
+          "type": "string",
+          "enum": [
+            "INTERNAL",
+            "CONFIDENTIAL",
+            "RESTRICTED"
+          ]
+        },
+        "source_assessments": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_kind",
+              "source_version_sha256",
+              "source_content_sha256",
+              "store_revision_sha256",
+              "content_examined",
+              "safe_under_fixed_local_policy",
+              "reason_codes"
+            ],
+            "properties": {
+              "source_kind": {
+                "type": "string",
+                "enum": [
+                  "REPORT",
+                  "FINDING"
+                ]
+              },
+              "source_version_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "source_content_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "store_revision_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "content_examined": {
+                "type": "boolean"
+              },
+              "safe_under_fixed_local_policy": {
+                "type": "boolean"
+              },
+              "reason_codes": {
+                "type": "array",
+                "uniqueItems": true,
+                "maxItems": 12,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "CREDENTIAL_OR_TOKEN_MATERIAL",
+                    "FINDING_HISTORICAL_PROPOSAL",
+                    "FINDING_LOCAL_REVIEW_NOT_COMPLETE",
+                    "FINDING_METADATA_OR_WITNESS_MISMATCH",
+                    "FINDING_ORIGINAL_WITNESS_HASH_MISMATCH",
+                    "FINDING_TEXT_NOT_AVAILABLE_IN_PRIVATE_STORE",
+                    "FINDING_TEXT_OUTSIDE_NARROW_SAFE_VOCABULARY",
+                    "OBFUSCATED_OR_UNCLASSIFIABLE_CONTENT",
+                    "PATCH_OR_DIFF_CONTENT",
+                    "PERSON_OR_CONTACT_CONTENT",
+                    "REPORT_LINE_OUTSIDE_STRICT_TEMPLATE",
+                    "REPOSITORY_PATH_OR_SOURCE_FILENAME"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "reason_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 12,
+          "items": {
+            "type": "string",
+            "enum": [
+              "CREDENTIAL_OR_TOKEN_MATERIAL",
+              "FINDING_HISTORICAL_PROPOSAL",
+              "FINDING_LOCAL_REVIEW_NOT_COMPLETE",
+              "FINDING_METADATA_OR_WITNESS_MISMATCH",
+              "FINDING_ORIGINAL_WITNESS_HASH_MISMATCH",
+              "FINDING_TEXT_NOT_AVAILABLE_IN_PRIVATE_STORE",
+              "FINDING_TEXT_OUTSIDE_NARROW_SAFE_VOCABULARY",
+              "OBFUSCATED_OR_UNCLASSIFIABLE_CONTENT",
+              "PATCH_OR_DIFF_CONTENT",
+              "PERSON_OR_CONTACT_CONTENT",
+              "REPORT_LINE_OUTSIDE_STRICT_TEMPLATE",
+              "REPOSITORY_PATH_OR_SOURCE_FILENAME"
+            ]
+          }
+        },
+        "source_bytes_emitted": {
+          "const": false
+        },
+        "fixed_local_policy_only_not_human_or_org_declassification": {
+          "const": true
+        },
+        "cross_source_atomic_snapshot": {
+          "const": false
+        },
+        "recipient_or_channel_verified": {
+          "const": false
+        },
+        "is_deliverable_payload": {
+          "const": false
+        },
+        "safe_for_external_send": {
+          "const": false
+        },
+        "ready_to_send": {
+          "const": false
+        },
+        "message_sent": {
+          "const": false
+        },
+        "published": {
+          "const": false
+        }
+      }
+    }
+  }
+}

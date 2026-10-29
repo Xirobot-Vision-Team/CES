@@ -1,0 +1,33 @@
+{
+  "schema_version": "ces.construction_source_drift.v1",
+  "ec": "EC-157",
+  "package_release": "V4.67/R157",
+  "source_baseline": "R150",
+  "evidence_level": "MANUALLY_REVIEWED_SOURCE_PATCH_NOT_NATIVE_RUNTIME_VALIDATION",
+  "immutable_original_fingerprints": "construction/SOURCE_BASELINE.json",
+  "changed_powershell_sources": {
+    "scripts/ces.ps1": {
+      "r150_sha256": "0dfda6adb40b2e76da68263db04dff4bb29f5643bb01db5b232c09ca455790ca",
+      "current_sha256": "18ee14b7b28f9c0d98051307cbcd8425b47ac18d894a0d6240a8fa93c1291c50",
+      "scope": [
+        "CLI-level fail-closed CodeSave -ApprovePersist gate before Git lookup and handlers",
+        "strict inherited GIT_CONFIG* environment overlay removal"
+      ],
+      "wire_contract_changed": false,
+      "native_runtime_test": "NOT_RUN"
+    },
+    "scripts/codesave.ps1": {
+      "r150_sha256": "91f10cd3bbbd8d6eb02c5ac6568ea8d525d08afed33e7f857610344dd2739a65",
+      "current_sha256": "4aaf82c51043287354b07840aa14499153a8acaa48fbfc5c2252f81b41890962",
+      "scope": [
+        "Windows and macOS case-alias safety scan for CES reserved Git path",
+        "preflight optional storage nodes, dangling-link probing, pre-owner child checks"
+      ],
+      "wire_contract_changed": false,
+      "native_runtime_test": "NOT_RUN"
+    }
+  },
+  "other_original_powershell_sources_changed": false,
+  "original_15_smoke_suites_changed": false,
+  "source_review_is_not_a_security_certification": true
+}

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/project-due-calendar-result.v1.schema.json",
+  "title": "EC191 project-local Due period and acknowledgement-dependent eligibility (not an installed scheduler)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "status", "exit_code", "reason_code", "project_timezone", "cadence", "evaluated_at_utc", "evaluated_at_local", "week_rule", "calendar", "decision", "limitations"],
+  "$defs": {
+    "stamp": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?(?:Z|[+-]\\d{2}:\\d{2}(?::\\d{2}(?:\\.\\d{1,6})?)?)$"},
+    "nullableStamp": {"anyOf": [{"$ref": "#/$defs/stamp"}, {"type": "null"}]},
+    "window": {
+      "type": "object", "additionalProperties": false,
+      "required": ["start_date", "end_exclusive_date", "start_local", "end_exclusive_local", "elapsed_seconds"],
+      "properties": {
+        "start_date": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+        "end_exclusive_date": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+        "start_local": {"$ref": "#/$defs/stamp"},
+        "end_exclusive_local": {"$ref": "#/$defs/stamp"},
+        "elapsed_seconds": {"type": "integer", "minimum": 1}
+      }
+    }
+  },
+  "properties": {
+    "schema": {"const": "ces.project_due_calendar.v1"},
+    "status": {"enum": ["partial", "invalid_input", "unavailable"]},
+    "exit_code": {"enum": [2, 4, 5]},
+    "reason_code": {"type": "string", "pattern": "^DUE_[A-Z0-9_]{3,100}$"},
+    "project_timezone": {"anyOf": [{"type": "string", "minLength": 1, "maxLength": 96}, {"type": "null"}]},
+    "cadence": {"anyOf": [{"enum": ["day", "week", "month", "year"]}, {"type": "null"}]},
+    "evaluated_at_utc": {"$ref": "#/$defs/nullableStamp"},
+    "evaluated_at_local": {"$ref": "#/$defs/nullableStamp"},
+    "week_rule": {"const": "ISO_MONDAY"},
+    "calendar": {
+      "anyOf": [{
+        "type": "object", "additionalProperties": false,
+        "required": ["current_period", "last_closed_period", "most_recent_due_boundary_local", "next_due_boundary_local"],
+        "properties": {
+          "current_period": {"$ref": "#/$defs/window"},
+          "last_closed_period": {"$ref": "#/$defs/window"},
+          "most_recent_due_boundary_local": {"$ref": "#/$defs/stamp"},
+          "next_due_boundary_local": {"$ref": "#/$defs/stamp"}
+        }
+      }, {"type": "null"}]
+    },
+    "decision": {
+      "type": "object", "additionalProperties": false,
+      "required": ["state", "is_due", "basis", "last_processed_boundary_at_utc"],
+      "properties": {
+        "state": {"enum": ["DUE", "OVERDUE", "NOT_DUE", "UNKNOWN"]},
+        "is_due": {"type": ["boolean", "null"]},
+        "basis": {"enum": ["NOT_EVALUATED", "EXPLICIT_LAST_PROCESSED_BOUNDARY", "CALLER_DECLARED_NEVER_PROCESSED", "PROCESSING_HISTORY_NOT_PROVIDED"]},
+        "last_processed_boundary_at_utc": {"$ref": "#/$defs/nullableStamp"}
+      }
+    },
+    "limitations": {
+      "type": "object", "additionalProperties": false,
+      "required": ["timezone_database_version_pinned", "native_due_action_registered", "external_acknowledgement_authenticated", "scheduler_or_report_executed", "natural_period_id_or_utc_interval_exported", "business_git_provider_or_ces_store_written"],
+      "properties": {
+        "timezone_database_version_pinned": {"const": false},
+        "native_due_action_registered": {"const": false},
+        "external_acknowledgement_authenticated": {"const": false},
+        "scheduler_or_report_executed": {"const": false},
+        "natural_period_id_or_utc_interval_exported": {"const": false},
+        "business_git_provider_or_ces_store_written": {"const": false}
+      }
+    }
+  }
+}

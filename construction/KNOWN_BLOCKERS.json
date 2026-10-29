@@ -1,0 +1,32 @@
+{
+  "revision": "PLAN-REV-001",
+  "as_of": "2026-10-22",
+  "blockers": [
+    {
+      "id": "B-001",
+      "subject": "原V3.10冻结总规格与ROUNDS.json缺失",
+      "state": "OPEN_NON_BLOCKING_FOR_PROVISIONAL_PLAN",
+      "impact": "无法证明新排程与原最早计划逐项吻合",
+      "resolution": "若用户提供原资料，建立差异对照并显式修订计划；不得冒充已有证据",
+      "last_reviewed_in": "EC-153",
+      "evidence_register": "construction/LEGACY_UPSTREAM_GAP.json",
+      "comparison_entrypoint": "construction/upstream_gap.py",
+      "scope": "Original 305-path R150 receipt and legacy self-report only. Does not prove absence in all external history or authenticate supplied candidates.",
+      "closure_gate": "Authenticated upstream source files + raw SHA-256 + owner/custody evidence + human reviewed requirement/round mapping + explicit plan revision, if needed. Never auto-close."
+    },
+    {
+      "id": "B-002",
+      "subject": "原生pwsh/Windows/Git/15 Smoke及E63-66性能未验收",
+      "state": "DEFERRED_TO_FINAL_USER_ASSISTED_ACCEPTANCE",
+      "impact": "现有R150功能只能称已编写，无法称运行验收通过",
+      "resolution": "全功能候选包冻结后在适当真实环境进行联合验收"
+    },
+    {
+      "id": "B-003",
+      "subject": "远程PR/CI/Issue/Delivery供应商与帐号权限未落实",
+      "state": "DESIGN_AND_IMPLEMENTATION_DEPENDENCY",
+      "impact": "Provider可以设计与使用模拟契约，但没有真实授权不能声称在线成功",
+      "resolution": "实现独立只读/写门禁，最终使用用户授权的安全测试资源"
+    }
+  ]
+}

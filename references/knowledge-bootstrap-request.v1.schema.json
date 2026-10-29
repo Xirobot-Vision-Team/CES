@@ -1,0 +1,200 @@
+{
+  "$id": "https://ces.local/schemas/knowledge-bootstrap-request.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "expected_manifest_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "operation": {
+      "const": "knowledge.bootstrap.read"
+    },
+    "schema": {
+      "const": "ces.knowledge_bootstrap_request.v1"
+    },
+    "scope": {
+      "additionalProperties": false,
+      "properties": {
+        "knowledge_space_key": {
+          "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+          "type": "string"
+        },
+        "period": {
+          "additionalProperties": false,
+          "properties": {
+            "end_utc": {
+              "anyOf": [
+                {
+                  "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "period_id": {
+              "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+              "type": "string"
+            },
+            "start_utc": {
+              "anyOf": [
+                {
+                  "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "period_id",
+            "start_utc",
+            "end_utc"
+          ],
+          "type": "object"
+        },
+        "repository_ref": {
+          "pattern": "^cesrepo1:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "source_policy_revision": {
+          "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+          "type": "string"
+        },
+        "target": {
+          "additionalProperties": false,
+          "properties": {
+            "mode": {
+              "const": "DeliveredTarget"
+            },
+            "revision": {
+              "anyOf": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "algorithm": {
+                      "enum": [
+                        "sha1",
+                        "sha256"
+                      ],
+                      "type": "string"
+                    },
+                    "oid": {
+                      "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "algorithm",
+                    "oid"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "source_receipt_sha256": {
+              "anyOf": [
+                {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "mode",
+            "revision",
+            "source_receipt_sha256"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "repository_ref",
+        "knowledge_space_key",
+        "period",
+        "target",
+        "source_policy_revision"
+      ],
+      "type": "object"
+    },
+    "sources": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "coverage": {
+            "enum": [
+              "complete_declared",
+              "partial_declared",
+              "unknown"
+            ],
+            "type": "string"
+          },
+          "expected_sha256": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "kind": {
+            "enum": [
+              "repository",
+              "ces_knowledge"
+            ],
+            "type": "string"
+          },
+          "relative_path": {
+            "maxLength": 256,
+            "pattern": "^[A-Za-z0-9_][A-Za-z0-9._-]{0,63}(/[A-Za-z0-9_][A-Za-z0-9._-]{0,63})*$",
+            "type": "string"
+          },
+          "source_key": {
+            "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_key",
+          "kind",
+          "relative_path",
+          "expected_sha256",
+          "coverage"
+        ],
+        "type": "object"
+      },
+      "maxItems": 32,
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema",
+    "operation",
+    "scope",
+    "expected_manifest_sha256",
+    "sources"
+  ],
+  "title": "knowledge-bootstrap-request.v1",
+  "type": "object"
+}

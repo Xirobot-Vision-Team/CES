@@ -1,0 +1,677 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ces.local/schemas/quality-run-guard-result.v1.schema.json",
+  "title": "CES EC186 QualityRun signed-profile and isolation-lease preflight only; no executed test or sandbox proof",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "prepared_at_utc",
+    "profile",
+    "source",
+    "authorization",
+    "isolation",
+    "context",
+    "plan",
+    "proof",
+    "plan_sha256",
+    "effects",
+    "trust_boundary"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.quality_run_guard.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^QUALITYRUNGUARD_[A-Z0-9_]+$",
+      "maxLength": 160
+    },
+    "prepared_at_utc": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "profile": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "catalog_sha256",
+            "spec_sha256",
+            "kind",
+            "recipe_code_owned",
+            "caller_supplied_arguments_allowed",
+            "project_material_untrusted"
+          ],
+          "properties": {
+            "id": {
+              "enum": [
+                "python.pytest",
+                "python.ruff"
+              ]
+            },
+            "catalog_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "spec_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "kind": {
+              "enum": [
+                "TEST",
+                "LINT"
+              ]
+            },
+            "recipe_code_owned": {
+              "const": true
+            },
+            "caller_supplied_arguments_allowed": {
+              "const": false
+            },
+            "project_material_untrusted": {
+              "const": true
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "root_path_redacted",
+            "source_pin_sha256",
+            "root_identity_rechecked",
+            "git_object_bytes_verified",
+            "source_contents_sealed"
+          ],
+          "properties": {
+            "mode": {
+              "const": "WorkingTree"
+            },
+            "root_path_redacted": {
+              "const": true
+            },
+            "source_pin_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "root_identity_rechecked": {
+              "const": true
+            },
+            "git_object_bytes_verified": {
+              "const": false
+            },
+            "source_contents_sealed": {
+              "const": false
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "authorization": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "policy_ticket_id",
+            "policy_mac_verified",
+            "broker_lease_id",
+            "broker_mac_verified",
+            "separate_host_keys_required",
+            "host_grants_checked_at_finalization",
+            "host_key_custody_externally_assumed"
+          ],
+          "properties": {
+            "policy_ticket_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "policy_mac_verified": {
+              "const": true
+            },
+            "broker_lease_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "broker_mac_verified": {
+              "const": true
+            },
+            "separate_host_keys_required": {
+              "const": true
+            },
+            "host_grants_checked_at_finalization": {
+              "const": true
+            },
+            "host_key_custody_externally_assumed": {
+              "const": true
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "isolation": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "lease_ticket_sha256",
+            "pinned_image_sha256",
+            "lease_expires_at_utc",
+            "required_controls",
+            "broker_controls_mac_verified",
+            "actual_kernel_isolation_probed_by_ces",
+            "lease_consumed",
+            "lease_state"
+          ],
+          "properties": {
+            "lease_ticket_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "pinned_image_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "lease_expires_at_utc": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+            },
+            "required_controls": {
+              "const": {
+                "lease_state": "RESERVED_NOT_STARTED",
+                "source_mount": "READ_ONLY",
+                "scratch_mount": "PRIVATE_EPHEMERAL",
+                "network_access": "DENIED",
+                "executor": "PINNED_IMAGE_FIXED_PROFILE_ONLY",
+                "non_root_user": true,
+                "user_namespace_isolated": true,
+                "mount_namespace_isolated": true,
+                "pid_namespace_isolated": true,
+                "no_new_privileges": true,
+                "capabilities_dropped": true,
+                "seccomp_enforced": true,
+                "cgroup_bounds_present": true,
+                "host_secrets_mounted": false,
+                "host_home_mounted": false,
+                "host_sockets_mounted": false,
+                "host_docker_socket_mounted": false,
+                "host_network_shared": false,
+                "host_pid_shared": false,
+                "unapproved_bind_mounts": false
+              }
+            },
+            "broker_controls_mac_verified": {
+              "const": true
+            },
+            "actual_kernel_isolation_probed_by_ces": {
+              "const": false
+            },
+            "lease_consumed": {
+              "const": false
+            },
+            "lease_state": {
+              "const": "RESERVED_NOT_STARTED"
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "context": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "ec185_supplied",
+            "profile_hint_present",
+            "observation_digest_checked_not_authenticating"
+          ],
+          "properties": {
+            "ec185_supplied": {
+              "type": "boolean"
+            },
+            "profile_hint_present": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "observation_digest_checked_not_authenticating": {
+              "type": "boolean"
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "plan": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state",
+            "profile_id",
+            "source_pin_sha256",
+            "profile_sha256",
+            "approval_receipt_sha256",
+            "lease_receipt_sha256",
+            "requires_ec187_fresh_reauthorization",
+            "requires_atomic_lease_consumption_before_run",
+            "has_executable_command"
+          ],
+          "properties": {
+            "state": {
+              "const": "PREPARED_ONLY_NOT_EXECUTABLE"
+            },
+            "profile_id": {
+              "enum": [
+                "python.pytest",
+                "python.ruff"
+              ]
+            },
+            "source_pin_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "profile_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "approval_receipt_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "lease_receipt_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "requires_ec187_fresh_reauthorization": {
+              "const": true
+            },
+            "requires_atomic_lease_consumption_before_run": {
+              "const": true
+            },
+            "has_executable_command": {
+              "const": false
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "proof": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "profile_built_in",
+            "approved_profile_mac_verified",
+            "isolation_broker_lease_mac_verified",
+            "host_policy_grants_complete",
+            "trusted_future_runner_instantiated",
+            "actual_isolation_verified_by_ces",
+            "source_git_bytes_verified",
+            "test_execution_verified",
+            "overall_quality_pass_verified"
+          ],
+          "properties": {
+            "profile_built_in": {
+              "const": true
+            },
+            "approved_profile_mac_verified": {
+              "const": true
+            },
+            "isolation_broker_lease_mac_verified": {
+              "const": true
+            },
+            "host_policy_grants_complete": {
+              "const": true
+            },
+            "trusted_future_runner_instantiated": {
+              "const": false
+            },
+            "actual_isolation_verified_by_ces": {
+              "const": false
+            },
+            "source_git_bytes_verified": {
+              "const": false
+            },
+            "test_execution_verified": {
+              "const": false
+            },
+            "overall_quality_pass_verified": {
+              "const": false
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "plan_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "root_observations",
+        "authorization_calls",
+        "commands_executed",
+        "tests_executed",
+        "network_access",
+        "writes_performed",
+        "lease_consumed"
+      ],
+      "properties": {
+        "root_observations": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "authorization_calls": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "commands_executed": {
+          "const": false
+        },
+        "tests_executed": {
+          "const": false
+        },
+        "network_access": {
+          "const": false
+        },
+        "writes_performed": {
+          "const": false
+        },
+        "lease_consumed": {
+          "const": false
+        }
+      }
+    },
+    "trust_boundary": {
+      "enum": [
+        "FAIL_CLOSED_NO_PLAN_NO_EXECUTION",
+        "HOST_SIGNED_ASSERTIONS_ONLY_NO_ACTUAL_EXECUTION"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "reason_code": {
+            "const": "QUALITYRUNGUARD_CONFIGURATION_GATED_PLAN_ONLY"
+          },
+          "trust_boundary": {
+            "const": "HOST_SIGNED_ASSERTIONS_ONLY_NO_ACTUAL_EXECUTION"
+          },
+          "prepared_at_utc": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "profile": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "source": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "authorization": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "isolation": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "context": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "plan": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "proof": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "plan_sha256": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "effects": {
+            "properties": {
+              "root_observations": {
+                "const": 2
+              },
+              "authorization_calls": {
+                "const": 4
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "invalid_input",
+              "unavailable"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "trust_boundary": {
+            "const": "FAIL_CLOSED_NO_PLAN_NO_EXECUTION"
+          },
+          "prepared_at_utc": {
+            "const": null
+          },
+          "profile": {
+            "const": null
+          },
+          "source": {
+            "const": null
+          },
+          "authorization": {
+            "const": null
+          },
+          "isolation": {
+            "const": null
+          },
+          "context": {
+            "const": null
+          },
+          "plan": {
+            "const": null
+          },
+          "proof": {
+            "const": null
+          },
+          "plan_sha256": {
+            "const": null
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "profile": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "const": "python.pytest"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "profile": {
+            "properties": {
+              "kind": {
+                "const": "TEST"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "profile": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "const": "python.ruff"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "profile": {
+            "properties": {
+              "kind": {
+                "const": "LINT"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

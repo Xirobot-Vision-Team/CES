@@ -1,0 +1,731 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ces/issue-sync-result.v1.schema.json",
+  "title": "CES EC212 exact whitelist in-memory read-only IssueSync snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "reason_code",
+    "exit_code",
+    "read_state",
+    "coverage",
+    "synthetic",
+    "scope",
+    "requested_count",
+    "observed_count",
+    "unknown_count",
+    "provider_read_invocations",
+    "maximum_possible_provider_gets",
+    "entries",
+    "aggregate_snapshot_sha256",
+    "observed_started_at_utc",
+    "observed_finished_at_utc",
+    "snapshot_collection_performed",
+    "complete_selection",
+    "snapshot_atomic",
+    "full_repository_inventory",
+    "selected_metadata_projection_only",
+    "baseline_authenticated",
+    "organizational_grant_authenticated",
+    "persisted",
+    "external_cache_mutated",
+    "native_issue_action_registered",
+    "issue_created",
+    "issue_delivered_or_published",
+    "issue_or_provider_written",
+    "business_repository_written",
+    "knowledge_source_written"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ces.issue_sync.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "unavailable",
+        "invalid_input"
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^ISSUE_SYNC_[A-Z0-9_]+$"
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "read_state": {
+      "enum": [
+        "PROVIDER_OBSERVED",
+        "SYNTHETIC_OBSERVED",
+        "UNKNOWN"
+      ]
+    },
+    "coverage": {
+      "enum": [
+        "UNKNOWN",
+        "PARTIAL_SELECTION_UNKNOWN",
+        "COMPLETE_EXPLICIT_SELECTION_NONATOMIC"
+      ]
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "scope": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "provider",
+            "api_host",
+            "repository",
+            "expected_repository_id",
+            "numbers"
+          ],
+          "properties": {
+            "provider": {
+              "enum": [
+                "github",
+                "gitlab"
+              ]
+            },
+            "api_host": {
+              "enum": [
+                "api.github.com",
+                "gitlab.com"
+              ]
+            },
+            "repository": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 240
+            },
+            "expected_repository_id": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]{0,18}$"
+            },
+            "numbers": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "minItems": 1,
+              "maxItems": 8,
+              "uniqueItems": true
+            }
+          }
+        }
+      ]
+    },
+    "requested_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    },
+    "observed_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    },
+    "unknown_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    },
+    "provider_read_invocations": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    },
+    "maximum_possible_provider_gets": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 24
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "number",
+          "state",
+          "reason_code",
+          "comparison",
+          "snapshot"
+        ],
+        "properties": {
+          "number": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "state": {
+            "enum": [
+              "UNKNOWN",
+              "OBSERVED_SELECTED_METADATA"
+            ]
+          },
+          "reason_code": {
+            "type": "string",
+            "pattern": "^ISSUE_[A-Z0-9_]+$"
+          },
+          "comparison": {
+            "enum": [
+              "UNKNOWN",
+              "NO_CALLER_BASELINE",
+              "SAME_SELECTED_PROJECTION_AS_CALLER_HINT",
+              "DIFFERENT_SELECTED_PROJECTION_FROM_CALLER_HINT"
+            ]
+          },
+          "snapshot": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "identity",
+                  "identity_sha256",
+                  "snapshot_sha256",
+                  "provider_state",
+                  "provider_created_at_utc",
+                  "provider_updated_at_utc",
+                  "provider_closed_at_utc",
+                  "provider_confidentiality",
+                  "observed_at_utc",
+                  "observation_origin",
+                  "snapshot_semantics",
+                  "source_limited_to_selected_metadata"
+                ],
+                "properties": {
+                  "identity": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "provider",
+                      "api_host",
+                      "repository_path",
+                      "provider_repository_id",
+                      "issue_number",
+                      "provider_issue_id"
+                    ],
+                    "properties": {
+                      "provider": {
+                        "enum": [
+                          "github",
+                          "gitlab"
+                        ]
+                      },
+                      "api_host": {
+                        "enum": [
+                          "api.github.com",
+                          "gitlab.com"
+                        ]
+                      },
+                      "repository_path": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 240
+                      },
+                      "provider_repository_id": {
+                        "type": "string",
+                        "pattern": "^[1-9][0-9]{0,18}$"
+                      },
+                      "issue_number": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 2147483647
+                      },
+                      "provider_issue_id": {
+                        "type": "string",
+                        "pattern": "^[1-9][0-9]{0,18}$"
+                      }
+                    }
+                  },
+                  "identity_sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "snapshot_sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "provider_state": {
+                    "enum": [
+                      "OPEN",
+                      "CLOSED"
+                    ]
+                  },
+                  "provider_created_at_utc": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+                  },
+                  "provider_updated_at_utc": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+                  },
+                  "provider_closed_at_utc": {
+                    "oneOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+                      }
+                    ]
+                  },
+                  "provider_confidentiality": {
+                    "enum": [
+                      "NOT_REPORTED",
+                      "STANDARD",
+                      "CONFIDENTIAL"
+                    ]
+                  },
+                  "observed_at_utc": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+                  },
+                  "observation_origin": {
+                    "enum": [
+                      "synthetic_fixture",
+                      "provider_https_response"
+                    ]
+                  },
+                  "snapshot_semantics": {
+                    "const": "SELECTED_PROVIDER_METADATA_AND_UNEXPOSED_TITLE_DESCRIPTION_LABELS_V1"
+                  },
+                  "source_limited_to_selected_metadata": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "UNKNOWN"
+                }
+              },
+              "required": [
+                "state"
+              ]
+            },
+            "then": {
+              "properties": {
+                "snapshot": {
+                  "type": "null"
+                },
+                "comparison": {
+                  "const": "UNKNOWN"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "OBSERVED_SELECTED_METADATA"
+                }
+              },
+              "required": [
+                "state"
+              ]
+            },
+            "then": {
+              "properties": {
+                "snapshot": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "identity",
+                    "identity_sha256",
+                    "snapshot_sha256",
+                    "provider_state",
+                    "provider_created_at_utc",
+                    "provider_updated_at_utc",
+                    "provider_closed_at_utc",
+                    "provider_confidentiality",
+                    "observed_at_utc",
+                    "observation_origin",
+                    "snapshot_semantics",
+                    "source_limited_to_selected_metadata"
+                  ],
+                  "properties": {
+                    "identity": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "provider",
+                        "api_host",
+                        "repository_path",
+                        "provider_repository_id",
+                        "issue_number",
+                        "provider_issue_id"
+                      ],
+                      "properties": {
+                        "provider": {
+                          "enum": [
+                            "github",
+                            "gitlab"
+                          ]
+                        },
+                        "api_host": {
+                          "enum": [
+                            "api.github.com",
+                            "gitlab.com"
+                          ]
+                        },
+                        "repository_path": {
+                          "type": "string",
+                          "minLength": 3,
+                          "maxLength": 240
+                        },
+                        "provider_repository_id": {
+                          "type": "string",
+                          "pattern": "^[1-9][0-9]{0,18}$"
+                        },
+                        "issue_number": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 2147483647
+                        },
+                        "provider_issue_id": {
+                          "type": "string",
+                          "pattern": "^[1-9][0-9]{0,18}$"
+                        }
+                      }
+                    },
+                    "identity_sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    "snapshot_sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    "provider_state": {
+                      "enum": [
+                        "OPEN",
+                        "CLOSED"
+                      ]
+                    },
+                    "provider_created_at_utc": {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+                    },
+                    "provider_updated_at_utc": {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+                    },
+                    "provider_closed_at_utc": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+                        }
+                      ]
+                    },
+                    "provider_confidentiality": {
+                      "enum": [
+                        "NOT_REPORTED",
+                        "STANDARD",
+                        "CONFIDENTIAL"
+                      ]
+                    },
+                    "observed_at_utc": {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+                    },
+                    "observation_origin": {
+                      "enum": [
+                        "synthetic_fixture",
+                        "provider_https_response"
+                      ]
+                    },
+                    "snapshot_semantics": {
+                      "const": "SELECTED_PROVIDER_METADATA_AND_UNEXPOSED_TITLE_DESCRIPTION_LABELS_V1"
+                    },
+                    "source_limited_to_selected_metadata": {
+                      "const": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "aggregate_snapshot_sha256": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      ]
+    },
+    "observed_started_at_utc": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+        }
+      ]
+    },
+    "observed_finished_at_utc": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d{1,6})?Z$"
+        }
+      ]
+    },
+    "snapshot_collection_performed": {
+      "type": "boolean"
+    },
+    "complete_selection": {
+      "type": "boolean"
+    },
+    "snapshot_atomic": {
+      "const": false
+    },
+    "full_repository_inventory": {
+      "const": false
+    },
+    "baseline_authenticated": {
+      "const": false
+    },
+    "organizational_grant_authenticated": {
+      "const": false
+    },
+    "persisted": {
+      "const": false
+    },
+    "external_cache_mutated": {
+      "const": false
+    },
+    "native_issue_action_registered": {
+      "const": false
+    },
+    "issue_created": {
+      "const": false
+    },
+    "issue_delivered_or_published": {
+      "const": false
+    },
+    "issue_or_provider_written": {
+      "const": false
+    },
+    "business_repository_written": {
+      "const": false
+    },
+    "knowledge_source_written": {
+      "const": false
+    },
+    "selected_metadata_projection_only": {
+      "const": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "invalid_input"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 4
+          },
+          "scope": {
+            "type": "null"
+          },
+          "entries": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "unavailable"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 5
+          },
+          "read_state": {
+            "const": "UNKNOWN"
+          },
+          "observed_count": {
+            "const": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exit_code": {
+            "const": 2
+          },
+          "observed_count": {
+            "minimum": 1
+          },
+          "scope": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "provider",
+              "api_host",
+              "repository",
+              "expected_repository_id",
+              "numbers"
+            ],
+            "properties": {
+              "provider": {
+                "enum": [
+                  "github",
+                  "gitlab"
+                ]
+              },
+              "api_host": {
+                "enum": [
+                  "api.github.com",
+                  "gitlab.com"
+                ]
+              },
+              "repository": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 240
+              },
+              "expected_repository_id": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}$"
+              },
+              "numbers": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 2147483647
+                },
+                "minItems": 1,
+                "maxItems": 8,
+                "uniqueItems": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "complete_selection": {
+            "const": true
+          }
+        },
+        "required": [
+          "complete_selection"
+        ]
+      },
+      "then": {
+        "properties": {
+          "aggregate_snapshot_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "coverage": {
+            "const": "COMPLETE_EXPLICIT_SELECTION_NONATOMIC"
+          },
+          "snapshot_collection_performed": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "snapshot_collection_performed": {
+            "const": false
+          }
+        },
+        "required": [
+          "snapshot_collection_performed"
+        ]
+      },
+      "then": {
+        "properties": {
+          "aggregate_snapshot_sha256": {
+            "type": "null"
+          },
+          "observed_count": {
+            "const": 0
+          }
+        }
+      }
+    }
+  ]
+}

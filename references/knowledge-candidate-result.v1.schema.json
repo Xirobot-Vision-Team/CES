@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ces.knowledge_candidate_store.v1"
+    },
+    "status": {
+      "enum": [
+        "partial",
+        "invalid_input",
+        "unavailable"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        2,
+        4,
+        5
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^KNOWLEDGE_CANDIDATE_[A-Z0-9_]+$"
+    },
+    "subject": {
+      "anyOf": [
+        {
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "local_candidate_write_performed": {
+      "type": "boolean"
+    },
+    "authoritative_knowledge_write_performed": {
+      "const": false
+    },
+    "repository_or_issue_write_performed": {
+      "const": false
+    },
+    "publish_or_promotion_performed": {
+      "const": false
+    },
+    "candidate_is_authoritative": {
+      "const": false
+    },
+    "source_result_authenticated_by_store": {
+      "const": false
+    },
+    "organizational_authorization_verified": {
+      "const": false
+    },
+    "native_knowledge_route_registered": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema",
+    "status",
+    "exit_code",
+    "reason_code",
+    "subject",
+    "local_candidate_write_performed",
+    "authoritative_knowledge_write_performed",
+    "repository_or_issue_write_performed",
+    "publish_or_promotion_performed",
+    "candidate_is_authoritative",
+    "source_result_authenticated_by_store",
+    "organizational_authorization_verified",
+    "native_knowledge_route_registered"
+  ]
+}
