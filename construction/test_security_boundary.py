@@ -18,8 +18,8 @@ class SecurityBoundarySourceTests(unittest.TestCase):
     def setUpClass(cls):
         cls.cli = (ROOT / "scripts/ces.ps1").read_text(encoding="utf-8-sig")
         cls.save = (ROOT / "scripts/codesave.ps1").read_text(encoding="utf-8-sig")
-        cls.ledger = json.loads((ROOT / "construction/LEGACY_SECURITY_DRIFT.json").read_text())
-        cls.current_review = json.loads((ROOT / "construction/LEGACY_PATH_DRIFT.json").read_text())
+        cls.ledger = json.loads((ROOT / "construction/SECURITY_REVIEW_CHAIN.json").read_text())
+        cls.current_review = json.loads((ROOT / "construction/PATH_REVIEW.json").read_text())
         cls.boundaries = json.loads((ROOT / "construction/SECURITY_BOUNDARIES.json").read_text())
 
     def test_cli_rejects_unapproved_codesave_before_git_and_handler(self):
@@ -97,7 +97,7 @@ class SecurityBoundarySourceTests(unittest.TestCase):
         self.assertEqual(len(self.boundaries["action_classes"]), 7)
         self.assertTrue(any(x["classification"] == "RESIDUAL_RISK" for x in self.boundaries["recorded_risks"]))
         self.assertEqual(sum(1 for _ in (ROOT / "tests").glob("*.Smoke.ps1")), 15)
-        self.assertTrue((ROOT / "tests/CodeSecurity.EC157.ps1").is_file())
+        self.assertTrue((ROOT / "tests/CodeSecurity.Boundaries.ps1").is_file())
 
 
 if __name__ == "__main__":

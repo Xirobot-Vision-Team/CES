@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'construction'))
-from ec352_key_registry.operator import main
+from key_registry.operator import main
 
 if __name__=='__main__':
     raise SystemExit(main())

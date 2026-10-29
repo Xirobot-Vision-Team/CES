@@ -19,7 +19,7 @@ from unittest.mock import patch
 import issue_provider as ip
 import issue_show as show
 
-FIX = Path(__file__).parent / 'fixtures' / 'ec211'
+FIX = Path(__file__).parent / 'fixtures' / 'provider_issues'
 NOW = datetime(2026, 10, 24, 9, 0, tzinfo=timezone.utc)
 TOKEN = 'NOT-A-REAL-EC213-SECRET-TOKEN'
 

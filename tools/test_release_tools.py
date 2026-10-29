@@ -97,6 +97,37 @@ class ReleaseTests(unittest.TestCase):
         self.assertIn('INVALID_LEGACY_CLEANUP:scripts/core.py',v.legacy_review(self.root,v.collect(self.root))[0])
         self.cleanup([dict(path='../outside',baseline_sha256='0'*64,reason='invalid')])
         self.assertIn('INVALID_LEGACY_CLEANUP:../outside',v.legacy_review(self.root,v.collect(self.root))[0])
+    def moved_fixture(self):
+        self.source();old=self.root/'scripts/core.py';baseline=v.collect_file_hash(old)
+        target=self.root/'scripts/renamed.py';old.rename(target)
+        row=dict(path='scripts/core.py',target='scripts/renamed.py',baseline_sha256=baseline,current_sha256=v.collect_file_hash(target),reason='Reviewed functional rename')
+        return row,target
+    def set_move(self,rows):
+        self.write('tools/legacy_cleanup.json',json.dumps(dict(schema='ces.legacy_cleanup.v1',moved=rows)))
+    def test_explicit_move_keeps_original_baseline_and_packages(self):
+        row,target=self.moved_fixture();baseline=(self.root/'BASELINE_SHA256.json').read_bytes();self.set_move([row])
+        self.assertEqual(v.legacy_review(self.root,v.collect(self.root))[0],[])
+        destination=Path(self.tmp.name)/'release';p.prepare(self.root,destination)
+        self.assertEqual((destination/'scripts/renamed.py').read_bytes(),target.read_bytes())
+        self.assertEqual((destination/'BASELINE_SHA256.json').read_bytes(),baseline)
+    def test_moved_file_tampering_and_old_name_return_fail(self):
+        row,target=self.moved_fixture();self.set_move([row]);target.write_text('changed')
+        self.assertIn('MIGRATED_LEGACY_FILE_CHANGED:scripts/core.py',v.legacy_review(self.root,v.collect(self.root))[0])
+        target.write_text('print(2)\n');self.write('scripts/core.py','print(2)\n')
+        self.assertIn('MIGRATED_LEGACY_FILE_CHANGED:scripts/core.py',v.legacy_review(self.root,v.collect(self.root))[0])
+    def test_move_missing_digest_unsafe_or_missing_target_fail(self):
+        row,target=self.moved_fixture()
+        for name in ['../outside','/outside','C:/outside','scripts\\renamed.py','scripts//renamed.py','missing.py',None]:
+            with self.subTest(target=name):
+                self.set_move([dict(row,target=name)])
+                self.assertIn('MIGRATED_LEGACY_FILE_CHANGED:scripts/core.py',v.legacy_review(self.root,v.collect(self.root))[0])
+        target.unlink();self.set_move([{k:val for k,val in row.items() if k!='current_sha256'}])
+        self.assertIn('MIGRATED_LEGACY_FILE_CHANGED:scripts/core.py',v.legacy_review(self.root,v.collect(self.root))[0])
+    def test_two_old_files_cannot_claim_same_move_target(self):
+        row,target=self.moved_fixture();baseline=json.loads((self.root/'BASELINE_SHA256.json').read_text())
+        baseline['sha256']['scripts/second.py']=row['baseline_sha256'];self.write('BASELINE_SHA256.json',json.dumps(baseline))
+        self.set_move([row,dict(row,path='scripts/second.py')])
+        self.assertIn('MIGRATED_LEGACY_FILE_CHANGED:scripts/second.py',v.legacy_review(self.root,v.collect(self.root))[0])
     def release_fixture(self):
         self.source();self.write('PRODUCT_SHA256.json',json.dumps(dict(sha256={name:v.collect_file_hash(self.root/name) for name in ['PRODUCT.json','ces-product','operator/sample.py','scripts/core.py']})))
     def test_release_archives_have_only_manifest_files_and_same_bytes(self):

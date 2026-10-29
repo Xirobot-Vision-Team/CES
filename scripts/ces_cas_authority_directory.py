@@ -6,5 +6,5 @@ Never fetch external URL/OS trust stores; never sign, create keys, or write CAS.
 from pathlib import Path
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'construction'))
-from ec360_authority_directory.operator import main
+from authority_directory.operator import main
 if __name__=='__main__':raise SystemExit(main())

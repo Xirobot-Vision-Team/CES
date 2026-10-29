@@ -1,15 +1,15 @@
 ## EC250 (post-router separately installed Linux host service; does not change this router)
 
-A new separate operator-owned [FindingShow host broker](ec250-linux-finding-host.md) actually reads the existing HMAC store through a Linux AF_UNIX/SO_PEERCRED and private UID/scope policy. The original 74 routes, including the 11 always-denied HOST_REQUIRED entries of this unprivileged router, stay unchanged. This is not an authorization flag for this router, nor enterprise auth or business-write capability. Original freeze and full-function gate remain blocked.
+A new separate operator-owned [FindingShow host broker](linux-finding-host.md) actually reads the existing HMAC store through a Linux AF_UNIX/SO_PEERCRED and private UID/scope policy. The original 74 routes, including the 11 always-denied HOST_REQUIRED entries of this unprivileged router, stay unchanged. This is not an authorization flag for this router, nor enterprise auth or business-write capability. Original freeze and full-function gate remain blocked.
 
 ---
 
 # CES 统一路由当前使用说明 — V5.57/R247 工程包（EC246 路由目录沿用）
 
-**当前权威路由目录：** [74 条逐 Action/Mode 清单与样本](route-catalog-ec246.md) ·
-[机器可读目录](route-catalog-ec246.json) ·
+**当前权威路由目录：** [74 条逐 Action/Mode 清单与样本](route-catalog.md) ·
+[机器可读目录](route-catalog.json) ·
 [`CAPABILITY_MATRIX.json` 的 `unified_v5_routes`](../construction/CAPABILITY_MATRIX.json) ·
-[只读独立 CLI 帮助](../construction/ec246_docs/route_help.py)。
+[只读独立 CLI 帮助](../construction/route_documentation/route_help.py)。
 
 - 当前固定**74 个登记项** = **16 旧 R150 PowerShell（仅原生 CLI）+
   39 Python CLI + 7 Python API + 1 typed Preview + 11 HOST_REQUIRED**。
@@ -29,7 +29,7 @@ A new separate operator-owned [FindingShow host broker](ec250-linux-finding-host
   `invalid/4`、`unavailable/5` 均**不能**证明业务完成。收到合法 Handler
   JSON 和 `handler_attempted=true` 也不能提供许可；即使 Handler 声称
   `success/0`，Router 仍按未验证结果归一化。
-- `python3 -I -B construction/ec246_docs/route_help.py --help` 展示
+- `python3 -I -B construction/route_documentation/route_help.py --help` 展示
   EC246 按真实固定 Action/Mode 的帮助；它是独立**只读**文档入口，不调用
   Handler。原 `scripts/ces_router.py --help` 和 `scripts/ces-v5.ps1`
   文件保持 EC243 已冻结的源码/注释，不修改；旧 `scripts/ces.ps1` 完整保留。
@@ -41,8 +41,8 @@ A new separate operator-owned [FindingShow host broker](ec250-linux-finding-host
 
 ```sh
 python3 -I scripts/ces_router.py --list-routes
-python3 -I -B construction/ec246_docs/route_help.py --list-examples
-python3 -I -B construction/ec246_docs/route_help.py --action Due --mode Evaluate --example
+python3 -I -B construction/route_documentation/route_help.py --list-examples
+python3 -I -B construction/route_documentation/route_help.py --action Due --mode Evaluate --example
 ```
 
 将最后一条命令显示的 JSON 的 `request` 对象复制至**绝对路径**文件
@@ -226,4 +226,4 @@ Related: [request contract](unified-action-router-request.v1.schema.json),
 
 ## EC247 新增独立回归数据入口（不更改 74 路由）
 
-[EC247 跨模块回归与 15 原生 Smoke SHA 映射](ec247-cross-module-regression.md) 可以只读查看原 Smoke 来源、用固定合成输入验证 7 组跨模块边界、单独导出 13 个可用于原 Router 的请求 V1 JSON。`--run` 的 Cycle 私有元数据只在一次性临时目录创建；没有执行旧 15 Smoke、实际 Provider/Git/企业账号/OS/E63–E66/最终联合验收。
+[EC247 跨模块回归与 15 原生 Smoke SHA 映射](cross-module-regression.md) 可以只读查看原 Smoke 来源、用固定合成输入验证 7 组跨模块边界、单独导出 13 个可用于原 Router 的请求 V1 JSON。`--run` 的 Cycle 私有元数据只在一次性临时目录创建；没有执行旧 15 Smoke、实际 Provider/Git/企业账号/OS/E63–E66/最终联合验收。

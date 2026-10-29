@@ -346,8 +346,8 @@ class CycleNextTests(unittest.TestCase):
                          "construction/ACTION_TRACE.json",
                          "construction/CAPABILITY_MATRIX.json",
                          "construction/SOURCE_BASELINE.json",
-                         "construction/LEGACY_SECURITY_DRIFT.json",
-                         "construction/LEGACY_PATH_DRIFT.json"):
+                         "construction/SECURITY_REVIEW_CHAIN.json",
+                         "construction/PATH_REVIEW.json"):
             src = ROOT / relative
             if src.exists():
                 shutil.copy2(src, target / relative)

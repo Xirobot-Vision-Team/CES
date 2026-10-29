@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'construction'))
-from ec320_fork_witness.operator import main
+from fork_witness.operator import main
 
 if __name__ == '__main__':
     raise SystemExit(main())

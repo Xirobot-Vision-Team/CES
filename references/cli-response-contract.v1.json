@@ -286,7 +286,7 @@
     "no_power_shell_source_modifications_in_ec156": true
   },
   "fixture_policy": {
-    "samples_path": "construction/fixtures/ec156/",
+    "samples_path": "construction/fixtures/cli_responses/",
     "synthetic": true,
     "represent_actual_repo_or_git_results": false,
     "represent_executed_cli": false,

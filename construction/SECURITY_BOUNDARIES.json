@@ -236,7 +236,7 @@
       "follow_up": "Retain B-001/B-002/B-003 and finalize with user-assisted acceptance."
     }
   ],
-  "security_native_cases": "tests/CodeSecurity.EC157.ps1",
+  "security_native_cases": "tests/CodeSecurity.Boundaries.ps1",
   "native_cases_status": "NOT_RUN_NO_PWSH_IN_BUILDER",
   "external_effect_status": "NOT_IMPLEMENTED; no remote Issue/PR/send/delivery action added",
   "historical_baseline_rewritten": false

@@ -14,3 +14,9 @@ reviewed removal/replacement inventory. Tests here are platform-specific;
 not every experimental host is part of the supported operator release.
 
 Round-specific fixture notes have also been consolidated into [one test-data guide](fixtures/README.md); executable implementations/tests and actual fixture data remain. There are no tracked execution logs here.
+
+Numbered package directories now use functional names, such as `finding_host/`,
+`negative_scenarios/` and `cross_module_regression/`. Source inventories and
+fixture paths use descriptive names as well. See [source naming and migration](../docs/NAMING.md)
+before updating integrations that import these modules directly; wire identifiers
+and the normal CLI entrypoints retain their existing contracts.

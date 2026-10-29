@@ -5,7 +5,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'construction'))
-from ec314_window_mesh.operator import main
+from window_mesh.operator import main
 
 if __name__ == '__main__':
     raise SystemExit(main())

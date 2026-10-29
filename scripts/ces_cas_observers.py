@@ -5,7 +5,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'construction'))
-from ec312_dual_observer_reconciliation.operator import main
+from dual_observer_reconciliation.operator import main
 
 if __name__ == '__main__':
     raise SystemExit(main())

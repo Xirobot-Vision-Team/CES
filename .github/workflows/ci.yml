@@ -32,7 +32,7 @@ jobs:
       - name: Operator unit and isolated integration tests
         run: python -B -m unittest discover -s operator -p "test_*.py"
       - name: Release-tool regression tests
-        run: python -B -m unittest discover -s tools -p "test_release_tools.py"
+        run: python -B -m unittest discover -s tools -p "test_*.py"
       - name: Retained compatibility behavior
         if: runner.os == 'Linux'
         working-directory: construction
@@ -44,6 +44,10 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           python -m pip install --disable-pip-version-check --only-binary=:all: jsonschema==4.26.0
+      - name: Functional module path and catalog integration
+        if: runner.os == 'Linux'
+        working-directory: construction
+        run: python -B -m unittest negative_scenarios.test_cases route_documentation.test_route_help cross_module_regression.test_runner operator_console.test_console
       - name: Retained fixture and schema behavior
         if: runner.os == 'Linux'
         working-directory: construction
@@ -59,6 +63,14 @@ jobs:
         shell: pwsh
         run: |
           & ./tests/Inspect.Smoke.ps1
+          if (-not $?) { exit 1 }
+          exit 0
+      - name: Native security and path identity guards
+        shell: pwsh
+        run: |
+          & ./tests/CodeSecurity.Boundaries.ps1
+          if (-not $?) { exit 1 }
+          & ./tests/PathIdentity.Guards.ps1
           if (-not $?) { exit 1 }
           exit 0
       - name: Isolated native evidence validation

@@ -35,6 +35,11 @@ No global ignore or silent rebaseline was added.
 
 ## Release boundary
 
+The subsequent [functional naming review](NAMING.md) replaces numbered source
+directories and filenames, updates imports/call paths and records exact moves
+in the cleanup ledger. The historical baseline stays immutable; direct internal
+path users must migrate. Protocol values and CLI entrypoint contracts remain.
+
 The operator version is 1.8.0; the retained wire/protocol version remains 1.0.0.
 This is the first formal GitHub release, not a claim that all experimental
 legacy hosts, Sequence deep queries or real hardware workflows are certified.

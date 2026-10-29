@@ -11,7 +11,7 @@ import unittest
 
 import schema_compat as sc
 
-FIX = Path(__file__).resolve().parent / 'fixtures' / 'ec158'
+FIX = Path(__file__).resolve().parent / 'fixtures' / 'code_insight'
 
 
 def document(raw: bytes) -> dict:
@@ -92,7 +92,7 @@ class CompatibilityCases(unittest.TestCase):
         self.assertEqual(report['identity']['finding_count'], 1)
 
     def test_cli_v1_response_and_unknown_coverage(self) -> None:
-        obj = document((FIX.parent/'ec156'/'success.json').read_bytes())
+        obj = document((FIX.parent/'cli_responses'/'success.json').read_bytes())
         obj['coverage']['new_untrusted_future_flag'] = True
         report = sc.inspect_bytes(record_bytes(obj))
         self.assertTrue(report['compatible_for_offline_read'])
@@ -100,14 +100,14 @@ class CompatibilityCases(unittest.TestCase):
         self.assertTrue(report['advisories'])
 
     def test_inline_checked_schema_unknown_rejected(self) -> None:
-        obj = document((FIX.parent/'ec156'/'success.json').read_bytes())
+        obj = document((FIX.parent/'cli_responses'/'success.json').read_bytes())
         obj['action'] = 'CodeValidate'
         obj['data'] = {'validated':True,'output_schema':'ces.code_insight_checked.v2'}
         report = sc.inspect_bytes(record_bytes(obj))
         self.assertTrue(any(x['code'] == 'UNSUPPORTED_EMBEDDED_VERSION' for x in report['issues']))
 
     def test_inline_codeprepare_packet_tag_and_codesave_identity(self) -> None:
-        obj = document((FIX.parent/'ec156'/'success.json').read_bytes())
+        obj = document((FIX.parent/'cli_responses'/'success.json').read_bytes())
         obj['action'] = 'CodePrepare'
         obj['data'] = {'prepared':True,'review_packet':{'schema_version':'ces.code_packet.v2'}}
         report = sc.inspect_bytes(record_bytes(obj))

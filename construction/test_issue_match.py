@@ -14,7 +14,7 @@ import unittest
 import issue_provider as ip
 import issue_match as match
 
-FIXTURES = Path(__file__).parent / 'fixtures' / 'ec211'
+FIXTURES = Path(__file__).parent / 'fixtures' / 'provider_issues'
 NOW = datetime(2026, 10, 24, 9, 0, tzinfo=timezone.utc)
 TOKEN = 'EC214-SYNTHETIC-SECRET-NOT-REAL'
 

@@ -15,7 +15,7 @@ import issue_create_write as cw
 import issue_unknown_recheck as rc
 import issue_existing_readonly as er
 
-FIX = Path(__file__).resolve().parent / 'fixtures' / 'ec211'
+FIX = Path(__file__).resolve().parent / 'fixtures' / 'provider_issues'
 NOW = datetime(2026, 10, 24, 12, 30, tzinfo=timezone.utc)
 TOKEN = 'SYNTHETIC-ONLY-NOT-A-REAL-TOKEN'
 

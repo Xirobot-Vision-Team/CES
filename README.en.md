@@ -46,6 +46,7 @@ Windows `ces-product.cmd` and `sh ./ces-product` refer to the same operator.
 
 - [Installation and supported scope](docs/INSTALLATION.md)
 - [Architecture](docs/ARCHITECTURE.md)
+- [Source names and path migration](docs/NAMING.md)
 - [Product guide](docs/PRODUCT_GUIDE.md)
 - [Testing and ownership registration](docs/TESTING.md)
 - [Notifications and delivery limits](docs/NOTIFICATIONS.md)

@@ -45,14 +45,14 @@
       "reason": "Header-only private-key negative fixture, not a private key."
     },
     {
-      "path": "construction/ec317_original_rebinding/rebinding.py",
+      "path": "construction/original_rebinding/rebinding.py",
       "line": 112,
       "rule": "private_key_marker",
       "line_sha256": "253db53fcf8487b49b0797e066ea599fd4bf42cee70dcb2a850e104ea06eca7a",
       "reason": "Detection-code literal used to refuse private keys in transfers."
     },
     {
-      "path": "construction/ec317_original_rebinding/rebinding.py",
+      "path": "construction/original_rebinding/rebinding.py",
       "line": 113,
       "rule": "private_key_marker",
       "line_sha256": "6f8a4a069f0c6e64f0cfe73acd2a5afb8a0f3c721e6ec7155af4c1792dca3c73",

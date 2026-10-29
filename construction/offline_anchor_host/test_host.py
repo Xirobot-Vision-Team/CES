@@ -1,0 +1,166 @@
+#!/usr/bin/env python3
+"""EC263 real signed Git + socket/fork/lease; Podman/cgroup MOCK ONLY."""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+from pathlib import Path
+import socket
+import sys
+import time
+import unittest
+from unittest import mock
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from session_host import broker as session
+from cgroup_reaper import supervisor as cg
+from cgroup_metrics import test_session as strict
+from signed_audit_host.audit import AuditLog
+from signed_audit_host.test_host import AuditedSignedSessionTests as previous
+from offline_anchor_host import checkpoint as cp
+from offline_anchor_host import serve as anchored_service
+import quality_run_budget as budget
+
+
+@unittest.skipUnless(os.name == 'posix' and os.geteuid() != 0 and
+                     Path('/usr/bin/git').is_file() and cp.Ed25519PrivateKey is not None,
+                     'nonroot Linux, Git and Ed25519 required')
+class AnchoredRealGitSessionTests(unittest.TestCase):
+    setUp = previous.setUp
+    engine = previous.engine
+    remote = previous.remote
+    begin_request = previous.begin_request
+    join_host = previous.join_host
+    kill_host = previous.kill_host
+    assert_ledger_closed = previous.assert_ledger_closed
+    _prepare = previous._prepare
+    read_events = previous.read_events
+
+    def prepare(self):
+        self._prepare()
+        with AuditLog(str(self.audit_root), str(self.audit_key)) as audit:
+            audit.record('service_start')
+            audit.record('service_closed')
+        self.signing = self.fix.private/'ec263-signer.key'
+        self.public = self.fix.private/'ec263-signer.pub'
+        self.proposal = self.fix.private/'ec263-proposal.json'
+        self.checkpoint = self.fix.private/'ec263-checkpoint.json'
+        pin = cp.generate_offline_keypair(str(self.signing), str(self.public))
+        self.pub_hash = pin['signer_public_sha256']
+        cp.propose(str(self.audit_root), str(self.audit_key),
+                   self.pub_hash, str(self.proposal))
+        result = cp.sign_offline(str(self.proposal), str(self.signing),
+                                 str(self.checkpoint))
+        self.checkpoint_hash = result['checkpoint_sha256']
+        self.args = argparse.Namespace(
+            policy=str(self.fix.policy_path), socket=self.socket,
+            repo=str(self.gitfx.repo), allowlist=str(self.gitfx.allowpath),
+            receipt=str(self.gitfx.output/'source.custody.json'),
+            profile_id='python.pytest', max_sessions=1, accept_timeout=3,
+            audit_root=str(self.audit_root), audit_key=str(self.audit_key),
+            checkpoint=str(self.checkpoint),
+            checkpoint_sha256=self.checkpoint_hash,
+            signer_public_key=str(self.public),
+            signer_public_sha256=self.pub_hash,
+        )
+
+    def start(self):
+        child = os.fork()
+        if child == 0:
+            try:
+                def reap(_pol, _label, _name, container_id, *, recorded, on_bound):
+                    if (container_id != strict.ID or
+                            recorded != self.proof.journal_event()):
+                        raise cg.CgroupError('EC263_TEST_REAP_DRIFT')
+                with mock.patch.object(session.runner, '_runtime_ready', return_value=None), \
+                     mock.patch.object(session.runner, '_runtime_binary', return_value=None), \
+                     mock.patch.object(session.runner, '_run_command', side_effect=self.engine), \
+                     mock.patch.object(cg, 'CGROUP_MOUNT', str(self.root)), \
+                     mock.patch.object(cg, '_mount_root', lambda: None), \
+                     mock.patch.object(cg, '_boot_id', lambda: strict.BOOT), \
+                     mock.patch.object(cg, '_path_for_pid',
+                                       lambda pid: '/user.slice/ces-meter.service'), \
+                     mock.patch.object(cg, 'bind_live',
+                                       lambda pol, identity, label: self.proof), \
+                     mock.patch.object(cg, 'reap_before_remove', side_effect=reap):
+                    anchored_service.run_serve(self.args)
+                os._exit(0)
+            except BaseException:
+                os._exit(5)
+        self.child = child
+        for _ in range(300):
+            if os.path.exists(self.socket):
+                return
+            pid, status = os.waitpid(self.child, os.WNOHANG)
+            if pid == self.child:
+                self.child = None
+                self.fail('EC263 host rejected signed checkpoint before socket: ' +
+                          str(os.waitstatus_to_exitcode(status)))
+            time.sleep(.01)
+        self.fail('EC263 host failed to open socket')
+
+    def test_01_independently_signed_history_allows_signed_git_and_cleanup(self):
+        self.prepare()
+        self.start()
+        with self.remote().begin(self.begin_request()) as client:
+            events = []
+            for _ in range(50):
+                entry = client.poll(80, budget.MAX_CHUNK)
+                events.append(entry)
+                if entry['kind'] == 'exit':
+                    break
+        self.assertEqual(events[-1]['kind'], 'exit')
+        self.join_host()
+        self.assert_ledger_closed()
+        labels = [x['event'] for x in self.read_events()]
+        self.assertIn('begin_authorized', labels)
+        self.assertIn('begin_egress_enqueued', labels)
+        self.assertIn('session_cleanup_state', labels)
+        with cp.AnchoredAudit(str(self.audit_root), str(self.audit_key),
+                              str(self.checkpoint), str(self.public),
+                              self.pub_hash, self.checkpoint_hash,
+                              writable=False) as audit:
+            self.assertEqual(audit.summary()['attested_event_count'], 2)
+            self.assertGreater(audit.summary()['post_checkpoint_unattested_events'], 3)
+
+    def test_02_replaced_checkpoint_before_host_does_not_create_lease_or_socket(self):
+        self.prepare()
+        self.checkpoint.write_bytes(self.checkpoint.read_bytes().replace(b'"nonce":',
+                                                                     b'"nonceX":'))
+        # The main host MUST deny before binding a socket or consuming a lease.
+        with self.assertRaises(cp.AnchorError):
+            anchored_service.run_serve(self.args)
+        self.assertFalse(Path(self.socket).exists())
+        self.assertEqual(list(Path(self.policy['ledger_root']).glob('lease-*')), [])
+
+    def test_03_signed_prefix_mutation_mid_session_ends_host_and_reaps(self):
+        self.prepare()
+        self.engine_wait = 4.0
+        self.start()
+        client = self.remote().begin(self.begin_request())
+        journal_path = self.audit_root/'events.jsonl'
+        raw = journal_path.read_bytes()
+        # Same size; first signed event mutated, so EC262's size check alone
+        # cannot protect the prefix. Our callback must detect this even if a
+        # client is already in a live session.
+        self.assertIn(b'service_start', raw)
+        journal_path.write_bytes(raw.replace(b'service_start', b'service_stArT', 1))
+        client.conn.settimeout(6)
+        try:
+            try:
+                client.poll(80, budget.MAX_CHUNK)
+            except (session.SessionHostError, socket.error):
+                pass
+        finally:
+            client.conn.close()
+        pid, status = os.waitpid(self.child, 0)
+        self.child = None
+        self.assertEqual(os.waitstatus_to_exitcode(status), 5)
+        self.assert_ledger_closed()
+
+
+if __name__ == '__main__':
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(AnchoredRealGitSessionTests)
+    result = unittest.TextTestRunner(verbosity=2).run(suite)
+    raise SystemExit(0 if result.wasSuccessful() else 1)

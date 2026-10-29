@@ -136,7 +136,7 @@
     "tests/CodePrepare.Smoke.ps1": "99a39ccb24d5237a42ec4ed2ac37b6022c971a681bab71baf867367074ef3159",
     "tests/CodeRecurrence.Smoke.ps1": "4d8933e44104f0a7ba7c4b1f7f5d46a9e12acfc3804c6eac6fdde06a85607ed3",
     "tests/CodeSave.Smoke.ps1": "08f0efe48c5abfffa25f75227713f646691b4d014ec458177be6291c5da9eee7",
-    "tests/CodeSecurity.EC157.ps1": "2280fb3cb72f16b4accf89f1e1eb969bcc84a869353431ec47261be41e589be9",
+    "tests/CodeSecurity.Boundaries.ps1": "2280fb3cb72f16b4accf89f1e1eb969bcc84a869353431ec47261be41e589be9",
     "tests/CodeSequence.Smoke.ps1": "95fce2e58598963901eb66b47d7e557a628c4c11b58eb13270cb7f231693aea0",
     "tests/CodeShow.Smoke.ps1": "28577235deab484e13578453072d0d934b374a12b5f29c116cf158dae70c1cda",
     "tests/CodeTrace.Smoke.ps1": "8df622bcf715049dccc8ce3e2e59d7b0a5f95d3cf283c4ecffb406ec7ed39975",
@@ -145,7 +145,7 @@
     "tests/Collect.Smoke.ps1": "884486de8576025feea4a1a6d3b72aceb80a889f1c82264e54c6b4bb0880fcec",
     "tests/DeliveredTarget.Smoke.ps1": "57874d0714549a982368ca425be08c3451e82890f1732888804bd60a4c05db9a",
     "tests/Inspect.Smoke.ps1": "7707d8b03a2dae06137d62501d2692b89a90a67d487e1eddf8eae4fdd2bfd9f9",
-    "tests/PathIdentity.EC159.ps1": "b80f6a50268f03a4e90abfeb855a4188c86de0b387f8e398f99c205aa76f94c7",
+    "tests/PathIdentity.Guards.ps1": "b80f6a50268f03a4e90abfeb855a4188c86de0b387f8e398f99c205aa76f94c7",
     "tests/Reconcile.Smoke.ps1": "ae641659eac141cefd97f4478fae2f35457a70dcb446ac139ebd00e97df53fed"
   }
 }

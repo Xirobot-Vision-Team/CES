@@ -6,21 +6,21 @@
 
 新增 **只读、可复现的 26 个负向测试场景**，运行既有处理器的真正输入边界、返回码和保守失败路径，不经网络、不会接管宿主凭据/授权，也不做业务库写入。
 
-- [运行器](../construction/ec245_cases/run.py)：**独立的开发用场景执行器**，不是 CES 统一业务路由或业务权限网关。`-I -B` Python 在本文件内部只添加固定的 CES `construction/` 路径，依靠 `unittest.mock` 将 socket 连接与 Python 子进程启动设为失败，网络场景仅使用内存 transport/opener。**这不是 OS 沙箱**：无法证明第三方扩展、原生子进程、非 Python 网络通道或所有本地副作用不存在。
-- [场景 fixture](../construction/fixtures/ec245/scenarios.json)：每个场景固定 `id/family/boundary/fault/expected/needs_external`，合成用例预期退出码只可能是 `2/3/4/5`。不包含真实凭据、人员数据或真实私人仓路径。所有期望都需要实际本地 handler 的状态与 reason 精确匹配，禁止自动把 `success` 当作通过的业务事实。
+- [运行器](../construction/negative_scenarios/run.py)：**独立的开发用场景执行器**，不是 CES 统一业务路由或业务权限网关。`-I -B` Python 在本文件内部只添加固定的 CES `construction/` 路径，依靠 `unittest.mock` 将 socket 连接与 Python 子进程启动设为失败，网络场景仅使用内存 transport/opener。**这不是 OS 沙箱**：无法证明第三方扩展、原生子进程、非 Python 网络通道或所有本地副作用不存在。
+- [场景 fixture](../construction/fixtures/negative_scenarios/scenarios.json)：每个场景固定 `id/family/boundary/fault/expected/needs_external`，合成用例预期退出码只可能是 `2/3/4/5`。不包含真实凭据、人员数据或真实私人仓路径。所有期望都需要实际本地 handler 的状态与 reason 精确匹配，禁止自动把 `success` 当作通过的业务事实。
 - [本地场景结果快照](../construction/EC245_LOCAL_REPORT.json)：26 条仅限合成环境的固定状态及验收标记，没有原始处理器私密对象。
-- [专项本地测试](../construction/ec245_cases/test_cases.py)：fixture 参数失真、重复 JSON key、超大 fixture、符号链接、不允许的状态和未知用例全部保守拒绝；同时执行了实际既有 Router、Provider、CI Reader、Delivery Preview、Redaction、Report Render 的负面路径。
-- 新工具位于 `construction/ec245_cases/` **子目录**。它是单独启动的开发测试入口，**不由统一 Router 授权**；EC244 先前 142 个**顶层**直接主入口、74 条 Router 路由、41 门禁与 307 个历史源码 SHA 锁均**未改写**。不得把 EC244 旧时点的完整性清单解释为已覆盖新增 EC245 文件。
+- [专项本地测试](../construction/negative_scenarios/test_cases.py)：fixture 参数失真、重复 JSON key、超大 fixture、符号链接、不允许的状态和未知用例全部保守拒绝；同时执行了实际既有 Router、Provider、CI Reader、Delivery Preview、Redaction、Report Render 的负面路径。
+- 新工具位于 `construction/negative_scenarios/` **子目录**。它是单独启动的开发测试入口，**不由统一 Router 授权**；EC244 先前 142 个**顶层**直接主入口、74 条 Router 路由、41 门禁与 307 个历史源码 SHA 锁均**未改写**。不得把 EC244 旧时点的完整性清单解释为已覆盖新增 EC245 文件。
 
 ## 运行与结果（不触发线上验证）
 
 从工程根目录 `ces/`：
 
 ```sh
-python -I -B construction/ec245_cases/run.py --list
-python -I -B construction/ec245_cases/run.py --run
-python -I -B construction/ec245_cases/run.py --case NET-01 --case PRV-05
-python -I -B -m unittest discover -s construction/ec245_cases -p 'test_*.py' -v
+python -I -B construction/negative_scenarios/run.py --list
+python -I -B construction/negative_scenarios/run.py --run
+python -I -B construction/negative_scenarios/run.py --case NET-01 --case PRV-05
+python -I -B -m unittest discover -s construction/negative_scenarios -p 'test_*.py' -v
 ```
 
 只输出 1 个 JSON 对象（没有原始 HTTP body、异常字符串、密钥、完整输入或原始业务结果）：

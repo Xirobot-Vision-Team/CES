@@ -14,7 +14,7 @@ import finding_save as save
 import finding_schema as fs
 import test_finding_show as earlier
 
-FIX = Path(__file__).resolve().parent / 'fixtures' / 'ec158' / 'ci-example.json'
+FIX = Path(__file__).resolve().parent / 'fixtures' / 'code_insight' / 'ci-example.json'
 
 
 class FindingCorrelationCases(unittest.TestCase):

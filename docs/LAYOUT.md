@@ -3,11 +3,12 @@
 | 位置 | 职责 |
 | --- | --- |
 | operator/ | 三大功能的权威操作实现；不含实际仓库profile或凭据 |
-| scripts/、construction/、references/ | 1.0兼容实现、协议及测试资源；导入路径保留 |
+| scripts/、construction/、references/ | 1.0兼容实现、协议及测试资源；模块使用功能名，协议标识保留 |
 | docs/PRODUCT_GUIDE.md | 当前产品流程和参数指引 |
 | docs/REPOSITORY_SHORTCUTS.md | 四个报告快捷指令及手动知识扩展路由 |
 | references/knowledge-expansion.md | 分批扩大知识覆盖、预算与接续进度 |
 | docs/NOTIFICATIONS.md | GitHub原生指派、提及及收件确认边界 |
+| docs/NAMING.md、tools/path_migrations.json | 文件命名约定、直接导入路径迁移及完整改名对照 |
 | docs/VALIDATION.md、BASELINE.md | 1.0历史验收与整理快照，不是当前全功能通过证明 |
 | tools/verify_product.py、PRODUCT_SHA256.json | 当前产品文件一致性与旧协议实现独立比较 |
 | tools/verify_baseline.py、BASELINE_SHA256.json | 原1.0整包历史字节比较 |
