@@ -12,3 +12,5 @@ security boundary records, schemas and behavioral tests remain where consumed.
 See [cleanup scope](../docs/CLEANUP.md) and tools/legacy_cleanup.json for the
 reviewed removal/replacement inventory. Tests here are platform-specific;
 not every experimental host is part of the supported operator release.
+
+Round-specific fixture notes have also been consolidated into [one test-data guide](fixtures/README.md); executable implementations/tests and actual fixture data remain. There are no tracked execution logs here.

@@ -75,7 +75,7 @@ python construction/ai_handoff_router.py --schema-only /private/prepared.json \
   --allow-content-for WorkingTree --approve-route --approve-read
 ```
 
-无真实stage/输入、缺source grant或未准备好私有POSIX目录将得到拒绝响应；上例是操作模板，不是已有可用对象。另见[合成用例说明](../construction/fixtures/ec174/README.md)、[`test_ai_handoff_router.py`](../construction/test_ai_handoff_router.py)；用例中的回调完全是**内存合成字节**，并没有外部模型调用。
+无真实stage/输入、缺source grant或未准备好私有POSIX目录将得到拒绝响应；上例是操作模板，不是已有可用对象。另见[合成用例说明](../construction/fixtures/README.md)、[`test_ai_handoff_router.py`](../construction/test_ai_handoff_router.py)；用例中的回调完全是**内存合成字节**，并没有外部模型调用。
 
 ## 最终延期验证
 

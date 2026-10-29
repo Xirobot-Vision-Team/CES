@@ -4,7 +4,7 @@
   "selection_rule": "ONLY_PINNED_LOCAL_CONTRACT_AND_EXACT_ROOT_MARKER; NEVER_REMOTE_RESOLUTION_OR_AUTOMIGRATION",
   "legacy_codeinsight": {
     "policy_path": "references/schema-compatibility.v1.json",
-    "policy_sha256": "7538ea39d17be06f3add0ee28dd920ed637bf3a40da6107f2879953bfab58756",
+    "policy_sha256": "92f9fb9f1f90584c29b3d31019fde7ab61a64c17e3858ebe214e2491f417c8c4",
     "reader_path": "construction/schema_compat.py",
     "reader_sha256": "1643ee95777f4a95a5fe0699193d5e67755be65d4d22284031243c58bdb29456",
     "kinds": [

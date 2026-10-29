@@ -29,7 +29,7 @@ python construction/proposed_pr_source.py --provider gitlab --repository group/s
 
 统一JSON根字段 `schema/status/reason_code/exit_code/message/source/synthetic/native_cli_action_registered/write_authorized`。离线或错误时`source:null`，不产生可误当PR的“默认对象”；非法输入`invalid_input/4`，不可访问/无密钥/网络/字段不完整`unavailable/5`。仅真的读取到符合有限字段契约的Provider响应时才`success/0`；此处`success`**只指一次受限元数据读取，不代表PR身份绑定、diff快照认证或真实合并交付**。
 
-测试中使用显式注入的传输器必返回`synthetic:true`和`source.origin:synthetic_fixture`；两份fixture在[`../construction/fixtures/ec161/README.md`](../construction/fixtures/ec161/README.md)注明全部伪造。用模拟传输对象得到`success/0`也不可称真实联网成功。正常CLI不支持输入fixture替代远端。出于谨慎，源码允许的`_ces_fixture`标记在正常HTTPS返回时会强制拒绝。
+测试中使用显式注入的传输器必返回`synthetic:true`和`source.origin:synthetic_fixture`；两份fixture在[`../construction/fixtures/README.md`](../construction/fixtures/README.md)注明全部伪造。用模拟传输对象得到`success/0`也不可称真实联网成功。正常CLI不支持输入fixture替代远端。出于谨慎，源码允许的`_ces_fixture`标记在正常HTTPS返回时会强制拒绝。
 
 下列不是本EC161入口工作：EC162身份/SHA事实约束已在独立[`proposed_pr_identity.py`](../construction/proposed_pr_identity.py)实现（见[`proposed-pr-identity.md`](proposed-pr-identity.md)），不改变此处的metadata-only身份级别；EC163文件状态和更名清单、EC164敏感patch开关、EC165分页/快照、原生`Collect:ProposedPR`集成、外部账号actor认证、远程写、Issue/Delivery。所有旧CodeSave授权依然由原CLI掌管，任何来源响应都不得授予它写资格。
 

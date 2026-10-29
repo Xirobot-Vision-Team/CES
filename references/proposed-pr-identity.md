@@ -54,7 +54,7 @@ python construction/proposed_pr_identity.py --provider gitlab --repository group
 
 没有实现EC163的file status/rename/list、EC164 patch、EC165分页一致快照/ETag或PR被force-push后的原子快照；没有Issue、Delivery、provider actor认证、任何远程write、本地CodeSave权限提升或原生Collect路由。旧7个Action家族/16路由/29条未来未实装模式以及原PowerShell`V4.60/R150`均保持不变。
 
-本轮仅使用[EC161的合成fixture](../construction/fixtures/ec161/README.md)及严格隔离的本地临时Git仓做有针对性的开发调试。**真实Provider API/凭据、Windows/macOS Git、PowerShell7原生、15套Smoke、E63–E66和最终用户联合验收均待最后统一进行**，不能把离线用例或两次自报当成真源证明。
+本轮仅使用[EC161的合成fixture](../construction/fixtures/README.md)及严格隔离的本地临时Git仓做有针对性的开发调试。**真实Provider API/凭据、Windows/macOS Git、PowerShell7原生、15套Smoke、E63–E66和最终用户联合验收均待最后统一进行**，不能把离线用例或两次自报当成真源证明。
 
 Provider原始API说明：[GitHub Pulls REST](https://docs.github.com/en/rest/pulls/pulls)；[GitLab Merge requests API](https://docs.gitlab.com/api/merge_requests/)（其中`diff_refs`定义了base/head/start的不同含义）。
 

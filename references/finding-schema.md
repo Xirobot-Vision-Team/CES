@@ -72,4 +72,4 @@ counter_evidence = [
 
 1. `project()` **至少两次实际调用 EC175**，验证前序完整来源与未签名 receipt 的全稳定字段，再取源构建反证，按需读 EC176 并最后重验。状态正面只返回 `partial/2`；任何拒绝是 `invalid_input/4` 或 `unavailable/5` 且空 Finding。真实凭据泄漏/恶意同 UID/秘钥托管、源镜像实际内容、远程 actor 和 Git/CI 不是本组件可认证的对象。
 2. JSON Schema 2020-12 描述**正面的 partial 响应**，禁止任何 `ACTUALLY_TESTED` 或 `semantic_truth` 正面声称。Schema 匹配和输出 unkeyed `projection_sha256` 只是结构、内容一致性；**不能作为第三方独立签字或写入许可**。下游 EC178 必须重新从原始私有来源核验证据并申请新的持久化授权，而不是盲收任意投影 JSON。
-3. 无机器执行、不使用网络或插件，不操作业务 repo；真实外部 Provider/reviewer、完整 PowerShell/native、跨OS攻击和最终联验延后用户协助。开发合成用例详见 [`construction/fixtures/ec177/README.md`](../construction/fixtures/ec177/README.md) 和 [`EC-177.md`](../EC-177.md)。
+3. 无机器执行、不使用网络或插件，不操作业务 repo；真实外部 Provider/reviewer、完整 PowerShell/native、跨OS攻击和最终联验延后用户协助。开发合成用例详见 [`construction/fixtures/ec177/README.md`](../construction/fixtures/README.md) 和 [`EC-177.md`](../EC-177.md)。

@@ -1,5 +1,0 @@
-# EC-209 in-memory and temporary private-filesystem integration fixtures
-
-`construction/test_knowledge_save_retry.py` uses the **real EC-206 candidate store, EC-207 per-selection read grant/handoff and EC-208 private POSIX immutable version writer** in a disposable temporary directory. The two Ed25519 private keys are generated only inside the test process and are never included in the distribution. It covers valid current head, disjoint concurrent chapter edits with fresh grant/signature save, target modification and ABA revert, stale historical parent/target SHA, used save keys, explicit retry intent/permission pinning, race between prepare and save, source manifest/bytes drift, missing EC-207 read permission and restricted content.
-
-No real CES knowledge, Git/Issues/Provider, organizational reviewer authority or publication is touched. Offline fixtures are engineering development observations only; they cannot establish production security or final user-assisted acceptance. Do **not** fabricate EC209 grant/signatures for live use from these local test helpers.

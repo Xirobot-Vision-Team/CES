@@ -40,6 +40,6 @@ python construction/quality_detect.py \
 
 ## 离线开发校验与后续交接
 
-本轮用于功能迭代的开发自检：`python construction/test_quality_detect.py -q`，合成临时目录和严格 JSON Schema；详见 [`fixtures/ec181/README.md`](../construction/fixtures/ec181/README.md) 及 [`EC-181.md`](../EC-181.md)。这**不等于**原 PowerShell7、15套 Smoke、Windows/macOS、真实 Git/CI、跨OS hostile FS、E63～E66 性能、原始上游 B-001 补证或全功能联合验收。
+本轮用于功能迭代的开发自检：`python construction/test_quality_detect.py -q`，合成临时目录和严格 JSON Schema；详见 [`fixtures/ec181/README.md`](../construction/fixtures/README.md) 及 [`EC-181.md`](../EC-181.md)。这**不等于**原 PowerShell7、15套 Smoke、Windows/macOS、真实 Git/CI、跨OS hostile FS、E63～E66 性能、原始上游 B-001 补证或全功能联合验收。
 
 下轮 **EC182** 仅 `QualityReadCI` 只读来源抽象/权限/时间及真实可验证结果边界；**不可**将本轮本地配置提示伪装为远端 CI 结果。

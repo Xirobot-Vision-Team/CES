@@ -1,7 +1,0 @@
-# EC186 — synthetic authorization and isolation protocol fixtures
-
-The only executable development fixtures are isolated Python tests in [`../../test_quality_run_guard.py`](../../test_quality_run_guard.py). No bearer token, real operator credential, broker key, production profile grant or reserved executor is included in this directory. The tests generate ephemeral *synthetic* tickets under distinct test-only policy/broker keys and exercise real POSIX EC181 root pinning in temporary directories; production must supply its own trusted broker and issue short-lived scoped tickets.
-
-Case coverage: allowed code-owned `python.pytest` and `python.ruff` profiles; all separate opt-ins; unknown/malicious command-like profile strings; signed/unsigned/tampered/mismatched/grant-specific tickets; role-separated keys; missing/expired/future/overlong leases; exact isolation controls including JSON-number-as-bool attempts; host approval revocation at every phase, exceptions and `True`-only permission; root path, symlink, stale/mismatched pin, swapping root after host callbacks, final clock expiry; non-authoritative matched or forged EC185 hint; denial that nulls all fields, schema forbidding PASS and executable commands, source package-script inertness.
-
-Expected positive result is **only `partial/2`** with no actual execution and negative source/sandbox/test-quality proof flags. Do not promote these development checks to real runner integrity, live CI, benchmark or native PowerShell acceptance.
