@@ -85,4 +85,7 @@ python3 -I -B construction/ec250_finding_host/broker.py query \
 - 服务端串行处理，单请求 16KiB，响应 256KiB，策略 128KiB、最多 128 个 grant、最多 100 个请求/进程、Socket 单请求读超时 5 秒；不提供多机可用性、分布式令牌、真实企业权限、硬 CPU/磁盘/内存配额或服务审计账本。它没有主动网络外传和业务仓写指令；但授权客户端会通过本地 IPC 收到查询元数据，必须遵从真实企业隐私策略。
 - **本地实测**：Linux 容器内 10 条当轮专项用例，包含真实生成的 EC178 HMAC 账本 → AF_UNIX Server → SO_PEERCRED → UID+Binding 授权 → 真实 FindingShow 查找和禁止泄露验证。它只证明本地合成用例；不代表企业/宿主/Provider/OS/性能/Windows/macOS/PowerShell7/E63–E66 的正式验收。
 
-开发测试：`python3 -I -B construction/ec250_finding_host/test_broker.py`。原 EC249 [未完成判定](ec249-full-function-readiness.md) 是 R249 的历史事实；其正式冻结阻塞条件**没有因本轮单一路由功能实现而消失**。新的 R250 施工记录见 [EC250](../EC-250.md)，当前下轮状态见 [NEXT_ROUND](../construction/NEXT_ROUND.md)。
+开发测试：`python3 -I -B construction/ec250_finding_host/test_broker.py`。原 EC249 未完成判定（历史记录，见清理前Git历史） 是 R249 的历史事实；其正式冻结阻塞条件**没有因本轮单一路由功能实现而消失**。新的 R250 施工记录见 EC250（历史记录，见清理前Git历史），当前下轮状态见 NEXT_ROUND（历史记录，见清理前Git历史）。
+
+
+> Release 1.8.0: obsolete construction plans, progress/completion logs and their one-time checkers were retired. This document describes retained implementation boundaries; historical acceptance statements are not current release claims.

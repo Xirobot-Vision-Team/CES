@@ -31,7 +31,8 @@ python -B tools/release_check.py
   directories, notification receipts, private repository names or datasets.
 
 Describe the problem, final behavior, tests run and remaining limits in a PR.
-Maintainers review changes before merging; no auto-merge policy is implied.
+The delegated AI maintainer reviews changes before merging; see
+[GOVERNANCE.md](GOVERNANCE.md) for self-authored PR review and CI requirements.
 
 ## License and contributions
 

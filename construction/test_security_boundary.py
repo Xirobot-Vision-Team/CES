@@ -60,21 +60,20 @@ class SecurityBoundarySourceTests(unittest.TestCase):
         self.assertIn("if ($IsWindows -or $IsMacOS)", self.save)
         self.assertIn("Test-CodeSaveRegularItem -Path $records -Directory $true", store)
 
-    def test_frozen_r150_stays_frozen_and_current_digest_matches_review_receipt(self):
+    def test_current_baseline_and_historical_drift_chain_are_separate(self):
         baseline = json.loads((ROOT / "construction/SOURCE_BASELINE.json").read_text())
         self.assertEqual(self.ledger["ec"], "EC-157")
         for path, record in self.ledger["changed_powershell_sources"].items():
             old = baseline["fingerprints"][path]
             new = hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
-            self.assertNotEqual(new, old)
-            self.assertEqual(record["r150_sha256"], old)
+            self.assertEqual(new, old)
+            historical_base = record["r150_sha256"]
+            historical_current = self.current_review["changed_powershell_sources"][path]["current_sha256"]
             self.assertEqual(record["current_sha256"], self.current_review["changed_powershell_sources"][path]["previous_sha256"])
-            self.assertNotEqual(record["current_sha256"], new)
-            self.assertTrue(_ec157_reviewed_drift(ROOT, path, old, record["current_sha256"]))
-            self.assertFalse(_ec157_reviewed_drift(ROOT, path, old, new))
-            self.assertTrue(_ec159_reviewed_drift(ROOT, path, old, new))
-            self.assertFalse(_ec159_reviewed_drift(ROOT, path, old, "0"*64))
-            self.assertFalse(_ec159_reviewed_drift(ROOT, path, "1"*64, new))
+            self.assertTrue(_ec157_reviewed_drift(ROOT, path, historical_base, record["current_sha256"]))
+            self.assertTrue(_ec159_reviewed_drift(ROOT, path, historical_base, historical_current))
+            self.assertFalse(_ec159_reviewed_drift(ROOT, path, historical_base, "0"*64))
+            self.assertFalse(_ec159_reviewed_drift(ROOT, path, "1"*64, historical_current))
 
     def test_old_response_wire_contract_remains_aligned(self):
         result = source_alignment(load_contract())
@@ -90,8 +89,8 @@ class SecurityBoundarySourceTests(unittest.TestCase):
         self.assertEqual(save[0]["effect"], "LOCAL_CES_METADATA_WRITE_WITH_EXPLICIT_AUTHORIZATION")
         check = check_registry(registry)
         self.assertEqual(check["verdict"], "STATIC_CONTRACT_MATCH", check["problems"])
-        self.assertEqual(check["details"]["cli_source_provenance"], "REVIEWED_EC159_DRIFT_WITH_PRESERVED_EC157")
-        self.assertEqual(check["details"]["codesave_source_provenance"], "REVIEWED_EC159_DRIFT_WITH_PRESERVED_EC157")
+        self.assertEqual(check["details"]["cli_source_provenance"], "UNCHANGED_BASELINE")
+        self.assertEqual(check["details"]["codesave_source_provenance"], "UNCHANGED_BASELINE")
 
     def test_risk_register_never_calls_unrun_native_cases_pass(self):
         self.assertEqual(self.boundaries["native_cases_status"], "NOT_RUN_NO_PWSH_IN_BUILDER")

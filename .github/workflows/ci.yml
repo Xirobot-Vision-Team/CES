@@ -33,6 +33,13 @@ jobs:
         run: python -B -m unittest discover -s operator -p "test_*.py"
       - name: Release-tool regression tests
         run: python -B -m unittest discover -s tools -p "test_release_tools.py"
+      - name: Retained compatibility behavior
+        if: runner.os == 'Linux'
+        working-directory: construction
+        run: python -B -m unittest test_action_registry test_trace_actions test_security_boundary test_sequence_audit test_response_contract test_unified_action_router
+      - name: Retained source and authorization audit
+        if: runner.os == 'Linux'
+        run: python -B construction/security_permission_audit.py --summary
   native-smoke:
     runs-on: windows-latest
     timeout-minutes: 15

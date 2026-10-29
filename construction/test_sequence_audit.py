@@ -24,7 +24,7 @@ class StaticSequenceAuditFixture(unittest.TestCase):
 
     def test_real_import_chain_and_k56_regression_keys(self):
         audit = self.actual
-        self.assertEqual(audit['source_evidence']['cli_dot_source_modules'], 123)
+        self.assertEqual(audit['source_evidence']['cli_dot_source_modules'], 124)
         self.assertEqual(audit['source_evidence']['k_modules'], 56)
         self.assertEqual(audit['source_evidence']['original_sha_mismatches'], [])
         self.assertEqual(len(audit['k_chain']), 56)
@@ -92,7 +92,7 @@ class StaticSequenceAuditFixture(unittest.TestCase):
             return raw
         with patch.object(seq, 'source_bytes', side_effect=injected):
             audit = seq.build_audit()
-        self.assertEqual(audit['source_evidence']['cli_dot_source_modules'], 124)
+        self.assertEqual(audit['source_evidence']['cli_dot_source_modules'], self.actual['source_evidence']['cli_dot_source_modules'] + 1)
         self.assertEqual(audit['source_evidence']['ec151_cli_dot_source_modules'], 123)
         self.assertFalse(audit['source_evidence']['ec151_cli_imports_match_current'])
         self.assertIn('scripts/registry_future.ps1',

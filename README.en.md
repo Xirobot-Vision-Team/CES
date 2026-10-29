@@ -60,3 +60,5 @@ isolated fixtures and no live project credentials.
 
 Licensed under Apache-2.0. See [LICENSE](LICENSE), [NOTICE](NOTICE) and
 [third-party information](THIRD_PARTY.md).
+
+Release preparation: **1.8.0**. See [cleanup and release scope](docs/CLEANUP.md).

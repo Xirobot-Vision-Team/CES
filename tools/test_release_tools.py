@@ -1,9 +1,12 @@
 """Release checks against temporary synthetic source trees only."""
 import contextlib,io,json,tempfile,unittest
+import hashlib,tarfile,zipfile
+from unittest.mock import patch
 from pathlib import Path
 import prepare_release as p
 import release_check as r
 import verify_product as v
+import build_release as b
 
 class ReleaseTests(unittest.TestCase):
     def setUp(self):
@@ -70,5 +73,55 @@ class ReleaseTests(unittest.TestCase):
     def test_no_git_directory_in_current_manifest(self):
         self.write('.git/config','local data');self.write('README.md','source')
         self.assertNotIn('.git/config',v.collect(self.root))
+    def cleanup(self,removed=None,modified=None):
+        self.write('tools/legacy_cleanup.json',json.dumps(dict(schema='ces.legacy_cleanup.v1',removed=removed or [],modified=modified or [])))
+    def test_explicit_retirement_preserves_historical_baseline(self):
+        self.source();path=self.root/'scripts/core.py';baseline=v.collect_file_hash(path);path.unlink()
+        self.cleanup([dict(path='scripts/core.py',baseline_sha256=baseline,reason='Retired one-time checker')])
+        errors,_=v.legacy_review(self.root,v.collect(self.root));self.assertEqual(errors,[])
+    def test_unlisted_missing_protocol_file_still_fails(self):
+        self.source();(self.root/'scripts/core.py').unlink()
+        errors,_=v.legacy_review(self.root,v.collect(self.root));self.assertIn('scripts/core.py',errors)
+    def test_retired_file_cannot_silently_return(self):
+        self.source();baseline=v.collect_file_hash(self.root/'scripts/core.py')
+        self.cleanup([dict(path='scripts/core.py',baseline_sha256=baseline,reason='Retired checker')])
+        errors,_=v.legacy_review(self.root,v.collect(self.root));self.assertIn('RETIRED_FILE_REINTRODUCED:scripts/core.py',errors)
+    def test_reviewed_modification_rejects_subsequent_drift(self):
+        self.source();path=self.root/'scripts/core.py';baseline=v.collect_file_hash(path);path.write_text('reviewed')
+        self.cleanup(modified=[dict(path='scripts/core.py',baseline_sha256=baseline,current_sha256=v.collect_file_hash(path),reason='Exact reviewed inventory update')])
+        self.assertEqual(v.legacy_review(self.root,v.collect(self.root))[0],[])
+        path.write_text('different')
+        self.assertIn('REVIEWED_LEGACY_FILE_CHANGED:scripts/core.py',v.legacy_review(self.root,v.collect(self.root))[0])
+    def test_wrong_baseline_or_unprotected_path_is_not_an_exception(self):
+        self.source();self.cleanup([dict(path='scripts/core.py',baseline_sha256='0'*64,reason='invalid')])
+        self.assertIn('INVALID_LEGACY_CLEANUP:scripts/core.py',v.legacy_review(self.root,v.collect(self.root))[0])
+        self.cleanup([dict(path='../outside',baseline_sha256='0'*64,reason='invalid')])
+        self.assertIn('INVALID_LEGACY_CLEANUP:../outside',v.legacy_review(self.root,v.collect(self.root))[0])
+    def release_fixture(self):
+        self.source();self.write('PRODUCT_SHA256.json',json.dumps(dict(sha256={name:v.collect_file_hash(self.root/name) for name in ['PRODUCT.json','ces-product','operator/sample.py','scripts/core.py']})))
+    def test_release_archives_have_only_manifest_files_and_same_bytes(self):
+        self.release_fixture();self.write('private-unlisted.txt','never archive')
+        with patch.object(b.release_check,'check',return_value=dict(status='PASS')):result=b.build(self.root,Path(self.tmp.name)/'assets')
+        with zipfile.ZipFile(result['assets'][0]) as archive:
+            self.assertEqual(len(archive.namelist()),5)
+            self.assertFalse(any('private' in name for name in archive.namelist()))
+            self.assertEqual(archive.read('CES-1.7.0/operator/sample.py'),(self.root/'operator/sample.py').read_bytes())
+        with tarfile.open(result['assets'][1]) as archive:self.assertEqual(archive.getmember('CES-1.7.0/ces-product').mode,0o755)
+    def test_release_archives_are_reproducible(self):
+        self.release_fixture()
+        with patch.object(b.release_check,'check',return_value=dict(status='PASS')):
+            first=b.build(self.root,Path(self.tmp.name)/'a');second=b.build(self.root,Path(self.tmp.name)/'b')
+        for x,y in zip(first['assets'],second['assets']):self.assertEqual(Path(x).read_bytes(),Path(y).read_bytes())
+    def test_release_check_failure_prevents_packaging(self):
+        self.release_fixture()
+        with patch.object(b.release_check,'check',return_value=dict(status='FAIL')):
+            with self.assertRaisesRegex(RuntimeError,'check failed'):b.build(self.root,Path(self.tmp.name)/'assets')
+        self.assertFalse((Path(self.tmp.name)/'assets').exists())
+    def test_release_output_cannot_pollute_source_or_overwrite_assets(self):
+        self.release_fixture()
+        with self.assertRaisesRegex(RuntimeError,'outside'):b.build(self.root,self.root/'assets')
+        output=Path(self.tmp.name)/'assets';output.mkdir()
+        with patch.object(b.release_check,'check',return_value=dict(status='PASS')):
+            with self.assertRaises(FileExistsError):b.build(self.root,output)
 
 if __name__=='__main__':unittest.main(verbosity=2)

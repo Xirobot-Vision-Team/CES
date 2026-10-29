@@ -39,3 +39,7 @@ remote CI result is available. Local checks do not establish GitHub CI success.
 Do not attach private raw logs or project execution receipts as public artifacts.
 Publishing, changing visibility or creating a remote repository is outside the
 source-preparation command and requires the operator's chosen target.
+
+## 1.8.0 cleanup
+
+Obsolete construction plans, progress/completion snapshots and their one-time checkers are retired. Runtime modules, protocol definitions and meaningful regression tests remain. tools/legacy_cleanup.json records exact removed baseline hashes and reviewed replacement hashes; the original BASELINE_SHA256.json is not rewritten. Undeclared drift and reintroduced retired files still fail integrity checks. See CLEANUP.md.

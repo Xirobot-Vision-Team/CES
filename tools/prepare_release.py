@@ -11,9 +11,8 @@ def prepare(source,destination):
     source=source.resolve();destination=destination.absolute()
     if destination.exists() or destination.resolve().is_relative_to(source):raise RuntimeError('Destination must be a new directory outside the product tree')
     # Preserve legacy protocol bytes; these are not sanitized or rebaselined.
-    baseline=json.loads((source/'BASELINE_SHA256.json').read_text(encoding='utf-8'))
-    for name,expected in baseline['sha256'].items():
-        if name.startswith(('scripts/','construction/','references/')) and verify_product.collect_file_hash(source/name)!=expected:raise RuntimeError('Protected legacy source changed: '+name)
+    violations,_=verify_product.legacy_review(source,verify_product.collect(source))
+    if violations:raise RuntimeError('Protected legacy source changed: '+','.join(violations))
     destination.mkdir(parents=True);omitted=[];count=0
     for path in source.rglob('*'):
         rel=path.relative_to(source);name=rel.as_posix()
@@ -28,7 +27,8 @@ def prepare(source,destination):
         target=destination/rel;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw);count+=1
     (destination/'ces-product').chmod(0o755)
     product=json.loads((destination/'PRODUCT.json').read_text(encoding='utf-8'))
-    release=dict(schema='ces.public_source_release.v1',operator_version=product['operator_version'],license='Apache-2.0',prepared_at=datetime.now(timezone.utc).isoformat(),project_data_included=False,git_history_included=False,protected_legacy_bytes_preserved=True,omitted_paths=sorted(omitted),normalization='LF for maintained files; protected scripts/construction/references unchanged',historical_validation='deployment path-bearing JSON omitted; human-readable historical summary retained with its known failures')
+    cleanup=(source/'tools/legacy_cleanup.json').is_file()
+    release=dict(schema='ces.public_source_release.v1',operator_version=product['operator_version'],license='Apache-2.0',prepared_at=datetime.now(timezone.utc).isoformat(),project_data_included=False,git_history_included=False,protected_legacy_bytes_preserved=not cleanup,legacy_cleanup_ledger='tools/legacy_cleanup.json' if cleanup else None,omitted_paths=sorted(omitted),normalization='LF for maintained files; retained compatibility source bytes preserved subject to explicit cleanup ledger',historical_validation='deployment path-bearing JSON omitted; human-readable historical summary retained with its known failures')
     (destination/'RELEASE.json').write_text(json.dumps(release,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     actual=verify_product.collect(destination);actual.pop('PRODUCT_SHA256.json',None)
     manifest=dict(schema='ces.product_manifest.v1',operator_version=product['operator_version'],legacy_core_version='1.0.0',created_at=release['prepared_at'],sha256=dict(sorted(actual.items())))

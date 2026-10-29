@@ -69,4 +69,7 @@ python3 -I -B construction/ec247_regression/test_runner.py
 - Cycle 私有仓在一次性 `TemporaryDirectory` 中创建，开发机允许的本地磁盘元数据写**不是对任何用户业务源或仓库的写权限**。不能把 Python Router 的 `handler_invoked`、`partial` 或自报测试状态当作宿主授权/实际成功证明；同 UID 文件系统恶意并发、临时文件磁盘硬限额和无外网 OS sandbox 都没有在这里得到证明。
 - 原始 V3.10 冻结总规格与原 `ROUNDS.json` 缺失的 B001 仍保持 OPEN；计划状态不得用本轮场景覆盖率掩盖这一缺口。
 
-**本轮交付文件：** [`EC-247.md`](../EC-247.md)、[`runner.py`](../construction/ec247_regression/runner.py)、[`test_runner.py`](../construction/ec247_regression/test_runner.py)、[`manifest.json`](../construction/fixtures/ec247/manifest.json)、四份固定输入文件、[`LEGACY_REGRESSION_RESULTS.json`](../construction/LEGACY_REGRESSION_RESULTS.json)、原文件逐条 SHA 留存 receipt。下轮只施工 EC248（CodeShow 兼容/性能），不得误记作当轮已完成。
+**本轮交付文件：** `EC-247.md`（历史记录，见清理前Git历史）、[`runner.py`](../construction/ec247_regression/runner.py)、[`test_runner.py`](../construction/ec247_regression/test_runner.py)、[`manifest.json`](../construction/fixtures/ec247/manifest.json)、四份固定输入文件、`LEGACY_REGRESSION_RESULTS.json`（历史记录，见清理前Git历史）、原文件逐条 SHA 留存 receipt。下轮只施工 EC248（CodeShow 兼容/性能），不得误记作当轮已完成。
+
+
+> Release 1.8.0: obsolete construction plans, progress/completion logs and their one-time checkers were retired. This document describes retained implementation boundaries; historical acceptance statements are not current release claims.

@@ -48,7 +48,7 @@ not part of this source distribution.
 the protected `scripts/`, `construction/` and `references/` implementation. It is
 not rewritten to conceal changes.
 
-The public release preserves these protected bytes. Deployment-only verification
+The release preserves retained runtime bytes; intentional cleanup of obsolete construction records and exact reviewed metadata/test changes is recorded in tools/legacy_cleanup.json. Deployment-only verification
 records are removed from the public view and listed in `RELEASE.json`. The
 released source has its own regenerated current manifest; this is a disclosed
 source-package projection, not an assertion that historical runs were repeated.
@@ -56,3 +56,7 @@ source-package projection, not an assertion that historical runs were repeated.
 The large legacy tree includes experimental protocols and tests. Its presence
 does not imply production support, working external hosts or universal test
 coverage. See KNOWN_ISSUES.md and historical VALIDATION.md.
+
+## 1.8.0 cleanup
+
+Obsolete construction plans, progress/completion snapshots and their one-time checkers are retired. Runtime modules, protocol definitions and meaningful regression tests remain. tools/legacy_cleanup.json records exact removed baseline hashes and reviewed replacement hashes; the original BASELINE_SHA256.json is not rewritten. Undeclared drift and reintroduced retired files still fail integrity checks. See CLEANUP.md.
