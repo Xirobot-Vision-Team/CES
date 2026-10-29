@@ -11,7 +11,7 @@
     ".github/ISSUE_TEMPLATE/feature_request.yml": "2183e5f9ec1c75f552e6b1e0798e5c9984774f2d673476b34e7cb694b659d6f9",
     ".github/PULL_REQUEST_TEMPLATE.md": "962f7a0011ce1c2967732d329d90614d8599b02aa611ab0baf895176aa0d0ce2",
     ".github/dependabot.yml": "aaf91c282576bf5d4c3248ea6d057e204f1d04480982a5b5f4e042f83742704b",
-    ".github/workflows/ci.yml": "ebc4fa14afdbd4e84401cda412061838e8c53549f8a56a8f8ee334a0375a2442",
+    ".github/workflows/ci.yml": "b857bdc7e1f99510df3352434a021c9a67d744e795a1ea7ab48ccb4024bbea7d",
     ".gitignore": "812ac061a3857750c7a19dc757f51d30e515d20ac8e37e73c5f5b20eae41ec30",
     "BASELINE_SHA256.json": "cb94b21205a91399cdc843f195913e4381e20ced760ca30b6ba51c9d2d42afe9",
     "CHANGELOG.md": "d2006c765e432bd4ee723bf5565c3f533c916ed298122e4fd2afe517aa34e625",
