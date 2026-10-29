@@ -807,27 +807,12 @@
     }
   ],
   "construction_tooling": {
-    "source_inventory_and_dependency_audit": {
-      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
-      "implemented_in": "EC-151",
-      "entry": "construction/source_audit.py",
-      "scope": "Offline 305-path archive/source inventory and static literal PowerShell import graph; not a CES CLI action",
-      "native_runtime_validation": "NOT_RUN"
-    },
     "authored_action_source_trace": {
       "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
       "implemented_in": "EC-152",
       "entry": "construction/trace_actions.py",
       "trace": "construction/ACTION_TRACE.json",
       "scope": "Offline lookup and static source mapping of 7 authored CLI action families, 16 modes, parameters, envelope highlights and 15 primary Smoke suites. Not a CES CLI action registry or runtime proof.",
-      "native_runtime_validation": "NOT_RUN"
-    },
-    "upstream_source_gap_reconciliation": {
-      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
-      "implemented_in": "EC-153",
-      "entry": "construction/upstream_gap.py",
-      "ledger": "construction/LEGACY_UPSTREAM_GAP.json",
-      "scope": "Offline inventory-bounded absence and user-supplied original-candidate SHA/structural overlap diff; never authenticates source, never edits plan or closes B-001; not a CES CLI Action.",
       "native_runtime_validation": "NOT_RUN"
     },
     "codeshow_sequence_k1_56_source_audit": {
@@ -871,13 +856,6 @@
       "contract": "references/path-identity.v1.json",
       "guide": "references/path-identity.md",
       "scope": "Real shared PowerShell local path/worktree re-probe, evidence ancestry, non-authoritative scoped actor claims and path diagnostic redaction; loaded by original CLI; no new Action, no provider attestation or write permission.",
-      "native_runtime_validation": "NOT_RUN"
-    },
-    "phase_a_construction_gate": {
-      "status": "IMPLEMENTED_PENDING_FINAL_ACCEPTANCE",
-      "implemented_in": "EC-160",
-      "entry": "construction/stage_a_gate.py",
-      "scope": "Read-only offline consolidated gate with machine PASS_STATIC/BLOCKED, stable reason codes and distinct NOT_RUN_NATIVE axis; blocks unreviewed R150/EC157/EC159 source drift, missing/static broken modules/routes/wire/archive/plan, and records external prerequisites without treating them as native success",
       "native_runtime_validation": "NOT_RUN"
     },
     "proposed_pr_readonly_source_adapter": {
@@ -3222,20 +3200,6 @@
     "exported_individual_request_examples": 13,
     "environment_boundaries": "native/OS/enterprise/provider/E63-E66/final NOT_RUN",
     "guide": "references/ec247-cross-module-regression.md"
-  },
-  "ec249_completion_decision": {
-    "schema": "ces.ec249.full_function_determination.v1",
-    "entry": "construction/ec249_completion/decision.py",
-    "result": "construction/EC249_COMPLETION_DECISION.json",
-    "decision": "FULL_FUNCTION_NOT_COMPLETE",
-    "completed_authoring_rounds": 99,
-    "full_working_feature_count_attested": 0,
-    "registered_host_required_denied": 11,
-    "host_bridge_implemented": false,
-    "ec250_freeze_gate": "BLOCKED",
-    "final_user_assisted_acceptance": "NOT_STARTED",
-    "source_authority_B001": "OPEN",
-    "no_native_router_or_business_authority_added": true
   },
   "ec250_host_finding_read": {
     "implementation": "construction/ec250_finding_host/broker.py",

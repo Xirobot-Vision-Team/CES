@@ -1,0 +1,157 @@
+{
+  "schema": "ces.legacy_cleanup.v1",
+  "release": "1.8.0",
+  "history_reference": "0d23182797f757932990371053a3d2c3f8e7e527",
+  "policy": "Preserve immutable historical baseline; individually record intentional removals and exact reviewed replacements, never accept arbitrary drift.",
+  "removed": [
+    {
+      "path": "construction/LEGACY_PLAN.json",
+      "baseline_sha256": "7dab2c8da07abf6512227a9f08e599dcc64ab716720ab4f2b6ffb58676562876",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/LEGACY_PROJECT_STATE.json",
+      "baseline_sha256": "0586b8ef3f76f8d66b35df0540fb4d542372d48a0239e6c307ca313e9878e8f4",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/LEGACY_REGRESSION_RESULTS.json",
+      "baseline_sha256": "59749c42d559e399cb78206de14c1212d0a0727f5cdfdfdd838c3bf6b6c5ca25",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/LEGACY_SEQUENCE_RESULTS.json",
+      "baseline_sha256": "1a9c71e446456a1b104c43c07e378cb080fc248afbe5fd3d19bd55e4ce718733",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/LEGACY_RELOCATIONS.json",
+      "baseline_sha256": "5cf370e901b5ead29469087cfaac92104ae26034f327c50956129062301fec6c",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/LEGACY_SOURCE_INVENTORY.json",
+      "baseline_sha256": "0edea1c74a601a3c1f4edf22125adb2e1306cc63cf3d29a01612045eedbbeeee",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/LEGACY_UPSTREAM_GAP.json",
+      "baseline_sha256": "cb88aa16725b56125833227c97bf4dbcfe4e359f224420359ab5058425316f2c",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/LEGACY_DELIVERY_ANCHOR.json",
+      "baseline_sha256": "d584d4e2e659c25168deabf3357d438745a9a87d46f912a256d76786625333ea",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/SECURITY_REVIEW.json",
+      "baseline_sha256": "3e4578b3a2ee63f6eeef1794d62d45f57b37ebf481f5d2b750a50bdaaf47e345",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/KNOWN_BLOCKERS.json",
+      "baseline_sha256": "e6bdc194dce8c0fe073191b6e16ad6a89bd24ee561ec2c790517bbd00dddeae0",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/plan_guard.py",
+      "baseline_sha256": "35137ffefcdaddae1f6465edd537c710476c804b1fc4d35354fb048cb076819c",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/test_plan_guard.py",
+      "baseline_sha256": "0f573adf72c739345f2f5abf14028caf55aef1d525b997f8faeb69340d35f35a",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/source_audit.py",
+      "baseline_sha256": "f1a68a975865199de8992b2152f29b08cbbe3ed87a02bc10b0d5a08d25cddc20",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/upstream_gap.py",
+      "baseline_sha256": "430474c55ed8576a1387c6747432f150459a51419ac559ee218cf66c735e75bc",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/test_upstream_gap.py",
+      "baseline_sha256": "a39fc9c7d66ee5d151ede5b549892e6343ba96f657e0917186f7e800632be7f9",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/stage_a_gate.py",
+      "baseline_sha256": "1550f44f54a3344c20b12ece54fe2434e285ab43be8c1b7f865e0f13bde43a7b",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/test_stage_a_gate.py",
+      "baseline_sha256": "095c28d9d4d3a590754702f1f6ea1f9cc7a235ca82341d65f81ca6995745bfc9",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/ec249_completion/decision.py",
+      "baseline_sha256": "d1c517c9f57249454208ab518d816b3426b9fc07067b21b373b5bc461eed4682",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "construction/ec249_completion/test_decision.py",
+      "baseline_sha256": "d09abe9222f0d85cdbc99cb195990ec042d4c6cf6c2a5c9f181a3e5c15161db9",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "references/phase-a-gate.md",
+      "baseline_sha256": "40b17f36c2996a0e4aa5569c5d8d8850fb6fd3b87e7272cace583b6cf0a5c272",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    },
+    {
+      "path": "references/ec249-full-function-readiness.md",
+      "baseline_sha256": "8973d7ca8d23225b16db6dbcce7c2af1f00d52c07de46e2da8da0bef6a771e75",
+      "reason": "Obsolete construction planning/completion snapshot or its dedicated checker; references absent historical BUILD_STATE/round archives; no product entrypoint or retained runtime import."
+    }
+  ],
+  "modified": [
+    {
+      "path": "construction/CAPABILITY_MATRIX.json",
+      "baseline_sha256": "37c1427ff6219f8e89659d578d4b6f7a3a2300977ddbae223405c8729811cde9",
+      "current_sha256": "b2211e5f964ec0dd0e6e2074cd939704b73582f0c57f9539917be0ad8651708b",
+      "reason": "Remove retired planning capability entries or obsolete log links; retained runtime route implementations unchanged."
+    },
+    {
+      "path": "references/ec247-cross-module-regression.md",
+      "baseline_sha256": "536f3edc0f5243e560dda5afe6b0a41ad418b3249c3ec859f978e01db21c22eb",
+      "current_sha256": "e5322a76553e9087c34fdd69d9dbcb1c07861e100d377cc5a836c124b6a5cee6",
+      "reason": "Remove retired planning capability entries or obsolete log links; retained runtime route implementations unchanged."
+    },
+    {
+      "path": "references/ec250-linux-finding-host.md",
+      "baseline_sha256": "ec4538d3836444c5cdddce075eac6d90da6dbc656b2d49a12baeae517ad2c305",
+      "current_sha256": "e8a0368ece3e3f8c58f07c17af79d541a630773d49fac7f581b5bd9950d64a56",
+      "reason": "Remove retired planning capability entries or obsolete log links; retained runtime route implementations unchanged."
+    },
+    {
+      "path": "references/ec251-linux-quality-host.md",
+      "baseline_sha256": "5ddfe9682c601e152b9d47ac0490004ab194c9a12ba31a22965d3dfa4fbde24a",
+      "current_sha256": "198ce219b855fd3af4bffb1230e1747123f7f42a5c7508a24c9b9d485ec41f67",
+      "reason": "Remove retired planning capability entries or obsolete log links; retained runtime route implementations unchanged."
+    },
+    {
+      "path": "construction/test_security_boundary.py",
+      "baseline_sha256": "aac5d67a82cff58a1caffc5e0fb145c9abd8f9c108e3da433ac28b77537c286b",
+      "reason": "Correct obsolete baseline/import-count test assumptions; retained authorization, tamper rejection and runtime boundary assertions preserved.",
+      "current_sha256": "e69dfa4083a029aa82e4b49ec8c12523d58f8848c6a85efe33d2a2f4a57c0fcc"
+    },
+    {
+      "path": "construction/test_sequence_audit.py",
+      "baseline_sha256": "c336cfd888cc6cd529c4371e98725be349b77daceb775c46fc98d740d25279ee",
+      "reason": "Correct obsolete baseline/import-count test assumptions; retained authorization, tamper rejection and runtime boundary assertions preserved.",
+      "current_sha256": "261fe896d617da41570d42566bd89a74b035c1f9b39f706afa2f97f5fce791eb"
+    },
+    {
+      "path": "construction/SECURITY_SOURCE_LOCK.json",
+      "baseline_sha256": "715b73f91f40aac04aede8831a43211bf2b15b770a3891bf1f1af9d2d3b6bb9e",
+      "current_sha256": "8b076bf34d9da1954e29884ac57fcd61a1e71a68dc16f0a89b7f1ecb9c28aa46",
+      "reason": "Regenerate reviewed source inventory after obsolete standalone planning tools are removed; all 74 runtime routes, 41 structural checks and authority gates retained."
+    }
+  ]
+}

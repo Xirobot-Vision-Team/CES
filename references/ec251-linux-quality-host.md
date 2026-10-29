@@ -108,4 +108,7 @@ The client verifies the socket peer UID **before sending** the request; the serv
 - This is only a Linux local host entrypoint for a fixed known domain. It does **not** modify original `ces.ps1`, 15 PowerShell Smoke files, EC242 112 schemas, EC243 74 fixed Router routes or any of the 11 original `HOST_REQUIRED` refusals. There is still no live QualityRun broker, trusted provider/CI/actor authority, external Issue/Delivery/Report/DocsOnly write, real Cycle execution, candidate freeze or final acceptance.
 - Local functional evidence: 18/18 focused EC251 tests, including cross-process CLI AF_UNIX, real EC188 projection, cursor/snapshot change, UID revoke and unauthorized metric/kind disclosure. These use **synthetic EC181-187 receipt objects**; the upstream providers/CI/tests/enterprise/Windows/macOS/NFS/E63-E66/PowerShell7/native 15 Smoke and final operator-assisted acceptance were **NOT_RUN**. Existing B001 source gap stays **OPEN**.
 
-Run focused local development cases with `python3 -I -B construction/ec251_quality_host/test_broker.py`. See [EC251](../EC-251.md), [EC251 scope](../construction/EC251_SCOPE.json), [progress](../construction/LEGACY_PROJECT_STATE.json) and [final acceptance](../construction/FINAL_ACCEPTANCE.md).
+Run focused local development cases with `python3 -I -B construction/ec251_quality_host/test_broker.py`. See EC251（历史记录，见清理前Git历史）, [EC251 scope](../construction/EC251_SCOPE.json), progress（历史记录，见清理前Git历史） and [final acceptance](../construction/FINAL_ACCEPTANCE.md).
+
+
+> Release 1.8.0: obsolete construction plans, progress/completion logs and their one-time checkers were retired. This document describes retained implementation boundaries; historical acceptance statements are not current release claims.

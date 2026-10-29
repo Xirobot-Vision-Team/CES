@@ -18,7 +18,7 @@
 
 知识、技术文档、周期报告和代码分析成品位于目标仓库配置的docs/ces目录，缓存及发送账本不得入库。Git推送需要明确授权；持续授权并开启自动发布后，文档写入会自动提交推送托管成品。
 
-PRODUCT.json中的operator_version为1.7.0，core_protocol_version为1.0.0。VERSION与baseline.json保持原协议语义；不要为了展示版本同步改动历史协议或哈希域。
+PRODUCT.json中的operator_version为1.8.0，core_protocol_version为1.0.0。VERSION与baseline.json保持原协议语义；不要为了展示版本同步改动历史协议或哈希域。
 
 安全整理仅归档已确认不再使用的重复运行文件和临时索引。没有清空发送账本、知识版本、实际profile、原1.0清单或已知失败记录。
 

@@ -56,3 +56,5 @@ Windows 的 `ces-product.cmd` 与直接调用 `operator/ces_product.py` 使用�
 
 本项目采用 **Apache-2.0**。参见 [LICENSE](LICENSE)、[NOTICE](NOTICE) 和
 [第三方依赖说明](THIRD_PARTY.md)。源码完整性与本地测试结果不等于独立安全认证。
+
+Release preparation: **1.8.0**. See [cleanup and release scope](docs/CLEANUP.md).

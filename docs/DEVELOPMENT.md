@@ -47,3 +47,7 @@ the local packaging environment. It is not a complete hashed multi-platform
 lockfile. THIRD_PARTY.md records observed licenses and provenance limits. A
 release must not claim that an unsigned checksum or a local test result is an
 independent audit.
+
+## 1.8.0 cleanup
+
+Obsolete construction plans, progress/completion snapshots and their one-time checkers are retired. Runtime modules, protocol definitions and meaningful regression tests remain. tools/legacy_cleanup.json records exact removed baseline hashes and reviewed replacement hashes; the original BASELINE_SHA256.json is not rewritten. Undeclared drift and reintroduced retired files still fail integrity checks. See CLEANUP.md.

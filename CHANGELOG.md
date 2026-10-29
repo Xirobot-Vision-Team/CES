@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.8.0 — First formal release
+
+- Remove 21 obsolete construction reports, plans and dedicated one-time checkers.
+- Preserve active compatibility implementations and source/permission boundaries.
+- Record exact intentional cleanup without rewriting the original protocol baseline.
+- Correct stale legacy baseline/import-count regression assertions.
+- Add verified source-only ZIP/tar.gz packaging and SHA-256 checksums.
+- Keep all runtime tests, notifications and publication opt-in through external profiles.
+
 ## 1.7.0 — Public-source preparation
 
 - Add Apache-2.0 license, NOTICE, contribution/security guidance and English README.
