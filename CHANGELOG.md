@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+- Organize compatibility modules, scripts and references by function; publish
+  the direct-source path migration map without changing wire identities.
+- Repair native identity handling under StrictMode and reject final newlines.
+- Update cryptography to 50.0.2 and declare pypdf for optional signed-PDF paths.
+- Update SHA-pinned checkout/setup-python Actions to Node 24 releases and add
+  Linux optional CMS/PDF/XAdES/OCSP regressions using the declared dependency list.
+- Document environment upgrade and validation scope; pulling source does not
+  update an installed virtual environment or replace existing release assets.
+
 ## 1.8.0 — First formal release
 
 - Remove 21 obsolete construction reports, plans and dedicated one-time checkers.

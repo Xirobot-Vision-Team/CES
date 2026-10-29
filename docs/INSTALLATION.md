@@ -40,6 +40,13 @@ python -m pip check
 Use a virtual environment and review dependency licenses; these direct version
 pins are not a complete platform-specific hashed lockfile.
 
+The optional list includes the signed-PDF parser (`pypdf`) and the cryptographic,
+ASN.1, XML and schema libraries used by retained compatibility modules. Current
+pins apply to a newly installed environment; pulling source does not upgrade an
+existing virtual environment. Re-run the install and `pip check`, then execute
+the selected regression suites described in [development](DEVELOPMENT.md).
+Keep project profiles, caches and durable ledgers outside any environment upgrade.
+
 ## External profile and credentials
 
 Copy `operator/profile.example.json` into a dedicated external data directory.

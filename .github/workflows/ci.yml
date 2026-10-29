@@ -21,10 +21,10 @@ jobs:
       PYTHONUTF8: '1'
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python }}
       - name: Source integrity and release privacy
@@ -40,10 +40,11 @@ jobs:
       - name: Retained source and authorization audit
         if: runner.os == 'Linux'
         run: python -B construction/security_permission_audit.py --summary
-      - name: Install schema regression dependency
+      - name: Install optional compatibility dependencies
         if: runner.os == 'Linux'
         run: |
-          python -m pip install --disable-pip-version-check --only-binary=:all: jsonschema==4.26.0
+          python -m pip install --disable-pip-version-check --only-binary=:all: -r requirements-local.txt
+          python -m pip check
       - name: Functional module path and catalog integration
         if: runner.os == 'Linux'
         working-directory: construction
@@ -52,11 +53,17 @@ jobs:
         if: runner.os == 'Linux'
         working-directory: construction
         run: python -B -m unittest test_response_contract test_schema_compat test_schema_migration_review
+      - name: Optional signature and document dependency regressions
+        if: runner.os == 'Linux'
+        working-directory: construction
+        env:
+          PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/construction
+        run: python -B -m unittest native_cms.test_protocol signed_pdf.test_protocol xades_certificate.test_protocol lotl_ocsp.test_protocol
   native-smoke:
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Isolated native repository inspection

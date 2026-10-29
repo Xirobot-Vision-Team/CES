@@ -62,6 +62,8 @@ isolated fixtures and no live project credentials.
 Licensed under Apache-2.0. See [LICENSE](LICENSE), [NOTICE](NOTICE) and
 [third-party information](THIRD_PARTY.md).
 
-Release preparation: **1.8.0**. See [cleanup and release scope](docs/CLEANUP.md).
+Published release: **1.8.0**. Subsequent main-branch maintenance is listed in
+[the changelog](CHANGELOG.md); direct source-path users should read
+[the migration guide](docs/NAMING.md).
 
 Use the existing `$ces` skill for **CES 项目维护** to maintain the selected CES GitHub source repository. See [maintenance mode](docs/MAINTENANCE.md); no separate skill or scheduler is installed.

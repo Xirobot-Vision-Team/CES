@@ -13,8 +13,9 @@ pwsh -NoProfile -File tests/CodeValidate.Smoke.ps1
 
 Do not run every legacy module under recursive discovery on Windows: some
 require Linux permissions, local isolation hosts or platform-specific fixtures.
-The CI workflow distinguishes the operator matrix from two selected native
-smokes. CodeSequence has a documented historical failure and is not silently
+The CI workflow distinguishes the standard-library operator matrix, selected
+native smokes/identity guards and Linux optional signature/document regressions.
+CodeSequence has a documented historical failure and is not silently
 reported as passing.
 
 ## Editing the maintained layer
@@ -43,7 +44,9 @@ never downloads dependencies.
 ## Dependencies and release scope
 
 requirements-local.txt records the direct optional legacy dependencies used in
-the local packaging environment. It is not a complete hashed multi-platform
+the compatibility CI environment, including pypdf for the signed-PDF module.
+CI installs them after the standard-library operator suite and runs real local
+signature verification plus tampering/rejection cases. It is not a complete hashed multi-platform
 lockfile. THIRD_PARTY.md records observed licenses and provenance limits. A
 release must not claim that an unsigned checksum or a local test result is an
 independent audit.
