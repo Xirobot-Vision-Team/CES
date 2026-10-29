@@ -42,7 +42,13 @@ jobs:
           persist-credentials: false
       - name: Isolated native repository inspection
         shell: pwsh
-        run: ./tests/Inspect.Smoke.ps1
+        run: |
+          & ./tests/Inspect.Smoke.ps1
+          if (-not $?) { exit 1 }
+          exit 0
       - name: Isolated native evidence validation
         shell: pwsh
-        run: ./tests/CodeValidate.Smoke.ps1
+        run: |
+          & ./tests/CodeValidate.Smoke.ps1
+          if (-not $?) { exit 1 }
+          exit 0
