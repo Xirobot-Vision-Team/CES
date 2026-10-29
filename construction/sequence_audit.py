@@ -16,7 +16,7 @@ import re
 import sys
 
 ROOT = Path(__file__).resolve().parent.parent
-EVIDENCE = 'construction/LEGACY_SEQUENCE_AUDIT.json'
+EVIDENCE = 'construction/SEQUENCE_SOURCE_AUDIT.json'
 PREFIX = 'Get-CodeSequenceOriginalFindingPairProfileRetentionEndpoint'
 FIELD_PREFIX = 'selected_original_finding_pair_profile_retention_endpoint_'
 EXPECTED_K = 56
@@ -188,7 +188,7 @@ def build_audit(root: Path = ROOT) -> dict:
 
     # Refuse a private, self-proclaimed source inventory as authoritative:
     # cross-check both previous rounds' independently recorded facts.
-    dep = json.loads(source_bytes(root, 'construction/LEGACY_DEPENDENCY_MAP.json'))
+    dep = json.loads(source_bytes(root, 'construction/NATIVE_DEPENDENCIES.json'))
     trace = json.loads(source_bytes(root, 'construction/ACTION_TRACE.json'))
     # EC-151 is a frozen R150 observation, not a veto against later planned
     # Action/Mode additions. Keep deviations visible without forcing future
@@ -415,7 +415,7 @@ def build_audit(root: Path = ROOT) -> dict:
             'CodeSequence Smoke presence does not imply it was run, and no source code is executed or modified.',
         ],
         'source_evidence': {
-            'ec151_map': 'construction/LEGACY_DEPENDENCY_MAP.json',
+            'ec151_map': 'construction/NATIVE_DEPENDENCIES.json',
             'ec152_trace': 'construction/ACTION_TRACE.json',
             'r150_sha256_register': R150_SHA,
             'existing_smoke': 'tests/CodeSequence.Smoke.ps1',

@@ -47,11 +47,13 @@ Windows 的 `ces-product.cmd` 与直接调用 `operator/ces_product.py` 使用�
 - [测试审查与开发者登记](docs/TESTING.md) · [通知与验收](docs/NOTIFICATIONS.md)
 - [Issue 追踪](docs/ISSUE_TRACKING.md) · [同步与文档发布](docs/AUTOMATIC_LIFECYCLE.md)
 - [贡献说明](CONTRIBUTING.md) · [开发验证](docs/DEVELOPMENT.md)
+- [源码命名与路径迁移](docs/NAMING.md) · [目录说明](docs/LAYOUT.md)
 - [安全政策](SECURITY.md) · [信任边界](docs/SECURITY_MODEL.md)
 - [已知限制](docs/KNOWN_ISSUES.md) · [开源发布清单](docs/OPEN_SOURCE_RELEASE.md)
 
 当前操作层版本在 `PRODUCT.json`；根 `VERSION` 保留 1.0 兼容协议语义。
-旧实现目录因导入路径和协议绑定保留，存在不表示所有旧路由已经生产验收。
+兼容实现按功能命名；直接导入的旧路径需按迁移清单更新。协议标识保留，
+实现存在不表示所有旧路由已经生产验收。
 原生 Sequence 深层查询的历史失败仍明确记录，没有从支持范围中隐去。
 
 本项目采用 **Apache-2.0**。参见 [LICENSE](LICENSE)、[NOTICE](NOTICE) 和

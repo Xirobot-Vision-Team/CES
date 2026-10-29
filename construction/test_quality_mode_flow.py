@@ -22,7 +22,7 @@ from quality_mode_flow import CrossModeQualityFlow, EVENT_SCHEMA, REVOKE_SCHEMA,
 ROOT = Path(__file__).resolve().parent
 SCHEMA_DOC = json.loads((ROOT.parent / 'references' /
                          'cross-mode-quality-flow-result.v1.schema.json').read_text())
-CI_BYTES = (ROOT / 'fixtures' / 'ec158' / 'ci-example.json').read_bytes()
+CI_BYTES = (ROOT / 'fixtures' / 'code_insight' / 'ci-example.json').read_bytes()
 CI_SHA = hashlib.sha256(CI_BYTES).hexdigest()
 CI_ID = 'ci-' + CI_SHA
 CLOCK = qtest.NOW + timedelta(hours=1)

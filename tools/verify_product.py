@@ -1,5 +1,5 @@
 """Verify CES product bytes and preserved 1.0 protocol implementation separately."""
-from pathlib import Path
+from pathlib import Path,PurePosixPath
 import argparse,hashlib,json
 EXCLUDED_DIRS={".git",".venv","__pycache__",".pytest_cache","results"}
 def collect_file_hash(path):return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -15,9 +15,9 @@ def legacy_review(root,actual):
     protected={p:h for p,h in baseline.items() if p.startswith(('scripts/','construction/','references/'))}
     path=root/'tools/legacy_cleanup.json'
     review=json.loads(path.read_text(encoding='utf-8')) if path.is_file() else {'schema':'ces.legacy_cleanup.v1','removed':[],'modified':[]}
-    errors=[];seen=set()
+    errors=[];seen=set();targets=set()
     if review.get('schema')!='ces.legacy_cleanup.v1':return ['INVALID_LEGACY_CLEANUP_SCHEMA'],protected
-    for kind in ('removed','modified'):
+    for kind in ('removed','modified','moved'):
         rows=review.get(kind,[])
         if not isinstance(rows,list):return ['INVALID_LEGACY_CLEANUP_ROWS'],protected
         for row in rows:
@@ -27,6 +27,13 @@ def legacy_review(root,actual):
             seen.add(name)
             if kind=='removed':
                 if name in actual:errors.append('RETIRED_FILE_REINTRODUCED:'+name)
+            elif kind=='moved':
+                target=row.get('target')
+                digest=row.get('current_sha256')
+                safe=isinstance(target,str) and bool(target) and not PurePosixPath(target).is_absolute() and '\\' not in target and ':' not in target and '..' not in target.split('/') and str(PurePosixPath(target))==target
+                if name in actual or not safe or target==name or target in targets or not isinstance(digest,str) or len(digest)!=64 or actual.get(target)!=digest:
+                    errors.append('MIGRATED_LEGACY_FILE_CHANGED:'+str(name))
+                if safe:targets.add(target)
             elif actual.get(name)!=row.get('current_sha256') or not isinstance(row.get('current_sha256'),str) or len(row['current_sha256'])!=64:
                 errors.append('REVIEWED_LEGACY_FILE_CHANGED:'+name)
     errors += [name for name,value in protected.items() if name not in seen and actual.get(name)!=value]

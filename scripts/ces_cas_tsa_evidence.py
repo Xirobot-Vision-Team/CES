@@ -6,7 +6,7 @@ from pathlib import Path
 
 root=str(Path(__file__).resolve().parents[1]/'construction')
 sys.path.insert(0,root)
-from ec350_tsa_timestamp.operator import main
+from tsa_timestamp.operator import main
 
 if __name__=='__main__':
     raise SystemExit(main())

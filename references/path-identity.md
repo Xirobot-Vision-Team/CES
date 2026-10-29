@@ -45,5 +45,5 @@ $actor = Resolve-CesActorIdentity -DisplayName 'Alex'
 
 - **保持**七个CLI Action/16路由/29未实现能力、v1响应16顶层字段/31 coverage、原`CodeInsight`SHA存档、CodeShow Sequence k1..56、R150冻结hash和EC157审阅收据。
 - 行为更严格的地方：main `.git`/任意父目录reparse或Git路径大小写别名会导致stable root不可信；通过符号链接目录读取证据会拒绝；已保存记录若只有symlink别名入口，则应从实际main根重新读取，**不可提升该别名权限**。
-- 原生需要人工协助的场景见`tests/PathIdentity.EC159.ps1`：相对/绝对/越界与前缀碰撞、symlink（系统许可时）、缺/同名actor、多租户、main/linked worktree及授权缺失时无本地写盘。再统一运行原15个Smoke、EC157安全场景、Windows/macOS/Linux Git交互/恶意竞态、E63–E66真实性能，均在总功能完成后验收。
+- 原生需要人工协助的场景见`tests/PathIdentity.Guards.ps1`：相对/绝对/越界与前缀碰撞、symlink（系统许可时）、缺/同名actor、多租户、main/linked worktree及授权缺失时无本地写盘。再统一运行原15个Smoke、EC157安全场景、Windows/macOS/Linux Git交互/恶意竞态、E63–E66真实性能，均在总功能完成后验收。
 - **本包未运行上述PowerShell本机用例**：缺`pwsh`及跨平台环境；只做必要的文档/源代码对齐检查，不把静态检查冒充原生安全验证。

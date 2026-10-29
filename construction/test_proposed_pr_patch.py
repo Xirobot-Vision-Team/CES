@@ -17,7 +17,7 @@ HERE = Path(__file__).resolve().parent
 
 
 def rows(provider: str) -> list[dict]:
-    return json.loads((HERE / 'fixtures' / 'ec164' /
+    return json.loads((HERE / 'fixtures' / 'patches' /
                        f'{provider}.synthetic.patches.json').read_text('utf-8'))
 
 

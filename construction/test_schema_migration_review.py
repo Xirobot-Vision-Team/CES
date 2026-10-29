@@ -15,8 +15,8 @@ from unittest import mock
 import schema_migration_review as sr
 import unified_action_router as router
 
-FIX = sr.ROOT / 'construction' / 'fixtures' / 'ec242'
-LEGACY = sr.ROOT / 'construction' / 'fixtures' / 'ec158'
+FIX = sr.ROOT / 'construction' / 'fixtures' / 'schema_review'
+LEGACY = sr.ROOT / 'construction' / 'fixtures' / 'code_insight'
 
 
 class SchemaReviewTests(unittest.TestCase):

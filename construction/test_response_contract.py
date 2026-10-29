@@ -23,7 +23,7 @@ class ResponseContractTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.contract = module.load_contract()
-        cls.fixtures = HERE / "fixtures" / "ec156"
+        cls.fixtures = HERE / "fixtures" / "cli_responses"
 
     def fixture(self, name: str) -> dict:
         return module.parse_one_json((self.fixtures / f"{name}.json").read_bytes())

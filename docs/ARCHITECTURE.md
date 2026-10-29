@@ -10,7 +10,8 @@ CES has three maintained layers:
    are separate prerequisites.
 3. `construction/`, the remaining `scripts/` and `references/` retain the 1.0
    protocol core, schemas and explicitly limited POSIX host extensions. Internal
-   names are retained because imports, schema IDs and hash domains depend on them.
+   module names describe their functions; schema IDs and hash domains retain their
+   protocol identities. Direct source imports follow [the path migration](NAMING.md).
 
 ## Evidence flow
 
@@ -48,7 +49,8 @@ not part of this source distribution.
 the protected `scripts/`, `construction/` and `references/` implementation. It is
 not rewritten to conceal changes.
 
-The release preserves retained runtime bytes; intentional cleanup of obsolete construction records and exact reviewed metadata/test changes is recorded in tools/legacy_cleanup.json. Deployment-only verification
+Reviewed removals, source-path migrations and exact byte changes are recorded in
+tools/legacy_cleanup.json; the frozen baseline is unchanged. Deployment-only verification
 records are removed from the public view and listed in `RELEASE.json`. The
 released source has its own regenerated current manifest; this is a disclosed
 source-package projection, not an assertion that historical runs were repeated.

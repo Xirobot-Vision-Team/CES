@@ -19,7 +19,7 @@ from urllib.error import HTTPError
 import issue_provider as ip
 import issue_sync as sync
 
-FIX = Path(__file__).resolve().parent / 'fixtures' / 'ec211'
+FIX = Path(__file__).resolve().parent / 'fixtures' / 'provider_issues'
 NOW = datetime(2026, 10, 24, 9, 0, 0, tzinfo=timezone.utc)
 TOKEN = 'DO-NOT-PRINT-FAKE-ISSUE-SYNC-TOKEN'
 

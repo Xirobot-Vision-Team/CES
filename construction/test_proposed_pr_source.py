@@ -16,7 +16,7 @@ HERE = Path(__file__).resolve().parent
 
 
 def fixture(provider: str) -> dict:
-    return json.loads((HERE / "fixtures" / "ec161" / f"{provider}.synthetic.json").read_text("utf-8"))
+    return json.loads((HERE / "fixtures" / "provider_metadata" / f"{provider}.synthetic.json").read_text("utf-8"))
 
 
 class FakeTransport:

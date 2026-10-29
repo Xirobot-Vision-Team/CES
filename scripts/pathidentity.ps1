@@ -292,7 +292,7 @@ function Resolve-CesActorIdentity {
     )
     # Neither Git author/email nor display name is a trustworthy external ID.
     # A COMPLETE tuple is still a caller claim, NOT verified provider evidence.
-    $supplied = @($Provider, $Tenant, $ImmutableSubjectId) | Where-Object { -not [string]::IsNullOrEmpty($_) }
+    $supplied = @(@($Provider, $Tenant, $ImmutableSubjectId) | Where-Object { -not [string]::IsNullOrEmpty($_) })
     if ($supplied.Count -eq 0) {
         return [pscustomobject]@{
             status = 'unknown'; reason_code = 'EXTERNAL_ACTOR_ID_MISSING'
@@ -303,9 +303,9 @@ function Resolve-CesActorIdentity {
     if ($supplied.Count -ne 3) {
         throw 'External actor identity requires provider, tenant and immutable subject ID together.'
     }
-    if ($Provider -cnotmatch '^[a-z][a-z0-9._-]{0,63}$' -or
-        $Tenant.Length -gt 256 -or $Tenant -notmatch '^[^\x00-\x1F\x7F]+$' -or
-        $ImmutableSubjectId.Length -gt 256 -or $ImmutableSubjectId -notmatch '^[^\x00-\x1F\x7F]+$') {
+    if ($Provider -cnotmatch '\A[a-z][a-z0-9._-]{0,63}\z' -or
+        $Tenant.Length -gt 256 -or $Tenant -notmatch '\A[^\x00-\x1F\x7F]+\z' -or
+        $ImmutableSubjectId.Length -gt 256 -or $ImmutableSubjectId -notmatch '\A[^\x00-\x1F\x7F]+\z') {
         throw 'Malformed provider, tenant or immutable external subject ID.'
     }
     return [pscustomobject]@{

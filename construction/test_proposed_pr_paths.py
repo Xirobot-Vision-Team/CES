@@ -17,7 +17,7 @@ F = HERE / "fixtures"
 
 
 def metadata(provider: str, count: int | str | None) -> dict:
-    raw = json.loads((F / "ec161" / f"{provider}.synthetic.json").read_text("utf-8"))
+    raw = json.loads((F / "provider_metadata" / f"{provider}.synthetic.json").read_text("utf-8"))
     if count is not None:
         raw["changed_files" if provider == "github" else "changes_count"] = count
     return raw
@@ -26,7 +26,7 @@ def metadata(provider: str, count: int | str | None) -> dict:
 def file_rows(provider: str) -> list:
     suffix = ("github.synthetic.files.json" if provider == "github"
               else "gitlab.synthetic.diffs.json")
-    return json.loads((F / "ec163" / suffix).read_text("utf-8"))
+    return json.loads((F / "changed_files" / suffix).read_text("utf-8"))
 
 
 class Transport:

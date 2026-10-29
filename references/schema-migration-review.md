@@ -17,10 +17,10 @@ From inside the extracted `ces/` directory:
 ```sh
 python construction/schema_migration_review.py inventory
 python construction/schema_migration_review.py audit
-python construction/schema_migration_review.py inspect --domain Cycle --input construction/fixtures/ec242/cycle-v1.json
-python construction/schema_migration_review.py inspect --domain CodeInsight --input construction/fixtures/ec158/ci-example.json --contract code_insight_saved
-python construction/schema_migration_review.py inspect --domain Issue --input construction/fixtures/ec242/issue-unversioned.json --contract issue-create-content.v1
-python construction/schema_migration_review.py plan --domain Cycle --input construction/fixtures/ec242/cycle-v1.json --target-contract cycle-run-metadata.v1
+python construction/schema_migration_review.py inspect --domain Cycle --input construction/fixtures/schema_review/cycle-v1.json
+python construction/schema_migration_review.py inspect --domain CodeInsight --input construction/fixtures/code_insight/ci-example.json --contract code_insight_saved
+python construction/schema_migration_review.py inspect --domain Issue --input construction/fixtures/schema_review/issue-unversioned.json --contract issue-create-content.v1
+python construction/schema_migration_review.py plan --domain Cycle --input construction/fixtures/schema_review/cycle-v1.json --target-contract cycle-run-metadata.v1
 ```
 
 For original-byte pinning, supply `--expect-sha256 <64hex>` computed from

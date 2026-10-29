@@ -4,6 +4,6 @@ from pathlib import Path
 import sys
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0,str(ROOT/'construction'))
-from ec326_conditional_conflict_hold.operator import main
+from conditional_conflict_hold.operator import main
 if __name__ == '__main__':
     raise SystemExit(main())

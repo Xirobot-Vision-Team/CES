@@ -42,10 +42,10 @@ Execute from inside `ces/` (Python standard library; does not require Git/pwsh):
 
 ```bash
 python construction/schema_compat.py policy --json
-python construction/schema_compat.py inspect --kind code_insight_saved --input construction/fixtures/ec158/ci-example.json --json
-python construction/schema_compat.py inspect --input construction/fixtures/ec158/collect.v1.json --json
-python construction/schema_compat.py preview --input construction/fixtures/ec158/ci-example.json --target ces.code_insight_saved.v1 --json
-python construction/schema_compat.py preview --input construction/fixtures/ec158/ci-example.json --target ces.code_insight_saved.v2 --json
+python construction/schema_compat.py inspect --kind code_insight_saved --input construction/fixtures/code_insight/ci-example.json --json
+python construction/schema_compat.py inspect --input construction/fixtures/code_insight/collect.v1.json --json
+python construction/schema_compat.py preview --input construction/fixtures/code_insight/ci-example.json --target ces.code_insight_saved.v1 --json
+python construction/schema_compat.py preview --input construction/fixtures/code_insight/ci-example.json --target ces.code_insight_saved.v2 --json
 ```
 
 The supplied `ci-example.json` is deliberately **not** named `ci-<digest>.json`, so the reader reports a computed, **unbound** ID. A real captured record at its `ci-<64hex>.json` path is hash-matched automatically; optional `--record-id ci-<64hex>` additionally checks an expected ID. No command writes, changes source, or alters a file. Tool return codes: `0` compatible/identity preview; `1` rejected schema or migration blocked; `2` unreadable/bad JSON/unsafe input. A parse success is **not** the native CodeShow integrity/provenance acceptance or a source inspection.

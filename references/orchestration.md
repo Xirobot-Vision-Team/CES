@@ -1,12 +1,12 @@
 ## 当前补充：V5.90/R280 的两个独立授权读宿主（不改变 Router 登记）
 
-在下面 EC246 的冻结路由表之外，`scripts/ces_next.py host-query FindingShow Query`（EC279）及 `host-query QualityShow Query`（EC280）分别可访问**独立运行**的 Unix socket、两位离线签发者批准的只读后端；原 `run FindingShow Query` 与 `run QualityShow Query` **继续被 Router 拒绝**，全部 11 个 HOST_REQUIRED 请求路径维持默认拒绝。QualityShow 只对宿主所有的固定私有 EC181–187 批次运行原 EC188 投影，不能被视作认证 CI/执行结果/整体质量 PASS，详见 [EC280 宿主操作手册](ec280-independently-authorized-quality-query.md)。其余九种宿主无此独立入口。
+在下面 EC246 的冻结路由表之外，`scripts/ces_next.py host-query FindingShow Query`（EC279）及 `host-query QualityShow Query`（EC280）分别可访问**独立运行**的 Unix socket、两位离线签发者批准的只读后端；原 `run FindingShow Query` 与 `run QualityShow Query` **继续被 Router 拒绝**，全部 11 个 HOST_REQUIRED 请求路径维持默认拒绝。QualityShow 只对宿主所有的固定私有 EC181–187 批次运行原 EC188 投影，不能被视作认证 CI/执行结果/整体质量 PASS，详见 [EC280 宿主操作手册](independently-authorized-quality-query.md)。其余九种宿主无此独立入口。
 
 ---
 
 # CES 当前意图路由与模块编排 — V5.57 / R247（EC246 路由目录沿用）
 
-**适用范围：** 本页为当前**已写代码的可调用边界**，不是已通过企业、宿主、PowerShell7 或最终端到端验收的产品承诺。现有已登记 Action/Mode 共 **74 条**，其中原生 R150 **16**、新 CLI **39**、API **7**、typed Preview **1**、**HOST_REQUIRED 11**。全量逐条能力、固定 Handler、效果类别见[当前路由表](route-catalog-ec246.md)和[产品矩阵](../construction/CAPABILITY_MATRIX.json)；不要再以 EC152/R150 的源追踪、EC241 的 70 条历史清单或旧 orchestration 文案作现行路由判断。
+**适用范围：** 本页为当前**已写代码的可调用边界**，不是已通过企业、宿主、PowerShell7 或最终端到端验收的产品承诺。现有已登记 Action/Mode 共 **74 条**，其中原生 R150 **16**、新 CLI **39**、API **7**、typed Preview **1**、**HOST_REQUIRED 11**。全量逐条能力、固定 Handler、效果类别见[当前路由表](route-catalog.md)和[产品矩阵](../construction/CAPABILITY_MATRIX.json)；不要再以 EC152/R150 的源追踪、EC241 的 70 条历史清单或旧 orchestration 文案作现行路由判断。
 
 ## 先选执行边界，再编排业务动作
 
@@ -40,10 +40,10 @@
 
 ```sh
 python3 -I scripts/ces_router.py --list-routes
-python3 -I -B construction/ec246_docs/route_help.py --action Cycle
-python3 -I -B construction/ec246_docs/route_help.py --action IssueCreate --mode Create --json
-python3 -I -B construction/ec246_docs/route_help.py --list-examples
-python3 -I -B construction/ec246_docs/route_help.py --action Due --mode Evaluate --example
+python3 -I -B construction/route_documentation/route_help.py --action Cycle
+python3 -I -B construction/route_documentation/route_help.py --action IssueCreate --mode Create --json
+python3 -I -B construction/route_documentation/route_help.py --list-examples
+python3 -I -B construction/route_documentation/route_help.py --action Due --mode Evaluate --example
 ```
 
 最后一个命令返回带 `request` + `note` 的帮助对象；**只复制其中 `request`** 到绝对路径 JSON 文件，不能把帮助外壳直接送给 Router：
@@ -59,7 +59,7 @@ python3 -I scripts/ces_router.py -Action Due -Mode Evaluate -RequestPath /tmp/ce
 
 - **模型**负责意图分类、阅读证据、解释不确定性、形成 Finding/报告/Knowledge 的**候选**，不能把摘要、签名缺失、Provider 声称 success 或路由 Exit 2 提升为已实施业务。
 - **CES Handler** 只在其自身源/身份/凭据/私有写门禁实际满足时运行，绝不隐式从用户 JSON 得到宿主密钥、外部授予或持久任务成功证明；失败/撤销/未知必须保守终止而不是自动重试。
-- **一轮一个 EC**：EC246 已完成路由例子、编排说明、产品矩阵和独立帮助；EC247 已完成 15 原生 Smoke SHA/待验映射和 7 条本地跨模块合成链（详见 [EC247 指南](ec247-cross-module-regression.md)）；下轮 EC248 才处理 CodeShow 性能，EC249 最终运行手册，EC250 候选包冻结/验收交接。此处列出后续排程**不等于已施工**。
+- **一轮一个 EC**：EC246 已完成路由例子、编排说明、产品矩阵和独立帮助；EC247 已完成 15 原生 Smoke SHA/待验映射和 7 条本地跨模块合成链（详见 [EC247 指南](cross-module-regression.md)）；下轮 EC248 才处理 CodeShow 性能，EC249 最终运行手册，EC250 候选包冻结/验收交接。此处列出后续排程**不等于已施工**。
 
 ## 来源/旧版本与最终限制
 

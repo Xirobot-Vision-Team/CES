@@ -374,7 +374,7 @@ def _ec157_reviewed_drift(root: Path, relative: str,
     The ledger is a build-review receipt, not a security authorization or
     third-party authentication. Frozen R150 evidence remains untouched.
     """
-    ledger_path = root / 'construction/LEGACY_SECURITY_DRIFT.json'
+    ledger_path = root / 'construction/SECURITY_REVIEW_CHAIN.json'
     if not ledger_path.is_file() or ledger_path.is_symlink():
         return False
     try:
@@ -399,7 +399,7 @@ def _ec159_reviewed_drift(root: Path, relative: str,
     describe newer bytes. EC-159 chains from those reviewed bytes or from R150.
     A receipt is source-review metadata, NEVER a security attestation.
     """
-    ledger_path = root / 'construction/LEGACY_PATH_DRIFT.json'
+    ledger_path = root / 'construction/PATH_REVIEW.json'
     if not ledger_path.is_file() or ledger_path.is_symlink():
         return False
     try:
@@ -413,7 +413,7 @@ def _ec159_reviewed_drift(root: Path, relative: str,
         if not isinstance(previous, str):
             return False
         if relative in ('scripts/ces.ps1', 'scripts/codesave.ps1'):
-            old_review = json.loads((root / 'construction/LEGACY_SECURITY_DRIFT.json').read_text(encoding='utf-8'))
+            old_review = json.loads((root / 'construction/SECURITY_REVIEW_CHAIN.json').read_text(encoding='utf-8'))
             if old_review.get('ec') != 'EC-157':
                 return False
             if previous != old_review['changed_powershell_sources'][relative]['current_sha256']:

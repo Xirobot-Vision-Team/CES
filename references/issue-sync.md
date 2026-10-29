@@ -154,7 +154,7 @@ clock are labeled `SYNTHETIC_OBSERVED` and never claimed live.
   strict redacted in-memory result, `UNKNOWN`/partial coverage and immutable
   no-write flags.
 - Test sources: [`../construction/test_issue_sync.py`](../construction/test_issue_sync.py);
-  fixtures reused from [`../construction/fixtures/ec211/`](../construction/fixtures/ec211/).
+  fixtures reused from [`../construction/fixtures/provider_issues/`](../construction/fixtures/provider_issues/).
 - This module is **standalone Python only**, and the legacy PowerShell CLI
   remains **V4.60/R150**. `EC211` unchanged; its host-declared grant does not
   establish independent real organization authorization.

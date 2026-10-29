@@ -15,7 +15,7 @@ from urllib.error import HTTPError
 import issue_provider as ip
 
 HERE = Path(__file__).resolve().parent
-FIX = HERE / 'fixtures' / 'ec211'
+FIX = HERE / 'fixtures' / 'provider_issues'
 FROZEN = datetime(2026, 10, 24, 8, 0, 0, tzinfo=timezone.utc)
 
 

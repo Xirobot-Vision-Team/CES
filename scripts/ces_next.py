@@ -15188,7 +15188,7 @@ def audit_historical_timestamp_archive(action:str, mode:str, *,pretty:bool=False
 
 # EC381: authentic old EC349 channel root-directory/receipt actor, actual signed
 # ancestors, sibling forks and separate signed time witnesses atop live EC380.
-AIRGAP_EC349_CHANNEL_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_ec349_channel_archive.py'
+AIRGAP_EC349_CHANNEL_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_channel_archive.py'
 EC381_NEW_SCALARS = (
  'historical_ec349_channel_archive_bundle_file',
  'expected_historical_ec349_channel_archive_bundle_sha256',
@@ -15412,7 +15412,7 @@ def audit_historical_ec349_channel_archive(action:str,mode:str,*,pretty:bool=Fal
 
 # EC382: root-signed original EC348 keeper receipts, full old EC347 replay,
 # independently supplied root bytes and exact local ledger/copy reopens.
-AIRGAP_EC348_KEEPER_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_ec348_keeper_archive.py'
+AIRGAP_EC348_KEEPER_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_keeper_archive.py'
 EC382_NEW_SCALARS = (
  'historical_ec348_keeper_archive_bundle_file',
  'expected_historical_ec348_keeper_archive_bundle_sha256',
@@ -15597,7 +15597,7 @@ def audit_historical_ec348_keeper_archive(action:str,mode:str,*,pretty:bool=Fals
 
 # EC383: genuine old EC347 challenger/receiver Ed25519 authority plus EC346
 # signed copy/source ancestry and independently pinned local byte retesting.
-AIRGAP_EC347_SITE_PROVENANCE = ROOT / 'scripts' / 'ces_cas_historical_ec347_site_provenance.py'
+AIRGAP_EC347_SITE_PROVENANCE = ROOT / 'scripts' / 'ces_cas_historical_site_provenance.py'
 EC383_NEW_SCALARS = (
  'historical_ec347_site_provenance_archive_bundle_file',
  'expected_historical_ec347_site_provenance_archive_bundle_sha256',
@@ -15789,7 +15789,7 @@ def audit_historical_ec347_site_provenance_archive(action:str,mode:str,*,pretty:
 
 # EC384 original EC344 separately signed receiver visibility statements and
 # EC345 registered receiver Ed25519 disclosure offers (unsigned checkpoint).
-AIRGAP_EC345_DISCLOSURE_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_ec345_disclosure_archive.py'
+AIRGAP_EC345_DISCLOSURE_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_disclosure_challenge_archive.py'
 EC384_NEW_SCALARS = (
  'historical_ec345_disclosure_archive_bundle_file',
  'expected_historical_ec345_disclosure_archive_bundle_sha256',
@@ -15983,7 +15983,7 @@ def audit_historical_ec345_disclosure_archive(action:str,mode:str,*,pretty:bool=
 
 # EC385: true original EC342 signed approval + EC343 independent change and
 # competing signed predecessor branches. Exact fixed read-only child only.
-AIRGAP_EC343_CHANGE_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_ec343_change_archive.py'
+AIRGAP_EC343_CHANGE_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_change_archive.py'
 EC385_NEW_SCALARS = (
  'historical_ec343_change_approval_archive_bundle_file',
  'expected_historical_ec343_change_approval_archive_bundle_sha256',
@@ -16183,7 +16183,7 @@ def audit_historical_ec343_change_archive(action:str,mode:str,*,pretty:bool=Fals
 
 # EC386: genuine old EC341 signed sibling root conflict linked to the real
 # EC342 signed governance hold; entire EC385->EC369 parent remains mandatory.
-AIRGAP_EC341_ROOT_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_ec341_root_conflict_archive.py'
+AIRGAP_EC341_ROOT_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_root_conflict_archive.py'
 EC386_NEW_SCALARS = (
  'historical_ec341_signed_root_conflict_archive_bundle_file',
  'expected_historical_ec341_signed_root_conflict_archive_bundle_sha256',
@@ -16372,7 +16372,7 @@ def audit_historical_ec341_root_conflict_archive(action:str,mode:str,*,pretty:bo
 # EC387: old EC340 epoch-1 -> epoch-2 cross-signed issuer root, EC339 original
 # actor/grant/status history, and true EC341/EC342 signed conflict parent.
 # The exact unchanged EC386->EC369 receiver audit must execute in the child.
-AIRGAP_EC340_ROTATION_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_ec340_rotation_archive.py'
+AIRGAP_EC340_ROTATION_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_rotation_archive.py'
 EC387_NEW_SCALARS = (
  'historical_ec340_signed_rotation_archive_bundle_file',
  'expected_historical_ec340_signed_rotation_archive_bundle_sha256',
@@ -16567,7 +16567,7 @@ def audit_historical_ec340_rotation_archive(action:str,mode:str,*,pretty:bool=Fa
 # EC388: old EC338 actor signature + original EC339 issuer grants, challenged
 # revocation history at the genuinely signed EC340 epoch1 retirement boundary.
 # Live unchanged EC387->EC369 audit precedes this receiver-only inquiry.
-AIRGAP_EC339_RETIREMENT_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_ec339_retirement_archive.py'
+AIRGAP_EC339_RETIREMENT_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_retirement_archive.py'
 EC388_NEW_SCALARS = (
  'historical_ec339_retirement_revocation_archive_bundle_file',
  'expected_historical_ec339_retirement_revocation_archive_bundle_sha256',
@@ -16767,7 +16767,7 @@ def audit_historical_ec339_retirement_archive(action:str,mode:str,*,pretty:bool=
 # EC389: receiver-only original external Ed25519 publication and independent
 # custodian signature for authenticated old EC339 revoked status.  The entire
 # EC388->EC369 live parent audit is required and can never be caller-supplied.
-AIRGAP_EC339_EXTERNAL_WITNESS_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_ec339_external_witness_archive.py'
+AIRGAP_EC339_EXTERNAL_WITNESS_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_external_witness_archive.py'
 EC389_NEW_SCALARS = (
  'historical_ec339_external_witness_custody_archive_bundle_file',
  'expected_historical_ec339_external_witness_custody_archive_bundle_sha256',
@@ -16935,7 +16935,7 @@ def audit_historical_ec339_external_witness_archive(action:str,mode:str,*,pretty
 
 # EC390: bounded receiver-only independently signed archive head plus a separate
 # signed receipt. Never treat caller-provided head SHA or clock as legal authority.
-AIRGAP_EC339_INDEPENDENT_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_ec339_independent_archive_heads.py'
+AIRGAP_EC339_INDEPENDENT_ARCHIVE = ROOT / 'scripts' / 'ces_cas_historical_independent_archive_heads.py'
 EC390_NEW_SCALARS = (
  'historical_ec339_independent_archive_heads_bundle_file',
  'expected_historical_ec339_independent_archive_heads_bundle_sha256',
@@ -17103,7 +17103,7 @@ def audit_historical_ec339_independent_archive_heads(action:str,mode:str,*,prett
 
 # EC391: third-party signed *prior* offsite source heads and actual RFC3161 DER
 # certificates/CRLs, through an unchanged EC390->EC369 parent receiver.
-AIRGAP_EC339_PRIOR_OFFSITE_TIME = ROOT / 'scripts' / 'ces_cas_historical_ec339_prior_offsite_time.py'
+AIRGAP_EC339_PRIOR_OFFSITE_TIME = ROOT / 'scripts' / 'ces_cas_historical_prior_offsite_time.py'
 EC391_NEW_SCALARS = (
  'historical_ec339_prior_offsite_time_bundle_file',
  'expected_historical_ec339_prior_offsite_time_bundle_sha256',
@@ -17271,7 +17271,7 @@ def audit_historical_ec339_prior_offsite_time(action:str,mode:str,*,pretty:bool=
 
 
 # EC392: independent signed offsite two-observer cross-view read-only receiver.
-AIRGAP_EC339_CROSSVIEW=ROOT/'scripts'/'ces_cas_historical_ec339_crossview.py'
+AIRGAP_EC339_CROSSVIEW=ROOT/'scripts'/'ces_cas_historical_crossview.py'
 EC392_NEW_SCALARS=('historical_ec339_crossview_bundle_file', 'expected_historical_ec339_crossview_bundle_sha256', 'secondary_ec391_prior_offsite_time_bundle_file', 'expected_secondary_ec391_prior_offsite_time_bundle_sha256', 'expected_outside_retained_secondary_ec391_keeper_roster_sha256', 'expected_outside_retained_secondary_ec391_tsa_registry_sha256', 'expected_retained_secondary_ec391_prior_time_inventory_sha256', 'expected_outside_retained_ec392_primary_observer_id', 'expected_outside_retained_ec392_secondary_observer_id')
 EC392_NEW_REPEATS=(('secondary_ec391_prior_signed_head_inventory_shas', '--secondary-ec391-prior-signed-head-inventory-sha256'), ('secondary_ec391_prior_rfc3161_token_inventory_shas', '--secondary-ec391-prior-rfc3161-token-inventory-sha256'), ('minimum_secondary_ec391_prior_timestamped_head_counts', '--minimum-secondary-ec391-prior-timestamped-head-count'), ('historical_ec339_crossview_signed_checkpoint_inventory_shas', '--historical-ec339-crossview-signed-checkpoint-inventory-sha256'), ('historical_ec339_crossview_rfc3161_token_inventory_shas', '--historical-ec339-crossview-rfc3161-token-inventory-sha256'), ('minimum_historical_ec339_crossview_timestamped_checkpoint_counts', '--minimum-historical-ec339-crossview-timestamped-checkpoint-count'))
 EC392_FLAGS=('inherited_live_ec391_or_earlier_signed_historical_dispute', 'outside_retained_two_observer_or_crossview_sha_floor_disagrees', 'timestamped_observer_head_or_crossview_checkpoint_missing', 'two_valid_signed_observer_source_snapshots_disagree', 'two_valid_signed_observer_nonprefix_split_view', 'valid_signed_crossview_claim_disagrees_with_reopened_peer_or_self_head', 'same_keeper_same_epoch_has_two_distinct_valid_signed_crossview_claims', 'cross_epoch_checkpoint_predecessor_prefix_or_seen_time_rollback', 'crossview_rfc3161_gen_time_claim_order_or_bounded_crl_disagreement', 'legal_observer_independence_prior_physical_custody_and_tsa_identity_not_proven', 'unobserved_forks_full_revocation_census_and_trusted_utc_not_proven')
@@ -17419,7 +17419,7 @@ def audit_historical_ec339_crossview(action:str,mode:str,*,pretty:bool=False,**i
 
 
 # EC393: independent preexisting two-party custody originals + timestamped log anchor.
-AIRGAP_EC339_CUSTODY_ANCHOR=ROOT/'scripts'/'ces_cas_historical_ec339_custody_anchor.py'
+AIRGAP_EC339_CUSTODY_ANCHOR=ROOT/'scripts'/'ces_cas_historical_custody_anchor.py'
 EC393_NEW_SCALARS=('historical_ec339_custody_anchor_bundle_file', 'expected_historical_ec339_custody_anchor_bundle_sha256', 'expected_outside_retained_ec393_custody_log_roster_sha256', 'expected_outside_retained_ec393_tsa_registry_sha256', 'expected_outside_retained_ec393_prior_log_head_sha256', 'expected_outside_retained_ec393_dispute_cutoff_utc')
 EC393_NEW_REPEATS=(('historical_ec339_countersigned_custody_receipt_inventory_shas', '--historical-ec339-countersigned-custody-receipt-inventory-sha256'), ('historical_ec339_custody_log_inclusion_inventory_shas', '--historical-ec339-custody-log-inclusion-inventory-sha256'), ('minimum_historical_ec339_pre_cutoff_log_anchored_receipt_counts', '--minimum-historical-ec339-pre-cutoff-log-anchored-receipt-count'))
 EC393_FLAGS=('inherited_two_real_ec391_and_ec392_signed_crossview_dispute', 'outside_retained_custody_log_or_epoch_inventory_floor_disagrees', 'pre_cutoff_signed_log_timestamp_or_countersigned_receipt_missing', 'valid_dual_signed_receipt_disagrees_with_authentic_ec392_original', 'two_valid_incompatible_countersigned_handoff_originals_visible', 'signed_custody_log_prefix_inclusion_or_extension_unproven', 'claimed_handoff_log_order_or_dispute_cutoff_not_bounded', 'furnished_offline_tsa_crl_stale_ambiguous_or_revoked', 'externally_proven_dispute_cutoff_real_world_site_key_and_prior_custody_missing', 'global_log_fork_census_immutable_physical_worm_and_full_ocsp_not_proven')
@@ -17579,7 +17579,7 @@ def audit_historical_ec339_custody_anchor(action:str,mode:str,*,pretty:bool=Fals
 
 # EC394: authentic prior EC393 custody -> independently registered site-key history
 # and third-party signed fork observations, all strictly offline and unresolved.
-AIRGAP_EC339_REGISTERED_WITNESS=ROOT/'scripts'/'ces_cas_historical_ec339_registered_witness.py'
+AIRGAP_EC339_REGISTERED_WITNESS=ROOT/'scripts'/'ces_cas_historical_registered_witness.py'
 EC394_NEW_SCALARS=(
  'historical_ec339_registered_witness_bundle_file',
  'expected_historical_ec339_registered_witness_bundle_sha256',
@@ -17784,7 +17784,7 @@ def audit_historical_ec339_registered_witness(action:str,mode:str,*,pretty:bool=
 
 # EC395: two independent accreditation claims, genuine reciprocal original witness
 # exchange, and two independent byte-identical offsite readbacks; no write path.
-AIRGAP_EC339_CREDENTIAL_GOSSIP=ROOT/'scripts'/'ces_cas_historical_ec339_credential_gossip_archive.py'
+AIRGAP_EC339_CREDENTIAL_GOSSIP=ROOT/'scripts'/'ces_cas_historical_credential_gossip_archive.py'
 EC395_NEW_SCALARS=(
  'historical_ec339_credential_gossip_archive_bundle_file',
  'expected_historical_ec339_credential_gossip_archive_bundle_sha256',
@@ -17997,7 +17997,7 @@ def audit_historical_ec339_credential_gossip_archive(action:str,mode:str,*,prett
 # EC396: independently retained public registry status, original RFC6962
 # log-inclusion/consistency, and two genuine signed (not physically certified)
 # device readbacks. Never grants legal accreditation or a hardware WORM claim.
-AIRGAP_EC339_PUBLIC_INTEGRITY=ROOT/'scripts'/'ces_cas_historical_ec339_public_integrity.py'
+AIRGAP_EC339_PUBLIC_INTEGRITY=ROOT/'scripts'/'ces_cas_historical_public_integrity.py'
 EC396_NEW_SCALARS=(
  'historical_ec339_public_integrity_bundle_file',
  'expected_historical_ec339_public_integrity_bundle_sha256',
@@ -18208,7 +18208,7 @@ def audit_historical_ec339_public_integrity(action:str,mode:str,*,pretty:bool=Fa
 
 
 
-AIRGAP_EC339_PUBLICATION_WITNESS=ROOT/'scripts'/'ces_cas_historical_ec339_publication_witness.py'
+AIRGAP_EC339_PUBLICATION_WITNESS=ROOT/'scripts'/'ces_cas_historical_publication_witness.py'
 EC397_NEW_SCALARS=(
  'historical_ec339_publication_witness_bundle_file',
  'expected_historical_ec339_publication_witness_bundle_sha256',
@@ -18407,7 +18407,7 @@ def audit_historical_ec339_publication_witness(action:str,mode:str,*,pretty:bool
 # EC398: independent pinned original registry notice vs. the unchanged signed EC396
 # four-role history, with two further signed original-readback custodians. No
 # official/legal/public/internet/physical-WORM authority is inferred.
-AIRGAP_EC339_EXTERNAL_NOTICE=ROOT/'scripts'/'ces_cas_historical_ec339_external_notice.py'
+AIRGAP_EC339_EXTERNAL_NOTICE=ROOT/'scripts'/'ces_cas_historical_external_notice.py'
 EC398_NEW_SCALARS=(
  'historical_ec339_external_notice_bundle_file',
  'expected_historical_ec339_external_notice_bundle_sha256',
@@ -18611,7 +18611,7 @@ def audit_historical_ec339_external_notice(action:str,mode:str,*,pretty:bool=Fal
 # EC399: mandatory genuine unchanged EC398 audit, actual original notice SHA,
 # two separate externally pinned X.509 issuer roots and detached signatures,
 # original historical/evaluation CRLs. Legally unresolved even when locally valid.
-AIRGAP_EC339_OFFICIAL_CERTIFICATE=ROOT/'scripts'/'ces_cas_historical_ec339_official_certificate.py'
+AIRGAP_EC339_OFFICIAL_CERTIFICATE=ROOT/'scripts'/'ces_cas_historical_official_certificate.py'
 EC399_NEW_SCALARS=(
  'historical_ec339_official_certificate_bundle_file',
  'expected_historical_ec339_official_certificate_bundle_sha256',
@@ -18776,7 +18776,7 @@ def audit_historical_ec339_official_certificate(action:str,mode:str,*,pretty:boo
 # EC400: genuinely native RFC5652 CMS/PKCS#7 SignedData, two authenticated
 # SignerInfos bound to the unchanged EC399 X.509+historic/evaluation CRL audit
 # and exact original EC398 gazette bytes. External public/legal trust unresolved.
-AIRGAP_EC339_NATIVE_CMS=ROOT/'scripts'/'ces_cas_historical_ec339_native_cms.py'
+AIRGAP_EC339_NATIVE_CMS=ROOT/'scripts'/'ces_cas_historical_native_cms.py'
 EC400_NEW_SCALARS=(
  'historical_ec339_native_cms_bundle_file',
  'expected_historical_ec339_native_cms_bundle_sha256',
@@ -18924,7 +18924,7 @@ def audit_historical_ec339_native_cms(action:str,mode:str,*,pretty:bool=False,**
 
 # EC401: real original RFC6960 historical/evaluation OCSP receipts verified
 # against real EC400 parent CMS and EC399 X.509/CRLs. Offline read-only.
-AIRGAP_EC339_ISSUER_OCSP=ROOT/'scripts'/'ces_cas_historical_ec339_issuer_ocsp.py'
+AIRGAP_EC339_ISSUER_OCSP=ROOT/'scripts'/'ces_cas_historical_issuer_ocsp.py'
 EC401_NEW_SCALARS=('historical_ec339_issuer_ocsp_bundle_file', 'expected_historical_ec339_issuer_ocsp_bundle_sha256', 'expected_outside_retained_ec401_first_a_historical_ocsp_sha256', 'expected_outside_retained_ec401_first_b_historical_ocsp_sha256')
 EC401_NEW_REPEATS=(('historical_ec339_issuer_ocsp_epoch_inventory_shas', '--historical-ec339-issuer-ocsp-epoch-inventory-sha256'), ('minimum_historical_ec339_joint_ocsp_publisher_counts', '--minimum-historical-ec339-joint-ocsp-publisher-count'))
 EC401_FLAGS=('inherited_real_ec400_cms_x509_crl_parent_disputed', 'outside_original_ocsp_epoch_inventory_or_count_pin_disagrees', 'signed_historical_or_evaluation_ocsp_original_missing', 'ocsp_good_and_contemporaneous_two_epoch_coverage_incomplete', 'ocsp_reveals_revocation_or_unknown_certificate_status', 'real_official_issuer_authorization_and_original_public_source_not_proven', 'global_ocsp_crl_census_and_independent_prior_public_access_not_proven', 'qualified_tsa_worm_unmocked_history_and_final_acceptance_not_proven')
@@ -19033,7 +19033,7 @@ def audit_historical_ec339_issuer_ocsp(action:str,mode:str,*,pretty:bool=False,*
 
 # EC402: real native PDF ByteRange and detached CMS signatures over exact
 # original bytes; EC398 source embedded, EC399 leaf signer, EC401 parent real.
-AIRGAP_EC339_SIGNED_PDF = ROOT/'scripts'/'ces_cas_historical_ec339_signed_pdf.py'
+AIRGAP_EC339_SIGNED_PDF = ROOT/'scripts'/'ces_cas_historical_signed_pdf.py'
 EC402_NEW_SCALARS = (
     'historical_ec339_signed_pdf_bundle_file',
     'expected_historical_ec339_signed_pdf_bundle_sha256',
@@ -19190,7 +19190,7 @@ def audit_historical_ec339_signed_pdf(action:str,mode:str,*,pretty:bool=False,**
 
 # EC404: externally pinned Ed25519 archive capture receipts over three exact
 # original offline HTTP response bodies; true unchanged EC403 audit mandatory.
-AIRGAP_EC339_PUBLIC_ACCESS = ROOT/'scripts'/'ces_cas_historical_ec339_public_access.py'
+AIRGAP_EC339_PUBLIC_ACCESS = ROOT/'scripts'/'ces_cas_historical_public_access.py'
 EC404_NEW_SCALARS = (
     'historical_ec339_public_access_bundle_file',
     'expected_historical_ec339_public_access_bundle_sha256',
@@ -19245,7 +19245,7 @@ EC404_NEGATIVES = (
 
 # EC403: actual bounded original XMLDSig, exact EC398 source and EC399
 # pinned original X509 leaf, mandatory unchanged EC402 signed-PDF parent audit.
-AIRGAP_EC339_ORIGINAL_XMLDSIG = ROOT/'scripts'/'ces_cas_historical_ec339_original_xmldsig.py'
+AIRGAP_EC339_ORIGINAL_XMLDSIG = ROOT/'scripts'/'ces_cas_historical_original_xmldsig.py'
 EC403_NEW_SCALARS = (
     'historical_ec339_original_xmldsig_bundle_file',
     'expected_historical_ec339_original_xmldsig_bundle_sha256',
@@ -19524,7 +19524,7 @@ def audit_historical_ec339_public_access(action:str,mode:str,*,pretty:bool=False
 
 # EC405: read-only genuine WARC/1.1 original captures and signed RFC3161/CMS
 # timestamps over entire WARC bytes; unchanged real EC404.audit mandatory.
-AIRGAP_EC339_WARC_TIMESTAMP = ROOT/'scripts'/'ces_cas_historical_ec339_warc_timestamp.py'
+AIRGAP_EC339_WARC_TIMESTAMP = ROOT/'scripts'/'ces_cas_historical_warc_timestamp.py'
 EC405_NEW_SCALARS = (
     'historical_ec339_warc_timestamp_bundle_file',
     'expected_historical_ec339_warc_timestamp_bundle_sha256',
@@ -19714,7 +19714,7 @@ def audit_historical_ec339_warc_timestamp(action:str,mode:str,*,pretty:bool=Fals
 # EC406: fully offline, four distinct externally SHA-pinned original Ed25519
 # signer keys, signed custodial accession + separate cross-witness per publisher.
 # Real unchanged EC405 audit (EC404 and every ancestor) is mandatory.
-AIRGAP_EC339_CUSTODY_WITNESS = ROOT/'scripts'/'ces_cas_historical_ec339_custody_witness.py'
+AIRGAP_EC339_CUSTODY_WITNESS = ROOT/'scripts'/'ces_cas_historical_custody_witness.py'
 EC406_NEW_SCALARS = (
     'historical_ec339_custody_witness_bundle_file',
     'expected_historical_ec339_custody_witness_bundle_sha256',
@@ -19895,7 +19895,7 @@ def audit_historical_ec339_custody_witness(action:str,mode:str,*,pretty:bool=Fal
 # EC407: independent original X.509 root/leaf/issuer-CRL + detached RFC5652 CMS
 # custody statements. It cannot confer official or legal institutional trust.
 # Production child runs the unchanged real EC406->EC405->older audit first.
-AIRGAP_EC339_INSTITUTIONAL_CMS = ROOT/'scripts'/'ces_cas_historical_ec339_institutional_cms.py'
+AIRGAP_EC339_INSTITUTIONAL_CMS = ROOT/'scripts'/'ces_cas_historical_institutional_cms.py'
 EC407_NEW_SCALARS = (
     'historical_ec339_institutional_cms_bundle_file',
     'expected_historical_ec339_institutional_cms_bundle_sha256',
@@ -20081,7 +20081,7 @@ def audit_historical_ec339_institutional_cms(action: str, mode: str,
 
 
 # EC408: truly signed dual-window original institutional leaf OCSP (no official trust promotion)
-AIRGAP_EC339_INSTITUTIONAL_OCSP = ROOT/'scripts'/'ces_cas_historical_ec339_institutional_ocsp.py'
+AIRGAP_EC339_INSTITUTIONAL_OCSP = ROOT/'scripts'/'ces_cas_historical_institutional_ocsp.py'
 EC408_NEW_SCALARS = ('historical_ec339_institutional_ocsp_bundle_file',
  'expected_historical_ec339_institutional_ocsp_bundle_sha256',
  'expected_outside_ec408_first_a_historical_ocsp_sha256',
@@ -20253,7 +20253,7 @@ def audit_historical_ec339_institutional_ocsp(action: str, mode: str,
 # EC409: offline genuine XMLDSig signed historical/evaluation ETSI TSL subset.
 # Original independent public legal authority NOT proven; no action capability
 # promotions, source creation, network access or native PowerShell modifications.
-AIRGAP_EC339_SIGNED_TSL = ROOT/'scripts'/'ces_cas_historical_ec339_signed_tsl.py'
+AIRGAP_EC339_SIGNED_TSL = ROOT/'scripts'/'ces_cas_historical_signed_tsl.py'
 EC409_NEW_SCALARS = ('historical_ec339_signed_tsl_bundle_file', 'expected_historical_ec339_signed_tsl_bundle_sha256', 'expected_outside_ec409_tsl_signer_roster_sha256', 'expected_outside_ec409_a_tsl_signer_certificate_der_sha256', 'expected_outside_ec409_b_tsl_signer_certificate_der_sha256', 'expected_outside_ec409_first_a_historical_tsl_sha256', 'expected_outside_ec409_first_b_historical_tsl_sha256', 'expected_outside_ec409_first_a_evaluation_tsl_sha256', 'expected_outside_ec409_first_b_evaluation_tsl_sha256')
 EC409_NEW_REPEATS = (('historical_ec339_signed_tsl_epoch_inventory_shas', '--historical-ec339-signed-tsl-epoch-inventory-sha256'), ('minimum_historical_ec339_joint_signed_tsl_publisher_counts', '--minimum-historical-ec339-joint-signed-tsl-publisher-count'))
 EC409_FLAGS = ('real_ec408_ec407_and_earlier_original_ancestry_adverse', 'outside_signed_tsl_certificate_first_epoch_or_whole_inventory_pin_disagrees', 'one_or_more_later_original_historical_or_evaluation_signed_tsls_missing', 'signed_tsl_window_or_service_status_is_not_granted_at_required_time', 'actual_institutional_issuer_and_tsl_joint_parent_coverage_incomplete', 'independently_verified_official_tsl_operator_authority_not_proven', 'historical_independent_public_delivery_and_qualified_time_not_proven', 'unmocked_external_history_full_trust_chain_worm_and_acceptance_not_proven')
@@ -20393,7 +20393,7 @@ def audit_historical_ec339_signed_tsl(action: str, mode: str,
 # EC410: actual pinned original EU LOTL X509 root/intermediate/leaf path and
 # signed national-list issuer certificate/HTTPS pointer bindings. Not an
 # official-root authority discovery and never an external-history PASS.
-AIRGAP_EC339_SIGNED_LOTL = ROOT/'scripts'/'ces_cas_historical_ec339_signed_lotl.py'
+AIRGAP_EC339_SIGNED_LOTL = ROOT/'scripts'/'ces_cas_historical_signed_lotl.py'
 EC410_NEW_SCALARS = ('historical_ec339_signed_lotl_bundle_file', 'expected_historical_ec339_signed_lotl_bundle_sha256', 'expected_outside_ec410_lotl_operator_roster_sha256', 'expected_outside_ec410_lotl_trust_anchor_der_sha256', 'expected_outside_ec410_lotl_intermediate_ca_der_sha256', 'expected_outside_ec410_lotl_signer_der_sha256', 'expected_outside_ec410_first_historical_lotl_xml_sha256', 'expected_outside_ec410_first_evaluation_lotl_xml_sha256')
 EC410_NEW_REPEATS = (('historical_ec339_signed_lotl_epoch_inventory_shas', '--historical-ec339-signed-lotl-epoch-inventory-sha256'), ('minimum_historical_ec339_joint_signed_lotl_publisher_counts', '--minimum-historical-ec339-joint-signed-lotl-publisher-count'))
 EC410_FLAGS = ('real_ec409_and_all_older_original_ancestry_adverse', 'outside_lotl_chain_first_epoch_or_whole_inventory_pin_disagrees', 'one_or_more_later_original_signed_lotl_windows_missing', 'signed_lotl_pointer_identity_or_historical_time_window_incomplete', 'signed_lotl_pointer_and_real_ec409_tsl_parent_joint_coverage_incomplete', 'independent_official_lotl_trust_anchor_and_operator_provenance_not_proven', 'original_historical_public_lotl_distribution_and_qualified_time_not_proven', 'full_unmocked_external_ancestry_worm_native_and_final_acceptance_not_proven')
@@ -20536,7 +20536,7 @@ def audit_historical_ec339_signed_lotl(action: str, mode: str,
 
 # EC411: exact original SHA-pinned EC410 LOTL XAdES SigningCertificateV2
 # + RFC5035 IssuerSerial DER. Parent EC410 and every ancestor run unmodified.
-AIRGAP_EC339_XADES_CERT_V2 = ROOT/'scripts'/'ces_cas_historical_ec339_xades_cert_v2.py'
+AIRGAP_EC339_XADES_CERT_V2 = ROOT/'scripts'/'ces_cas_historical_xades_cert_v2.py'
 EC411_NEW_REPEATS = (
     ('historical_ec339_xades_cert_v2_epoch_inventory_shas',
      '--historical-ec339-xades-cert-v2-epoch-inventory-sha256'),
@@ -20692,7 +20692,7 @@ def audit_historical_ec339_xades_cert_v2(action: str, mode: str,
 # EC412: real original issuer-signed CA full CRLs for EC410's LOTL chain.
 # Exactly one additive audit route. EC411 + all earlier production ancestors
 # remain mandatory and unmodified; no network, issuance or positive legal PASS.
-AIRGAP_EC339_LOTL_CA_CRL = ROOT/'scripts'/'ces_cas_historical_ec339_lotl_crl.py'
+AIRGAP_EC339_LOTL_CA_CRL = ROOT/'scripts'/'ces_cas_historical_lotl_crl.py'
 EC412_NEW_SCALARS = (
     'historical_ec339_lotl_crl_bundle_file',
     'expected_historical_ec339_lotl_crl_bundle_sha256',
@@ -20861,7 +20861,7 @@ def audit_historical_ec339_lotl_crl(action: str, mode: str,
 
 # EC413: additional truly issuer-direct signed original OCSP on *unchanged* EC412.
 # Never certifies official root/provenance or upgrades the real parent findings.
-AIRGAP_EC339_LOTL_ISSUER_OCSP = ROOT/'scripts'/'ces_cas_historical_ec339_lotl_ocsp.py'
+AIRGAP_EC339_LOTL_ISSUER_OCSP = ROOT/'scripts'/'ces_cas_historical_lotl_ocsp.py'
 EC413_NEW_SCALARS = (
     'historical_ec339_lotl_ocsp_bundle_file',
     'expected_historical_ec339_lotl_ocsp_bundle_sha256',
@@ -21053,7 +21053,7 @@ def audit_historical_ec339_lotl_ocsp(action: str, mode: str,
 # Ed25519 signed publication claims; unchanged EC413 and older production
 # ancestry remains mandatory. No proof of an actual network event or PASS.
 AIRGAP_EC339_LOTL_OCSP_PUBLICATION = (
-    ROOT/'scripts'/'ces_cas_historical_ec339_lotl_ocsp_publication.py')
+    ROOT/'scripts'/'ces_cas_historical_lotl_ocsp_publication.py')
 EC414_NEW_SCALARS = (
     'historical_ec339_lotl_ocsp_publication_bundle_file',
     'expected_historical_ec339_lotl_ocsp_publication_bundle_sha256',

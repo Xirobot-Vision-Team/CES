@@ -8,7 +8,7 @@ import sys
 # The only injected import path is this shipped, fixed sibling code tree.
 HOME = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HOME / 'construction'))
-from ec282_knowledge_impact_host.operator import main
+from knowledge_impact_host.operator import main
 
 if __name__ == '__main__':
     sys.exit(main())
