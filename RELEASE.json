@@ -11,7 +11,7 @@
   ],
   "normalization": "LF for maintained files; protected scripts/construction/references unchanged",
   "historical_validation": "deployment path-bearing JSON omitted; human-readable historical summary retained with its known failures",
-  "release_kind": "first_formal_release_candidate",
+  "release_kind": "first_formal_release",
   "legacy_cleanup_ledger": "tools/legacy_cleanup.json",
   "retained_runtime_protocol_version": "1.0.0"
 }

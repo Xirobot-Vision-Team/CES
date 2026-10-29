@@ -24,6 +24,6 @@
   "work_audit": "exclude verified CES managed-document publications; preserve human and mixed work",
   "license": "Apache-2.0",
   "public_source_preparation": "privacy-checked projection, read-only CI, external project profiles, legacy bytes retained",
-  "release_status": "first_formal_release_candidate",
+  "release_status": "first_formal_release",
   "legacy_cleanup": "explicit retired-file and reviewed-modification ledger; historical baseline unchanged"
 }

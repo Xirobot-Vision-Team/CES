@@ -43,6 +43,8 @@ boundaries and Apache-2.0 terms remain in force.
 
 Source-only archives are built by tools/build_release.py with SHA256SUMS. The
 manifest controls every archived file; .git, environments, project profiles,
-logs, caches and ledgers are not included. CI must pass and an independent PR
-approval is required before merging and publishing from main. Release preparation
-does not bypass the repository's branch protection.
+logs, caches and ledgers are not included. CI must pass and an AI maintainer PR
+review is recorded before merging and publishing from main. Under the owner's
+AI-maintenance delegation, no second-account approval is required; all CI and
+other branch protections remain. See ../GOVERNANCE.md. Release preparation does
+not bypass these protections.
