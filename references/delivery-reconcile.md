@@ -82,5 +82,5 @@ An earlier verified state is exposed separately as `last_historical_attested_sta
 - Focused local synthetic functional cases: [`../construction/test_delivery_reconcile.py`](../construction/test_delivery_reconcile.py)
 - Strict output schema: [`delivery-reconcile-result.v1.schema.json`](delivery-reconcile-result.v1.schema.json)
 - Strict audit schema: [`delivery-reconcile-audit.v1.schema.json`](delivery-reconcile-audit.v1.schema.json)
-- Fixture boundary: [`../construction/fixtures/ec227/README.md`](../construction/fixtures/ec227/README.md)
+- Fixture boundary: [`../construction/fixtures/README.md`](../construction/fixtures/README.md)
 - Historical EC225/EC226 unchanged, originals still at V4.60/R150 CLI; no native action or report publication added.

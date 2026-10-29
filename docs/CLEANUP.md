@@ -48,3 +48,21 @@ review is recorded before merging and publishing from main. Under the owner's
 AI-maintenance delegation, no second-account approval is required; all CI and
 other branch protections remain. See ../GOVERNANCE.md. Release preparation does
 not bypass these protections.
+
+
+## Consolidated fixture notes
+
+A follow-up source inspection found 83 round-specific fixture README pages
+(99,293 bytes), with 75 directories containing only those pages. None was read
+by runtime/test code; explicit documentation links now target one fixture guide.
+They are removed from the current tree, with exact baseline hashes appended to
+tools/legacy_cleanup.json. No Python implementation module, schema policy or JSON fixture was removed or changed by the fixture-note consolidation. A separate pre-existing stale schema-catalog policy SHA was repaired after baseline verification; two mutation-rejection tests were added and the source lock refreshed explicitly.
+
+`construction/` remains a compatibility implementation directory, not a log
+folder. After consolidation it contains 873 Python implementation/test files,
+49 JSON runtime catalogs/test inputs, two README guides and one test-data text
+file. Removing the entire directory would break the retained POSIX/router/host
+entrypoints. Retiring those optional features would require a separate explicit
+deprecation and migration change, not a log cleanup.
+
+The expanded fixture regression found a pre-existing SCHEMA_CATALOG policy pin mismatch, although the reader/policy bytes matched the frozen baseline and were unchanged by this PR. Only that exact metadata SHA was repaired. Further policy/reader mutation still raises LEGACY_READER_OR_POLICY_PIN_DRIFT; the check is not disabled.

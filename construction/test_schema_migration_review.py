@@ -240,6 +240,24 @@ class SchemaReviewTests(unittest.TestCase):
         self.assertFalse(report['identity_or_record_authentication_verified'])
         self.assertFalse(report['business_authorization_verified'])
 
+    def test_23_reviewed_codeinsight_policy_pin_matches_frozen_current_bytes(self):
+        legacy=self.registry['legacy_codeinsight']
+        policy=sr.ROOT/legacy['policy_path']
+        self.assertEqual(hashlib.sha256(policy.read_bytes()).hexdigest(),legacy['policy_sha256'])
+        report=self.read('finding-v1.json','Finding')
+        self.assertTrue(report['schema_pin_checked'])
+
+    def test_24_legacy_policy_and_reader_mutations_remain_rejected(self):
+        original=sr.read_regular
+        raw=(LEGACY/'ci-example.json').read_bytes()
+        for relative in ('references/schema-compatibility.v1.json','construction/schema_compat.py'):
+            def changed(path,maximum,*args,**kwargs):
+                data=original(path,maximum,*args,**kwargs)
+                return data+b' ' if path==sr.ROOT/relative else data
+            with self.subTest(source=relative),mock.patch.object(sr,'read_regular',side_effect=changed):
+                with self.assertRaisesRegex(sr.ReviewError,'LEGACY_READER_OR_POLICY_PIN_DRIFT'):
+                    sr.inspect(raw,domain='CodeInsight',registry=self.registry)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

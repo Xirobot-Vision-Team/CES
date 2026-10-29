@@ -1135,7 +1135,7 @@
     "construction/test_repository_report_subject.py": "58f009a8ca0c4509696edcdcd1c583e95f05e66610b4de26347e8dde46b8f4f6",
     "construction/test_response_contract.py": "b463b8c4a7eddfe1427d6930833ef20548fc878fb0aeba6ea5b7a6495aa49d68",
     "construction/test_schema_compat.py": "21c0d48627883a908278a7acb6efde03634733bf31e2413b3c8eaf95847777b2",
-    "construction/test_schema_migration_review.py": "32a678d559a0b79f1ae00a3afeecbef0f6a4cac44f416e8806948cb39f479686",
+    "construction/test_schema_migration_review.py": "c46371ec1209a8b09cbc046d95abd8a266e9358b6dbd1e5846bc302ade7df5e1",
     "construction/test_security_boundary.py": "e69dfa4083a029aa82e4b49ec8c12523d58f8848c6a85efe33d2a2f4a57c0fcc",
     "construction/test_security_permission_audit.py": "38b8df3f6e2b159d126b435f1ec4a1882c65841de98bb076de53348b2394b5a5",
     "construction/test_sequence_audit.py": "261fe896d617da41570d42566bd89a74b035c1f9b39f706afa2f97f5fce791eb",
