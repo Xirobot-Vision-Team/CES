@@ -11,6 +11,7 @@ CES 将仓库报告、代码问题、知识文档和可选测试审查串成可�
 - 日报及周/月/年总结，保留来源、作者/committer、覆盖范围和缺口。
 - 代码问题与优化建议的证据校验、归属、去重、GitHub Issue 及持续追踪。
 - 来源绑定的知识章节和报告增量维护，仅发布 manifest 托管文档。
+- 可选的项目/解决方案 README 增量维护，默认随知识更新触发，保留人工正文。
 - 用户指定测试入口后的协议登记、结果采集、分析和测试报告 Issue。
 - 函数/功能开发者登记：问题用例匹配开发者，自动抄送报告。
 - GitHub @提及、Assignee 和项目级抄送，保留发送账本和回读证据。
@@ -44,6 +45,7 @@ Windows 的 `ces-product.cmd` 与直接调用 `operator/ces_product.py` 使用�
 
 - [安装与支持范围](docs/INSTALLATION.md) · [架构](docs/ARCHITECTURE.md)
 - [产品指南](docs/PRODUCT_GUIDE.md) · [仓库快捷流程](docs/REPOSITORY_SHORTCUTS.md)
+- [README 自动维护与开关](docs/README_MAINTENANCE.md)
 - [测试审查与开发者登记](docs/TESTING.md) · [通知与验收](docs/NOTIFICATIONS.md)
 - [Issue 追踪](docs/ISSUE_TRACKING.md) · [同步与文档发布](docs/AUTOMATIC_LIFECYCLE.md)
 - [贡献说明](CONTRIBUTING.md) · [开发验证](docs/DEVELOPMENT.md)

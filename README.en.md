@@ -13,6 +13,7 @@ passing build or produce new reasoning merely by formatting a report.
 - Daily and period reports with explicit coverage and source citations.
 - Deep code-Issue proposals, author attribution, deduplication and tracking.
 - Incremental knowledge and manifest-owned documentation publication.
+- Optional, default-on repository/solution/project README maintenance on knowledge increments.
 - Project test contracts, structured results, evidence-bound report analysis.
 - Explicit function/feature developer registration and failure-report CC routing.
 - GitHub mentions and assignments with durable send/readback receipts.
@@ -48,6 +49,7 @@ Windows `ces-product.cmd` and `sh ./ces-product` refer to the same operator.
 - [Architecture](docs/ARCHITECTURE.md)
 - [Source names and path migration](docs/NAMING.md)
 - [Product guide](docs/PRODUCT_GUIDE.md)
+- [README maintenance and ownership boundaries](docs/README_MAINTENANCE.md)
 - [Testing and ownership registration](docs/TESTING.md)
 - [Notifications and delivery limits](docs/NOTIFICATIONS.md)
 - [Development](docs/DEVELOPMENT.md) and [contributing](CONTRIBUTING.md)

@@ -1,6 +1,6 @@
 """Repository-facing, source-bound knowledge documents; no legacy signature claims."""
 from __future__ import annotations
-import argparse,json,re
+import argparse,json,re,os
 from pathlib import Path
 from datetime import datetime,timezone
 import ces_workflow as w
@@ -40,11 +40,14 @@ def prepare(c,selected_sources=None):
               mode="initial" if previous is None else "incremental",
               original_legacy_signed_save_used=False,
               source_scope="tracked immutable HEAD content, explicit configured or per-run source list; not whole repository knowledge")
+    import ces_readmes
+    body['readme_maintenance']=ces_readmes.discover(c,head,sources)
     body["binding_sha256"]=d.digest(body)
     path=cache(c)/"inputs"/(body["binding_sha256"]+".json")
     w.save(path,body);w.save(cache(c)/"latest-input.json",dict(path=str(path)))
     return dict(status="knowledge_input_ready" if changed else "knowledge_sources_unchanged",input=str(path),head=head,mode=body["mode"],changed_sources=changed,
-                next_step="Codex reads selected sources and previous repository docs; authors a source-bound draft. Unchanged docs may be retained.")
+                readme_maintenance=body['readme_maintenance'],
+                next_step="Codex reads sources, old knowledge, and discovered README/descriptors; authors cited chapters and readmes updates or reasoned unchanged decisions. Missing README drafts remain visible gaps.")
 def inspect_input(c,path):
     data=w.load(path);binding=data.pop("binding_sha256")
     w.need(data["schema"]=="ces.knowledge_input.v1" and data["repository_id"]==c["github"]["repository_id"] and d.digest(data)==binding,"KNOWLEDGE_INPUT_BINDING_INVALID")
@@ -73,6 +76,14 @@ def chapter_index(c,chapters):
     for chapter in chapters:links[chapter["path"]]=chapter.get("title",chapter["path"])
     return ["- ["+links[rel]+"]("+rel+")" for rel in sorted(links)]
 def publish(c,input_path,draft_path,execute=False):
+    # Serialize knowledge+README writes without locking ordinary source or touching the user's Git index.
+    if not execute:return _publish(c,input_path,draft_path,False)
+    lock=cache(c)/'publish.lock';lock.parent.mkdir(parents=True,exist_ok=True)
+    fd=os.open(lock,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600);os.close(fd)
+    try:return _publish(c,input_path,draft_path,True)
+    finally:lock.unlink(missing_ok=True)
+
+def _publish(c,input_path,draft_path,execute=False):
     inp=inspect_input(c,input_path);draft=w.load(draft_path)
     w.need(draft.get("schema")=="ces.knowledge_draft.v1" and draft.get("input_binding_sha256")==inp["binding_sha256"],"KNOWLEDGE_DRAFT_SOURCE_MISMATCH")
     chapters=draft.get("chapters",[])
@@ -108,11 +119,25 @@ def publish(c,input_path,draft_path,execute=False):
             "- 成品位于仓库，Git提交/推送后在GitHub同步；缓存和版本历史位于仓库外。",
             "- 当前入口是通用操作层，不冒充旧版双签名KnowledgeSave协议。"]
     documents["knowledge/README.md"]="\n".join(index)+"\n"
+    import ces_readmes
+    readme,readme_manifest=ces_readmes.plan(c,inp,draft)
+    if readme_manifest is not None:documents[ces_readmes.MANIFEST]=json.dumps(readme_manifest,ensure_ascii=False,indent=2)+'\n'
+    # Validate all document ownership and README plans before the first write.
+    d.publish(c,documents,False)
+    if execute:
+        w.need(not w.git(c,'diff','--cached','--name-only'),'STAGED_CHANGES_BLOCK_KNOWLEDGE_PUBLICATION')
+        if c.get('repository_push',{}).get('allow') and c.get('repository_push',{}).get('automatic_after_document_write'):
+            import ces_lifecycle
+            w.need(w.git(c,'ls-remote','--exit-code','origin','refs/heads/'+ces_lifecycle.branch(c)).split()[0]==inp['head'],'KNOWLEDGE_REMOTE_ADVANCED_REVIEW_REQUIRED')
+    w.need(w.git(c,'rev-parse','HEAD')==inp['head'],'KNOWLEDGE_HEAD_CHANGED')
     plan=d.publish(c,documents,execute)
+    if execute and readme['updates']:
+        w.save(cache(c)/'readme-plans'/(inp['binding_sha256']+'.json'),ces_readmes.summary(readme))
+        ces_readmes.apply(c,readme)
     snapshot_id=d.digest(dict(input=inp["binding_sha256"],documents={k:w.sha(v) for k,v in documents.items()}))
     record=dict(schema="ces.knowledge_docset.v1",snapshot_id=snapshot_id,head=inp["head"],sources=inp["sources"],
                 generated_at=datetime.now(timezone.utc).isoformat(),draft_sha256=w.sha(Path(draft_path).read_bytes()),
-                citation_count=citation_count,documents=plan["files"],repository_written=execute,legacy_signed_save_used=False)
+                citation_count=citation_count,documents=plan["files"],readme_maintenance=ces_readmes.summary(readme),repository_written=execute,legacy_signed_save_used=False)
     if execute:
         version_path=cache(c)/'versions'/(snapshot_id+'.json')
         if version_path.exists():
@@ -121,7 +146,7 @@ def publish(c,input_path,draft_path,execute=False):
             record=previous
         else:w.save(version_path,record)
         w.save(cache(c)/'current.json',record)
-    result=dict(status=plan["status"],snapshot_id=snapshot_id,chapters=len(chapters),citations=citation_count,documents=plan["files"])
+    result=dict(status=plan["status"],snapshot_id=snapshot_id,chapters=len(chapters),citations=citation_count,documents=plan["files"],readme_maintenance=ces_readmes.summary(readme))
     if execute:
         import ces_lifecycle
         result['git_publication']=ces_lifecycle.autocommit(c)

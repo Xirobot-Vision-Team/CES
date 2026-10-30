@@ -20,6 +20,11 @@ reported as passing.
 
 ## Editing the maintained layer
 
+The README regression suites include disposable local Git/bare remotes to verify
+knowledge-triggered in-place fragments, isolated publication and historical
+audit filtering. These use no GitHub credentials, external repository or project
+execution. See [README maintenance](README_MAINTENANCE.md) for draft/ownership boundaries.
+
 Keep changes localized and run tests that exercise the observable behavior. A
 unit-test pass is not proof of real project execution, notification delivery or
 Issue closure. Extend mock server tests for publication and source-binding

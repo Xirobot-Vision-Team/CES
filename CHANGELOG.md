@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Maintain existing repository/solution/project README fragments with source-bound
+  knowledge increments, optional and enabled by default. Preserve human content,
+  bind scoped drafts and knowledge links, and audit exact generated README changes.
+- Disable Git diff's index auto-refresh in lifecycle reads so isolated publication
+  checks keep the real user index stable while retaining all conflict guards.
+
 - Stop active tracking of closed Issues by default; preserve historical evidence,
   detect actual reopens and omit closed items from active report todos. Explicit
   closed-Issue review remains an opt-in policy with existing verification gates.

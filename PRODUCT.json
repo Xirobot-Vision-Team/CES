@@ -20,6 +20,7 @@
   "project_testing": "opt-in source-reviewed contracts, bounded execution/results, Codex analysis and CC test-report Issues; independent fix gate",
   "test_ownership": "explicit versioned function/feature-to-case developer mappings; run-bound snapshots and matched failure CC; no blame inference",
   "knowledge_expansion": "manual scoped batches, source-bound chapters and repository coverage/backlog",
+  "readme_maintenance": "optional default-on source-bound repository/solution/project README blocks triggered by knowledge increments; human content preserved",
   "daily_report_evidence": "run-bound source review and actual build in archive and published Markdown",
   "work_audit": "exclude verified CES managed-document publications; preserve human and mixed work",
   "license": "Apache-2.0",

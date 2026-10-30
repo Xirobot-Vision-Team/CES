@@ -29,6 +29,9 @@
     "allow_git_push": false
   },
   "knowledge": {
+    "readme_maintenance": {
+      "enabled": true
+    },
     "sources": [
       "README.md"
     ]
