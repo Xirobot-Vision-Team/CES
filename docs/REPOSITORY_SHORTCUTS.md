@@ -61,7 +61,7 @@
 ## Issue持续闭环（所有快捷指令）
 
 每次分析先按profile同步源码并实际Build（不运行程序/测试），然后track sync --config <profile> [--execute]；即使没有新提交也同步CES代码问题，保留状态/负责人/评论/PR或commit变化与未知读取。默认7天无实质进展才提醒，冷却7天，首次基线不刷屏。报告Issue不能当作待修缺陷。
-对修复候选、关闭未验证、重新打开或相关源码变化的Issue，用track prepare固定最新远端HEAD与实际相关路径，由Codex复核并track review保存结论。当前profile明确禁止runtime tests，不能调用track test；实际Build结果单独记录，不能替代运行验证。旧HEAD、脏工作区或未配置命令不得冒充通过。允许的源码同步只有分析前fetch/ff-only，遇冲突不pull覆盖、不reset。
+仅对仍open的修复候选、重新打开或相关源码变化的Issue，用track prepare固定最新远端HEAD与实际相关路径，由Codex复核并track review保存结论。默认track_closed=false；已关闭Issue（含closed_unverified）保留历史与关闭记录，不再主动抓取评论/PR、源码复核、催办或列修复待办。关闭不等于已验证修复，也不因此继续追查；实际重新打开才恢复，或由用户另行明确要求复查并显式启用。项目profile禁止runtime tests时不能调用track test；实际Build结果单独记录，不能替代运行验证。旧HEAD、脏工作区或未配置命令不得冒充通过。允许的源码同步只有分析前fetch/ff-only，遇冲突不pull覆盖、不reset。
 将open/not_fixed/in_progress/fix_candidate/closed_unverified/resolved_verified/regression_suspected/unknown分别写入日报、周期报告和仓库问题状态文档。当前Issue记录与下一步由documents导出到docs/ces/issues/README.md，提交推送仍需对应授权。
 自动关闭/重开默认关闭，先给有证据的预览；只有配置独立启用且当前来源和必需测试满足fixed/regression评审时可track transition，回读后再次同步。完整规则见./ISSUE_TRACKING.md。
 

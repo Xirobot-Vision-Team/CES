@@ -25,6 +25,7 @@ def policy(c):
     for key,default,maximum in (('max_issues',100,500),('stale_days',7,365),('reminder_cooldown_days',7,365),('review_max_age_days',7,90)):
         value=p.get(key,default);w.need(type(value) is int and 1<=value<=maximum,'TRACKING_POLICY_RANGE_INVALID:'+key)
     steps=p.get('required_test_steps',[])
+    w.need(type(p.get('track_closed',False)) is bool,'TRACK_CLOSED_POLICY_INVALID')
     w.need(isinstance(steps,list) and len(steps)<=32 and all(isinstance(x,str) and x.strip() for x in steps) and len(set(steps))==len(steps),'TRACKING_REQUIRED_STEPS_INVALID')
     return p
 def dbopen(c):
@@ -128,9 +129,11 @@ def status(c,db=None):
         nxt={"open":"复核问题并安排处理","not_fixed":"当前固定源码仍见问题，继续处理并提供修复证据","in_progress":"核实处理进展与修复证据","fix_candidate":"复核关联代码并运行相关测试",
              "closed_unverified":"补充修复验证；关闭状态不证明已修复","resolved_verified":"后续代码变化时复核是否需要重新验证",
              "regression_suspected":"复核重新打开/代码变化的影响","unknown":"恢复远端读取后重新对账"}[row["lifecycle"]]
+        active=s['state']!='closed' or c.get('issue_tracking',{}).get('track_closed',False)
+        if not active:nxt='已关闭，停止主动跟踪；保留历史，不认定修复已验证'
         items.append(dict(number=row["number"],issue_id=row["issue_id"],title=s["title"],url=s["url"],remote_state=s["state"],
                           lifecycle=row["lifecycle"],assignees=s["assignees"],last_seen=row["last_seen"],last_change=row["last_change"],
-                          last_reminder=row["last_reminder"],snapshot_sha256=row["snapshot_sha"],next_step=nxt))
+                          last_reminder=row["last_reminder"],snapshot_sha256=row["snapshot_sha"],next_step=nxt,active_tracking=active))
     if owned:db.close()
     return dict(schema=SCHEMA,repository=c["github"]["repository"],repository_id=c["github"]["repository_id"],
                 observed_at=stamp(now()),remote_head=head,issues=items,changes=[])
@@ -150,14 +153,17 @@ def for_report(c):
     if not latest.exists():return dict(status='tracking_not_yet_synchronized',issues=[])
     record=w.load(latest)
     w.need(record.get('repository_id')==c['github']['repository_id'],'TRACKING_REPORT_REPOSITORY_MISMATCH')
-    items=[{k:v for k,v in row.items() if k not in ('last_seen','last_reminder')} for row in record['issues']]
+    rows=record['issues'];track_closed=c.get('issue_tracking',{}).get('track_closed',False)
+    items=[{k:v for k,v in row.items() if k not in ('last_seen','last_reminder')} for row in rows if row['remote_state']!='closed' or track_closed]
     error=output(c)/'sync-error.json'
     stale=error.exists() and dt(w.load(error)['observed_at'])>dt(record['observed_at'])
     return dict(status='last_observation_stale_after_failure' if stale else 'observed',remote_head=record['remote_head'],issues=items,
-                binding_sha256=digest(items),observation_is_atomic=False)
+                binding_sha256=digest(items),observation_is_atomic=False,closed_tracking_enabled=track_closed,
+                inactive_closed_count=sum(row['remote_state']=='closed' for row in rows) if not track_closed else 0)
 def report_lines(info):
     if not info:return []
     lines=['','## Issue处理闭环','', '追踪状态：'+info['status'],'']
+    if info.get('inactive_closed_count'):lines.append('- '+str(info['inactive_closed_count'])+'项已关闭Issue仅保留历史，不列入主动跟踪或修复待办。')
     for x in info['issues']:
         lines.append(f"- [#{x['number']} {reports.safe(x['title'])}]({x['url']})：{x['lifecycle']}；GitHub={x['remote_state']}；下一步：{x['next_step']}")
     lines+=['','GitHub关闭、修复候选、源码审阅与测试通过分别记录；没有验证不宣称已修复。']
@@ -175,14 +181,27 @@ def sync(c,execute=False):
             w.need(type(n) is int and n>0,"TRACK_NUMBER_INVALID")
             if n not in targets:targets[n]=None
         for n in prior:
-            if n not in targets:targets[n]=None
-        w.need(len(targets)<=p.get("max_issues",100),"TRACKING_ISSUE_LIMIT")
+            if n not in targets:
+                if not p.get('track_closed',False) and json.loads(prior[n]['snapshot_json'])['state']=='closed':continue
+                targets[n]=None
+        # Closed Issues are passive archive records by default, even if explicitly included.
+        # The lightweight all-state list also detects an actual reopen without polling closed detail endpoints.
+        if not p.get('track_closed',False):
+            targets={n:issue for n,issue in targets.items() if issue is None or issue['state']!='closed' or n in prior}
+        active_count=sum(issue is None or issue['state']!='closed' or p.get('track_closed',False) for issue in targets.values())
+        w.need(active_count<=p.get("max_issues",100),"TRACKING_ISSUE_LIMIT")
         observations={};unavailable={}
         for n,issue in sorted(targets.items()):
             try:
                 issue=issue or client.get(client.prefix+f"/issues/{n}")
                 w.need(managed(issue) or n in p.get("include_numbers",[]) or n in prior,"UNAUTHORIZED_TRACKING_TARGET")
-                observations[n]=observe(client,issue,head)
+                if issue['state']=='closed' and not p.get('track_closed',False):
+                    # Record closure metadata once without comments/timeline/PR/source review.
+                    old=json.loads(prior[n]['snapshot_json']) if n in prior else {}
+                    minimal=projection(issue,[],[],[],old.get('remote_head',head))
+                    for key in ('comments','events','pulls'):minimal[key]=old.get(key,[])
+                    observations[n]=minimal
+                else:observations[n]=observe(client,issue,head)
             except Exception as exc:
                 unavailable[n]=type(exc).__name__
                 if n in prior:
@@ -239,6 +258,7 @@ def remind(c,client,db,record,execute):
         if (moment-dt(row["last_change"])).total_seconds()<86400*p.get("stale_days",7):continue
         if row["last_reminder"] and (moment-dt(row["last_reminder"])).total_seconds()<86400*p.get("reminder_cooldown_days",7):continue
         s=json.loads(row["snapshot_json"])
+        if s['state']=='closed' and not p.get('track_closed',False):continue
         users=s["assignees"]
         if not users:continue
         key=digest(dict(repo=c["github"]["repository_id"],number=row["number"],change=row["last_change"],bucket=moment.date().isoformat()))
@@ -301,6 +321,7 @@ def review_input(c,number,paths):
     try:
         row=db.execute("SELECT * FROM issues WHERE number=?",(number,)).fetchone();w.need(row is not None,"ISSUE_NOT_TRACKED")
         issue=client.get(client.prefix+f"/issues/{number}");head=default_head(client)
+        w.need(issue['state']!='closed' or c.get('issue_tracking',{}).get('track_closed',False),'CLOSED_ISSUE_TRACKING_DISABLED')
         snap=observe(client,issue,head)
         w.need(digest(snap)==row["snapshot_sha"],"TRACKING_STALE_RUN_SYNC_FIRST")
         sources=[source(c,client,head,path) for path in paths]
