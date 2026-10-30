@@ -30,7 +30,7 @@ GitHub指派人数超限时明确停止，需配置团队提及或拆分，不�
 
 使用 `track sync/status/history/prepare/review/test/transition`，详情见 [ISSUE_TRACKING.md](ISSUE_TRACKING.md)。日报、周期报告和新建Issue流程接入持续追踪；没有新提交也同步远端状态。持久记录状态、负责人、评论与实际提交/PR引用，并将代码审阅与测试证据绑定固定远端HEAD。报告导出含当前问题状态，默认超7天未进展才冷却提醒。
 
-fixed必须具备配置要求的真实测试与当前源码评审；GitHub关闭只记closed_unverified。默认不自动关闭/重新打开，需独立启用且重新检查证据。本功能不创建假Issue或为演示关闭真实问题。
+默认track_closed=false：已关闭Issue仅保留历史与关闭记录，不再主动复核、提醒或列入修复待办，实际重新打开才恢复；用户另行要求复查时才显式启用。GitHub关闭不证明fixed，未验证仍可保留closed_unverified历史状态。fixed必须具备配置要求的真实测试与当前源码评审。默认不自动关闭/重新打开，需独立启用且重新检查证据。本功能不创建假Issue或为演示关闭真实问题。
 
 ## 项目测试与报告分析
 

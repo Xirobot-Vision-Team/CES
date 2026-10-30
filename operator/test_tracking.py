@@ -34,7 +34,7 @@ class TrackingTests(unittest.TestCase):
                     github=dict(repository_id=1,repository="example/project"),
                     notifications=dict(allow_publish=True),
                     execution_policy=dict(run_runtime_tests=True),
-                    issue_tracking=dict(enabled=True,allow_reminders=True,stale_days=7,reminder_cooldown_days=7,required_test_steps=["unit"],review_max_age_days=7),
+                    issue_tracking=dict(enabled=True,track_closed=True,allow_reminders=True,stale_days=7,reminder_cooldown_days=7,required_test_steps=["unit"],review_max_age_days=7),
                     build_validation=dict(steps=[dict(name="unit",kind='test',argv=["runner","--unit"],cwd=str(Path(self.tmp.name).resolve()))]))
         self.client=Fake(self.c)
     def sync(self,execute=False):
@@ -61,6 +61,42 @@ class TrackingTests(unittest.TestCase):
     def test_prs_excluded(self):
         x=issue();x["pull_request"]={};self.assertFalse(t.managed(x))
     def test_closed_is_not_fixed(self):self.assertEqual(t.classify(self.snapshot("closed"),None,None),"closed_unverified")
+    def test_closed_default_skips_details_and_active_reports_preserves_history(self):
+        self.c['issue_tracking'].pop('track_closed');self.sync()
+        before=t.history(self.c,1)['events'];self.client.items[0]['state']='closed'
+        with patch.object(t,'observe',side_effect=AssertionError('No closed detail reads')):
+            result=self.sync(True)
+        self.assertFalse(result['issues'][0]['active_tracking']);self.assertEqual(result['notifications'],[])
+        projection=t.for_report(self.c);self.assertEqual(projection['issues'],[]);self.assertEqual(projection['inactive_closed_count'],1)
+        self.assertGreater(len(t.history(self.c,1)['events']),len(before))
+        stored=t.status(self.c)['issues'][0]['snapshot_sha256'];self.client.head='b'*40
+        with patch.object(t,'observe',side_effect=AssertionError('No source-change review for closed Issue')):again=self.sync(True)
+        self.assertEqual(again['changes'],[]);self.assertEqual(again['issues'][0]['snapshot_sha256'],stored)
+    def test_closed_issue_resumes_only_after_actual_reopen(self):
+        self.c['issue_tracking']['track_closed']=False;self.sync();self.client.items[0]['state']='closed';self.sync()
+        self.client.items[0]['state']='open'
+        with patch.object(t,'observe',wraps=t.observe) as observed:result=self.sync()
+        self.assertEqual(observed.call_count,1);self.assertTrue(result['issues'][0]['active_tracking'])
+        self.assertEqual(result['changes'][0]['kind'],'reopened');self.assertEqual(len(t.for_report(self.c)['issues']),1)
+    def test_cached_closed_issue_absent_from_list_is_not_polled(self):
+        self.c['issue_tracking']['track_closed']=False;self.sync();self.client.items[0]['state']='closed';self.sync();self.client.items=[]
+        with patch.object(self.client,'get',wraps=self.client.get) as reads:result=self.sync()
+        self.assertFalse(any('/issues/' in call.args[0] for call in reads.call_args_list))
+        self.assertEqual(result['changes'],[]);self.assertFalse(result['issues'][0]['active_tracking'])
+    def test_new_closed_issues_do_not_consume_active_limit(self):
+        self.c['issue_tracking']['track_closed']=False;self.c['issue_tracking']['max_issues']=1
+        self.client.items=[dict(issue(n),state='closed') for n in range(2,7)]+[issue()]
+        result=self.sync();self.assertEqual([x['number'] for x in result['issues']],[1])
+    def test_legacy_cached_projection_filters_closed_without_sync(self):
+        self.client.items[0]['state']='closed';self.sync();self.c['issue_tracking']['track_closed']=False
+        self.assertEqual(t.for_report(self.c)['issues'],[])
+    def test_closed_prepare_denied_before_detail_and_source_reads(self):
+        self.client.items[0]['state']='closed';self.sync();self.c['issue_tracking']['track_closed']=False
+        with patch.object(t.reports,'Client',return_value=self.client),patch.object(t,'observe',side_effect=AssertionError('details')),patch.object(t,'source',side_effect=AssertionError('source')):
+            with self.assertRaisesRegex(RuntimeError,'CLOSED_ISSUE_TRACKING_DISABLED'):t.review_input(self.c,1,['source.cpp'])
+    def test_closed_policy_requires_boolean(self):
+        self.c['issue_tracking']['track_closed']='false'
+        with self.assertRaisesRegex(RuntimeError,'TRACK_CLOSED_POLICY_INVALID'):t.policy(self.c)
     def test_no_auto_progress_from_assignment(self):self.assertEqual(t.classify(self.snapshot(),None,None),"open")
     def test_claimed_comment_is_only_progress(self):
         comment=dict(id=1,body="fixed please close",updated_at="2026-01-02T00:00:00Z",user=dict(login="developer"),html_url="https://example.test/comment")

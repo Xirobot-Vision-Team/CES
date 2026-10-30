@@ -6,6 +6,14 @@
 open：尚无可核验进展。not_fixed：当前固定源码复核仍见问题。in_progress：存在处理评论/声明。fix_candidate：有PR或提交引用，未证明修复。closed_unverified：GitHub已关闭但未验证。resolved_verified：当前固定来源与必需测试满足评审要求。regression_suspected：复发待核验。unknown：读取失败/证据不足，不等于不存在。
 
 ## 流程与命令
+
+默认 `issue_tracking.track_closed=false`：只主动跟踪仍为 open 的代码Issue。
+同步中的轻量状态清单可记录已知Issue关闭或实际重新打开；已关闭后保留原始快照、
+评审及事件历史，不抓取其评论、timeline、PR或源码，不因HEAD变化继续复核或提醒，
+也不列入日报/周报的主动修复待办。关闭仍不等于修复已验证；closed_unverified
+可作为历史状态保留，无须为了消除此标签主动追踪。当前状态页标记停止跟踪，
+历史归档不删除。只有实际重新打开才恢复常规跟踪；用户另行明确要求复查已关闭
+Issue时，可临时显式启用 `track_closed=true`，仍需独立来源/测试门，不自动授权重开。
     ces-product.cmd track sync --config <profile> [--execute]
     ces-product.cmd track status --config <profile>
     ces-product.cmd track history --config <profile> [--number <n>]
@@ -28,7 +36,7 @@ stale_days与reminder_cooldown_days默认7天，从基线或最近实质进展�
 
 ## 报告与任务
 新建Issue成功后自动同步；日报与周/月/年入口更新/引用追踪投影，报告快照不包含易变的检查时间，因此无变化不重复发布。documents可将问题状态导出仓库issues/README.md，Git提交推送仍需授权。
-现有每日/每周任务已经加入sync、必要源码复核、测试和报告联动，即使无新提交也检查问题。不新增定时器、不修改原执行时间。
+现有每日/每周任务执行sync和仍open问题的必要源码复核、报告联动，即使无新提交也同步状态。已关闭项仅保留历史；测试仍需独立授权。不新增定时器、不修改原执行时间。
 
 ## 验收边界
 状态机测试只用隔离的内存远端和临时状态文件，没有创建临时Git仓库或假Issue。真实仓库同步和#3当前代码not_fixed评审已运行，没有为测试关闭真实问题。当前真实仓库未配置必需测试步骤，所以不能宣称修复已验证或自动关闭可实测通过。

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Stop active tracking of closed Issues by default; preserve historical evidence,
+  detect actual reopens and omit closed items from active report todos. Explicit
+  closed-Issue review remains an opt-in policy with existing verification gates.
+
 - Organize compatibility modules, scripts and references by function; publish
   the direct-source path migration map without changing wire identities.
 - Repair native identity handling under StrictMode and reject final newlines.

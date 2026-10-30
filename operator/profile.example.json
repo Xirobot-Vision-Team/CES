@@ -56,6 +56,7 @@
   },
   "issue_tracking": {
     "enabled": false,
+    "track_closed": false,
     "max_issues": 100,
     "include_numbers": [],
     "stale_days": 7,
