@@ -15,7 +15,7 @@ def build_only_policy(c):
     # Build steps stay build-only even when a separately authorized project test lane is enabled.
     return policy is False or (policy is True and testing.get('enabled') is True and testing.get('allow_execute') is True)
 def run(c,*args,env=None,input_data=None,timeout=120):
-    p=subprocess.run(["git","--no-optional-locks","-c","core.quotePath=false","-C",c["repository_path"],*args],
+    p=subprocess.run(["git","--no-optional-locks","-c","core.quotePath=false","-c","diff.autoRefreshIndex=false","-C",c["repository_path"],*args],
                      input=input_data,capture_output=True,env=env or w.clean_env(),timeout=timeout)
     if p.returncode:raise RuntimeError("GIT_LIFECYCLE_FAILED:"+args[0])
     return p.stdout.decode("utf-8").rstrip("\r\n")
@@ -173,6 +173,8 @@ def managed_files(c):
         files[p.relative_to(Path(c["repository_path"]).resolve()).as_posix()]=p
     w.need(len(files)<=512,"DOC_PUBLISH_LIMIT")
     files[manifest_path.relative_to(Path(c["repository_path"]).resolve()).as_posix()]=manifest_path
+    import ces_readmes
+    files.update(ces_readmes.managed_files(c))
     return files
 def publish(c,execute=False):
     cfg=c.get("repository_push",{});b=branch(c)
@@ -188,6 +190,9 @@ def publish(c,execute=False):
         w.need(remote==head,"REMOTE_ADVANCED_RERUN_PREFLIGHT_AND_REVIEW_DOCUMENTS")
         docroot=docs.root(c).relative_to(Path(c["repository_path"]).resolve()).as_posix()
         changes=set(run(c,"diff","--name-only",head,"--",docroot).splitlines())|set(run(c,"ls-files","--others","--exclude-standard","--",docroot).splitlines())
+        readmes={name for name in files if not name.startswith(docroot+'/')}
+        for name in readmes:
+            if run(c,'diff','--name-only',head,'--',':(literal)'+name):changes.add(name)
         w.need(changes<=set(files),"UNOWNED_DOC_CHANGE_BLOCKS_AUTOPUBLISH")
         result=dict(schema="ces.document_git_publish.v1",branch=b,parent=head,paths=sorted(changes),mode="isolated_index_docs_only",
                     no_force=True,runtime_tests_executed=False)
@@ -204,7 +209,7 @@ def publish(c,execute=False):
         payload=b"\0".join(name.encode("utf-8") for name in sorted(changes))+b"\0"
         run(c,"add","--pathspec-from-file=-","--pathspec-file-nul",env=env,input_data=payload)
         changed=run(c,"diff","--cached","--name-only",head,env=env).splitlines()
-        w.need(set(changed)==changes and all(x.startswith(docroot+"/") for x in changed),"COMMIT_SCOPE_INVALID")
+        w.need(set(changed)==changes and all(x.startswith(docroot+"/") or x in readmes for x in changed),"COMMIT_SCOPE_INVALID")
         tree=run(c,"write-tree",env=env)
         commit=run(c,"commit-tree",tree,"-p",head,"-m",cfg.get("commit_message","docs: update CES reports and project knowledge"),
                    "-m","CES-Generated-By: CES\nCES-Repository-Id: "+str(c['github']['repository_id']),env=env)

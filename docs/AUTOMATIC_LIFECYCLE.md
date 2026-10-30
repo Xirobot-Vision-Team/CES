@@ -14,6 +14,7 @@ repository_sync.enabled/allow_pull和execution_policy.build_before_analysis明�
 Build成功只证明所配置目标生成成功，不证明算法效果、运行行为、单元测试或Issue已修复。明确禁止runtime tests的profile拒绝track test执行；原有fixed/regression验收门不被弱化。静态源码可记not_fixed/inconclusive，缺少必需运行证据时不自动关闭。
 
 ## 文档生成后自动发布
+可选README维护默认开启，随knowledge prepare/publish触发。除成品目录外，独立索引仅可增加readme-manifest.json精确登记、且父提交人工区未改的README路径；仍拒绝业务代码或其他根目录文件。README草稿须绑定实际来源和本批知识，不能把复制链接当功能分析。详见[README维护](README_MAINTENANCE.md)。
 用户已有长期明确授权、repository_push.allow与automatic_after_document_write开启时，knowledge publish --execute和documents --execute生成后调用autocommit。可单独 lifecycle publish --config <profile> [--execute]。
 提交范围限定repository_docs.relative_directory内托管manifest列出的文件和manifest本身；成员外部编辑、无关未托管文档或缺失文件冲突停止，不覆盖、不删除成员内容。
 只读远端HEAD必须与本地HEAD一致；若生成期间远端前进，停止发布、下轮重新同步和复核。使用独立Git索引从当前HEAD写树，逐项核对差异只含文档，再commit-tree生成正常子提交并正常push。绝不force。

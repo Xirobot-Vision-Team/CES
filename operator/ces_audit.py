@@ -21,11 +21,17 @@ def classify(c,sha):
     if proof is None:return None
     prefix=docs.relative(c.get('repository_docs',{}).get('relative_directory','docs/ces')).as_posix()
     changed=[x for x in w.git(c,'diff','--name-only','-z',parent,sha,'--').split('\0') if x]
-    if not changed or any(not name.startswith(prefix+'/') for name in changed):return None
+    if not changed:return None
+    external=[name for name in changed if not name.startswith(prefix+'/')]
     manifest_name=prefix+'/.ces-documents.json'
     manifest=json.loads(w.git(c,'show',sha+':'+manifest_name))
     if manifest.get('schema')!='ces.repository_documents.v1' or manifest.get('repository_id')!=c['github']['repository_id']:return None
     owned={prefix+'/'+docs.relative(name).as_posix() for name in manifest['files']}|{manifest_name}
+    if external:
+        import ces_readmes
+        if prefix+'/'+ces_readmes.MANIFEST not in owned:return None
+        if docs.text_hash(ces_readmes.blob(c,sha,prefix+'/'+ces_readmes.MANIFEST))!=manifest['files'][ces_readmes.MANIFEST]['sha256']:return None
+        owned|=ces_readmes.audit_paths(c,sha,parent,external,prefix)
     if not set(changed)<=owned:return None
     if proof=='verified_publication_receipt' and set(receipt.get('paths',[]))!=set(changed):return None
     return dict(sha=sha,reason='ces_generated_managed_documents',proof=proof,paths=sorted(changed))
