@@ -196,8 +196,8 @@ class PipelineTests(unittest.TestCase):
         result=self.run_fixture()
         with self.assertRaises(FileNotFoundError):t.publish(self.c,result['run'],True)
         t.analyze(self.c,result['run'],self.analysis(result['run']))
-        self.c['testing']['test_maintainers']=[]
-        with self.assertRaisesRegex(RuntimeError,'OWNER_AND_MAINTAINER'):t.publish(self.c,result['run'],True)
+        self.c['testing']['test_maintainers']=[];self.c['testing']['project_owners']=[];self.c['notifications']['cc_recipients']=[]
+        with patch.object(t.reports,'Client',side_effect=AssertionError('No live publisher')),self.assertRaisesRegex(RuntimeError,'RECIPIENT_REQUIRED'):t.publish(self.c,result['run'],True)
         self.c['testing']['test_maintainers']=['developer'];self.c['testing']['allow_publish']=False
         with self.assertRaisesRegex(RuntimeError,'PUBLICATION_DISABLED'):t.publish(self.c,result['run'],True)
     def test_lock_collision_does_not_remove_other_lock(self):
@@ -231,6 +231,31 @@ class PipelineTests(unittest.TestCase):
     def test_build_lane_remains_build_only_when_tests_enabled(self):
         self.assertTrue(ces_lifecycle.build_only_policy(self.c))
         self.c['testing']['allow_execute']=False;self.assertFalse(ces_lifecycle.build_only_policy(self.c))
+    def test_entry_environment_is_applied_to_real_child_and_bound(self):
+        item=self.c['testing']['entries'][0];item['environment']={'CES_TEST_SAMPLE':'value-{repository}'}
+        text=(self.repo/'writer.py').read_text();text=text.replace('root=Path(sys.argv[1]);mode=sys.argv[2]','import os\nassert os.environ["CES_TEST_SAMPLE"].startswith("value-")\nassert Path(os.environ["CES_TEST_SAMPLE"][6:]).samefile(Path.cwd())\nroot=Path(sys.argv[1]);mode=sys.argv[2]');(self.repo/'writer.py').write_text(text)
+        self.setup_contract();result=t.run_test(self.c,'fixture',True)
+        self.assertEqual(result['result']['status'],'passed',(Path(result['run'])/'console.log').read_text(errors='replace'));receipt=t.w.load(Path(result['run'])/'receipt.json')
+        self.assertEqual(receipt['environment_spec_sha256'],t.digest(item['environment']));self.assertNotIn('value-',json.dumps(receipt))
+    def test_environment_change_requires_fresh_contract(self):
+        self.c['testing']['entries'][0]['environment']={'CES_TEST_SAMPLE':'one'};self.setup_contract()
+        self.c['testing']['entries'][0]['environment']['CES_TEST_SAMPLE']='two'
+        with self.assertRaisesRegex(RuntimeError,'CONFIGURATION_CHANGED'):t.run_test(self.c,'fixture',True)
+    def test_environment_rejects_git_injection_and_controls(self):
+        for value in ({'GIT_CONFIG_COUNT':'1'},{'Path':'x','PATH':'y'},{'OK':'bad\nline'},{'BAD=KEY':'x'},{'OK':None}):
+            self.c['testing']['entries'][0]['environment']=value
+            with self.subTest(environment=value),self.assertRaisesRegex(RuntimeError,'ENVIRONMENT'):t.entry(self.c,'fixture')
+    def test_owner_only_report_does_not_require_invented_test_engineer(self):
+        result=self.run_fixture();t.analyze(self.c,result['run'],self.analysis(result['run']));self.c['testing']['test_maintainers']=[]
+        preview=t.publish(self.c,result['run'],False);self.assertEqual(preview['test_maintainers'],[]);self.assertIn('lead',preview['cc_recipients'])
+    def test_explicit_primary_report_recipient_gets_all_results_and_is_access_checked(self):
+        result=self.run_fixture();t.analyze(self.c,result['run'],self.analysis(result['run']));self.c['testing'].update(project_owners=[],test_maintainers=[],report_recipients=['developer'])
+        server=cc_tests.Server()
+        with patch.object(t.w,'credential',return_value='test-only'),patch.object(t.w,'api',side_effect=server.api):
+            first=t.publish(self.c,result['run'],True);second=t.publish(self.c,result['run'],True)
+        self.assertEqual(first['primary_recipients'],['developer']);self.assertEqual(first['cc_recipients'],['other']);self.assertEqual(second['status'],'duplicate_skipped')
+        self.c['testing']['report_recipients']=['unknown-user']
+        with patch.object(t.w,'credential',return_value='test-only'),patch.object(t.w,'api',side_effect=server.api),self.assertRaisesRegex(RuntimeError,'NOT_REPOSITORY_MEMBER'):t.publish(self.c,result['run'],True)
     def test_managed_export_contains_reviewed_reports_not_raw_artifacts(self):
         result=self.run_fixture();t.analyze(self.c,result['run'],self.analysis(result['run']))
         documents=t.export_reports(self.c)

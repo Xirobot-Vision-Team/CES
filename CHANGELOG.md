@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Support source-contract-bound, per-test-entry environment overrides for runtime
+  dependency paths without project-specific launchers or modifying the host PATH.
+- Allow a configured report owner/CC without inventing a separate test engineer;
+  keep explicit developer ownership and verified-recipient publication boundaries.
+
 - Maintain existing repository/solution/project README fragments with source-bound
   knowledge increments, optional and enabled by default. Preserve human content,
   bind scoped drafts and knowledge links, and audit exact generated README changes.
