@@ -336,17 +336,19 @@ def publish(c,path,execute=False):
     w.need(record['receipt_id']==receipt['receipt_id'],'TEST_ANALYSIS_BINDING_INVALID')
     w.need(analysis_record(c,run,receipt,normalized,record['draft'])==record,'TEST_ANALYSIS_RENDERING_CHANGED')
     cfg=c.get('testing',{});owners=notifications.unique(cfg.get('project_owners',[]));engineers=notifications.unique(cfg.get('test_maintainers',[]))
-    w.need(owners or engineers or notifications.configured_cc(c),'TEST_REPORT_RECIPIENT_REQUIRED')
+    primary=notifications.unique(cfg.get('report_recipients',[]))
+    w.need(owners or engineers or primary or notifications.configured_cc(c),'TEST_REPORT_RECIPIENT_REQUIRED')
     developer_routing=run_ownership(c,run,receipt,normalized)
     developers=developer_routing['developers'];copies=notifications.unique(notifications.configured_cc(c)+owners+engineers+developers)
-    if not execute:return dict(status='test_report_publish_preview',project_owners=owners,test_maintainers=engineers,developers=developers,developer_routing=developer_routing,cc_recipients=copies,report=str(run/'report.md'))
+    if not execute:return dict(status='test_report_publish_preview',project_owners=owners,test_maintainers=engineers,primary_recipients=primary,developers=developers,developer_routing=developer_routing,cc_recipients=[x for x in copies if x.casefold() not in {p.casefold() for p in primary}],report=str(run/'report.md'))
     w.need(cfg.get('enabled') is True and cfg.get('allow_publish') is True,'TEST_REPORT_PUBLICATION_DISABLED')
-    notification_cfg=copy.deepcopy(c);notification_cfg.setdefault('notifications',{})['cc_recipients']=copies
+    notification_cfg=copy.deepcopy(c);notification_cfg.setdefault('notifications',{})['cc_recipients']=notifications.unique(copies+primary)
     client=reports.Client(notification_cfg)
     roles=dict(project_owners=owners,test_maintainers=engineers)
+    if primary:roles['primary_recipients']=primary
     if receipt.get('ownership_sha256'):roles['developers']=developers
     semantic=digest(dict(analysis=record['analysis_id'],roles=roles))
-    result=client.publish(f"test:{c['github']['repository_id']}:{receipt['entry']}",semantic,'[CES 测试审查] '+receipt['entry'],record['markdown'],[])
+    result=client.publish(f"test:{c['github']['repository_id']}:{receipt['entry']}",semantic,'[CES 测试审查] '+receipt['entry'],record['markdown'],primary)
     result.update(project_owners=owners,test_maintainers=engineers,developers=developers,developer_routing=developer_routing,receipt_id=receipt['receipt_id'],test_report_only=True,automatic_code_issue_created=False,assignees_changed=False)
     w.save(run/'publication.json',result);return result
 def status(c):
