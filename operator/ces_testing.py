@@ -39,9 +39,32 @@ def entry(c,name):
     w.need(isinstance(sources,list) and 1<=len(sources)<=32 and len(set(sources))==len(sources),'TEST_SOURCES_REQUIRED')
     for path in sources:relative(path)
     timeout=item.get('timeout_seconds',600);w.need(type(timeout) is int and 1<=timeout<=7200,'TEST_TIMEOUT_INVALID')
+    environment(item)
     return item
+
+def environment(item):
+    values=item.get('environment',{})
+    w.need(isinstance(values,dict) and len(values)<=32,'TEST_ENVIRONMENT_INVALID')
+    seen=set()
+    for key,value in values.items():
+        w.need(isinstance(key,str) and re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]{0,63}',key) and key.upper() not in seen and not key.upper().startswith('GIT_'),'TEST_ENVIRONMENT_KEY_INVALID')
+        w.need(isinstance(value,str) and len(value)<=32768 and not any(ch in value for ch in ('\0','\r','\n')),'TEST_ENVIRONMENT_VALUE_INVALID');seen.add(key.upper())
+    return values
+
+def process_environment(item,variables):
+    env=w.clean_env();substitutions={**variables,'path':env.get('PATH',env.get('Path',''))}
+    for key,value in environment(item).items():
+        if os.name=='nt':
+            for prior in list(env):
+                if prior.casefold()==key.casefold():del env[prior]
+        expanded=value.format_map(substitutions)
+        w.need(len(expanded)<=32768 and not any(ch in expanded for ch in ('\0','\r','\n')),'TEST_ENVIRONMENT_VALUE_INVALID')
+        env[key]=expanded
+    return env
 def execution_spec(item):
-    return {key:item.get(key,default) for key,default in (('name',None),('argv',None),('cwd','{repository}'),('timeout_seconds',600),('sources',[]))}
+    spec={key:item.get(key,default) for key,default in (('name',None),('argv',None),('cwd','{repository}'),('timeout_seconds',600),('sources',[]))}
+    if item.get('environment'):spec['environment']=environment(item)
+    return spec
 def sources(c,item,head):
     output=[]
     for path in item['sources']:
@@ -169,10 +192,10 @@ def current_contract(c,item):
     w.need(doc['repository_id']==c['github']['repository_id'] and doc['entry']==execution_spec(item) and doc['parser_version']==1,'TEST_CONTRACT_CONFIGURATION_CHANGED')
     w.need(fingerprint(sources(c,item,w.git(c,'rev-parse','HEAD')))==doc['sources'],'TEST_CONTRACT_SOURCE_CHANGED_REREVIEW')
     return doc
-def execute_process(argv,cwd,timeout,console):
+def execute_process(argv,cwd,timeout,console,environment=None):
     """Bounded console capture, timeout kills the process tree; never launches via shell."""
     state=dict(truncated=False,output_complete=True);flags={'start_new_session':True} if os.name!='nt' else {}
-    proc=subprocess.Popen(argv,cwd=cwd,env=w.clean_env(),stdout=subprocess.PIPE,stderr=subprocess.STDOUT,**flags)
+    proc=subprocess.Popen(argv,cwd=cwd,env=environment if environment is not None else w.clean_env(),stdout=subprocess.PIPE,stderr=subprocess.STDOUT,**flags)
     def drain():
         total=0
         with console.open('wb') as stream:
@@ -229,7 +252,8 @@ def run_test(c,name,execute=False):
         w.save(run/'contract.json',contract);w.save(run/'sources.json',dict(head=head,sources=selected));w.save(run/'ownership.json',registered_owners)
         ownership_hash=w.sha((run/'ownership.json').read_bytes())
         errors=[];start=time.monotonic()
-        try:process=execute_process(argv,str(cwd),item.get('timeout_seconds',600),run/'console.log')
+        env=process_environment(item,variables)
+        try:process=execute_process(argv,str(cwd),item.get('timeout_seconds',600),run/'console.log',environment=env)
         except OSError as exc:
             process=dict(exit_code=None,timed_out=False,console_truncated=False,output_complete=True)
             (run/'console.log').write_text('Test process failed to start: '+type(exc).__name__,encoding='utf-8');errors.append(dict(artifact='console.log',reason='TEST_PROCESS_START_FAILED'))
@@ -240,6 +264,7 @@ def run_test(c,name,execute=False):
         normalized=dict(schema='ces.test_results.v1',repository_id=c['github']['repository_id'],entry=name,head=head,cases=cases,summary=results.summarize(cases,process['exit_code'],process['timed_out'],errors,contract['contract'].get('required_cases',[]),stable))
         receipt=dict(schema='ces.project_test_receipt.v1',repository_id=c['github']['repository_id'],entry=name,head=head,contract_id=contract['contract_id'],argv=argv,cwd=str(cwd),executable_sha256=exe_hash,started_at=started,completed_at=now(),seconds=round(time.monotonic()-start,2),**process,source_stable=stable,console_sha256=w.sha((run/'console.log').read_bytes()),artifacts=artifacts,normalized_sha256=digest(normalized),sources_sha256=w.sha((run/'sources.json').read_bytes()),binary_source_binding_verified=False,semantic_fix_verification=False)
         receipt['ownership_sha256']=ownership_hash
+        if environment(item):receipt['environment_spec_sha256']=digest(environment(item));receipt['effective_environment_sha256']=digest(env)
         receipt['receipt_id']=digest(receipt);w.save(run/'receipt.json',receipt);w.save(run/'results.json',normalized)
         developer_routing=run_ownership(c,run,receipt,normalized)
         packet=dict(schema='ces.test_analysis_input.v1',receipt_id=receipt['receipt_id'],normalized_sha256=receipt['normalized_sha256'],head=head,summary=normalized['summary'],cases=cases,artifacts=artifacts,untrusted_test_output=True,next_step='Codex reads logs, normalized failures and relevant code; authors evidence-bound analysis.json. Exit code and parsing do not determine root cause.')
@@ -311,7 +336,7 @@ def publish(c,path,execute=False):
     w.need(record['receipt_id']==receipt['receipt_id'],'TEST_ANALYSIS_BINDING_INVALID')
     w.need(analysis_record(c,run,receipt,normalized,record['draft'])==record,'TEST_ANALYSIS_RENDERING_CHANGED')
     cfg=c.get('testing',{});owners=notifications.unique(cfg.get('project_owners',[]));engineers=notifications.unique(cfg.get('test_maintainers',[]))
-    w.need(owners and engineers,'TEST_REPORT_OWNER_AND_MAINTAINER_REQUIRED')
+    w.need(owners or engineers or notifications.configured_cc(c),'TEST_REPORT_RECIPIENT_REQUIRED')
     developer_routing=run_ownership(c,run,receipt,normalized)
     developers=developer_routing['developers'];copies=notifications.unique(notifications.configured_cc(c)+owners+engineers+developers)
     if not execute:return dict(status='test_report_publish_preview',project_owners=owners,test_maintainers=engineers,developers=developers,developer_routing=developer_routing,cc_recipients=copies,report=str(run/'report.md'))
