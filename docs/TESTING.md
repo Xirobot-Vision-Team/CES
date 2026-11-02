@@ -122,6 +122,26 @@ ces-product.cmd test owners --config <profile> --entry <name>
 必须通过同仓成员核验；主收件人与CC分别记录并去重。用户将测试配置作者指定为
 报告对象时，由编排层根据实际配置登记这个列表，不能自动信任报告中的任意author。
 
+### 接口开发者署名和测试专用抄送
+
+外部配置 `testing.report_signers` 可登记报告的接口开发者署名账号（默认空）。
+署名必须同时属于 `testing.report_recipients`；由操作人按用户指定的开发者登记
+填写，不从运行输出、GitHub发布账号、负责人或CC推断。报告显示接口开发者署名，
+并明确由CES自动执行与分析，不冒称开发者手工撰写或审批。GitHub消息、手动分析
+生成的report.md和仓库测试报告导出使用相同署名。署名为展示投影，历史analysis.json
+及其哈希、执行回执保持不变，旧报告可正常验证/导出。
+
+`testing.cc_recipients`（默认空）为所有测试报告增加额外知会账号，例如运维；它与
+通用项目CC、负责人、测试维护者及失败用例开发者合并去重，并经过同仓访问核验。
+该字段不改变日报/周报收件人或Assignee，也不把运维登记成接口开发者。
+署名和有效路由参与发布去重；配置修改本身不重发历史报告或启用定时/实际测试。
+
+```json
+{"testing": {"report_recipients": ["interface-developer"],
+             "report_signers": ["interface-developer"],
+             "cc_recipients": ["operations-maintainer"]}}
+```
+
 当前解析器提供以下通用协议，均需由来源审阅登记后使用：
 
 | 协议 | 登记值 | 主要证据 |
