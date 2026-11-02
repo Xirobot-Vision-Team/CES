@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Split a run into source-registered interface reports, each credited and delivered
+  to its own developers, including passing and missing required cases. Require
+  scoped analysis for multi-interface runs and retain immutable ownership snapshots.
+
 - Display explicitly registered interface-developer credits on test reports and
   support verified test-only CC recipients. Preserve immutable historical analysis
   records and execution receipts; credits do not imply human authorship/approval.

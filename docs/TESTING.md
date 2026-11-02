@@ -124,6 +124,34 @@ ces-product.cmd test owners --config <profile> --entry <name>
 
 ### 接口开发者署名和测试专用抄送
 
+当每个接口的开发者由测试配置JSON指定时，使用
+`testing.report_grouping="registered_interface"`。Codex先读取实际配置的开发者字段、
+接口入口与ConfigId生成规则，把每份配置的原字节哈希、接口及用例ID登记到仓库外
+版本化owners；不把某个开发者固定在项目级配置，也不信任运行输出中的author。
+运行保存归属快照，报告使用该轮快照，后续登记变更不会改投旧结果。
+
+通过/失败/错误/跳过及缺失的必要用例均按登记接口拆分。相同kind、接口名称和
+source_paths的多份配置合为一份接口报告；不同接口即使同一开发者也分别成报告。
+各报告只列本接口用例，署名和主收件人为匹配的登记开发者；项目级report_signers
+和report_recipients在此模式下不决定接口署名或收件人。未知归属（包括通过用例）
+停止拆分发布并披露，不能回退到某个项目账号。进程退出码、超时、解析缺口和整轮
+状态仍单列，接口通过不能变成整轮通过。所有接口的成员访问检查完成后才开始发送。
+
+运行的analysis-input.json提供interface_reports及稳定interface_id、case_ids、摘要。
+同轮多个接口时，ces.test_analysis.v1草稿必须添加完整的interface_analyses数组，
+每项包含interface_id、精确case_ids，以及该接口的summary、root_cause、recommendation、
+verification、limitations、citations；每组独立审阅，不复制整轮分析到所有报告。
+单接口可沿用整轮分析。接口分析仍绑定原receipt_id、normalized_sha256和来源引用。
+GitHub按入口+接口分别维护去重线程；仓库导出latest.md索引及interfaces/<id>.md成品。
+原始analysis.json及回执保持不变，不将拆分展示写成新的实际执行。
+
+```json
+{"testing": {"report_grouping": "registered_interface",
+             "cc_recipients": ["operations-maintainer"]}}
+```
+
+以下显式项目级署名仅用于原有aggregate模式（默认），不适用于配置驱动的接口拆分：
+
 外部配置 `testing.report_signers` 可登记报告的接口开发者署名账号（默认空）。
 署名必须同时属于 `testing.report_recipients`；由操作人按用户指定的开发者登记
 填写，不从运行输出、GitHub发布账号、负责人或CC推断。报告显示接口开发者署名，
