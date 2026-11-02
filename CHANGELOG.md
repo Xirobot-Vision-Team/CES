@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Display explicitly registered interface-developer credits on test reports and
+  support verified test-only CC recipients. Preserve immutable historical analysis
+  records and execution receipts; credits do not imply human authorship/approval.
+
 - Support source-contract-bound, per-test-entry environment overrides for runtime
   dependency paths without project-specific launchers or modifying the host PATH.
 - Allow a configured report owner/CC without inventing a separate test engineer;

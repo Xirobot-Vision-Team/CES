@@ -263,4 +263,35 @@ class PipelineTests(unittest.TestCase):
         self.assertIn('测试审查报告',documents['reports/tests/fixture/latest.md'])
         self.assertNotIn('console.log',documents)
 
+    def test_developer_credit_projects_existing_analysis_without_rewriting_evidence(self):
+        result=self.run_fixture();t.analyze(self.c,result['run'],self.analysis(result['run']))
+        path=Path(result['run'])/'analysis.json';original=path.read_bytes()
+        self.c['testing'].update(report_recipients=['developer'],report_signers=['developer','DEVELOPER'])
+        body=t.export_reports(self.c)['reports/tests/fixture/latest.md']
+        self.assertIn('接口开发者署名：[developer](https://github.com/developer)',body)
+        self.assertIn('CES 自动执行与分析',body);self.assertEqual(path.read_bytes(),original)
+        self.c['testing']['report_signers']=['other']
+        with self.assertRaisesRegex(RuntimeError,'SIGNER_NOT_PRIMARY_RECIPIENT'):t.export_reports(self.c)
+
+    def test_signed_publication_and_test_only_cc_are_verified_and_deduplicated(self):
+        result=self.run_fixture();draft=self.analysis(result['run'])
+        self.c['testing'].update(report_recipients=['developer'],report_signers=['developer'],cc_recipients=['lead','OTHER'])
+        original=copy.deepcopy(self.c);t.analyze(self.c,result['run'],draft)
+        self.assertIn('接口开发者署名', (Path(result['run'])/'report.md').read_text(encoding='utf-8'))
+        server=cc_tests.Server()
+        with patch.object(t.w,'credential',return_value='test-only'),patch.object(t.w,'api',side_effect=server.api):
+            first=t.publish(self.c,result['run'],True);second=t.publish(self.c,result['run'],True)
+            self.c['testing']['cc_recipients']=['unknown-user']
+            with self.assertRaisesRegex(RuntimeError,'NOT_REPOSITORY_MEMBER'):t.publish(self.c,result['run'],True)
+        self.assertEqual(first['report_signers'],['developer']);self.assertEqual(set(first['cc_recipients']),{'lead','other'})
+        self.assertEqual(second['status'],'duplicate_skipped')
+        self.assertEqual(original['notifications'],self.c['notifications'])
+        self.assertIn('接口开发者署名',str(server.issues))
+
+    def test_missing_credit_does_not_infer_developer_from_owner_or_output(self):
+        record=dict(markdown='# 测试审查报告\n\nauthor: arbitrary-output-user\n')
+        self.assertEqual(t.report_markdown(self.c,record),record['markdown'])
+        self.c['testing']['report_signers']=['bad\nname']
+        with self.assertRaises(RuntimeError):t.report_markdown(self.c,record)
+
 if __name__=='__main__':unittest.main(verbosity=2)

@@ -327,9 +327,26 @@ def analysis_record(c,run,receipt,normalized,draft):
     markdown='\n'.join(lines)+'\n';record=dict(schema='ces.test_analysis_record.v1',receipt_id=receipt['receipt_id'],draft=draft,markdown=markdown)
     record['analysis_id']=digest(record)
     return record
+def report_signers(c):
+    """Explicit developer credits, never inferred from runtime output or CC roles."""
+    cfg=c.get('testing',{});signers=notifications.unique(cfg.get('report_signers',[]))
+    primary={x.casefold() for x in notifications.unique(cfg.get('report_recipients',[]))}
+    w.need(all(x.casefold() in primary for x in signers),'TEST_REPORT_SIGNER_NOT_PRIMARY_RECIPIENT')
+    return signers
+
+def report_markdown(c,record):
+    # Presentation only: keep historical analysis hashes and execution evidence immutable.
+    signers=report_signers(c)
+    if not signers:return record['markdown']
+    title,separator,body=record['markdown'].partition('\n')
+    w.need(separator and title=='# 测试审查报告','TEST_REPORT_TITLE_INVALID')
+    credit='接口开发者署名：'+'、'.join('['+x+'](https://github.com/'+x+')' for x in signers)
+    return title+'\n\n'+credit+'\n\nCES 自动执行与分析；署名来自开发者登记，不表示开发者亲自撰写或审批。\n'+body
+
 def analyze(c,path,draft_path):
     run,receipt,normalized=verify_run(c,path);record=analysis_record(c,run,receipt,normalized,w.load(draft_path))
-    w.save(run/'analysis.json',record);(run/'report.md').write_text(record['markdown'],encoding='utf-8')
+    markdown=report_markdown(c,record)
+    w.save(run/'analysis.json',record);(run/'report.md').write_text(markdown,encoding='utf-8')
     return dict(status='test_analysis_ready',analysis_id=record['analysis_id'],report=str(run/'report.md'))
 def publish(c,path,execute=False):
     run,receipt,normalized=verify_run(c,path);record=checked_doc(run/'analysis.json','analysis_id','ces.test_analysis_record.v1')
@@ -339,17 +356,19 @@ def publish(c,path,execute=False):
     primary=notifications.unique(cfg.get('report_recipients',[]))
     w.need(owners or engineers or primary or notifications.configured_cc(c),'TEST_REPORT_RECIPIENT_REQUIRED')
     developer_routing=run_ownership(c,run,receipt,normalized)
-    developers=developer_routing['developers'];copies=notifications.unique(notifications.configured_cc(c)+owners+engineers+developers)
-    if not execute:return dict(status='test_report_publish_preview',project_owners=owners,test_maintainers=engineers,primary_recipients=primary,developers=developers,developer_routing=developer_routing,cc_recipients=[x for x in copies if x.casefold() not in {p.casefold() for p in primary}],report=str(run/'report.md'))
+    signers=report_signers(c);markdown=report_markdown(c,record)
+    developers=developer_routing['developers'];copies=notifications.unique(notifications.configured_cc(c)+notifications.unique(cfg.get('cc_recipients',[]))+owners+engineers+developers)
+    if not execute:return dict(status='test_report_publish_preview',project_owners=owners,test_maintainers=engineers,primary_recipients=primary,report_signers=signers,developers=developers,developer_routing=developer_routing,cc_recipients=[x for x in copies if x.casefold() not in {p.casefold() for p in primary}],report=str(run/'report.md'))
     w.need(cfg.get('enabled') is True and cfg.get('allow_publish') is True,'TEST_REPORT_PUBLICATION_DISABLED')
     notification_cfg=copy.deepcopy(c);notification_cfg.setdefault('notifications',{})['cc_recipients']=notifications.unique(copies+primary)
     client=reports.Client(notification_cfg)
     roles=dict(project_owners=owners,test_maintainers=engineers)
     if primary:roles['primary_recipients']=primary
     if receipt.get('ownership_sha256'):roles['developers']=developers
+    if signers:roles['report_signers']=signers
     semantic=digest(dict(analysis=record['analysis_id'],roles=roles))
-    result=client.publish(f"test:{c['github']['repository_id']}:{receipt['entry']}",semantic,'[CES 测试审查] '+receipt['entry'],record['markdown'],primary)
-    result.update(project_owners=owners,test_maintainers=engineers,developers=developers,developer_routing=developer_routing,receipt_id=receipt['receipt_id'],test_report_only=True,automatic_code_issue_created=False,assignees_changed=False)
+    result=client.publish(f"test:{c['github']['repository_id']}:{receipt['entry']}",semantic,'[CES 测试审查] '+receipt['entry'],markdown,primary)
+    result.update(project_owners=owners,test_maintainers=engineers,report_signers=signers,developers=developers,developer_routing=developer_routing,receipt_id=receipt['receipt_id'],test_report_only=True,automatic_code_issue_created=False,assignees_changed=False)
     w.save(run/'publication.json',result);return result
 def status(c):
     cfg=c.get('testing',{});entries=[]
@@ -369,7 +388,7 @@ def export_reports(c):
         record=checked_doc(path,'analysis_id','ces.test_analysis_record.v1')
         w.need(analysis_record(c,run,receipt,normalized,record['draft'])==record,'TEST_ANALYSIS_RENDERING_CHANGED')
         name='reports/tests/'+safe_name(receipt['entry'])+'/latest.md'
-        if name not in latest or receipt['completed_at']>latest[name][0]:latest[name]=(receipt['completed_at'],record['markdown'])
+        if name not in latest or receipt['completed_at']>latest[name][0]:latest[name]=(receipt['completed_at'],report_markdown(c,record))
     return {name:value[1] for name,value in latest.items()}
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=['prepare','register','owners','run','analyze','publish','status'])
