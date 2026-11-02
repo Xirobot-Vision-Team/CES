@@ -1,6 +1,6 @@
 """Opt-in project test contracts, execution evidence and Codex-authored test reports."""
 from __future__ import annotations
-import argparse,copy,contextlib,json,os,re,signal,subprocess,threading,time,uuid
+import argparse,copy,contextlib,fnmatch,json,os,re,signal,subprocess,threading,time,uuid
 from pathlib import Path,PurePosixPath
 from datetime import datetime,timezone
 import ces_workflow as w
@@ -269,6 +269,9 @@ def run_test(c,name,execute=False):
         developer_routing=run_ownership(c,run,receipt,normalized)
         packet=dict(schema='ces.test_analysis_input.v1',receipt_id=receipt['receipt_id'],normalized_sha256=receipt['normalized_sha256'],head=head,summary=normalized['summary'],cases=cases,artifacts=artifacts,untrusted_test_output=True,next_step='Codex reads logs, normalized failures and relevant code; authors evidence-bound analysis.json. Exit code and parsing do not determine root cause.')
         packet['developer_routing']=developer_routing
+        if interface_mode(c):
+            try:packet['interface_reports']=interface_groups(c,run,receipt,normalized)
+            except RuntimeError as exc:packet['interface_report_gap']=str(exc)
         w.save(run/'analysis-input.json',packet);w.save(home(c)/'latest-run.json',dict(run_directory=str(run)))
         return dict(status='test_evidence_ready',run=str(run),receipt_id=receipt['receipt_id'],result=normalized['summary'],analysis_input=str(run/'analysis-input.json'))
 def verify_run(c,path):
@@ -327,6 +330,76 @@ def analysis_record(c,run,receipt,normalized,draft):
     markdown='\n'.join(lines)+'\n';record=dict(schema='ces.test_analysis_record.v1',receipt_id=receipt['receipt_id'],draft=draft,markdown=markdown)
     record['analysis_id']=digest(record)
     return record
+def interface_mode(c):
+    mode=c.get('testing',{}).get('report_grouping','aggregate')
+    w.need(mode in ('aggregate','registered_interface'),'TEST_REPORT_GROUPING_INVALID')
+    return mode=='registered_interface'
+
+def interface_groups(c,run,receipt,normalized):
+    """Group actual and required cases by the run's registered interface, never output author."""
+    w.need(receipt.get('ownership_sha256'),'TEST_INTERFACE_OWNERSHIP_REQUIRED')
+    run_ownership(c,run,receipt,normalized)
+    w.need(normalized['summary']['source_stable'],'TEST_INTERFACE_SOURCE_INVALIDATED')
+    snapshot=checked_doc(run/'ownership.json','ownership_snapshot_id','ces.test_ownership_snapshot.v1')
+    rows=ownership.mappings(snapshot['mappings'])
+    contract=checked_doc(run/'contract.json','contract_id','ces.test_contract_record.v1')
+    cases={x['id']:x for x in normalized['cases']};expected=set(cases)|set(contract['contract'].get('required_cases',[]))
+    w.need(expected,'TEST_INTERFACE_NO_CASE_SCOPE');groups={};unmapped=[]
+    for case_id in sorted(expected):
+        matched=False
+        for row in rows:
+            if case_id not in row['case_ids'] and not any(fnmatch.fnmatchcase(case_id,p) for p in row['case_patterns']):continue
+            matched=True;subject=dict(kind=row['kind'],name=row['name'],source_paths=row['source_paths'])
+            ident=digest(subject);group=groups.setdefault(ident,dict(interface_id=ident,**subject,case_ids=[],developers=[],registration_ids=[]))
+            group['case_ids']=sorted(set(group['case_ids'])|{case_id})
+            group['developers']=notifications.unique(group['developers']+row['developers'])
+            group['registration_ids']=sorted(set(group['registration_ids'])|{row['id']})
+        if not matched:unmapped.append(case_id)
+    w.need(not unmapped,'TEST_INTERFACE_UNMAPPED_CASES:'+','.join(unmapped[:20]))
+    w.need(len(groups)<=32,'TEST_INTERFACE_REPORT_LIMIT')
+    for group in groups.values():
+        selected=[cases[x] for x in group['case_ids'] if x in cases];total=normalized['summary']
+        group['summary']=results.summarize(selected,receipt['exit_code'],receipt['timed_out'],total['parse_errors'],group['case_ids'],total['source_stable'])
+        group['ownership_snapshot_id']=snapshot['ownership_snapshot_id']
+    return sorted(groups.values(),key=lambda g:g['interface_id'])
+
+def credit_markdown(markdown,signers):
+    title,separator,body=markdown.partition('\n')
+    w.need(separator and title=='# 测试审查报告','TEST_REPORT_TITLE_INVALID')
+    credit='接口开发者署名：'+'、'.join('['+x+'](https://github.com/'+x+')' for x in signers)
+    return title+'\n\n'+credit+'\n\nCES 自动执行与分析；署名来自开发者登记，不表示开发者亲自撰写或审批。\n'+body
+
+def interface_documents(c,run,receipt,normalized,record):
+    groups=interface_groups(c,run,receipt,normalized);sections=record['draft'].get('interface_analyses',[])
+    w.need(isinstance(sections,list) and len(sections)<=32,'TEST_INTERFACE_ANALYSES_INVALID')
+    by_id={x.get('interface_id'):x for x in sections if isinstance(x,dict)}
+    w.need(len(by_id)==len(sections),'TEST_INTERFACE_ANALYSIS_DUPLICATE')
+    if sections:w.need(set(by_id)=={x['interface_id'] for x in groups},'TEST_INTERFACE_ANALYSIS_SCOPE_CHANGED')
+    w.need(len(groups)==1 or sections,'TEST_INTERFACE_ANALYSES_REQUIRED')
+    rendered=[]
+    for group in groups:
+        section=by_id.get(group['interface_id'],record['draft'])
+        if sections:w.need(section.get('case_ids')==group['case_ids'],'TEST_INTERFACE_CASE_SCOPE_CHANGED')
+        draft={key:section.get(key) for key in ('summary','root_cause','recommendation','verification','limitations','citations')}
+        draft.update(schema='ces.test_analysis.v1',receipt_id=receipt['receipt_id'],normalized_sha256=receipt['normalized_sha256'],observed_status=group['summary']['status'])
+        selected=[x for x in normalized['cases'] if x['id'] in group['case_ids']]
+        projection={**normalized,'cases':selected,'summary':group['summary']}
+        scoped=analysis_record(c,run,receipt,projection,draft)
+        body=credit_markdown(scoped['markdown'],group['developers'])
+        title,tail=body.split('\n',1)
+        scope='接口：'+reports.safe(group['name'])+'；本报告只含本接口登记用例。\n\n整轮状态：'+normalized['summary']['status']+'；本接口状态：'+group['summary']['status']+'。进程退出码、超时及解析缺口仍属于整轮证据；接口通过不代表整轮通过。\n\n登记快照：'+group['ownership_snapshot_id']+'\n'
+        scope+='本接口必要/观测用例：'+', '.join(reports.safe(x) for x in group['case_ids'])+'\n缺失必要用例：'+(', '.join(reports.safe(x) for x in group['summary']['missing_required_cases']) or '无')+'\n'
+        body=title+'\n\n'+scope+tail
+        ident=digest(dict(analysis=record['analysis_id'],group=group,scoped_analysis=scoped['analysis_id']))
+        rendered.append(dict(**group,markdown=body,report_id=ident))
+    return rendered
+
+def interface_index(receipt,groups):
+    lines=['# 接口测试报告索引','', '入口：'+receipt['entry']+'；执行回执：'+receipt['receipt_id'],
+           '按本轮测试配置登记的接口和开发者分别出具报告；不以项目固定账号或运行输出决定署名。','']
+    for group in groups:lines.append('- ['+reports.safe(group['name'])+'](interfaces/'+group['interface_id']+'.md)：'+group['summary']['status']+'；接口开发者：'+', '.join(group['developers']))
+    return '\n'.join(lines)+'\n'
+
 def report_signers(c):
     """Explicit developer credits, never inferred from runtime output or CC roles."""
     cfg=c.get('testing',{});signers=notifications.unique(cfg.get('report_signers',[]))
@@ -338,20 +411,22 @@ def report_markdown(c,record):
     # Presentation only: keep historical analysis hashes and execution evidence immutable.
     signers=report_signers(c)
     if not signers:return record['markdown']
-    title,separator,body=record['markdown'].partition('\n')
-    w.need(separator and title=='# 测试审查报告','TEST_REPORT_TITLE_INVALID')
-    credit='接口开发者署名：'+'、'.join('['+x+'](https://github.com/'+x+')' for x in signers)
-    return title+'\n\n'+credit+'\n\nCES 自动执行与分析；署名来自开发者登记，不表示开发者亲自撰写或审批。\n'+body
+    return credit_markdown(record['markdown'],signers)
 
 def analyze(c,path,draft_path):
     run,receipt,normalized=verify_run(c,path);record=analysis_record(c,run,receipt,normalized,w.load(draft_path))
-    markdown=report_markdown(c,record)
+    groups=interface_documents(c,run,receipt,normalized,record) if interface_mode(c) else None
+    markdown=interface_index(receipt,groups) if groups else report_markdown(c,record)
+    if groups:
+        for group in groups:
+            dest=run/'interfaces'/(group['interface_id']+'.md');dest.parent.mkdir(exist_ok=True);dest.write_text(group['markdown'],encoding='utf-8')
     w.save(run/'analysis.json',record);(run/'report.md').write_text(markdown,encoding='utf-8')
     return dict(status='test_analysis_ready',analysis_id=record['analysis_id'],report=str(run/'report.md'))
 def publish(c,path,execute=False):
     run,receipt,normalized=verify_run(c,path);record=checked_doc(run/'analysis.json','analysis_id','ces.test_analysis_record.v1')
     w.need(record['receipt_id']==receipt['receipt_id'],'TEST_ANALYSIS_BINDING_INVALID')
     w.need(analysis_record(c,run,receipt,normalized,record['draft'])==record,'TEST_ANALYSIS_RENDERING_CHANGED')
+    if interface_mode(c):return publish_interfaces(c,run,receipt,normalized,record,execute)
     cfg=c.get('testing',{});owners=notifications.unique(cfg.get('project_owners',[]));engineers=notifications.unique(cfg.get('test_maintainers',[]))
     primary=notifications.unique(cfg.get('report_recipients',[]))
     w.need(owners or engineers or primary or notifications.configured_cc(c),'TEST_REPORT_RECIPIENT_REQUIRED')
@@ -369,6 +444,24 @@ def publish(c,path,execute=False):
     semantic=digest(dict(analysis=record['analysis_id'],roles=roles))
     result=client.publish(f"test:{c['github']['repository_id']}:{receipt['entry']}",semantic,'[CES 测试审查] '+receipt['entry'],markdown,primary)
     result.update(project_owners=owners,test_maintainers=engineers,report_signers=signers,developers=developers,developer_routing=developer_routing,receipt_id=receipt['receipt_id'],test_report_only=True,automatic_code_issue_created=False,assignees_changed=False)
+    w.save(run/'publication.json',result);return result
+
+def publish_interfaces(c,run,receipt,normalized,record,execute):
+    groups=interface_documents(c,run,receipt,normalized,record);cfg=c['testing']
+    copies=notifications.unique(notifications.configured_cc(c)+notifications.unique(cfg.get('cc_recipients',[]))+notifications.unique(cfg.get('project_owners',[]))+notifications.unique(cfg.get('test_maintainers',[])))
+    plans=[dict(interface_id=g['interface_id'],name=g['name'],primary_recipients=g['developers'],report_signers=g['developers'],cc_recipients=[x for x in copies if x.casefold() not in {p.casefold() for p in g['developers']}],case_ids=g['case_ids'],summary=g['summary']) for g in groups]
+    if not execute:return dict(status='test_interface_reports_preview',reports=plans,receipt_id=receipt['receipt_id'])
+    w.need(cfg.get('enabled') is True and cfg.get('allow_publish') is True,'TEST_REPORT_PUBLICATION_DISABLED')
+    # Validate every group before any POST; another interface's developer never leaks into CC.
+    clients=[]
+    for group in groups:
+        target=copy.deepcopy(c);target.setdefault('notifications',{})['cc_recipients']=notifications.unique(copies+group['developers']);clients.append(reports.Client(target))
+    outcomes=[]
+    for group,client in zip(groups,clients):
+        topic=f"test:{c['github']['repository_id']}:{receipt['entry']}:interface:{group['interface_id']}"
+        published=client.publish(topic,group['report_id'],'[CES 测试审查] '+receipt['entry']+' · '+group['name'],group['markdown'],group['developers'])
+        published.update(interface_id=group['interface_id'],name=group['name'],case_ids=group['case_ids'],report_signers=group['developers'],receipt_id=receipt['receipt_id'],test_report_only=True,automatic_code_issue_created=False,assignees_changed=False);outcomes.append(published)
+    result=dict(status='duplicate_skipped' if all(x['status']=='duplicate_skipped' for x in outcomes) else 'test_interface_reports_published',reports=outcomes,receipt_id=receipt['receipt_id'])
     w.save(run/'publication.json',result);return result
 def status(c):
     cfg=c.get('testing',{});entries=[]
@@ -388,8 +481,14 @@ def export_reports(c):
         record=checked_doc(path,'analysis_id','ces.test_analysis_record.v1')
         w.need(analysis_record(c,run,receipt,normalized,record['draft'])==record,'TEST_ANALYSIS_RENDERING_CHANGED')
         name='reports/tests/'+safe_name(receipt['entry'])+'/latest.md'
-        if name not in latest or receipt['completed_at']>latest[name][0]:latest[name]=(receipt['completed_at'],report_markdown(c,record))
-    return {name:value[1] for name,value in latest.items()}
+        if name not in latest or receipt['completed_at']>latest[name][0]:latest[name]=(receipt['completed_at'],run,receipt,normalized,record)
+    documents={}
+    for name,(_,run,receipt,normalized,record) in latest.items():
+        if interface_mode(c):
+            groups=interface_documents(c,run,receipt,normalized,record);documents[name]=interface_index(receipt,groups)
+            for group in groups:documents[name.removesuffix('latest.md')+'interfaces/'+group['interface_id']+'.md']=group['markdown']
+        else:documents[name]=report_markdown(c,record)
+    return documents
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=['prepare','register','owners','run','analyze','publish','status'])
     p.add_argument('--config',required=True);p.add_argument('--entry');p.add_argument('--input');p.add_argument('--draft');p.add_argument('--run');p.add_argument('--execute',action='store_true')
