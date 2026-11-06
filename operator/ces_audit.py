@@ -59,6 +59,9 @@ def normalize_daily(c,core,cache=None):
     removed=set(excluded_by_sha)
     row['commits']=commits
     row['findings']=[f for f in row.get('findings',[]) if not (f.get('origins') and all(o.get('commit') in removed for o in f['origins']))]
+    if row.get('functional_review'):
+        effective={x['sha'] for x in commits}
+        row['functional_review']['features']=[f for f in row['functional_review']['features'] if set(f['commits']).intersection(effective)]
     row['excluded_maintenance_commits']=sorted(excluded_by_sha.values(),key=lambda x:x['sha'])
     row['audit_policy']='exclude_verified_ces_document_publications_v1'
     row['audit_filter_warnings']=warnings
@@ -78,9 +81,21 @@ def daily_markdown(c,core):
     if not enabled(c):return core['markdown']
     row=normalize_daily(c,core)
     if not row.get('excluded_maintenance_commits'):return core['markdown']
+    if core.get('audit_policy')=='exclude_verified_ces_document_publications_v1' and row['commits']==core['commits'] and row.get('functional_review')==core.get('functional_review'):
+        # Already-filtered modern records keep their functional analysis/layout.
+        return core['markdown']
     result=['# 日报 · '+row['date']+' · 审计口径修正','',f"有效工作提交：{len(row['commits'])} 条。CES自动文档维护提交不计工作量。",'']
     for x in row['commits']:result.append('- ['+x['sha'][:12]+'](https://github.com/'+c['github']['repository']+'/commit/'+x['sha']+') '+w.md(x.get('subject','')))
     if not row['commits']:result.append('本报告范围内无有效工作提交；保留构建与已有问题状态，不把自动文档更新归为个人工作。')
+    features=row.get('functional_review',{}).get('features',[])
+    if features:
+        import ces_code_review
+        result+=['','## 代码功能与优化分析','']
+        for feature in features:
+            result+=['### '+w.md(feature['title']),'',feature['purpose'],'']
+            for key,label in zip(ces_code_review.FIELDS[1:],['功能变化','实现与算法','正确性分析','优化判断']):
+                result+=['**'+label+'**：'+feature[key],'']
+        result+=['<details>','<summary>审计更正与验证附录</summary>','']
     result+=['','## 已有代码分析资料','']
     for f in row.get('findings',[]):result+=['- '+f['title']+'：'+f.get('reasoning',''),'  建议：'+f.get('recommendation','')]
     if not row.get('findings'):result.append('- 无新增、可归属的有效工作Finding。')
@@ -94,6 +109,7 @@ def daily_markdown(c,core):
     result+=['','## 来源与限制','', '- 原始归档ID：'+core['id']+'；保留原始归档，仅修正审计投影。',
              '- 统计区间：'+str(core.get('period_start',core['date']))+' 至 '+str(core.get('period_end',core['date']))+'。',
              '- 本修正不执行新的业务代码分析或运行测试，不使用旧文字中已排除的提交数量。']
+    if features:result+=['','</details>']
     return '\n'.join(result)+'\n'
 
 def period_markdown(c,core):

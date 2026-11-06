@@ -66,11 +66,25 @@ class AuditTests(unittest.TestCase):
         proof=dict(sha=SHA,reason='ces_generated_managed_documents',proof='verified_publication_receipt',paths=self.paths)
         with patch.object(a,'classify',return_value=proof):text=a.period_markdown(self.c,core)
         self.assertIn('有效工作提交：0',text);self.assertNotIn('去重提交：1',text)
+    def test_modern_filtered_record_keeps_functional_body(self):
+        core=dict(id='source',date='2026-01-02',commits=[dict(sha=SHA)],findings=[],
+                  audit_policy='exclude_verified_ces_document_publications_v1',excluded_maintenance_commits=[dict(sha=PARENT)],
+                  functional_review=dict(features=[dict(commits=[SHA])]),markdown='Detailed feature understanding and optimization')
+        with patch.object(a,'classify',return_value=None):self.assertEqual(a.daily_markdown(self.c,core),core['markdown'])
+    def test_refilter_removes_only_excluded_features_without_losing_effective_analysis(self):
+        self.c['github']['repository']='example/repo'
+        feature=dict(title='Actual code behavior',purpose='Feature purpose',behavior_change='Changed behavior',mechanism='Candidate matching',correctness='Static invariant',optimization='Measure before caching',commits=[PARENT])
+        excluded={**feature,'title':'Generated maintenance feature','commits':[SHA]}
+        core=dict(id='source',date='2026-01-02',commits=[dict(sha=SHA),dict(sha=PARENT)],findings=[],functional_review=dict(features=[feature,excluded]),markdown='Old count')
+        proof=dict(sha=SHA,reason='ces_generated_managed_documents',proof='verified_publication_receipt',paths=self.paths)
+        with patch.object(a,'classify',side_effect=lambda c,s:proof if s==SHA else None):text=a.daily_markdown(self.c,core)
+        self.assertIn('Candidate matching',text);self.assertNotIn('Generated maintenance feature',text)
 
 class DailyAuditTests(unittest.TestCase):
     def setUp(self):
         daily_fixtures.DailyBuildTests.setUp(self);self.c['audit']=dict(exclude_ces_generated_documents=True)
     def test_maintenance_only_day_is_a_repository_status_without_personal_post(self):
+        self.c['review']=dict(require_functional_analysis=True)
         proof=dict(sha=SHA,reason='ces_generated_managed_documents',proof='verified_publication_receipt',paths=['docs/ces/a.md'])
         with patch.object(a,'classify',return_value=proof),patch('ces_tracking.for_report',return_value=None),patch.object(Client,'publish',side_effect=AssertionError('personal POST')):
             rows=r.daily_reports(self.c,self.run,Client(),{},True)
