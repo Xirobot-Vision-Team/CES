@@ -179,6 +179,8 @@ def daily_reports(c,run,client,origins,execute):
     preflight=w.load(preflight_path) if preflight_path.exists() else None
     if preflight:
         w.need(preflight.get("status") in ("ready","build_failed") and preflight.get("build",{}).get("head")==info["head"],"DAILY_BUILD_SOURCE_MISMATCH")
+    import ces_code_review
+    functional=ces_code_review.for_run(c,run)
     day=datetime.fromisoformat(data["start"]).date().isoformat()
     kept,excluded,audit_warnings=ces_audit.filter_commits(c,data['commits'])
     excluded_by_sha={x['sha']:x for x in data.get('excluded_maintenance_commits',[])}
@@ -202,6 +204,9 @@ def daily_reports(c,run,client,origins,execute):
                 own.append({**f,"origins":origins[f["id"]],"issue_url":issues.get(f["id"])})
         semantic=dict(repository_id=c["github"]["repository_id"],date=day,recipient=author,
                       commits=sorted(commits,key=lambda x:x["sha"]),findings=own,coverage_limitations=checked["limitations"],source_review=review)
+        if functional:
+            semantic['functional_review']=dict(receipt=functional['receipt'],
+                features=[x for x in functional['draft']['features'] if set(x['commits']).intersection(row['sha'] for row in commits)])
         if preflight:semantic['preanalysis_build']=preflight
         if ces_audit.enabled(c):semantic.update(audit_policy='exclude_verified_ces_document_publications_v1',excluded_maintenance_commits=excluded,audit_filter_warnings=audit_warnings)
         if tracking:semantic['issue_tracking']=tracking
@@ -217,18 +222,29 @@ def daily_reports(c,run,client,origins,execute):
             for row in commits:
                 lines.append(f"- [{row['sha'][:12]}](https://github.com/{c['github']['repository']}/commit/{row['sha']}) {safe(row['subject'])}")
             import ces_lifecycle
-            lines+=["","## 本轮审阅与实际构建","",('自动维护提交已排除；本轮无有效工作提交，保存构建与问题追踪状态。' if repository_status else safe(review["summary"])),"",
-                    "- 审阅来源提交："+review["head"]+"；来源模式："+review["source_mode"]+"。"]
-            lines+=ces_lifecycle.build_lines(c,run)
-            lines+=["","## 与本人变更关联的代码审阅",""]
-            if not own:lines+=["本轮没有已校验且可归属到该账号的 Finding；这不代表全部提交已审阅或不存在问题。"]
+            if functional:
+                lines+=['','## 代码功能与优化分析','']
+                content=ces_code_review.feature_lines(c,functional,{x['sha'] for x in commits})
+                lines+=content or ['本账号提交尚无已完成的功能分析；覆盖缺口见附录，不以构建结果替代。']
+            else:
+                lines+=["","## 代码变化与分析","",('本轮无有效工作提交，保存仓库状态。' if repository_status else safe(review["summary"]))]
+            if own:lines+=["","## 具体问题与建议",""]
             for f in own:
                 lines += [f"### [{f['severity']}] {safe(f['title'])}","",safe(f["reasoning"]),"",safe(f["impact"]),"","建议："+safe(f["recommendation"])]
                 if f.get("issue_url"):lines+=["","Issue："+f["issue_url"]]
-            lines+=["","## 验证与覆盖",""]+["- "+safe(x) for x in c.get("user_observations",[])]
+            if preflight and preflight['build']['status']!='passed':
+                lines+=['','## 构建异常','']+ces_lifecycle.build_lines(c,run)
+            lines+=['','<details>','<summary>构建、来源、覆盖与追踪附录</summary>','',
+                    '- 审阅来源提交：'+review['head']+'；来源模式：'+review['source_mode']+'。']
+            lines+=ces_lifecycle.build_lines(c,run)
+            if functional:
+                receipt=functional['receipt']
+                lines+=['- 分批代码阅读：已审阅 '+str(receipt['reviewed_units'])+'；待审阅 '+str(receipt['deferred_units'])+'；来源缺口 '+str(len(receipt['source_gaps']))+'。']
+            lines+=["","### 覆盖记录",""]+["- "+safe(x) for x in c.get("user_observations",[])]
             lines+=["- 本日报复用已校验的分析结果；未为报告重新分析全部源码。"]+["- "+safe(x) for x in checked["limitations"]]
             lines+=ces_tracking.report_lines(tracking)
             lines+=ces_audit.lines(excluded,audit_warnings)
+            lines+=['','</details>']
             markdown="\n".join(lines)+"\n"
             core=dict(**semantic,id=record_id,generated_at=datetime.now(timezone.utc).isoformat(),period_start=data["start"],period_end=data["end"],
                       markdown=markdown,source_review_packet_sha256=checked["packet_sha256"],unmapped_commit_count=len(unmapped))
