@@ -88,6 +88,11 @@ class Client:
             raise
         finally:db.close()
     def publish(self,topic,snapshot,title,body,recipients):
+        if len(body.encode('utf-8'))>48000:
+            import ces_long_reports
+            return ces_long_reports.publish(self,topic,snapshot,title,body,recipients)
+        return self._publish_one(topic,snapshot,title,body,recipients)
+    def _publish_one(self,topic,snapshot,title,body,recipients,thread_number=None):
         w.need(isinstance(recipients,list) and (recipients or notifications.configured_cc(self.c)) and all(login(x) for x in recipients),"REPORT_RECIPIENTS_INVALID")
         routing=notifications.route(self.c,recipients)
         if notifications.configured_cc(self.c):
@@ -98,8 +103,12 @@ class Client:
         body=marker+"\n"+revision+"\n\n"+direct+body
         body=notifications.message(self.c,body,recipients)
         w.need(len(body.encode("utf-8"))<60000,"REPORT_BODY_LIMIT")
-        issues=[x for x in self.pages(self.prefix+"/issues?state=all") if "pull_request" not in x]
-        existing=next((x for x in issues if marker in (x.get("body") or "")),None)
+        if thread_number is None:
+            issues=[x for x in self.pages(self.prefix+"/issues?state=all") if "pull_request" not in x]
+            existing=next((x for x in issues if marker in (x.get("body") or "")),None)
+        else:
+            existing=self.get(self.prefix+f'/issues/{thread_number}')
+            w.need(marker in (existing.get('body') or ''),'REPORT_THREAD_TOPIC_MISMATCH')
         if existing:
             comments=self.pages(self.prefix+f"/issues/{existing['number']}/comments")
             found=next((x for x in [existing,*comments] if revision in (x.get("body") or "")),None)

@@ -14,6 +14,24 @@ BOUNDS=dict(max_files=(1,2048),max_file_bytes=(1024,32*1024*1024),
             max_total_bytes=(1024,128*1024*1024),batch_bytes=(1024,1024*1024),
             target_tokens=(1000,1000000),max_tokens=(1000,2000000))
 FIELDS=('purpose','behavior_change','mechanism','correctness','optimization')
+DETAIL_FIELDS=dict(context='功能背景与使用场景',data_flow='调用链与数据流',
+                   algorithm='算法分步推导',examples='具体输入与前后结果',
+                   edge_cases='边界与反例',complexity='复杂度与性能热点',
+                   alternatives='优化方案比较',verification='验证设计与后续行动')
+
+def report_policy(c):
+    cfg=c.get('review',{}).get('report_detail',{})
+    w.need(isinstance(cfg,dict) and set(cfg)<={'target_chars','require_extended_analysis'},'REPORT_DETAIL_POLICY_INVALID')
+    result=dict(target_chars=cfg.get('target_chars',12000),require_extended_analysis=cfg.get('require_extended_analysis',False))
+    w.need(type(result['target_chars']) is int and 1000<=result['target_chars']<=200000 and
+           type(result['require_extended_analysis']) is bool,'REPORT_DETAIL_POLICY_INVALID')
+    return result
+
+def detail_lines(feature):
+    lines=[]
+    for key,label in DETAIL_FIELDS.items():
+        if key in feature.get('details',{}):lines+=['','#### '+label,'',feature['details'][key]]
+    return lines
 
 def digest(obj):return w.sha(json.dumps(obj,ensure_ascii=False,sort_keys=True,separators=(',',':')))
 def policy(c):
@@ -154,7 +172,13 @@ def validate(c,plan,draft):
     for feature in features:
         ident=feature.get('id');w.need(isinstance(ident,str) and ident and ident not in ids,'FEATURE_ID_INVALID');ids.add(ident)
         for key in ('title',*FIELDS):
-            value=feature.get(key);w.need(isinstance(value,str) and 8<=len(value.strip())<=16000,'FUNCTIONAL_REASONING_REQUIRED:'+key)
+            value=feature.get(key);w.need(isinstance(value,str) and 8<=len(value.strip())<=64000,'FUNCTIONAL_REASONING_REQUIRED:'+key)
+        details=feature.get('details',{})
+        w.need(isinstance(details,dict) and set(details)<=set(DETAIL_FIELDS),'FUNCTIONAL_DETAILS_INVALID')
+        for key,value in details.items():
+            w.need(isinstance(value,str) and 20<=len(value.strip())<=64000,'FUNCTIONAL_DETAIL_REASONING_REQUIRED:'+key)
+        if report_policy(c)['require_extended_analysis']:
+            w.need(set(details)==set(DETAIL_FIELDS),'EXTENDED_FUNCTIONAL_ANALYSIS_REQUIRED')
         # An optimization can explicitly conclude that no change is warranted,
         # but must explain why rather than inventing an issue or speedup.
         refs=feature.get('citations',[]);w.need(isinstance(refs,list) and refs,'FUNCTIONAL_CITATIONS_REQUIRED')
@@ -202,6 +226,7 @@ def feature_lines(c,record,commits):
         lines+=['','### '+w.md(feature['title']),'',feature['purpose'],'',
                 '**功能变化**：'+feature['behavior_change'],'','**实现与算法**：'+feature['mechanism'],'',
                 '**正确性分析**：'+feature['correctness'],'','**优化判断**：'+feature['optimization'],'']
+        lines+=detail_lines(feature)
         for ref in feature['citations']:
             u=units[ref['unit_id']];lines.append('- ['+u['path']+':L'+str(ref['line_start'])+' ('+u['side']+')]('+w.source_link(c,u['revision'],u['path'])+'#L'+str(ref['line_start'])+')')
     return lines
