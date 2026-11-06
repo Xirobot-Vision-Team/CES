@@ -92,7 +92,7 @@ class Client:
             import ces_long_reports
             return ces_long_reports.publish(self,topic,snapshot,title,body,recipients)
         return self._publish_one(topic,snapshot,title,body,recipients)
-    def _publish_one(self,topic,snapshot,title,body,recipients,thread_number=None):
+    def _publish_one(self,topic,snapshot,title,body,recipients,thread_number=None,verify_existing=False):
         w.need(isinstance(recipients,list) and (recipients or notifications.configured_cc(self.c)) and all(login(x) for x in recipients),"REPORT_RECIPIENTS_INVALID")
         routing=notifications.route(self.c,recipients)
         if notifications.configured_cc(self.c):
@@ -112,7 +112,9 @@ class Client:
         if existing:
             comments=self.pages(self.prefix+f"/issues/{existing['number']}/comments")
             found=next((x for x in [existing,*comments] if revision in (x.get("body") or "")),None)
-            if found:return dict(status="duplicate_skipped",url=found["html_url"],number=existing["number"],**routing,snapshot=snapshot,sender=self.account_login,recipient_delivery=self.recipient_status(routing['recipients']),email_delivery_verified=False)
+            if found:
+                if verify_existing:w.need(found.get('body')==body,'REPORT_PART_CHANGED_RECONCILE')
+                return dict(status="duplicate_skipped",url=found["html_url"],number=existing["number"],**routing,snapshot=snapshot,sender=self.account_login,recipient_delivery=self.recipient_status(routing['recipients']),email_delivery_verified=False)
             observed,status=self.write(self.prefix+f"/issues/{existing['number']}/comments",dict(body=body))
             number=existing["number"]
         else:

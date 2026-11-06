@@ -37,7 +37,7 @@ def publish(client,topic,snapshot,title,body,recipients):
         payloads.append(content)
     for index,content in enumerate(payloads,1):
         part_snapshot=w.sha(str(snapshot)+'\0'+identity+'\0v1\0'+str(index)+'/'+str(count))
-        result=client._publish_one(topic,part_snapshot,title,content,recipients,thread_number=number)
+        result=client._publish_one(topic,part_snapshot,title,content,recipients,thread_number=number,verify_existing=True)
         if number is None:number=result['number']
         parts.append(result)
     first=parts[0]

@@ -46,6 +46,13 @@ class LongReportTests(CCTests):
     def test_no_newline_long_paragraph_and_empty_input_preserve_content(self):
         for body in ['', '中'*30000, 'line\n'*30000]:
             self.assertEqual(''.join(long.split_body(body)),body)
+    def test_edited_existing_part_stops_without_overwriting_or_false_completion(self):
+        client=self.client();client.publish('daily:2','s','Title',self.body(),['developer'])
+        self.server.comments[0]['body']+='\nMember clarification'
+        count=len(self.server.writes)
+        with self.assertRaisesRegex(RuntimeError,'PART_CHANGED_RECONCILE'):
+            client.publish('daily:2','s','Title',self.body(),['developer'])
+        self.assertEqual(len(self.server.writes),count)
 
 class ExtendedAnalysisTests(FunctionalDailyTests):
     def test_extended_sections_render_and_affect_snapshot_without_truncation(self):
