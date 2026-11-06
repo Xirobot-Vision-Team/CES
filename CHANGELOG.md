@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Support extended functional chapters and configurable report-length planning.
+  Deliver long daily/period reports as lossless UTF-8 numbered parts in one thread,
+  with per-part readback, dedup and uncertain-POST reconciliation; retain full archives.
+
 - Add full-period before/after code-reading batches, configurable source/token
   planning budgets, explicit coverage decisions and source-bound functional
   analysis. Daily reports lead with author-relevant functionality and optimization,

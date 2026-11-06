@@ -121,6 +121,7 @@ def main(argv=None):
                     readme_maintenance_enabled=__import__('ces_readmes').policy(c),
                     project_testing=c.get('testing',dict(enabled=False)),
                     review_budget=__import__('ces_code_review').policy(c),
+                    report_detail=__import__('ces_code_review').report_policy(c),
                     functional_review_required=c.get('review',{}).get('require_functional_analysis',False),
                     issue_tracking_enabled=c.get('issue_tracking',{}).get('enabled',False),
                     personal_email_required=False,automatic_scheduler_enabled=c.get("authorization",{}).get("schedule_enabled",False),

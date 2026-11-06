@@ -95,6 +95,7 @@ def daily_markdown(c,core):
             result+=['### '+w.md(feature['title']),'',feature['purpose'],'']
             for key,label in zip(ces_code_review.FIELDS[1:],['功能变化','实现与算法','正确性分析','优化判断']):
                 result+=['**'+label+'**：'+feature[key],'']
+            result+=ces_code_review.detail_lines(feature)
         result+=['<details>','<summary>审计更正与验证附录</summary>','']
     result+=['','## 已有代码分析资料','']
     for f in row.get('findings',[]):result+=['- '+f['title']+'：'+f.get('reasoning',''),'  建议：'+f.get('recommendation','')]

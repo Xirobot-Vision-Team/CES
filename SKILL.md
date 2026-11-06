@@ -21,6 +21,12 @@ algorithm report. Use `review prepare/complete` for full-period before/after rea
 explicit coverage decisions and per-feature analysis; a native patch cap is not a reason to read
 only the latest small commit. Honor external review/token planning budgets without claiming
 host limits or measured usage changed. Keep runtime/publication permissions unchanged.
+Allow substantial reports when the code warrants them. Follow `review.report_detail`:
+expand feature context, data/call flow, algorithm derivation, concrete old/new examples,
+edge cases, complexity, alternatives and verification design through `features[].details`.
+Use the length target as a planning preference, never a quota or truncation rule.
+The report client splits long Markdown into verified numbered parts in one thread;
+keep full archived/repository content and report incomplete delivery honestly.
 
 1. Reports: daily uses authorized activity, fresh code analysis and configured build/tests. Weekly uses all current-week dailies; monthly uses all current-month daily and weekly reports; yearly uses all current-year weekly and monthly reports. Reuse existing analysis, supplement targeted code review for gaps/risks/important changes, cite sources, deduplicate and disclose coverage. Do not repeat all historical code analysis. Codex-authored synthesis must bind the current input; formatting alone is not deep analysis.
 2. Issues: prepare and validate exact evidence, then author review-draft.json and packet/draft-bound issue-analysis.json. Require problem, commit/line evidence, trigger, expected/actual, root cause, impact, quality, optimization tradeoffs, minimal recommendation, alternatives, verification and limits. Avoid low-value duplicates. Resolve author and committer separately, mention/assign authorized mapped recipients, and do not equate blame with personal fault.
