@@ -71,7 +71,10 @@ def main(argv=None):
         product=w.load(Path(__file__).resolve().parent.parent/'PRODUCT.json')
         print(json.dumps(dict(product='CES',operator_version=product['operator_version'],core_protocol_version=product['core_protocol_version'])));return
     if not argv or argv in (['--help'],['-h']):
-        print('CES: source-bound repository analysis, reports, GitHub notifications and opt-in tests.\n\nCommands:\n  doctor                 Inspect external project configuration\n  prepare / complete     Collect and validate source-bound analysis\n  issue                  Publish validated, deduplicated code Issues\n  report daily|weekly|monthly|yearly|quality\n  knowledge prepare|publish|status\n  test prepare|register|owners|run|analyze|publish|status\n  track sync|status|history|prepare|review|test|transition\n  lifecycle preflight|pull|build|publish|status\n  audit / documents / notify\n\nUse <command> --help for options; --config always names an external profile.\nExecution/publication require independent authorization. --version shows versions.');return
+        print('CES: source-bound repository analysis, reports, GitHub notifications and opt-in tests.\n\nCommands:\n  doctor                 Inspect external project configuration\n  prepare / complete     Collect and validate source-bound analysis\n  review prepare|complete  Batch code reading and functional analysis\n  issue                  Publish validated, deduplicated code Issues\n  report daily|weekly|monthly|yearly|quality\n  knowledge prepare|publish|status\n  test prepare|register|owners|run|analyze|publish|status\n  track sync|status|history|prepare|review|test|transition\n  lifecycle preflight|pull|build|publish|status\n  audit / documents / notify\n\nUse <command> --help for options; --config always names an external profile.\nExecution/publication require independent authorization. --version shows versions.');return
+    if argv and argv[0]=='review':
+        import ces_code_review
+        sys.argv=[sys.argv[0]]+argv[1:];ces_code_review.main();return
     if argv and argv[0]=='test':
         import ces_testing
         sys.argv=[sys.argv[0]]+argv[1:];ces_testing.main();return
@@ -117,6 +120,8 @@ def main(argv=None):
                     notification_cc_recipients=notifications.configured_cc(c),
                     readme_maintenance_enabled=__import__('ces_readmes').policy(c),
                     project_testing=c.get('testing',dict(enabled=False)),
+                    review_budget=__import__('ces_code_review').policy(c),
+                    functional_review_required=c.get('review',{}).get('require_functional_analysis',False),
                     issue_tracking_enabled=c.get('issue_tracking',{}).get('enabled',False),
                     personal_email_required=False,automatic_scheduler_enabled=c.get("authorization",{}).get("schedule_enabled",False),
                     git_stage_default=c.get('repository_docs',{}).get('allow_git_stage',False),git_commit_default=c.get('repository_docs',{}).get('allow_git_commit',False),git_push_default=c.get('repository_docs',{}).get('allow_git_push',False),

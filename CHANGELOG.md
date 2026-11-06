@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Add full-period before/after code-reading batches, configurable source/token
+  planning budgets, explicit coverage decisions and source-bound functional
+  analysis. Daily reports lead with author-relevant functionality and optimization,
+  retaining build/coverage/tracking evidence in an appendix and exposing failures.
+  Native Finding/Issue validation and execution permissions remain independent.
+
 - Split a run into source-registered interface reports, each credited and delivered
   to its own developers, including passing and missing required cases. Require
   scoped analysis for multi-interface runs and retain immutable ownership snapshots.

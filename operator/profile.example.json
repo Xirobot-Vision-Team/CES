@@ -37,7 +37,17 @@
     ]
   },
   "review": {
-    "base_ref": "HEAD^"
+    "base_ref": "HEAD^",
+    "require_functional_analysis": false,
+    "budget": {
+      "max_files": 256,
+      "max_file_bytes": 8388608,
+      "max_total_bytes": 33554432,
+      "batch_bytes": 131072,
+      "target_tokens": 60000,
+      "max_tokens": 120000
+    },
+    "encoding_overrides": {}
   },
   "testing": {
     "enabled": false,
