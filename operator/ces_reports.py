@@ -180,11 +180,12 @@ def daily_reports(c,run,client,origins,execute):
     if preflight:
         w.need(preflight.get("status") in ("ready","build_failed") and preflight.get("build",{}).get("head")==info["head"],"DAILY_BUILD_SOURCE_MISMATCH")
     import ces_code_review
-    functional=ces_code_review.for_run(c,run)
+    functional=None
     day=datetime.fromisoformat(data["start"]).date().isoformat()
     kept,excluded,audit_warnings=ces_audit.filter_commits(c,data['commits'])
     excluded_by_sha={x['sha']:x for x in data.get('excluded_maintenance_commits',[])}
     excluded_by_sha.update({x['sha']:x for x in excluded});excluded=sorted(excluded_by_sha.values(),key=lambda x:x['sha'])
+    if kept:functional=ces_code_review.for_run(c,run)
     grouped={};unmapped=[]
     for row in kept:
         ident=client.commit(row["sha"]);author=ident["author_login"]
