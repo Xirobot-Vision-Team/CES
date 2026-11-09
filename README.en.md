@@ -65,7 +65,7 @@ isolated fixtures and no live project credentials.
 Licensed under Apache-2.0. See [LICENSE](LICENSE), [NOTICE](NOTICE) and
 [third-party information](THIRD_PARTY.md).
 
-Published release: **1.8.0**. Subsequent main-branch maintenance is listed in
+Published release: **1.8.1**. Subsequent main-branch maintenance is listed in
 [the changelog](CHANGELOG.md); direct source-path users should read
 [the migration guide](docs/NAMING.md).
 

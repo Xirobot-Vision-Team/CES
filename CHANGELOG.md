@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.8.1 — Reporting standards and repository scope
 
 - Standardize report titles, evidence terminology, analysis requirements and
   publication guidance across maintained documentation, skill and generated
