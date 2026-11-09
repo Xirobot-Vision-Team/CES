@@ -228,7 +228,7 @@ def daily_reports(c,run,client,origins,execute):
             record=w.load(dest);w.need(record["core_sha256"]==digest(record["core"]),"DAILY_RECORD_HASH_MISMATCH")
         else:
             repository_status=author=='_repository'
-            lines=[f"# 日报 · {day} · "+('仓库状态' if repository_status else author),"",f"仓库：{c['github']['repository']}",f"统计截至：{data['end']}",
+            lines=[f"# 仓库日报 · {day} · "+('仓库状态' if repository_status else author),"",f"仓库：{c['github']['repository']}",f"统计截至：{data['end']}",
                    '本轮无有效工作提交；保存仓库状态，不创建个人工作报告提醒。' if repository_status else f"本日报收件人：{author}。按 GitHub commit author 映射分组；author 与 committer 分别保留，不推断个人绩效。","",
                    f"## 有效提交：{len(commits)} 条",""]
             for row in commits:

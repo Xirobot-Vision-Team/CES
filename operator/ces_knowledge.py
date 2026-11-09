@@ -116,8 +116,7 @@ def _publish(c,input_path,draft_path,execute=False):
             "- 修改相关源码后，重新核对受影响章节与来源行，保留陈旧或未验证标记。",
             "- 区分源码观察、用户确认和待验证推断；不把AI分析直接当作运行事实。",
             "- 由CES跟踪文件哈希；成员修改过的文档不会被静默覆盖。",
-            "- 成品位于仓库，Git提交/推送后在GitHub同步；缓存和版本历史位于仓库外。",
-            "- 当前入口是通用操作层，不冒充旧版双签名KnowledgeSave协议。"]
+            "- 成品位于仓库，Git提交/推送后在GitHub同步；缓存和版本历史位于仓库外。"]
     documents["knowledge/README.md"]="\n".join(index)+"\n"
     import ces_readmes
     readme,readme_manifest=ces_readmes.plan(c,inp,draft)

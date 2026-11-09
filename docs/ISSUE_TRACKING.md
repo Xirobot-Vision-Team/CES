@@ -22,7 +22,7 @@ Issue时，可临时显式启用 `track_closed=true`，仍需独立来源/测试
     ces-product.cmd track review --config <profile> --input <input.json> --review <review.json>
     ces-product.cmd track transition --config <profile> --number <n> --state closed|open [--execute]
 
-sync自动发现ces-issue指纹的自建代码问题，排除报告和PR；另可配置include_numbers。持久保存负责人、评论、状态、来源提交与实际关联PR（同仓head/merge/state）。首次基线和重复检查不刷屏；全部发现失败保留旧快照并记录错误，单条读取失败记unknown。同步有互斥锁，遗留锁不能猜测删除。自己的监控评论不算外部进展。
+sync自动发现ces-issue指纹的自建代码问题，排除报告和PR；另可配置include_numbers。持久保存负责人、评论、状态、来源提交与实际关联PR（同仓head/merge/state）。首次基线和未变化的重复检查保持静默；全部发现失败保留旧快照并记录错误，单条读取失败记unknown。同步有互斥锁，遗留锁须核对持有进程和运行状态后处理。自己的监控评论不算外部进展。
 
 prepare绑定当前远端默认分支HEAD、Issue快照、Git blob和显式代码路径（最多16个）。Codex依据原问题及真实源码提交ces.issue_fix_review.v1：input_sha256、verdict（fixed/not_fixed/inconclusive/regression）、reasoning、verification_criteria、citations（path/line_start/line_end/quote）和test_receipts。
 
@@ -44,6 +44,6 @@ stale_days与reminder_cooldown_days默认7天，从基线或最近实质进展�
 
 ## 仅Build的执行策略
 
-独立项目测试入口与报告分析见[TESTING.md](TESTING.md)。项目测试报告Issue不属于代码问题追踪范围，也不自动满足修复验收。`track test`要求明确`run_runtime_tests=true`和`kind=test`配置，回执与完整步骤配置哈希绑定；Build步骤、缺少kind/配置绑定的历史回执均不能充当真实测试证据。历史记录保留，需要时在授权后重跑，不回填旧回执。
+独立项目测试入口与报告分析见[TESTING.md](TESTING.md)。项目测试报告Issue不属于代码问题追踪范围，也不自动满足修复验收。`track test`要求明确`run_runtime_tests=true`和`kind=test`配置，回执与完整步骤配置哈希绑定；Build步骤、缺少kind/配置绑定的历史回执均不能用于运行测试验收。历史记录保留，需要时在授权后重跑，不回填旧回执。
 
 若execution_policy.run_runtime_tests=false，track test执行被拒绝。可在分析前实际Build并保存日志，但不能将其替代修复所需的运行证据，也不因用户已确认VS正常构建而自动关闭代码问题。源码同步允许已授权fetch/ff-only，禁止自动reset/stash覆盖编辑。

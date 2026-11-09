@@ -5,8 +5,8 @@
 ## 每次分析前
 repository_sync.enabled/allow_pull和execution_policy.build_before_analysis明确开启后，prepare与周/月/年报告入口先执行preflight。可单独使用 lifecycle preflight --config <profile> --execute。
 先fetch当前配置origin分支；仅在本地HEAD为远端祖先时ff-only前进，不rebase、stash、reset或clean。已有暂存区改动、分叉、远端变更与本地编辑冲突会停止；所有原有本地编辑内容哈希核对保留。
-构建只使用build_validation.steps中kind=build的argv/cwd/timeout。run_runtime_tests必须明确false；不启动业务程序、不运行测试或设备。构建目标即使名为Test也只是生成其二进制，不执行它。
-命令、HEAD、配置、退出码、日志哈希、耗时和源码稳定性写入外部lifecycle缓存。业务源码有未提交修改时先保护现场并报告受阻，不声称验证了远端提交。构建失败可以继续独立代码分析并报告原因，不能改业务逻辑凑通过。
+构建只使用build_validation.steps中kind=build的argv/cwd/timeout。run_runtime_tests必须明确false；不启动业务程序、不运行测试或设备。构建目标包含测试工程时仅生成二进制，执行采用独立授权。
+命令、HEAD、配置、退出码、日志哈希、耗时和源码稳定性写入外部lifecycle缓存。业务源码有未提交修改时先保护现场并报告受阻，不声称验证了远端提交。构建失败可以继续独立代码分析并报告原因，业务源码修订须作为独立维护变更处理。
 增量编译保留当前项目的正常Build语义；不自动Clean/Rebuild、不升级工具链、不为了CES修改项目工程。VS中曾构建成功与本轮退出结果独立记录。
 周期总结先运行不带--analysis的入口完成同步/构建并生成绑定输入，Codex据此撰写综合评述；带--analysis完成同一轮发布时复用该回执，不重复构建来改变输入绑定。完成前复核本地/远端HEAD、源码、构建命令和日志哈希；回执超过24小时或证据变化就停止，需开启新一轮分析。
 
@@ -33,5 +33,5 @@ last-publish记录commit_prepared、pushed_remote_verified或published_and_local
 
 ## 自动化
 已获持续授权的Codex日报与周期任务可使用该流程：分析前同步和实际构建；不运行测试；知识文档增量完成后只推送托管成品。具体任务、执行时间和GitHub提醒方式以外部配置为准。
-Codex仍负责实际分析、知识章节推理和周期综合评述；Python不复制旧草稿来冒充新分析。
+Codex仍负责实际分析、知识章节推理和周期综合评述；Python负责证据处理、校验和发布；分析草稿须与本轮来源绑定。
 

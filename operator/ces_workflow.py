@@ -118,7 +118,7 @@ def source_link(c,commit,path):
     return "https://github.com/"+c["github"]["repository"]+"/blob/"+commit+"/"+quote(path,safe="/")
 def render_analysis(c,run,checked):
     d=checked["data"];info=load(run/"run.json")
-    lines=["# 代码分析报告","",f"仓库：{c['github']['repository']}",f"审阅提交：{info['head']}",
+    lines=["# 代码功能分析","",f"仓库：{c['github']['repository']}",f"审阅提交：{info['head']}",
            f"来源模式：{info['source_mode']}","",d["summary"],"",
            "本报告由实际 CES Collect → Reconcile → CodePrepare → CodeValidate 证据链生成。字面绑定通过不等于缺陷语义已获证明。",""]
     for i,f in enumerate(d["checked_findings"],1):
