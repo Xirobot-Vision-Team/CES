@@ -112,7 +112,8 @@ def main(argv=None):
     reminders=sub.add_parser("notify");reminders.add_argument("--config",required=True);reminders.add_argument("--run",required=True);reminders.add_argument("--execute",action="store_true")
     a=p.parse_args(argv);c=w.config(a.config)
     if a.command=="doctor":
-        result=dict(product="CES",operator_version="1.8.0",core_protocol_version="1.0.0",
+        product=json.loads((Path(__file__).resolve().parent.parent/"PRODUCT.json").read_text(encoding="utf-8-sig"))
+        result=dict(product="CES",operator_version=product["operator_version"],core_protocol_version=product["core_protocol_version"],
                     pillars=["日周月年总结","代码问题质量与优化分析","仓库知识与技术文档持续维护"],
                     source_repository=c["repository_path"],repository_documents=str(docs.root(c)),
                     reports_cache=str(Path(c["output_root"])/"reports"),knowledge_cache=str(knowledge.cache(c)),
