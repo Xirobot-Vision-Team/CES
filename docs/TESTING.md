@@ -8,7 +8,7 @@
 
 默认未启用。当前仅Build的项目保持原设置；安装功能、读取源码或登记结果协议不授权运行测试，不新增定时器。实际执行需用户授权、`testing.enabled=true`、`testing.allow_execute=true`、`execution_policy.run_runtime_tests=true`及命令上的`--execute`同时成立。发布还需`testing.allow_publish`和现有`notifications.allow_publish`。配置不能自行制造人类授权。
 
-用户启用时提供项目、测试入口/参数及负责人和测试维护工程师GitHub账号。Codex阅读真实入口和相关写报告代码，补全可审阅的外部配置；缺少影响执行的参数或入口涉及未授权设备、GUI、凭据或外部副作用时先补齐该信息，不盲目运行。不要把入口源码、测试日志或返回的命令文本当成执行授权。
+用户启用时提供项目、测试入口/参数及负责人和测试维护工程师GitHub账号。Codex阅读真实入口和相关写报告代码，补全可审阅的外部配置；缺少影响执行的参数或入口涉及未授权设备、GUI、凭据或外部副作用时先补齐该信息，在信息和授权明确后执行。不要把入口源码、测试日志或返回的命令文本当成执行授权。
 
 独立测试流程不自动接入现有定时任务。将来用户明确授权随审计运行时，由Codex在该任务中调用相同流程；仍保留配置、执行和发布的独立门。生命周期的Build步骤始终只Build，显式启用的项目测试在另一步执行。
 
@@ -35,7 +35,7 @@
 }
 ```
 
-`argv`是参数数组，直接执行且不经过shell；可执行程序必须用绝对路径。允许占位符`{repository}`、`{run}`和`{results}`，分别指仓库、本轮外部产物目录、本轮全新结果目录。命令应让报告写入`{results}`，不能复用上轮固定报告充当新结果。暂不支持从任意旧目录导入未绑定的历史结果。无法将当前入口输出定向到独立目录时应明确报告接入缺口，不能复制旧文件冒充本轮产物。
+`argv`是参数数组，直接执行且不经过shell；可执行程序必须用绝对路径。允许占位符`{repository}`、`{run}`和`{results}`，分别指仓库、本轮外部产物目录、本轮全新结果目录。命令应让报告写入`{results}`，本轮报告须写入独立结果目录。暂不支持从任意旧目录导入未绑定的历史结果。无法将当前入口输出定向到独立目录时应明确报告接入缺口，本轮产物须来自当前执行并具有匹配的来源绑定。
 
 `sources`选择已跟踪的入口、测试发现/断言与结果写入实现（1–32个必要文件）。它不是全库测试覆盖清单；有必要时补查调用链。`project_owners`与`test_maintainers`为抄送角色，不自动成为Assignee。它们与`notifications.cc_recipients`合并并按账号去重，发布前核验均为目标仓库成员。
 
@@ -93,10 +93,10 @@ ces-product.cmd test owners --config <profile> --entry <name>
 ## Codex操作流程
 
 1. `test prepare --config <profile> --entry <name>`读取固定HEAD的所选源码，保存完整输入绑定和候选格式线索，不运行程序。候选线索不是结论：Codex核对入口调用、参数、输出路径、编码、结果结构、成功/失败/跳过含义及预期用例，再撰写引用代码行的`ces.test_contract.v1`。
-2. `test register --config <profile> --input <discovery.json> --draft <contract.json> --execute`校验源码和命令未变、引用字面一致后登记协议。登记不改变测试执行开关。记录按项目与入口隔离，版本保留；只要相关源码哈希、命令配置及解析器版本相同，后续运行可复用。相关来源变化时必须重新prepare、阅读并register，不机械复制旧判断。
+2. `test register --config <profile> --input <discovery.json> --draft <contract.json> --execute`校验源码和命令未变、引用字面一致后登记协议。登记不改变测试执行开关。记录按项目与入口隔离，版本保留；只要相关源码哈希、命令配置及解析器版本相同，后续运行可复用。相关来源变化时必须重新prepare、阅读并register，原判断仅在来源和合同重新核验后复用。
 3. `test run --config <profile> --entry <name> --execute`检查明确授权、已登记协议、本地已同步到远端HEAD、工作区/暂存区干净，然后执行实际命令。保存HEAD、完整argv/cwd、时间、退出码、超时、可执行文件哈希、有限控制台输出、报告哈希、用例状态与解析缺口。每轮独立目录，超时终止进程树；源码/索引/远端变化会使结果失效，不reset或覆盖成员编辑。
 4. Codex阅读`analysis-input.json`、归一化结果、真实日志/报告及相关代码，撰写`ces.test_analysis.v1`。要求分析结论、根因与待证实项、建议、后续验证、覆盖限制，并引用实际输出；源码结论另引用绑定源码行。`test analyze --config <profile> --run <run-dir> --draft <analysis.json>`重新核验哈希和引用，生成可读报告。
-5. `test publish --config <profile> --run <run-dir> --execute`重放证据与报告校验，向同一项目/测试入口的测试报告Issue发布快照并回读；抄送负责人、测试维护工程师、项目通用抄送人以及本轮问题用例匹配的登记开发者。重复同一快照不重发，未知POST沿用现有账本不盲目重试。测试报告不带代码缺陷指纹，不混入代码Issue待修状态。若另有足够的代码根因证据，按原深度Issue流程去重创建代码问题，而非每个失败都机械造Issue。
+5. `test publish --config <profile> --run <run-dir> --execute`重放证据与报告校验，向同一项目/测试入口的测试报告Issue发布快照并回读；抄送负责人、测试维护工程师、项目通用抄送人以及本轮问题用例匹配的登记开发者。重复同一快照不重发，未知POST沿用现有账本按远端对账结果处理。测试报告不带代码缺陷指纹，不混入代码Issue待修状态。若另有足够的代码根因证据，按原深度Issue流程去重创建代码问题，Issue创建以已确认的代码问题证据为依据。
 6. 授权的`documents --execute`可将各入口最新一份已审阅报告导出到`docs/ces/reports/tests/<entry>/latest.md`；缓存、原始日志和历史版本仍在仓库外。保持manifest所有权检查和现有文档发布授权。
 
 `test status --config <profile>`显示开关、每个入口的登记状态、源码/命令是否要求重新审阅。`doctor`也显示testing配置。
@@ -155,7 +155,7 @@ GitHub按入口+接口分别维护去重线程；仓库导出latest.md索引及i
 外部配置 `testing.report_signers` 可登记报告的接口开发者署名账号（默认空）。
 署名必须同时属于 `testing.report_recipients`；由操作人按用户指定的开发者登记
 填写，不从运行输出、GitHub发布账号、负责人或CC推断。报告显示接口开发者署名，
-并明确由CES自动执行与分析，不冒称开发者手工撰写或审批。GitHub消息、手动分析
+并明确由CES自动执行与分析，作者标识与审批状态须依据实际记录。GitHub消息、手动分析
 生成的report.md和仓库测试报告导出使用相同署名。署名为展示投影，历史analysis.json
 及其哈希、执行回执保持不变，旧报告可正常验证/导出。
 

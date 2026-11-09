@@ -2,11 +2,11 @@
 
 简体中文 · [English](README.en.md)
 
-CES 将仓库报告、代码问题、知识文档和可选测试审查串成可追溯的工程工作流。
+CES 将仓库报告、代码问题、知识文档和可选测试审查整合为可追溯的工程工作流。
 助手阅读真实源码并撰写分析，CES 负责采集、绑定、校验、归档及经授权的发布；
 格式化报告、退出码 0 或 Build 成功不会被当作缺陷根因或修复已经证明。
 
-## 能做什么
+## 功能概览
 
 - 日报及周/月/年总结，保留来源、作者/committer、覆盖范围和缺口。
 - 代码问题与优化建议的证据校验、归属、去重、GitHub Issue 及持续追踪。
@@ -43,6 +43,7 @@ Windows 的 `ces-product.cmd` 与直接调用 `operator/ces_product.py` 使用�
 
 ## 文档
 
+- [报告编制规范](docs/REPORTING_STANDARD.md) · [代码功能分析](docs/CODE_REVIEW.md)
 - [安装与支持范围](docs/INSTALLATION.md) · [架构](docs/ARCHITECTURE.md)
 - [产品指南](docs/PRODUCT_GUIDE.md) · [仓库快捷流程](docs/REPOSITORY_SHORTCUTS.md)
 - [README 自动维护与开关](docs/README_MAINTENANCE.md)

@@ -122,7 +122,7 @@ def period_markdown(c,core):
     findings={f.get('issue_url') or w.sha(str(f)):f for row in rows for f in row.get('findings',[])}
     result=['# 周期报告 · 审计口径修正','',core['kind']+'：'+core['period_start']+' 至 '+core.get('period_end',''),'',
             f'有效工作提交：{len(commits)}；去重问题/建议：{len(findings)}。','',
-            '原始报告归档保留。本投影仅更新CES自动文档提交排除口径，不冒称新的AI综合分析。','']
+            '原始报告归档保留。本投影更新CES自动文档提交排除口径，保留原分析结论与来源。','']
     for row in sorted(commits.values(),key=lambda x:x['sha']):result.append('- '+row['sha'][:12]+' '+w.md(row.get('subject','')))
     for f in findings.values():result+=['- '+f['title']+'：'+f.get('reasoning',''),'  建议：'+f.get('recommendation','')]
     result+=lines(sorted(excluded.values(),key=lambda x:x['sha']))

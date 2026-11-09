@@ -45,6 +45,7 @@ Windows `ces-product.cmd` and `sh ./ces-product` refer to the same operator.
 
 ## Documentation
 
+- [Report preparation standard](docs/REPORTING_STANDARD.md) · [Functional code analysis](docs/CODE_REVIEW.md)
 - [Installation and supported scope](docs/INSTALLATION.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Source names and path migration](docs/NAMING.md)

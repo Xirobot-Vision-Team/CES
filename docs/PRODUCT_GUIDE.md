@@ -1,4 +1,4 @@
-# CES三大功能指南
+# CES 功能指南
 
 入口：ces-product.cmd。外部profile：<external-data>/profiles/。产品层1.8.0，内核协议1.0.0。
 
@@ -10,20 +10,22 @@
 正确性条件与优化取舍。正常构建与常规限制只作附录；具体失败或相关安全问题才展开。
 通过 `review prepare/complete` 对完整周期变更分批阅读，按外部预算扩大覆盖并记录
 每个批次的实际审阅状态，不能超限后只看最后小提交。详见[代码分析设计](CODE_REVIEW.md)。
-允许长篇深入报告：功能可展开背景、数据流、算法推导、前后实例、边界、复杂度、
-方案比较和验证设计。正文长度目标可配置，不按目标截断或凑字数；超出单条消息时
-在同一报告线程分篇回读，完整正文继续归档/导出，发送中断不冒称全部完成。
+功能分析包括背景、数据流、算法推导、前后实例、边界、复杂度、方案比较和验证
+设计，详略依变更与证据确定。正文篇幅参数为规划参考；超出单条消息容量时
+在同一报告线程分篇回读，完整正文继续归档/导出，发送中断时记录已完成篇及待发布范围。
 
-四个自然语言快捷入口为“仓库每日分析”“仓库周总结”“仓库月总结”“仓库年报告”。详细执行范围、构建测试、补充代码分析和知识整理规则见 [REPOSITORY_SHORTCUTS.md](REPOSITORY_SHORTCUTS.md)。这是CES skill由Codex编排的完整任务，不是只生成排版或独立PowerShell子命令。
+报告命名与正文要求见[报告编制规范](REPORTING_STANDARD.md)。
+
+四个自然语言快捷入口为“仓库每日分析”“仓库周总结”“仓库月总结”“仓库年报告”。详细执行范围、构建测试、补充代码分析和知识整理规则见 [REPOSITORY_SHORTCUTS.md](REPOSITORY_SHORTCUTS.md)。这些入口调用CES skill，由Codex编排分析、验证、报告和知识维护。
 - prepare --config <profile>：Collect、Reconcile、CodePrepare。
 - Codex审阅真实代码与必要上下文，写当前证据绑定的review-draft.json。
 - complete --config <profile> --run <run>：CodeValidate后生成分析报告及日活动。
 - report daily --config <profile> --run <run> [--execute]：按实际GitHub作者归档和通知。
 - report weekly|monthly|yearly --config <profile> [--as-of YYYY-MM-DD] [--analysis <synthesis.json>] [--execute]。
-底层归档汇总器按周→日报、月→周报、年→月总结读取。skill的完整周总结会查阅本周所有日报，月总结会同时查阅当月日报与周报，年报告会同时查阅当年周报与月报。Codex对报告缺口、风险和重要变更做有范围的补充代码分析，并将其证据独立保存后引用到总结；不重复审阅全部历史代码。汇总器不重新分析业务源码；启用审计排除时会有范围地核对Git提交和托管manifest，不冒称自动代码复查器。
-缺少下级记录时停止或标记缺口，缺日报不表示没有工作。AI综合判断用ces.period_synthesis.v1绑定input_binding_sha256；结构化排版不能冒充深度推理。
+底层归档汇总器按周→日报、月→周报、年→月总结读取。skill的完整周总结会查阅本周所有日报，月总结会同时查阅当月日报与周报，年报告会同时查阅当年周报与月报。Codex对报告缺口、风险和重要变更做有范围的补充代码分析，并将其证据独立保存后引用到总结；不重复审阅全部历史代码。汇总器不重新分析业务源码；启用审计排除时会有范围地核对Git提交和托管manifest，其职责为证据汇总和审计排除核验。
+缺少下级记录时停止或标记缺口，缺日报不表示没有工作。AI综合判断用ces.period_synthesis.v1绑定input_binding_sha256；结构化汇总与来源绑定的分析结论分别记录。
 
-按账号发布的日报也包含本轮整体审阅说明、来源提交和run内绑定的实际构建结果，参与快照去重。启用分析前构建却缺少本轮回执，或回执来源与审阅提交不一致时，停止发布；不能拿全局最近构建覆盖旧轮次。当天无新增业务源码时如实记录，不为完成流程制造Finding。profile固定base_ref只是审阅默认值，完整日范围由skill根据本轮真实提交确定，不能把HEAD~N冒称当天范围。
+按账号发布的日报也包含本轮整体审阅说明、来源提交和run内绑定的实际构建结果，参与快照去重。启用分析前构建却缺少本轮回执，或回执来源与审阅提交不一致时，停止发布；每轮仅使用与其来源匹配的构建回执。当天无新增业务源码时如实记录，仅对具备证据的问题登记Finding。profile的base_ref为审阅默认值，完整日范围由skill根据本轮实际提交确定并核验。
 
 audit.exclude_ces_generated_documents开启时，日/周/月/年统一排除可核验的CES自动知识/报告托管文档提交。发布时写CES机器trailer及仓库外逐提交回执；过滤还核对单父提交、仓库身份和manifest内路径，不能只按标题/作者/目录判断。历史已确认发布可在外部账本补录，不能将所有文档提交批量当机器人排除。混合业务改动及成员文档保留；核验失败保留提交并报告。只含维护提交时有效工作为0，生成仓库状态记录而不新建个人报告通知。上级汇总重新过滤历史日报；旧归档不可变，仓库报告导出使用修正投影。具体定时以外部Codex任务配置为准。
 
@@ -51,7 +53,7 @@ GitHub指派人数超限时明确停止，需配置团队提及或拆分，不�
 knowledge prepare --config <profile>：选择已跟踪HEAD来源，记录内容哈希及变更来源，缓存到配置的数据目录。
 Codex阅读来源与旧知识，输出ces.knowledge_draft.v1章节。每章包含Markdown、来源路径、行范围和精确引用。区分源码观察、用户确认、推断和待验证。
 knowledge publish --config <profile> --input <input> --draft <draft> [--execute]：核对HEAD、绑定、引用和现有文档哈希；冲突则停止，不覆盖成员的编辑。
-knowledge status显示仓库成品与外部缓存。后续只复核受影响章节。该入口不冒充旧KnowledgeSave的双签名Host。
+knowledge status显示仓库成品与外部缓存。后续只复核受影响章节。该入口与旧KnowledgeSave双签名Host保持独立的授权和验收边界。
 手动“仓库知识扩展”会按模块/主题/预算分批补齐未覆盖知识，维护仓库knowledge/coverage.md及下次待办；“继续仓库知识扩展”可接续。详见 [手动扩展规则](../references/knowledge-expansion.md)。knowledge prepare可加--sources-file <外部JSON路径数组>，每批1–64个已跟踪来源，不改profile默认列表。累计覆盖以章节和coverage记录为准，current.json仅是最近一批；该模式不加入日报/周报定时任务。
 documents --config <profile> [--execute]：导出验证过的报告成品和README索引。
 

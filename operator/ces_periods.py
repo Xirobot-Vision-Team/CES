@@ -6,7 +6,7 @@ from datetime import date,datetime,timedelta
 import ces_workflow as w
 import ces_documents as d
 
-LABEL={"weekly":"周报","monthly":"月总结","yearly":"年总结"}
+LABEL={"weekly":"仓库周总结","monthly":"仓库月总结","yearly":"仓库年度报告"}
 CHILD={"weekly":"daily","monthly":"weekly","yearly":"monthly"}
 def bounds(kind,as_of):
     start=as_of-timedelta(days=as_of.weekday()) if kind=="weekly" else as_of.replace(day=1) if kind=="monthly" else as_of.replace(month=1,day=1)
@@ -86,7 +86,7 @@ def build(c,kind,as_of=None,execute=False,analysis_path=None):
     counts={key:sum(f["severity"]==key for f in context["findings"]) for key in ("critical","high","medium","low","info")}
     lines=[f"# {labels} · {context['period_start']} 至 {context['as_of']}","",f"仓库：{c['github']['repository']}",
            f"来源：{len(context['children'])} 份{CHILD[kind]}记录，展开为 {len(records)} 份去重日报。",
-           "复用已分析内容；汇总不重新分析业务源码，仅为排除CES维护提交核对有范围的Git提交/托管元数据。","",
+           "",
            "## 综合概况","",f"- 去重提交：{len(context['commits'])}；去重问题/建议：{len(context['findings'])}。",
            "- 严重性分布："+", ".join(f"{key}={value}" for key,value in counts.items())+"。",
            f"- 缺少日报的日期：{len(context['missing_dates'])} 天；缺日报不表示没有工作。"]
@@ -96,7 +96,7 @@ def build(c,kind,as_of=None,execute=False,analysis_path=None):
             lines+=["","## "+title,""]+["- "+x for x in reasoning[field]]
     else:
         lines+=["","## 综合判断与行动","",
-                "- 这是基于归档数据的结构化总结，尚未附加新的AI综合评述，不声称进行了新的深度推理。",
+                "- 本报告为归档数据汇总；综合分析待补充。",
                 "- 优先处理已保存的高/中等级问题；info级作为优化或维护建议，不混为已证明缺陷。",
                 "- 优先补齐缺失日报与未审阅范围，再评价周期趋势；不把提交数量转为个人绩效。",
                 "- 将影响架构、接口或运行约定的已确认变更整理进仓库知识章节；未经核验的推断保留待验证标记。"]
@@ -105,7 +105,7 @@ def build(c,kind,as_of=None,execute=False,analysis_path=None):
     for f in sorted(context["findings"],key=lambda x:severity[x["severity"]]):
         title=f"[{f['title']}]({f['issue_url']})" if f.get("issue_url") else f["title"]
         lines += [f"- [{f['severity']}] {title}", "  - 已有分析："+f["reasoning"],"  - 建议："+f["recommendation"]]
-    lines+=["","## 来源与可追溯性",""]
+    lines+=["", "<details>", "<summary>来源、覆盖与问题追踪附录</summary>", "", "## 来源与可追溯性", ""]
     import ces_tracking
     lines+=ces_tracking.report_lines(context.get('issue_tracking'))
     import ces_audit
@@ -115,8 +115,7 @@ def build(c,kind,as_of=None,execute=False,analysis_path=None):
         lines.append("- "+(f"[{name}]({child['url']})" if child.get("url") else name)+f"；内容哈希 {child['core_sha256']}")
     lines+=["","## 边界","",
             "- 汇总使用归档报告，并按审计策略核对提交元数据；前置构建结果另列，不代表运行测试、CI或硬件验证。",
-            "- 来源于报告的观点仍保留原有置信度和限制，不提升为运行事实。",
-            "- GitHub内的个人提醒/指派与邮件入箱是不同状态。"]
+            "- 来源于报告的观点仍保留原有置信度和限制，不提升为运行事实。"]
     payload=dict(input=context["input_binding_sha256"],synthesis_sha256=d.digest(reasoning) if reasoning else None)
     ident=d.digest(payload)
     core=dict(schema="ces.period_report.v1",id=ident,repository_id=c["github"]["repository_id"],kind=kind,
@@ -130,7 +129,13 @@ def build(c,kind,as_of=None,execute=False,analysis_path=None):
     if context.get('preanalysis_build'):
         import ces_lifecycle
         core['preanalysis_build']=context['preanalysis_build']
-        core['markdown']+='\n## 本次分析前的实际构建\n\n'+'\n'.join(ces_lifecycle.build_lines(c,receipt=context['preanalysis_build']['build']))+'\n'
+        build=context['preanalysis_build']['build']
+        build_text='\n## 构建结果\n\n'+'\n'.join(ces_lifecycle.build_lines(c,receipt=build))+'\n'
+        if build.get('status')!='passed':
+            body,appendix=core['markdown'].split('<details>',1)
+            core['markdown']=body+build_text+'\n<details>'+appendix
+        else:core['markdown']+=build_text
+    core['markdown']+='\n</details>\n'
     dest=Path(c["output_root"])/"reports"/kind/core["period_start"]/(ident+".json")
     record=dict(schema="ces.period_report_record.v1",core=core,core_sha256=d.digest(core),publication=None)
     if dest.exists():
