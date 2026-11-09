@@ -997,7 +997,7 @@
     "operator/ces_test_results.py": "4169d2e48b5dfb977f9eff742a538b7c2d02d3174af66c597469d9fea6bc93d7",
     "operator/ces_testing.py": "9275068fffe48d518b46c811bfa64b8c3bc6f38b8b5129790876bde356becb68",
     "operator/ces_tracking.py": "a07d42558498b8047d37c9a3343b44dec50fda7874767e56a4a1538e3cc34c9b",
-    "operator/ces_workflow.py": "521bb8470b4da72291c5ba899f67aacf9b31e6512b704951867f36897d758755",
+    "operator/ces_workflow.py": "70b9642825fb6e4fc5a4692663388eeff6b4b12be403a60bccad54f76a6c0a9f",
     "operator/launch.ps1": "11dc4daac291edf54ee96507310a4226dab840951f3d0e0ff26321c6c8b2d6cb",
     "operator/native-http.ps1": "3039a0a7346e3ab45b02d5cc4538576780c8c4258426ab2d62707aef71f7f0fb",
     "operator/profile.example.json": "4d2a3788203814d7904713e27f7c9124dc83b5b0b7348ae62e589e4402d70636",

@@ -119,8 +119,7 @@ def source_link(c,commit,path):
 def render_analysis(c,run,checked):
     d=checked["data"];info=load(run/"run.json")
     lines=["# 代码功能分析","",f"仓库：{c['github']['repository']}",f"审阅提交：{info['head']}",
-           f"来源模式：{info['source_mode']}","",d["summary"],"",
-           "本报告由实际 CES Collect → Reconcile → CodePrepare → CodeValidate 证据链生成。字面绑定通过不等于缺陷语义已获证明。",""]
+           f"来源模式：{info['source_mode']}","",d["summary"],""]
     for i,f in enumerate(d["checked_findings"],1):
         location=(f"[{f['path']}]({source_link(c,info['head'],f['path'])})" if info["source_mode"]=="delivered_target_diff" else f"本地工作区 {f['path']}（不能用 HEAD 链接证明未提交内容）")
         lines += [f"## {i}. {f['title']}","",f"级别：{f['severity']}；置信度：{f['confidence']}",
