@@ -8,13 +8,14 @@ import ces_knowledge as knowledge
 import ces_periods as periods
 import ces_notifications as notifications
 
-def notify(c,run,execute):
+def notify(c,run,execute,period_records=()):
     import ces_reports
     client=ces_reports.Client(c)
-    origins=ces_reports.resolve_origins(c,run,client)
     policy={x["title"]:x for x in w.load(run/"issue-proposals.json")}
     items=[]
-    for result in w.load(run/"issue-results.json"):
+    issue_results=w.load(run/"issue-results.json")
+    origins=ces_reports.resolve_origins(c,run,client) if any(x.get('number') for x in issue_results) else {}
+    for result in issue_results:
         if result.get("number"):
             people=sorted({x["author_login"] for f in policy[result["title"]]["finding_ids"] for x in origins[f] if x.get("author_login")})
             items.append(dict(number=result["number"],recipients=people,kind="code_issue"))
@@ -23,23 +24,22 @@ def notify(c,run,execute):
         for record in w.load(daily_path)["records"]:
             publication=record.get("publication")
             if publication:items.append(dict(number=publication["number"],recipients=[record["recipient"]],kind="daily"))
-    for kind in ("weekly","monthly","yearly"):
-        path=Path(c["output_root"])/"notifications"/(kind+"-latest.json")
-        if path.exists():
-            publication=w.load(path).get("publication")
-            if not publication:
-                published=[]
-                for archived in (Path(c['output_root'])/'reports'/kind).glob('*/*.json'):
-                    record=w.load(archived)
-                    if record.get('publication') and record.get('core',{}).get('repository_id')==c['github']['repository_id']:
-                        published.append(record)
-                if published:publication=max(published,key=lambda x:x['core']['generated_at'])['publication']
-            if publication:items.append(dict(number=publication["number"],recipients=client.maintainers(),kind=kind))
+    for selected in period_records:
+        path=Path(selected).resolve();root=(Path(c['output_root'])/'reports').resolve()
+        w.need(root in path.parents,'NOTIFY_PERIOD_OUTSIDE_REPORT_ROOT')
+        record=w.load(path);core=record.get('core',{})
+        w.need(record.get('schema')=='ces.period_report_record.v1' and record.get('core_sha256')==docs.digest(core) and
+               core.get('repository_id')==c['github']['repository_id'] and core.get('kind') in ('weekly','monthly','yearly'),'NOTIFY_PERIOD_BINDING_INVALID')
+        publication=record.get('publication')
+        w.need(publication and type(publication.get('number')) is int,'NOTIFY_PERIOD_NOT_PUBLISHED')
+        items.append(dict(number=publication['number'],recipients=client.maintainers(),kind=core['kind']))
     assignable={x["login"] for x in client.pages(client.prefix+"/assignees")}
     outcomes=[]
     for item in items:
         issue=client.get(client.prefix+f"/issues/{item['number']}")
         w.need("<!-- ces-" in (issue.get("body") or ""),"NOT_CES_OWNED_ISSUE")
+        if item['kind']=='code_issue' and issue.get('state')=='closed' and not c.get('issue_tracking',{}).get('track_closed',False):
+            outcomes.append(dict(kind='code_issue',number=item['number'],url=issue['html_url'],status='closed_history_preserved',active_tracking=False));continue
         valid=sorted(set(item["recipients"]).intersection(assignable))
         unresolved=sorted(set(item["recipients"])-assignable)
         desired=sorted({x["login"] for x in issue["assignees"]}|set(valid))
@@ -110,6 +110,7 @@ def main(argv=None):
     doctor=sub.add_parser("doctor");doctor.add_argument("--config",required=True)
     document=sub.add_parser("documents");document.add_argument("--config",required=True);document.add_argument("--execute",action="store_true")
     reminders=sub.add_parser("notify");reminders.add_argument("--config",required=True);reminders.add_argument("--run",required=True);reminders.add_argument("--execute",action="store_true")
+    reminders.add_argument('--period-record',action='append',default=[],help='Explicit published period archive belonging to this request; repeat for multiple records. Historical latest reports are not selected implicitly.')
     a=p.parse_args(argv);c=w.config(a.config)
     if a.command=="doctor":
         product=json.loads((Path(__file__).resolve().parent.parent/"PRODUCT.json").read_text(encoding="utf-8-sig"))
@@ -135,7 +136,7 @@ def main(argv=None):
             result['git_publication']=ces_lifecycle.autocommit(c)
     else:
         run=Path(a.run).resolve();w.need(Path(c["output_root"]).resolve() in run.parents,"RUN_OUTSIDE_CONFIGURED_ROOT")
-        result=notify(c,run,a.execute)
+        result=notify(c,run,a.execute,a.period_record)
     print(json.dumps(result,ensure_ascii=False,indent=2))
 if __name__=="__main__":
     try:main()

@@ -5,6 +5,7 @@ from pathlib import Path
 from datetime import datetime,timezone
 import ces_workflow as w
 import ces_documents as d
+import ces_knowledge_inventory as inventory
 
 def cache(c):return Path(c.get("cache_root",c["state_root"]))/"knowledge"
 def source_path(path):
@@ -31,22 +32,25 @@ def prepare(c,selected_sources=None):
     for path in selected:
         content=tracked_source(c,path,head)
         sources.append(dict(path=path,content_sha256=w.sha(content),line_count=len(content.splitlines())))
-    previous_path=cache(c)/"current.json"
-    previous=w.load(previous_path) if previous_path.exists() else None
-    old_sources={s["path"]:s["content_sha256"] for s in (previous or {}).get("sources",[])}
+    cumulative=inventory.load(cache(c),c['github']['repository_id'])
+    old_sources=cumulative['sources']
     changed=[s["path"] for s in sources if old_sources.get(s["path"])!=s["content_sha256"]]
     body=dict(schema="ces.knowledge_input.v1",repository_id=c["github"]["repository_id"],head=head,sources=sources,
-              changed_selected_sources=changed,previous_snapshot=(previous or {}).get("snapshot_id"),
-              mode="initial" if previous is None else "incremental",
+              changed_selected_sources=changed,previous_snapshot=cumulative['latest_snapshot'],
+              mode="initial" if not cumulative['snapshots'] else "incremental",
               original_legacy_signed_save_used=False,
               source_scope="tracked immutable HEAD content, explicit configured or per-run source list; not whole repository knowledge")
+    current={s['path']:s['content_sha256'] for s in sources}
+    body['knowledge_inventory']=dict(snapshots=cumulative['snapshots'],known_sources=len(old_sources),known_chapters=len(cumulative['chapters']),
+                                     affected_chapters=inventory.stale(cumulative,current),warnings=cumulative['warnings'],
+                                     coverage='only selected current sources compared; unselected chapters may still be stale')
     import ces_readmes
     body['readme_maintenance']=ces_readmes.discover(c,head,sources)
     body["binding_sha256"]=d.digest(body)
     path=cache(c)/"inputs"/(body["binding_sha256"]+".json")
     w.save(path,body);w.save(cache(c)/"latest-input.json",dict(path=str(path)))
-    return dict(status="knowledge_input_ready" if changed else "knowledge_sources_unchanged",input=str(path),head=head,mode=body["mode"],changed_sources=changed,
-                readme_maintenance=body['readme_maintenance'],
+    return dict(status="knowledge_input_ready" if changed or body['knowledge_inventory']['affected_chapters'] else "knowledge_sources_unchanged",input=str(path),head=head,mode=body["mode"],changed_sources=changed,
+                readme_maintenance=body['readme_maintenance'],knowledge_inventory=body['knowledge_inventory'],
                 next_step="Codex reads sources, old knowledge, and discovered README/descriptors; authors cited chapters and readmes updates or reasoned unchanged decisions. Missing README drafts remain visible gaps.")
 def inspect_input(c,path):
     data=w.load(path);binding=data.pop("binding_sha256")
@@ -134,9 +138,11 @@ def _publish(c,input_path,draft_path,execute=False):
         w.save(cache(c)/'readme-plans'/(inp['binding_sha256']+'.json'),ces_readmes.summary(readme))
         ces_readmes.apply(c,readme)
     snapshot_id=d.digest(dict(input=inp["binding_sha256"],documents={k:w.sha(v) for k,v in documents.items()}))
-    record=dict(schema="ces.knowledge_docset.v1",snapshot_id=snapshot_id,head=inp["head"],sources=inp["sources"],
+    record=dict(schema="ces.knowledge_docset.v1",repository_id=c['github']['repository_id'],snapshot_id=snapshot_id,head=inp["head"],sources=inp["sources"],
                 generated_at=datetime.now(timezone.utc).isoformat(),draft_sha256=w.sha(Path(draft_path).read_bytes()),
                 citation_count=citation_count,documents=plan["files"],readme_maintenance=ces_readmes.summary(readme),repository_written=execute,legacy_signed_save_used=False)
+    digests={s['path']:s['content_sha256'] for s in inp['sources']}
+    record['chapter_sources']={chapter['path']:{ref['path']:digests[ref['path']] for ref in chapter['citations']} for chapter in chapters}
     if execute:
         version_path=cache(c)/'versions'/(snapshot_id+'.json')
         if version_path.exists():

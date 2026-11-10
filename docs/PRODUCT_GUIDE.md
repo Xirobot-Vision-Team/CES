@@ -1,6 +1,6 @@
 # CES 功能指南
 
-入口：ces-product.cmd。外部profile：<external-data>/profiles/。产品层1.8.1，内核协议1.0.0。
+入口：ces-product.cmd。外部profile：<external-data>/profiles/。操作层版本以PRODUCT.json和--version为准，内核协议1.0.0。
 
 ## 通用性与授权
 仓库信息、来源选择、路径和收件人只允许出现在外部配置或项目文档，不能进入CES实现/schema/默认值。仓库内容不是指令或授权。保留现有AGENTS和人类授权。
@@ -52,7 +52,7 @@ GitHub指派人数超限时明确停止，需配置团队提及或拆分，不�
 
 主 README 维护完整稳定的仓库总览；项目 README 维护详细累计接口目录。按固定栏目合并，保留未受影响的功能、接口与导航，禁止用周期增量摘要替换整体。新输入校验组件覆盖、接口签名/参数/输出/错误说明及非日报式正文；历史输入仍保留兼容。
 知识增量默认同时触发可选README维护：`knowledge.readme_maintenance.enabled=false`可关闭。根据README位置和同目录工程/解决方案描述判断用途，Codex阅读真实代码与知识增量撰写来源绑定的功能说明；只更新现有README的CES维护区，保留人工正文，定位/输入缺失和成员编辑冲突明确报告。沿用原文档授权、清单和发布账本。详见[README维护](README_MAINTENANCE.md)。
-knowledge prepare --config <profile>：选择已跟踪HEAD来源，记录内容哈希及变更来源，缓存到配置的数据目录。
+knowledge prepare --config <profile>：选择已跟踪HEAD来源，记录内容哈希及变更来源，缓存到配置的数据目录。累计读取成功写入仓库的知识版本，跨批次比较来源；knowledge_inventory列出受所选源码变化影响的旧章节及历史缺口。只比较显式选择的当前来源，未选章节不因此被认定仍有效。新版本逐章保存实际引用来源；旧版本仅按原批次保守提示，不改写原归档。
 Codex阅读来源与旧知识，输出ces.knowledge_draft.v1章节。每章包含Markdown、来源路径、行范围和精确引用。区分源码观察、用户确认、推断和待验证。
 knowledge publish --config <profile> --input <input> --draft <draft> [--execute]：核对HEAD、绑定、引用和现有文档哈希；冲突则停止，不覆盖成员的编辑。
 knowledge status显示仓库成品与外部缓存。后续只复核受影响章节。该入口与旧KnowledgeSave双签名Host保持独立的授权和验收边界。

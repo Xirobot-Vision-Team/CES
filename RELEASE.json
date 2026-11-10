@@ -1,8 +1,8 @@
 {
   "schema": "ces.public_source_release.v1",
-  "operator_version": "1.8.2",
+  "operator_version": "1.8.3",
   "license": "Apache-2.0",
-  "prepared_at": "2026-11-10T02:29:40.933167+00:00",
+  "prepared_at": "2026-11-10T03:06:32.586624+00:00",
   "project_data_included": false,
   "git_history_included": false,
   "protected_legacy_bytes_preserved": false,
