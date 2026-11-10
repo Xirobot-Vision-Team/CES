@@ -101,6 +101,18 @@ class CatalogTests(ReadmeTests):
         section=copy.deepcopy(owned['sections'][0]);section['knowledge_paths']=['new-topic.md']
         merged=catalog.merge(dict(sections=[section]),item,owned)
         self.assertEqual(merged[0]['knowledge_paths'],['architecture.md','new-topic.md'])
+    def test_signature_outside_cited_range_is_rejected(self):
+        inp,draft=self.catalog_draft()
+        item=next(e for e in draft['readmes'] if any(s['id']=='interfaces' for s in e['sections']))
+        api=next(s for s in item['sections'] if s['id']=='interfaces')['entries'][0]
+        self.files['Suite/App/main.cs']=b'// unrelated line\npublic class App {}\n'
+        (self.root/'Suite/App/main.cs').write_bytes(self.files['Suite/App/main.cs'])
+        self.sources=[dict(path='Suite/App/main.cs',content_sha256=r.w.sha('// unrelated line\npublic class App {}'),line_count=2)]
+        with self.patches():inp=self.input(modern=True)
+        for s in item['sections']:
+            s['citations'][0]['quote']='// unrelated line'
+        api['citations'][0]['quote']='// unrelated line'
+        with self.patches(),self.assertRaisesRegex(RuntimeError,'SIGNATURE_NOT_IN_SOURCE'):r.plan(self.c,inp,dict(chapters=draft['chapters'],readmes=[item]))
 
 if __name__=='__main__':
     import unittest

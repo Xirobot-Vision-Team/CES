@@ -124,15 +124,21 @@ def discover(c,head,sources):
     return dict(enabled=True,targets=sorted(found,key=lambda x:x['path']),gaps=gaps,supporting_sources=supporting,
                 authoring='Maintain a complete stable repository overview and cumulative project interface catalogs. Merge identified sections, retain untouched sections/navigation, and document current contracts rather than period changes. Initial migration requires full structural review. Read actual README, descriptors, public interfaces and affected knowledge. No project command is executed.')
 
-def citations(c,inp,refs,allowed):
+def source_text(c,revision,path,cache):
+    key=(revision,path)
+    if key not in cache:cache[key]=w.git(c,'show',revision+':'+path)
+    return cache[key]
+
+def citations(c,inp,refs,allowed,text_cache=None):
     w.need(isinstance(refs,list) and 1<=len(refs)<=512,'README_CITATIONS_REQUIRED');lines=[]
     prefix=docs.root(c).relative_to(Path(c['repository_path']).resolve()).as_posix()+'/'
     w.need(any(isinstance(ref,dict) and isinstance(ref.get('path'),str) and
                not README.fullmatch(PurePosixPath(ref['path']).name) and not ref['path'].startswith(prefix) for ref in refs),'README_CODE_OR_BUILD_CITATION_REQUIRED')
     sources={s['path']:s for s in [*inp['sources'],*inp.get('readme_maintenance',{}).get('supporting_sources',[])]}
+    text_cache={} if text_cache is None else text_cache
     for ref in refs:
         name=ref['path'];w.need(name in sources and name in allowed,'README_CITATION_OUTSIDE_SCOPE')
-        text=w.git(c,'show',inp['head']+':'+name)
+        text=source_text(c,inp['head'],name,text_cache)
         w.need(w.sha(text)==sources[name]['content_sha256'],'README_SOURCE_CHANGED')
         a,b=ref['line_start'],ref['line_end'];source=text.splitlines()
         w.need(type(a) is int and type(b) is int and 1<=a<=b<=len(source) and b-a<100,'README_CITATION_RANGE_INVALID')
@@ -144,23 +150,23 @@ def catalog_content(c,inp,entry,item,owned):
     sections=catalog.merge(entry,item,owned)
     patches={s['id']:s for s in entry['sections']}
     previous={s['id']:s for s in (owned or {}).get('sections',[])}
-    sources={s['path']:s for s in [*inp['sources'],*inp['readme_maintenance'].get('supporting_sources',[])]}
+    text_cache={}
     for s in entry['sections']:
-        if s.get('action')=='remove':citations(c,inp,s['citations'],item['source_paths'])
+        if s.get('action')=='remove':citations(c,inp,s['citations'],item['source_paths'],text_cache)
     for section in sections:
         patch=patches.get(section['id'])
         if patch and patch.get('action','update')=='update':
-            citations(c,inp,section['citations'],item['source_paths'])
+            citations(c,inp,section['citations'],item['source_paths'],text_cache)
             api_patches={a['id']:a for a in patch.get('entries',[])}
             old=previous.get(section['id'])
             old_apis={a['id']:a for a in (old or {}).get('entries',[])}
             for api in patch.get('entries',[]):
-                if api.get('action')=='remove':citations(c,inp,api['citations'],item['source_paths'])
+                if api.get('action')=='remove':citations(c,inp,api['citations'],item['source_paths'],text_cache)
             for api in section.get('entries',[]):
                 if api['id'] not in api_patches or api_patches[api['id']].get('action')=='unchanged':continue
-                citations(c,inp,api['citations'],item['source_paths'])
+                citations(c,inp,api['citations'],item['source_paths'],text_cache)
                 signature=''.join(api['signature'].split())
-                w.need(any(signature in ''.join(w.git(c,'show',inp['head']+':'+ref['path']).split()) for ref in api['citations']),'README_INTERFACE_SIGNATURE_NOT_IN_SOURCE')
+                w.need(any(signature in ''.join(''.join(source_text(c,inp['head'],ref['path'],text_cache).splitlines()[ref['line_start']-1:ref['line_end']]).split()) for ref in api['citations']),'README_INTERFACE_SIGNATURE_NOT_IN_SOURCE')
                 w.need(not catalog.JOURNAL.search('\n'.join(api[f] for f in ('purpose','parameters','returns','errors'))),'README_PERIOD_NARRATIVE_REFUSED')
                 old_api=old_apis.get(api['id'])
                 if old_api and catalog.semantic(api)==catalog.semantic(old_api):api.clear();api.update(copy.deepcopy(old_api))
@@ -175,7 +181,7 @@ def catalog_content(c,inp,entry,item,owned):
         references=[(ref,revision) for ref in s['citations']]+[(ref,api.get('source_revision',revision)) for api in s.get('entries',[]) for ref in api['citations']]
         for ref,revision in references:
             relative(ref['path']);a,b=ref['line_start'],ref['line_end']
-            source=w.git(c,'show',revision+':'+ref['path']).splitlines()
+            source=source_text(c,revision,ref['path'],text_cache).splitlines()
             w.need(type(a) is int and type(b) is int and 1<=a<=b<=len(source) and b-a<100 and ref['quote'].strip() and ref['quote'] in '\n'.join(source[a-1:b]),'README_RETAINED_CITATION_INVALID')
             line='- ['+ref['path']+':L'+str(a)+']('+w.source_link(c,revision,ref['path'])+'#L'+str(a)+'-L'+str(b)+')'
             if line not in rendered:rendered.append(line)
