@@ -94,6 +94,13 @@ class CatalogTests(ReadmeTests):
         self.assertEqual([a['id'] for a in apis],['App','App-alternate'])
         self.assertEqual(apis[0]['source_revision'],HEAD)
         self.assertEqual(apis[1]['source_revision'],'c'*40)
+    def test_partial_section_patch_cannot_drop_existing_knowledge_navigation(self):
+        import ces_readme_catalog as catalog
+        inp,draft=self.catalog_draft();item=inp['readme_maintenance']['targets'][0]
+        owned=dict(sections=catalog.merge(draft['readmes'][0],item,None))
+        section=copy.deepcopy(owned['sections'][0]);section['knowledge_paths']=['new-topic.md']
+        merged=catalog.merge(dict(sections=[section]),item,owned)
+        self.assertEqual(merged[0]['knowledge_paths'],['architecture.md','new-topic.md'])
 
 if __name__=='__main__':
     import unittest

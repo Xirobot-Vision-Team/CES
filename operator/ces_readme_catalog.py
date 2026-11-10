@@ -51,6 +51,7 @@ def merge(entry,item,owned):
         w.need(not re.search(r'^#{1,2}\s',body,re.M),'README_SECTION_NESTED_HEADING_REFUSED')
         w.need(isinstance(row.get('citations'),list) and row['citations'],'README_SECTION_CITATIONS_REQUIRED')
         w.need(isinstance(row.get('knowledge_paths',[]),list),'README_SECTION_KNOWLEDGE_PATHS_INVALID')
+        row['knowledge_paths']=list(dict.fromkeys([*sections.get(ident,{}).get('knowledge_paths',[]),*row.get('knowledge_paths',[])]))
         if ident=='interfaces':
             entries=row.get('entries')
             w.need(isinstance(entries,list) and entries,'README_INTERFACE_CATALOG_REQUIRED')
