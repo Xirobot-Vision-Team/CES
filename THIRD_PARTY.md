@@ -13,7 +13,7 @@ features declare these direct dependencies in requirements-local.txt:
 | cryptography | 50.0.2 | Apache-2.0 OR BSD-3-Clause |
 | jsonschema | 4.26.0 | MIT |
 | asn1crypto | 1.5.1 | MIT |
-| lxml | 6.1.1 | BSD-3-Clause |
+| lxml | 6.1.3 | BSD-3-Clause |
 | pypdf | 6.21.4 | BSD-3-Clause |
 
 The development environment also resolved attrs (MIT), cffi (MIT-0),

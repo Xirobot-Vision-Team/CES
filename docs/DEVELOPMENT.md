@@ -59,3 +59,7 @@ independent audit.
 ## 1.8.0 cleanup
 
 Obsolete construction plans, progress/completion snapshots and their one-time checkers are retired. Runtime modules, protocol definitions and meaningful regression tests remain. tools/legacy_cleanup.json records exact removed baseline hashes and reviewed replacement hashes; the original BASELINE_SHA256.json is not rewritten. Undeclared drift and reintroduced retired files still fail integrity checks. See CLEANUP.md.
+
+## Incremental state regressions
+
+Knowledge inventory tests cover separate source batches, shared-source stale chapters, conservative legacy records, damaged history and repository identity. Notification tests require current-run scope and explicit bound period archives. They use local files and fake provider boundaries; no real reminder is emitted.

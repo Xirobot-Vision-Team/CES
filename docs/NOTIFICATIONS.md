@@ -48,3 +48,7 @@ GitHub原生通知邮件格式由GitHub控制，不能保证链接之外不含�
 
 手动与Codex定时器共享同一配置和账本。调度、项目目标和具体成员在外部配置，不写入CES通用实现。
 
+
+## 当前请求的提醒范围
+
+`notify --run <run>`只核验该run的代码Issue和日报。不会隐式选择全局weekly/monthly/yearly-latest或扫描历史报告。周期报告需要显式传`--period-record <已发布归档.json>`，可重复传入；先验证归档哈希、仓库身份、类型和发布记录，再读取远端。已关闭代码Issue按track_closed=false保留历史，不读取评论或补指派。旧发送账本与记录保留。

@@ -1,6 +1,6 @@
 {
   "name": "CES Engineering Suite",
-  "operator_version": "1.8.2",
+  "operator_version": "1.8.3",
   "core_protocol_version": "1.0.0",
   "entry": "ces-product.cmd",
   "pillars": [
@@ -26,5 +26,6 @@
   "license": "Apache-2.0",
   "public_source_preparation": "privacy-checked projection, read-only CI, external project profiles, legacy bytes retained",
   "release_status": "maintenance_release",
-  "legacy_cleanup": "explicit retired-file and reviewed-modification ledger; historical baseline unchanged"
+  "legacy_cleanup": "explicit retired-file and reviewed-modification ledger; historical baseline unchanged",
+  "knowledge_inventory": "cumulative written source observations and chapter-specific citation bindings; selected-source stale projection"
 }

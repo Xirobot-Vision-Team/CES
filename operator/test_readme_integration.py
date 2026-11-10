@@ -41,6 +41,9 @@ class ReadmeIntegrationTests(unittest.TestCase):
         preview=k.publish(self.c,ready['input'],draft,False)
         self.assertEqual((self.repo/'README.md').read_bytes(),old);self.assertEqual(len(preview['readme_maintenance']['updates']),1)
         result=k.publish(self.c,ready['input'],draft,True);commit=result['git_publication']['commit']
+        saved=k.w.load(k.cache(self.c)/'current.json')
+        self.assertEqual(saved['repository_id'],1)
+        self.assertEqual(saved['chapter_sources'],{'function.md':{'app.py':inp['sources'][0]['content_sha256']}})
         self.assertEqual(result['git_publication']['status'],'published_and_local_branch_synchronized')
         self.assertTrue((self.repo/'README.md').read_bytes().startswith(old));self.assertEqual(self.git_at(self.repo,'status','--porcelain=v1'),'')
         self.assertEqual(self.git_at(self.repo,'ls-remote','origin','refs/heads/main').split()[0],commit)

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.3 — Cumulative knowledge state and scoped reminders
+
+- Compare knowledge sources across durable written versions, retain chapter-specific citation bindings, and expose affected chapters without treating unselected sources as current. Preserve and disclose damaged or legacy history.
+- Limit account reminders to current-run issues/dailies and explicitly supplied, hash-bound period archives; retain closed code issues as passive history.
+- Upgrade optional lxml dependency to 6.1.3 and align version guidance with PRODUCT.json. Preserve execution policies, ledgers and historical reports.
+
 ## 1.8.2 — Persistent README reference catalogs
 
 - Keep complete repository/solution overviews and detailed project interface directories with source-validated signatures, parameters, outputs and errors. Merge stable sections instead of replacing README content with the latest knowledge batch.
