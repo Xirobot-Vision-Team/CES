@@ -32,14 +32,12 @@ def prepare(c,selected_sources=None):
     for path in selected:
         content=tracked_source(c,path,head)
         sources.append(dict(path=path,content_sha256=w.sha(content),line_count=len(content.splitlines())))
-    previous_path=cache(c)/"current.json"
-    previous=w.load(previous_path) if previous_path.exists() else None
     cumulative=inventory.load(cache(c),c['github']['repository_id'])
     old_sources=cumulative['sources']
     changed=[s["path"] for s in sources if old_sources.get(s["path"])!=s["content_sha256"]]
     body=dict(schema="ces.knowledge_input.v1",repository_id=c["github"]["repository_id"],head=head,sources=sources,
-              changed_selected_sources=changed,previous_snapshot=(previous or {}).get("snapshot_id"),
-              mode="initial" if previous is None else "incremental",
+              changed_selected_sources=changed,previous_snapshot=cumulative['latest_snapshot'],
+              mode="initial" if not cumulative['snapshots'] else "incremental",
               original_legacy_signed_save_used=False,
               source_scope="tracked immutable HEAD content, explicit configured or per-run source list; not whole repository knowledge")
     current={s['path']:s['content_sha256'] for s in sources}

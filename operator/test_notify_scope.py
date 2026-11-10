@@ -50,6 +50,10 @@ class NotifyScopeTests(unittest.TestCase):
             self.assertEqual(self.client.writes,[])
     def test_outside_report_root_is_refused(self):
         with self.assertRaisesRegex(RuntimeError,'OUTSIDE_REPORT_ROOT'):p.notify(self.c,self.run,False,[self.root/'foreign.json'])
+    def test_report_only_assignment_does_not_revalidate_unrelated_source_head(self):
+        path,_=self.period()
+        with patch('ces_reports.resolve_origins',side_effect=AssertionError('Unrelated source review')):
+            self.assertEqual(len(p.notify(self.c,self.run,False,[path])['items']),2)
     def test_closed_code_issue_is_history_only_without_comments_or_assignment(self):
         self.client.closed=True
         w.save(self.run/'daily-report-records.json',dict(records=[]))

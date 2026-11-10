@@ -11,10 +11,11 @@ import ces_notifications as notifications
 def notify(c,run,execute,period_records=()):
     import ces_reports
     client=ces_reports.Client(c)
-    origins=ces_reports.resolve_origins(c,run,client)
     policy={x["title"]:x for x in w.load(run/"issue-proposals.json")}
     items=[]
-    for result in w.load(run/"issue-results.json"):
+    issue_results=w.load(run/"issue-results.json")
+    origins=ces_reports.resolve_origins(c,run,client) if any(x.get('number') for x in issue_results) else {}
+    for result in issue_results:
         if result.get("number"):
             people=sorted({x["author_login"] for f in policy[result["title"]]["finding_ids"] for x in origins[f] if x.get("author_login")})
             items.append(dict(number=result["number"],recipients=people,kind="code_issue"))

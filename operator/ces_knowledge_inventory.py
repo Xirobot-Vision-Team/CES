@@ -28,8 +28,8 @@ def load(home,repository_id):
             rows[row['snapshot_id']]=(stamp.astimezone(timezone.utc),row)
         except (ValueError,KeyError,TypeError,AttributeError,RuntimeError,OSError):
             warnings.append(dict(record=path.name,reason='unusable_knowledge_history_retained'))
-    sources={};chapters={}
-    for _,row in sorted(rows.values(),key=lambda pair:(pair[0],pair[1]['snapshot_id'])):
+    sources={};chapters={};ordered=sorted(rows.values(),key=lambda pair:(pair[0],pair[1]['snapshot_id']))
+    for _,row in ordered:
         observed={s['path']:s['content_sha256'] for s in row['sources']}
         sources.update(observed)
         specific=row.get('chapter_sources')
@@ -44,7 +44,8 @@ def load(home,repository_id):
                 if name.startswith('knowledge/') and name.endswith('.md') and name!='knowledge/README.md':
                     chapters[name.removeprefix('knowledge/')]=dict(sources=observed,snapshot_id=row['snapshot_id'],binding_kind='legacy_batch_scope')
     return dict(schema='ces.knowledge_inventory.v1',repository_id=repository_id,sources=sources,chapters=chapters,
-                snapshots=len(rows),warnings=warnings,scope='published source observations; not proof of semantic or whole-repository coverage')
+                snapshots=len(rows),latest_snapshot=ordered[-1][1]['snapshot_id'] if ordered else None,
+                warnings=warnings,scope='published source observations; not proof of semantic or whole-repository coverage')
 
 def stale(inventory,current):
     result=[]

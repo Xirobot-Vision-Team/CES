@@ -64,3 +64,10 @@ class InventoryTests(unittest.TestCase):
     def test_current_pointer_and_version_are_deduplicated(self):
         row=self.version('a',{'a.cpp':'A'},'a.md','2026-01-01T01:00:00+00:00');k.w.save(k.cache(self.c)/'current.json',row)
         self.assertEqual(inventory.load(k.cache(self.c),1)['snapshots'],1)
+    def test_damaged_current_pointer_recovers_from_versions_without_modifying_history(self):
+        self.version('valid',{'a.cpp':'A'},'a.md','2026-01-01T01:00:00+00:00')
+        path=k.cache(self.c)/'current.json';path.write_text('broken pointer',encoding='utf-8')
+        result,inp=self.prepare({'a.cpp':'A'})
+        self.assertEqual(result['changed_sources'],[])
+        self.assertEqual(inp['previous_snapshot'],'valid');self.assertEqual(inp['mode'],'incremental')
+        self.assertEqual(path.read_text(),'broken pointer');self.assertTrue(inp['knowledge_inventory']['warnings'])
