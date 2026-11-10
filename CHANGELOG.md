@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.2 — Persistent README reference catalogs
+
+- Keep complete repository/solution overviews and detailed project interface directories with source-validated signatures, parameters, outputs and errors. Merge stable sections instead of replacing README content with the latest knowledge batch.
+- Preserve untouched sections, knowledge navigation and original citations; reject incomplete component inventories and period narratives. Require a complete explicit migration of legacy fragments.
+- Support explicitly authorized missing project README creation, including ownership, concurrent-member-file protection, isolated publication and historical audit. Preserve existing source-binding and human-byte protections.
+
 ## 1.8.1 — Reporting standards and repository scope
 
 - Standardize report titles, evidence terminology, analysis requirements and
