@@ -1,5 +1,34 @@
 # README 增量维护
 
+## 稳定总览与接口目录
+
+README 是当前使用手册。根 README 必须完整介绍仓库用途、全部组件/工程、构建入口、使用路径和文档导航；局部知识更新不能用所选模块摘要替换总览。解决方案 README 解释组件与生成关系；项目 README 按公共接口、命令或工具入口组织详细目录，记录签名、用途、参数、返回/输出与错误边界。
+
+新 prepare 输入绑定 `ces.readme_catalog.v1` 内容合同、完整工程描述库存和支持来源哈希。首次建立或迁移旧维护块，必须完整审阅结构并提供 `migration_reason`。根组件栏目用 `descriptor_paths` 列全 `component_inventory` 中的描述路径。局部来源选择不证明全库语义审阅。
+
+草稿用稳定 ID 的 `sections` 补丁。仓库必需栏目是 `overview`、`components`、`build`、`usage`、`navigation`；解决方案需要前四项；项目需要 `overview`、`interfaces`、`usage`、`dependencies`。多角色合并要求。接口条目包含 `id`、`signature`、`purpose`、`parameters`、`returns`、`errors`、`citations`，签名核对实际来源。
+
+补丁未提及的栏目、知识链接与固定提交引用全部保留。更新一个栏目需提供其完整当前内容；删除栏目必须显式 `action="remove"`、理由与引用，必需栏目不能删除。内容不变时保留原引用提交，不因 HEAD、报告日期或知识批次变化重写。维护接口栏目时保留未受影响接口。正文拒绝“本轮”“今日”等周期叙事和日期章节，不包含审计回执、对话记录、变更流水或临时测试状态。主总览只在用途、结构、入口、依赖或使用合同变化时维护。
+
+缺少 README 的项目默认记录缺口；用户明确授权后，可在外部 profile 设 `knowledge.readme_maintenance.create_missing=true`，只在已发现同目录工程描述且选定来源的目录创建完整 README。未跟踪同名文件和生成期间出现的成员文件会阻止写入。新增 README 同样走精确清单、独立索引和历史审计。
+
+```json
+{
+  "path": "src/widget/README.md",
+  "reasoning": "根据公开接口和工程结构维护完整参考，保留其它栏目。",
+  "migration_reason": "已完整核对工程结构、公开声明和现有说明，迁移为稳定参考目录。",
+  "sections": [{
+    "id": "usage", "title": "调用方式",
+    "markdown": "说明当前入口、初始化顺序、输入约束和输出合同。",
+    "knowledge_paths": ["widget.md"],
+    "citations": [{"path": "src/widget/widget.cpp", "line_start": 1, "line_end": 2, "quote": "实际来源字面引用"}]
+  }]
+}
+```
+
+示例表示已建立目录后的局部补丁；首次建立仍需所有必需栏目。以下整块 markdown 示例仅用于旧版本已绑定输入，新发现合同必须使用 sections。
+
+
 README 维护是知识发布流程的一部分，默认开启，可在外部 profile 关闭：
 
 ```json

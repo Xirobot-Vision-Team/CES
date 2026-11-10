@@ -1,18 +1,13 @@
 {
   "schema": "ces.public_source_release.v1",
-  "operator_version": "1.8.1",
+  "operator_version": "1.8.2",
   "license": "Apache-2.0",
-  "prepared_at": "2026-11-09T03:54:54.046214+00:00",
+  "prepared_at": "2026-11-10T02:29:40.933167+00:00",
   "project_data_included": false,
   "git_history_included": false,
   "protected_legacy_bytes_preserved": false,
-  "omitted_paths": [
-    "docs/validation.json"
-  ],
-  "normalization": "LF for maintained files; protected scripts/construction/references unchanged",
-  "historical_validation": "deployment path-bearing JSON omitted; human-readable historical summary retained with its known failures",
-  "release_kind": "maintenance_release",
   "legacy_cleanup_ledger": "tools/legacy_cleanup.json",
-  "retained_runtime_protocol_version": "1.0.0",
-  "release_notes": "Reporting terminology and repository-content boundaries standardized; execution, protocol and historical baselines preserved."
+  "omitted_paths": [],
+  "normalization": "LF for maintained files; retained compatibility source bytes preserved subject to explicit cleanup ledger",
+  "historical_validation": "deployment path-bearing JSON omitted; human-readable historical summary retained with its known failures"
 }

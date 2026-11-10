@@ -49,6 +49,8 @@ GitHub指派人数超限时明确停止，需配置团队提及或拆分，不�
 退出0不能替代有效报告；缺报告、全跳过、格式/计数异常或源码变化不得记通过。项目测试回执不能直接作为track的fixed/regression证据；原Issue修复门独立保留。
 
 ## 知识与技术文档
+
+主 README 维护完整稳定的仓库总览；项目 README 维护详细累计接口目录。按固定栏目合并，保留未受影响的功能、接口与导航，禁止用周期增量摘要替换整体。新输入校验组件覆盖、接口签名/参数/输出/错误说明及非日报式正文；历史输入仍保留兼容。
 知识增量默认同时触发可选README维护：`knowledge.readme_maintenance.enabled=false`可关闭。根据README位置和同目录工程/解决方案描述判断用途，Codex阅读真实代码与知识增量撰写来源绑定的功能说明；只更新现有README的CES维护区，保留人工正文，定位/输入缺失和成员编辑冲突明确报告。沿用原文档授权、清单和发布账本。详见[README维护](README_MAINTENANCE.md)。
 knowledge prepare --config <profile>：选择已跟踪HEAD来源，记录内容哈希及变更来源，缓存到配置的数据目录。
 Codex阅读来源与旧知识，输出ces.knowledge_draft.v1章节。每章包含Markdown、来源路径、行范围和精确引用。区分源码观察、用户确认、推断和待验证。

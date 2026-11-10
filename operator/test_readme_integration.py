@@ -26,7 +26,15 @@ class ReadmeIntegrationTests(unittest.TestCase):
         result=k.prepare(self.c);inp=k.w.load(result['input']);ref=dict(path='app.py',line_start=1,line_end=2,quote='def compute():\n    return 42')
         draft=dict(schema='ces.knowledge_draft.v1',input_binding_sha256=inp['binding_sha256'],summary='Reviewed the actual compute implementation.',
                    chapters=[dict(path='function.md',title='Function',markdown='The source declares compute and returns 42. No runtime execution was performed.',citations=[ref])],
-                   readmes=[dict(path='README.md',action='update',markdown=body,reasoning='The root README introduces the repository and this public function; preserve the human introduction.',knowledge_paths=['function.md'],citations=[ref])])
+                   readmes=[])
+        if inp['readme_maintenance']['enabled']:
+            item=inp['readme_maintenance']['targets'][0];sections=[]
+            for ident in item['content_contract']['required_sections']:
+                section=dict(id=ident,title=ident.title(),markdown=body.replace('## Project function\n\n',''),citations=[ref],knowledge_paths=['function.md'])
+                if ident=='components':section['descriptor_paths']=[x['path'] for x in item['component_inventory']]
+                if ident=='interfaces':section['entries']=[dict(id='compute',signature='def compute():',purpose='Compute a constant result.',parameters='None.',returns='Integer 42.',errors='No explicit error result.',citations=[ref])]
+                sections.append(section)
+            draft['readmes']=[dict(path='README.md',action='update',sections=sections,migration_reason='Reviewed all descriptors and the declared compute contract for the initial stable reference.',reasoning='Preserve the complete repository overview and project interface directory.')]
         dest=self.home/'draft.json';k.w.save(dest,draft);return result,inp,dest
     def test_actual_publish_preserves_human_text_and_excludes_verified_output(self):
         old=(self.repo/'README.md').read_bytes();ready,inp,draft=self.ready()
@@ -68,5 +76,20 @@ class ReadmeIntegrationTests(unittest.TestCase):
         before=self.git_at(self.repo,'diff','--cached')
         with self.assertRaisesRegex(RuntimeError,'STAGED_CHANGES'):k.publish(self.c,ready['input'],draft,True)
         self.assertEqual(before,self.git_at(self.repo,'diff','--cached'));self.assertFalse((self.repo/'docs/ces/knowledge/function.md').exists())
+    def test_explicit_creation_publishes_new_catalog_and_audits_owned_bytes(self):
+        self.git_at(self.repo,'rm','README.md');self.git_at(self.repo,'commit','-m','No README fixture');self.git_at(self.repo,'push','origin','main')
+        self.c['knowledge']['readme_maintenance']=dict(create_missing=True)
+        ready,inp,draft=self.ready()
+        self.assertTrue(inp['readme_maintenance']['targets'][0]['created'])
+        result=k.publish(self.c,ready['input'],draft,True)
+        self.assertIn('## Interfaces',(self.repo/'README.md').read_text(encoding='utf-8'))
+        self.assertIsNotNone(audit.classify(self.c,result['git_publication']['commit']))
+        self.assertEqual(self.git_at(self.repo,'status','--porcelain=v1'),'')
+    def test_new_catalog_cannot_overwrite_untracked_member_readme(self):
+        self.git_at(self.repo,'rm','README.md');self.git_at(self.repo,'commit','-m','No README fixture')
+        self.c['knowledge']['readme_maintenance']=dict(create_missing=True)
+        ready,inp,draft=self.ready();(self.repo/'README.md').write_text('Member file',encoding='utf-8')
+        with self.assertRaisesRegex(RuntimeError,'CHANGED_AFTER_PREPARE'):k.publish(self.c,ready['input'],draft,True)
+        self.assertEqual((self.repo/'README.md').read_text(),'Member file')
 
 if __name__=='__main__':unittest.main()

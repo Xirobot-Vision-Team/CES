@@ -192,7 +192,8 @@ def publish(c,execute=False):
         changes=set(run(c,"diff","--name-only",head,"--",docroot).splitlines())|set(run(c,"ls-files","--others","--exclude-standard","--",docroot).splitlines())
         readmes={name for name in files if not name.startswith(docroot+'/')}
         for name in readmes:
-            if run(c,'diff','--name-only',head,'--',':(literal)'+name):changes.add(name)
+            if (run(c,'diff','--name-only',head,'--',':(literal)'+name) or
+                run(c,'ls-files','--others','--exclude-standard','--',':(literal)'+name)):changes.add(name)
         w.need(changes<=set(files),"UNOWNED_DOC_CHANGE_BLOCKS_AUTOPUBLISH")
         result=dict(schema="ces.document_git_publish.v1",branch=b,parent=head,paths=sorted(changes),mode="isolated_index_docs_only",
                     no_force=True,runtime_tests_executed=False)

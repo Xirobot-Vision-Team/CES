@@ -28,7 +28,12 @@ class ReadmeTests(unittest.TestCase):
     def patches(self):
         from contextlib import ExitStack
         stack=ExitStack();stack.enter_context(patch.object(r.w,'git',side_effect=self.git));stack.enter_context(patch.object(r,'blob',side_effect=lambda c,h,n:self.files[n]));return stack
-    def input(self):return dict(head=HEAD,binding_sha256='b'*64,sources=self.sources,readme_maintenance=r.discover(self.c,HEAD,self.sources))
+    def input(self,modern=False):
+        inp=dict(head=HEAD,binding_sha256='b'*64,sources=self.sources,readme_maintenance=r.discover(self.c,HEAD,self.sources))
+        if not modern:
+            # Archived v1 bindings retain their old whole-fragment behavior.
+            for item in inp['readme_maintenance']['targets']:item.pop('content_contract')
+        return inp
     def draft(self,paths=None):
         ref=dict(path='Suite/App/main.cs',line_start=1,line_end=1,quote='public class App {}')
         return dict(chapters=[dict(path='architecture.md',title='Architecture',markdown='Actual architecture source description '+'.'*30,citations=[ref])],
