@@ -67,12 +67,16 @@ def approved(c,revision,prefix=''):
         w.need(binding and allow.get(full,'').casefold()==binding['repository'].casefold(),'SUBMODULE_NOT_ALLOWLISTED:'+full)
         result.append(dict(**row,**binding,full_path=full))
     return result
-def child(c,row):
-    path=Path(c['repository_path'])/row['path'];root=Path(c['repository_path']).resolve()
+def mount_path(c,path):
+    path=Path(c['repository_path'])/safe(path);root=Path(c['repository_path']).resolve()
     for p in [path,*path.parents]:
         if p==root:break
         w.need(not p.is_symlink() and not (hasattr(p,'is_junction') and p.is_junction()),'SUBMODULE_REPARSE_REFUSED')
-    w.need(path.resolve().is_relative_to(root) and (path/'.git').exists(),'SUBMODULE_NOT_INITIALIZED:'+row['full_path'])
+    w.need(path.resolve().is_relative_to(root),'SUBMODULE_PATH_OUTSIDE_REPOSITORY')
+    return path
+def child(c,row):
+    path=mount_path(c,row['path'])
+    w.need((path/'.git').exists(),'SUBMODULE_NOT_INITIALIZED:'+row['full_path'])
     result=copy.deepcopy(c);result['repository_path']=str(path.resolve())
     result['github']={**c.get('github',{}),'repository':row['repository']}
     w.need(Path(raw(result,'rev-parse','--show-toplevel').decode().strip()).resolve()==path.resolve(),'SUBMODULE_ROOT_MISMATCH')
@@ -84,7 +88,7 @@ def inventory(c,revision=None,strict=False,prefix='',depth=0,allow_uninitialized
     w.need(depth<5,'SUBMODULE_DEPTH_LIMIT')
     revision=revision or w.git(c,'rev-parse','HEAD');result=[]
     for row in approved(c,revision,prefix):
-        path=Path(c['repository_path'])/row['path']
+        path=mount_path(c,row['path'])
         if allow_uninitialized and not (path/'.git').exists():
             w.need(not path.exists() or (path.is_dir() and not any(path.iterdir())),'SUBMODULE_INITIALIZATION_PATH_NOT_EMPTY:'+row['full_path'])
             continue
@@ -103,7 +107,7 @@ def sync(c,revision=None,prefix='',depth=0):
     w.need(depth<5,'SUBMODULE_DEPTH_LIMIT');cfg=c['repository_sync']['submodules']
     w.need(cfg.get('allow_init') is True,'SUBMODULE_INITIALIZATION_NOT_AUTHORIZED')
     for row in approved(c,revision or 'HEAD',prefix):
-        path=Path(c['repository_path'])/row['path']
+        path=mount_path(c,row['path'])
         # A pre-existing checkout must be clean. Lifecycle checks its old pin before parent sync.
         # Existing non-repository directories are never removed to make room for a clone.
         if (path/'.git').exists():

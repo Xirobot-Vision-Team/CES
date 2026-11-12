@@ -110,7 +110,9 @@ def effective_ownership(c,item):
     else:
         rows=ownership.mappings(c.get('testing',{}).get('ownership',[]));origin='project_profile'
     for path in sorted({path for row in rows for path in row['source_paths']}):
-        w.need(w.git(c,'ls-files','--',':(literal)'+path).splitlines()==[path],'TEST_OWNERSHIP_SOURCE_NOT_TRACKED')
+        import ces_submodules as subs
+        if subs.enabled(c):w.need(subs.binding(c,w.git(c,'rev-parse','HEAD'),path) is not None,'TEST_OWNERSHIP_SOURCE_NOT_TRACKED')
+        else:w.need(w.git(c,'ls-files','--',':(literal)'+path).splitlines()==[path],'TEST_OWNERSHIP_SOURCE_NOT_TRACKED')
     snapshot=dict(schema='ces.test_ownership_snapshot.v1',repository_id=c['github']['repository_id'],entry=item['name'],origin=origin,registry_version=version,mappings=rows)
     snapshot['ownership_snapshot_id']=digest(snapshot)
     return snapshot
@@ -121,7 +123,9 @@ def owners(c,name,input_path=None,execute=False):
     w.need(doc.get('schema')=='ces.test_ownership.v1' and doc.get('entry')==name,'TEST_OWNERSHIP_INPUT_INVALID')
     rows=ownership.mappings(doc.get('mappings'))
     for path in sorted({path for row in rows for path in row['source_paths']}):
-        w.need(w.git(c,'ls-files','--',':(literal)'+path).splitlines()==[path],'TEST_OWNERSHIP_SOURCE_NOT_TRACKED')
+        import ces_submodules as subs
+        if subs.enabled(c):w.need(subs.binding(c,w.git(c,'rev-parse','HEAD'),path) is not None,'TEST_OWNERSHIP_SOURCE_NOT_TRACKED')
+        else:w.need(w.git(c,'ls-files','--',':(literal)'+path).splitlines()==[path],'TEST_OWNERSHIP_SOURCE_NOT_TRACKED')
     record=dict(schema='ces.test_ownership_record.v1',repository_id=c['github']['repository_id'],entry=name,registered_head=w.git(c,'rev-parse','HEAD'),mappings=rows)
     record['ownership_id']=digest(record)
     if execute:

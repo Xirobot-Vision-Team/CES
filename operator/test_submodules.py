@@ -1,5 +1,5 @@
 """Disposable real Git fixtures; no network, project programs or credentials."""
-import copy,json,os,subprocess,tempfile,unittest
+import copy,json,os,subprocess,sys,tempfile,unittest
 from pathlib import Path
 from unittest.mock import patch
 import ces_workflow as w
@@ -138,5 +138,23 @@ class SubmoduleTests(unittest.TestCase):
     def test_case_colliding_allowlist_rejected(self):
         self.c['repository_sync']['submodules']['entries'].append(dict(path='PKG',repository='example/component'))
         with self.assertRaisesRegex(RuntimeError,'ALLOWLIST_INVALID'):s.policy(self.c)
+    def test_reparse_mount_rejected_before_any_update(self):
+        original=Path.is_symlink
+        def symlink(path):return path==self.repo/'pkg' or original(path)
+        with patch.object(Path,'is_symlink',symlink):
+            with self.assertRaisesRegex(RuntimeError,'REPARSE'):s.sync(self.c)
+    def test_case_insensitive_repository_identity(self):
+        self.c['repository_sync']['submodules']['entries'][0]['repository']='Example/Component'
+        self.assertEqual(s.inventory(self.c,strict=True)[0]['pinned_commit'],self.v1)
+    def test_build_receipt_preserves_failure_when_child_changes_during_build(self):
+        self.c['execution_policy']=dict(run_runtime_tests=False)
+        self.c['build_validation']=dict(enabled=True,configuration='Example',platform='Example',steps=[
+            dict(name='source-race-fixture',kind='build',cwd='{repository}',timeout_seconds=20,
+                 argv=[sys.executable,'-c',"from pathlib import Path;Path('pkg/a.cpp').write_text('changed during build')"])])
+        result=lifecycle.build(self.c)
+        self.assertEqual(result['status'],'failed');self.assertFalse(result['source_stable'])
+        self.assertIn('SUBMODULE_DIRTY',result['submodule_validation_error'])
+        self.assertEqual(result['steps'][0]['exit_code'],0)
+        self.assertTrue((Path(self.c['cache_root'])/'lifecycle/last-build.json').is_file())
 
 if __name__=='__main__':unittest.main()

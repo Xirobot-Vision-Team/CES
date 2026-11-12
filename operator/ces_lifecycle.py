@@ -111,12 +111,15 @@ def build(c):
                             build_log=str(log) if log.exists() else None,build_log_sha256=w.sha(log.read_bytes()) if log.exists() else None))
         if code!=0:break
     after=w.snapshot(c)
-    child_after=subs.inventory(c,strict=True) if subs.enabled(c) else []
-    source_stable=child_after==children and after["head"]==head and before["index_sha256"]==after["index_sha256"] and not business_changes(c)
+    child_error=None
+    try:child_after=subs.inventory(c,strict=True) if subs.enabled(c) else []
+    except RuntimeError as exc:child_after=[];child_error=str(exc)
+    source_stable=child_error is None and child_after==children and after["head"]==head and before["index_sha256"]==after["index_sha256"] and not business_changes(c)
     result=dict(schema="ces.build_validation.v1",head=head,source_stable=source_stable,
                 status="passed" if source_stable and len(results)==len(steps) and all(x["exit_code"]==0 for x in results) else "failed",
                 configuration=cfg.get("configuration"),platform=cfg.get("platform"),steps=results,
                 completed_at=time_now(),runtime_tests_executed=False,application_launched=False,submodules=children)
+    if child_error:result['submodule_validation_error']=child_error
     w.save(logdir/"receipt.json",result);w.save(home(c)/"last-build.json",result)
     return result
 def preflight(c):
