@@ -68,18 +68,24 @@ def execution_spec(item):
 def sources(c,item,head):
     output=[]
     for path in item['sources']:
+        import ces_submodules as subs
+        if subs.enabled(c):
+            text=subs.text(c,head,path);w.need(len(text.encode('utf-8'))<=4*1024*1024,'TEST_SOURCE_SIZE_LIMIT')
+            output.append(dict(path=path,sha256=w.sha(text),text=text,source_binding=subs.binding(c,head,path)));continue
         w.need(w.git(c,'ls-files','--',':(literal)'+path).splitlines()==[path],'TEST_SOURCE_NOT_TRACKED')
         text=w.git(c,'show',head+':'+path)
         w.need(len(text.encode('utf-8'))<=4*1024*1024,'TEST_SOURCE_SIZE_LIMIT')
         output.append(dict(path=path,sha256=w.sha(text),text=text))
     return output
-def fingerprint(items):return [dict(path=x['path'],sha256=x['sha256']) for x in items]
+def fingerprint(items):return [dict(path=x['path'],sha256=x['sha256'],**({'source_binding':x['source_binding']} if 'source_binding' in x else {})) for x in items]
 def pinned_head(c):
     head=w.git(c,'rev-parse','HEAD');branch=c.get('repository_sync',{}).get('branch') or w.git(c,'branch','--show-current')
     w.need(branch and not branch.startswith('-'),'TEST_BRANCH_REQUIRED')
     remote=w.git(c,'ls-remote','--exit-code','origin','refs/heads/'+branch).split()[0]
     w.need(head==remote,'TEST_HEAD_NOT_CURRENT_REMOTE_HEAD')
     w.need(not w.git(c,'status','--porcelain=v1','-uall'),'TEST_DIRTY_WORKTREE')
+    import ces_submodules as subs
+    if subs.enabled(c):subs.inventory(c,strict=True)
     return head
 @contextlib.contextmanager
 def lock(c,name):
@@ -104,7 +110,9 @@ def effective_ownership(c,item):
     else:
         rows=ownership.mappings(c.get('testing',{}).get('ownership',[]));origin='project_profile'
     for path in sorted({path for row in rows for path in row['source_paths']}):
-        w.need(w.git(c,'ls-files','--',':(literal)'+path).splitlines()==[path],'TEST_OWNERSHIP_SOURCE_NOT_TRACKED')
+        import ces_submodules as subs
+        if subs.enabled(c):w.need(subs.binding(c,w.git(c,'rev-parse','HEAD'),path) is not None,'TEST_OWNERSHIP_SOURCE_NOT_TRACKED')
+        else:w.need(w.git(c,'ls-files','--',':(literal)'+path).splitlines()==[path],'TEST_OWNERSHIP_SOURCE_NOT_TRACKED')
     snapshot=dict(schema='ces.test_ownership_snapshot.v1',repository_id=c['github']['repository_id'],entry=item['name'],origin=origin,registry_version=version,mappings=rows)
     snapshot['ownership_snapshot_id']=digest(snapshot)
     return snapshot
@@ -115,7 +123,9 @@ def owners(c,name,input_path=None,execute=False):
     w.need(doc.get('schema')=='ces.test_ownership.v1' and doc.get('entry')==name,'TEST_OWNERSHIP_INPUT_INVALID')
     rows=ownership.mappings(doc.get('mappings'))
     for path in sorted({path for row in rows for path in row['source_paths']}):
-        w.need(w.git(c,'ls-files','--',':(literal)'+path).splitlines()==[path],'TEST_OWNERSHIP_SOURCE_NOT_TRACKED')
+        import ces_submodules as subs
+        if subs.enabled(c):w.need(subs.binding(c,w.git(c,'rev-parse','HEAD'),path) is not None,'TEST_OWNERSHIP_SOURCE_NOT_TRACKED')
+        else:w.need(w.git(c,'ls-files','--',':(literal)'+path).splitlines()==[path],'TEST_OWNERSHIP_SOURCE_NOT_TRACKED')
     record=dict(schema='ces.test_ownership_record.v1',repository_id=c['github']['repository_id'],entry=name,registered_head=w.git(c,'rev-parse','HEAD'),mappings=rows)
     record['ownership_id']=digest(record)
     if execute:

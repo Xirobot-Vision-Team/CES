@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse,codecs,json,subprocess
 from pathlib import Path,PurePosixPath
 import ces_workflow as w
+import ces_submodules as subs
 
 DEFAULTS=dict(max_files=256,max_file_bytes=8*1024*1024,max_total_bytes=32*1024*1024,
               batch_bytes=128*1024,target_tokens=60000,max_tokens=120000)
@@ -56,6 +57,7 @@ def safe_path(path):
 
 def read_blob(c,revision,path):
     safe_path(path)
+    if subs.enabled(c):return subs.read(c,revision,path)
     # Reject symlinks/submodules rather than interpreting their contents as code.
     entry=raw_git(c,'ls-tree','-z',revision,'--',':(literal)'+path).split(b'\t',1)
     if len(entry)!=2:return None
@@ -91,12 +93,17 @@ def prepare(c,base,target='HEAD',context=()):
     # Ignore only proven generated tail commits. Earlier human/mixed documentation
     # remains eligible even if a later CES block append preserves its human bytes.
     effective_tip=kept[0]['sha'] if kept else base
-    changes=set(raw_git(c,'diff','--name-only','-z','--no-renames',base,effective_tip).decode('utf-8').rstrip('\0').split('\0'))-{''}
+    changes=set(subs.changed(c,base,effective_tip)) if subs.enabled(c) else set(raw_git(c,'diff','--name-only','-z','--no-renames',base,effective_tip).decode('utf-8').rstrip('\0').split('\0'))-{''}
     origins={}
     for row in kept:
         paths=raw_git(c,'diff-tree','--root','-m','--no-commit-id','--name-only','-r','-z',row['sha']).decode('utf-8').split('\0')
         for path in paths:
             if path in changes:origins.setdefault(path,[]).append(row['sha'])
+        if subs.enabled(c):
+            for path in changes:
+                if any(path.startswith(p+'/') for p in paths if p):origins.setdefault(path,[]).append(row['sha'])
+    if subs.enabled(c) and kept:
+        for path in changes:origins.setdefault(path,[effective_tip])
     selected=sorted(set(origins)|{safe_path(x) for x in context})
     before=w.snapshot(c);files=[];units=[];total=0
     for index,path in enumerate(selected):
@@ -111,6 +118,7 @@ def prepare(c,base,target='HEAD',context=()):
                 files.append(dict(**row,status='deferred',reason=str(exc)));continue
             if raw is None:
                 files.append(dict(**row,status='absent'));continue
+            if subs.enabled(c):row['source_binding']=subs.binding(c,revision,path)
             row.update(raw_sha256=w.sha(raw),bytes=len(raw))
             if len(raw)>limits['max_file_bytes'] or total+len(raw)>limits['max_total_bytes']:
                 files.append(dict(**row,status='deferred',reason='byte_budget'));continue
@@ -124,10 +132,12 @@ def prepare(c,base,target='HEAD',context=()):
             for start,end,content in chunks:
                 unit=dict(path=path,side=side,revision=revision,raw_sha256=row['raw_sha256'],
                           line_start=start,line_end=end,text=content,encoding=encoding,role=role)
+                if 'source_binding' in row:unit['source_binding']=row['source_binding']
                 unit['id']=digest(unit);units.append(unit)
     body=dict(schema='ces.code_review_plan.v1',repository_id=c['github']['repository_id'],base=base,head=head,effective_tip=effective_tip,
               budget=limits,effective_commits=kept,excluded_commits=excluded,audit_warnings=warnings,files=files,units=units,
               token_budget_kind='operator planning preference; not measured usage or a host/model hard limit')
+    if subs.enabled(c):body['submodule_changes']=subs.changes(c,base,head)
     body['binding_sha256']=digest(body)
     w.need(before==w.snapshot(c),'REVIEW_SOURCE_CHANGED_DURING_PREPARE')
     folder=Path(c.get('cache_root',c['state_root']))/'code-review'/body['binding_sha256'];folder.mkdir(parents=True,exist_ok=True)
@@ -146,6 +156,7 @@ def validate(c,plan,draft):
     sources={}
     for row in plan['files']:
         if row.get('raw_sha256'):
+            if 'source_binding' in row:w.need(subs.binding(c,row['revision'],row['path'])==row['source_binding'],'REVIEW_SUBMODULE_BINDING_CHANGED')
             raw=read_blob(c,row['revision'],row['path']);w.need(raw is not None and w.sha(raw)==row['raw_sha256'],'REVIEW_SOURCE_HASH_CHANGED')
             if row['status']=='available':sources[(row['path'],row['side'])]=(raw.decode(row['encoding']).splitlines(),row)
     units={u['id']:u for u in plan['units']};decisions=draft.get('coverage',[])
@@ -154,6 +165,7 @@ def validate(c,plan,draft):
         body=dict(unit);ident=body.pop('id');source=sources.get((unit['path'],unit['side']))
         w.need(ident==digest(body) and source is not None,'REVIEW_UNIT_BINDING_INVALID')
         lines,row=source;a,b=unit['line_start'],unit['line_end']
+        w.need(unit.get('source_binding')==row.get('source_binding'),'REVIEW_UNIT_OWNER_MISMATCH')
         w.need(unit['revision']==row['revision'] and unit['raw_sha256']==row['raw_sha256'] and
                1<=a<=b<=len(lines) and unit['text']=='\n'.join(lines[a-1:b]),'REVIEW_UNIT_SOURCE_MISMATCH')
     for key,(lines,row) in sources.items():
@@ -229,6 +241,12 @@ def feature_lines(c,record,commits):
         lines+=detail_lines(feature)
         for ref in feature['citations']:
             u=units[ref['unit_id']];lines.append('- ['+u['path']+':L'+str(ref['line_start'])+' ('+u['side']+')]('+w.source_link(c,u['revision'],u['path'])+'#L'+str(ref['line_start'])+')')
+    if record['plan'].get('submodule_changes'):
+        lines+=['','### 子模块集成与来源提交','']
+        for change in record['plan']['submodule_changes']:
+            lines.append('- '+change['path']+'：'+str(change['before'])+' → '+str(change['after'])+'；'+change['repository']+'；迁移/集成作者与子提交作者分别保留。')
+            for commit in change['commits']:
+                lines.append('- ['+commit['sha'][:12]+']('+commit['url']+') '+w.md(commit['subject'])+'；author='+w.md(commit['author_name'])+'；committer='+w.md(commit['committer_name']))
     return lines
 
 def main():

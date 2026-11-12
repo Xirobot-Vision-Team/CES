@@ -5,6 +5,7 @@ from pathlib import Path
 from datetime import datetime,timezone
 import ces_workflow as w
 import ces_documents as docs
+import ces_submodules as subs
 
 def home(c):
     path=Path(c.get("cache_root",c["state_root"]))/"lifecycle";path.mkdir(parents=True,exist_ok=True);return path
@@ -46,6 +47,7 @@ def sync(c):
     w.need(cfg.get("enabled") and cfg.get("allow_pull"),"AUTO_PULL_NOT_AUTHORIZED")
     b=branch(c);before=w.snapshot(c)
     w.need(not run(c,"diff","--cached","--name-only"),"STAGED_USER_CHANGES_BLOCK_AUTO_PULL")
+    if subs.enabled(c):subs.inventory(c,strict=True,allow_uninitialized=True)
     preserved=file_inventory(c)
     write_git(c,"fetch","--no-tags","origin","refs/heads/"+b,timeout=180)
     remote=run(c,"rev-parse","FETCH_HEAD")
@@ -59,11 +61,13 @@ def sync(c):
     for name,expected in preserved.items():
         p=Path(c["repository_path"])/name
         w.need((w.sha(p.read_bytes()) if p.is_file() else None)==expected,"LOCAL_EDIT_CHANGED_DURING_PULL")
+    children=subs.sync(c,remote) if subs.enabled(c) else []
+    if not subs.enabled(c) and (Path(c["repository_path"])/".gitmodules").is_file():w.need(not subs.links(c,remote),"SUBMODULE_SYNC_NOT_CONFIGURED")
     after=w.snapshot(c)
     w.need(after["head"]==remote,"PULL_NOT_AT_REMOTE_HEAD")
     result=dict(schema="ces.source_sync.v1",status="up_to_date" if old==remote else "fast_forwarded",
                 branch=b,old_head=old,head=remote,preserved_local_paths=list(preserved),completed_at=time_now(),
-                stash_used=False,rebase_used=False,reset_used=False)
+                stash_used=False,rebase_used=False,reset_used=False,submodules=children)
     w.save(home(c)/"last-sync.json",result);return result
 def expand(c,argv,log):
     root=c["repository_path"]
@@ -76,6 +80,8 @@ def build(c):
     steps=cfg.get("steps",[]);w.need(steps and len(steps)<=8,"BUILD_STEPS_REQUIRED")
     w.need(all(x.get("kind")=="build" for x in steps),"RUNTIME_TEST_STEPS_FORBIDDEN")
     w.need(not business_changes(c),"UNCOMMITTED_BUSINESS_SOURCE_BLOCKS_REPRODUCIBLE_BUILD")
+    children=subs.inventory(c,strict=True) if subs.enabled(c) else []
+    if not subs.enabled(c) and (Path(c["repository_path"])/".gitmodules").is_file():w.need(not subs.links(c,"HEAD"),"SUBMODULE_BUILD_NOT_CONFIGURED")
     before=w.snapshot(c);head=before["head"]
     runid=datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")+"-"+uuid.uuid4().hex[:6]
     logdir=home(c)/"builds"/runid;logdir.mkdir(parents=True)
@@ -105,11 +111,15 @@ def build(c):
                             build_log=str(log) if log.exists() else None,build_log_sha256=w.sha(log.read_bytes()) if log.exists() else None))
         if code!=0:break
     after=w.snapshot(c)
-    source_stable=after["head"]==head and before["index_sha256"]==after["index_sha256"] and not business_changes(c)
+    child_error=None
+    try:child_after=subs.inventory(c,strict=True) if subs.enabled(c) else []
+    except RuntimeError as exc:child_after=[];child_error=str(exc)
+    source_stable=child_error is None and child_after==children and after["head"]==head and before["index_sha256"]==after["index_sha256"] and not business_changes(c)
     result=dict(schema="ces.build_validation.v1",head=head,source_stable=source_stable,
                 status="passed" if source_stable and len(results)==len(steps) and all(x["exit_code"]==0 for x in results) else "failed",
                 configuration=cfg.get("configuration"),platform=cfg.get("platform"),steps=results,
-                completed_at=time_now(),runtime_tests_executed=False,application_launched=False)
+                completed_at=time_now(),runtime_tests_executed=False,application_launched=False,submodules=children)
+    if child_error:result['submodule_validation_error']=child_error
     w.save(logdir/"receipt.json",result);w.save(home(c)/"last-build.json",result)
     return result
 def preflight(c):
@@ -137,6 +147,7 @@ def resume_preflight(c):
     head=run(c,"rev-parse","HEAD");b=branch(c)
     w.need(head==record.get("head") and not business_changes(c),"ANALYSIS_SOURCE_CHANGED_RERUN_PREFLIGHT")
     w.need(run(c,"ls-remote","--exit-code","origin","refs/heads/"+b).split()[0]==head,"ANALYSIS_REMOTE_ADVANCED_RERUN_PREFLIGHT")
+    if subs.enabled(c):w.need(subs.inventory(c,strict=True)==record.get('submodules',[]),'ANALYSIS_SUBMODULE_CHANGED')
     cfg=c["build_validation"];steps=cfg["steps"];actual=record.get("steps",[])
     w.need(cfg.get("enabled") is True,"BUILD_NOT_CONFIGURED")
     w.need(build_only_policy(c) and

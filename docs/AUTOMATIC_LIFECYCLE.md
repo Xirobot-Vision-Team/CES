@@ -35,3 +35,7 @@ last-publish记录commit_prepared、pushed_remote_verified或published_and_local
 已获持续授权的Codex日报与周期任务可使用该流程：分析前同步和实际构建；不运行测试；知识文档增量完成后只推送托管成品。具体任务、执行时间和GitHub提醒方式以外部配置为准。
 Codex仍负责实际分析、知识章节推理和周期综合评述；Python负责证据处理、校验和发布；分析草稿须与本轮来源绑定。
 
+
+## Pinned submodules
+
+See [submodule support](SUBMODULES.md) for explicit allowlists, pinned initialization, cross-repository evidence and parent-only README ownership. This capability does not enable runtime tests or child publication.

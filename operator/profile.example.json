@@ -91,7 +91,12 @@
     "remote": "origin",
     "branch": "main",
     "strategy": "ff_only",
-    "before_analysis": false
+    "before_analysis": false,
+    "submodules": {
+      "enabled": false,
+      "allow_init": false,
+      "entries": []
+    }
   },
   "execution_policy": {
     "build_before_analysis": false,

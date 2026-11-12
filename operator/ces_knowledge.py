@@ -6,6 +6,7 @@ from datetime import datetime,timezone
 import ces_workflow as w
 import ces_documents as d
 import ces_knowledge_inventory as inventory
+import ces_submodules as subs
 
 def cache(c):return Path(c.get("cache_root",c["state_root"]))/"knowledge"
 def source_path(path):
@@ -16,6 +17,10 @@ def source_path(path):
     return path
 def tracked_source(c,path,head):
     source_path(path)
+    if subs.enabled(c):
+        content=subs.text(c,head,path)
+        w.need(0<len(content.encode("utf-8"))<=4*1024*1024,"KNOWLEDGE_SOURCE_LIMIT")
+        return content
     names=w.git(c,"ls-files","--",":(literal)"+path).splitlines()
     w.need(names==[path],"KNOWLEDGE_SOURCE_NOT_TRACKED:"+path)
     content=w.git(c,"show",head+":"+path)
@@ -31,7 +36,9 @@ def prepare(c,selected_sources=None):
     sources=[]
     for path in selected:
         content=tracked_source(c,path,head)
-        sources.append(dict(path=path,content_sha256=w.sha(content),line_count=len(content.splitlines())))
+        row=dict(path=path,content_sha256=w.sha(content),line_count=len(content.splitlines()))
+        if subs.enabled(c):row["source_binding"]=subs.binding(c,head,path)
+        sources.append(row)
     cumulative=inventory.load(cache(c),c['github']['repository_id'])
     old_sources=cumulative['sources']
     changed=[s["path"] for s in sources if old_sources.get(s["path"])!=s["content_sha256"]]
@@ -93,7 +100,9 @@ def _publish(c,input_path,draft_path,execute=False):
     chapters=draft.get("chapters",[])
     w.need(isinstance(chapters,list) and 1<=len(chapters)<=32,"KNOWLEDGE_CHAPTER_LIMIT")
     sources={row["path"]:tracked_source(c,row["path"],inp["head"]) for row in inp["sources"]}
-    for row in inp["sources"]:w.need(w.sha(sources[row["path"]])==row["content_sha256"],"KNOWLEDGE_SOURCE_DIGEST_MISMATCH")
+    for row in inp["sources"]:
+        w.need(w.sha(sources[row["path"]])==row["content_sha256"],"KNOWLEDGE_SOURCE_DIGEST_MISMATCH")
+        if "source_binding" in row:w.need(subs.binding(c,inp["head"],row["path"])==row["source_binding"],"KNOWLEDGE_SOURCE_BINDING_CHANGED")
     documents={};seen=set();citation_count=0
     for chapter in chapters:
         name=chapter["path"];rel=d.relative(name)

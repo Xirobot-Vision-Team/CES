@@ -305,6 +305,16 @@ def remind(c,client,db,record,execute):
 def source(c,client,head,path):
     from ces_documents import relative
     relative(path)
+    import ces_submodules as subs
+    if subs.enabled(c):
+        bound=subs.binding(c,head,path)
+        w.need(bound is not None,'SOURCE_CONTENT_UNAVAILABLE_OR_LIMITED')
+        if bound['chain']:
+            data=client.get('/repos/'+bound['source_repository']+'/git/blobs/'+bound['blob'])
+            w.need(data.get('sha')==bound['blob'] and data.get('encoding')=='base64' and 0<data.get('size',0)<=2*1024*1024,'SOURCE_GIT_BLOB_UNAVAILABLE')
+            raw=base64.b64decode(data['content']);w.need(len(raw)==data['size'] and __import__('hashlib').sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==bound['blob'],'SOURCE_BLOB_MISMATCH')
+            w.need(raw==subs.read(c,head,path),'SOURCE_REMOTE_LOCAL_MISMATCH')
+            return dict(path=path,sha256=w.sha(raw),git_blob_sha=bound['blob'],text=raw.decode('utf-8-sig'),source_binding=bound)
     data=client.get(client.prefix+"/contents/"+quote(path,safe="/")+"?ref="+head)
     w.need(isinstance(data,dict) and data.get('type')=='file' and 0<data.get('size',0)<=2*1024*1024,'SOURCE_CONTENT_UNAVAILABLE_OR_LIMITED')
     if data.get('encoding')!='base64':

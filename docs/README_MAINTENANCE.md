@@ -120,3 +120,7 @@ README 子清单内容哈希，并逐字核对父提交人工区。混合人工 
 
 此实现是助手编排的来源绑定维护，不包含模型 API。没有 README 草稿的无人值守
 Python 调用只报告待撰写缺口；默认开启不意味着能够凭空生成可信的功能说明。
+
+## Pinned submodules
+
+See [submodule support](SUBMODULES.md) for explicit allowlists, pinned initialization, cross-repository evidence and parent-only README ownership. This capability does not enable runtime tests or child publication.

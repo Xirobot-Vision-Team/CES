@@ -214,3 +214,7 @@ JSON/JSON Lines/CSV可用`mapping`指定`cases`（仅JSON，默认tests）、`id
 本机证据带哈希但未签名，不是对恶意测试程序的沙箱或独立可信证明。当前限额为每份报告/控制台8MiB、每轮最多64份结果及10000个用例；超限明确记录缺口。XML DTD/实体、结果目录外路径及重解析点拒绝读取。任意协议的全语义、设备行为、全库覆盖和生产验收都不由该入口自动证明。
 
 Issue修复门保持独立：新的`ces.project_test_receipt.v1`不能直接填入track fixed/regression回执列表。旧`track test`现在要求明确runtime许可及`kind=test`步骤；回执保存并核验步骤完整配置哈希，Build步骤或缺少这些绑定的旧回执不作为有效测试证据。需要时重跑真正测试，不补填/伪造旧回执，不降低自动关闭/重开门。
+
+## Pinned submodules
+
+See [submodule support](SUBMODULES.md) for explicit allowlists, pinned initialization, cross-repository evidence and parent-only README ownership. This capability does not enable runtime tests or child publication.

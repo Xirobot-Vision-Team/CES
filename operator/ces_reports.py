@@ -131,15 +131,23 @@ def resolve_origins(c,run,client):
     for finding in checked["data"]["checked_findings"]:
         raw=drafts[finding["id"]]["evidence_quote"];w.need(w.sha(raw)==finding["quote_sha256"],"ATTRIBUTION_QUOTE_CHANGED")
         literal=raw[1:] if raw.startswith("+") else raw
-        file=w.git(c,"show",info["head"]+":"+finding["path"])
+        import ces_submodules as subs
+        owner=subs.resolve(c,info['head'],finding['path']) if subs.enabled(c) else None
+        source_config=owner['_config'] if owner else c
+        source_head=owner['source_commit'] if owner else info['head']
+        source_path=owner['source_path'] if owner else finding['path']
+        file=subs.text(c,info['head'],finding['path']) if owner else w.git(c,"show",info["head"]+":"+finding["path"])
         matches=[i for i,line in enumerate(file.splitlines(),1) if line==literal]
         w.need(matches and len(matches)<=20,"ATTRIBUTION_LITERAL_AMBIGUOUS_OR_MISSING")
         origins=[]
         for line in matches:
-            blame=w.git(c,"blame","--line-porcelain","-L",f"{line},{line}",info["head"],"--",finding["path"])
+            blame=w.git(source_config,"blame","--line-porcelain","-L",f"{line},{line}",source_head,"--",source_path)
             commit=blame.split()[0].lstrip("^")
             w.need(re.fullmatch("[0-9a-f]{40}",commit) is not None,"ATTRIBUTION_COMMIT_INVALID")
-            identity=client.commit(commit)
+            if owner and owner['chain']:
+                document=client.get('/repos/'+owner['source_repository']+'/commits/'+commit)
+                identity=dict(author_login=(document.get('author') or {}).get('login'),committer_login=(document.get('committer') or {}).get('login'),url=document['html_url'])
+            else:identity=client.commit(commit)
             origins.append(dict(line=line,path=finding["path"],commit=commit,author_login=identity["author_login"],committer_login=identity["committer_login"],
                                 commit_url=identity["url"],code_url=code_url(c,info["head"],finding["path"],line),
                                 basis="git blame exact current line + GitHub commit identity mapping; not proof of fault"))

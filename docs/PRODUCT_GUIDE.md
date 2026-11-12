@@ -86,3 +86,7 @@ CES-Workflow保留兼容入口，权威实现在CES/operator。原生Action和�
 ## CES自身项目维护
 
 在同一个 `$ces` skill 中说“CES 项目维护”或“维护 CES GitHub 项目”，可调用源码审阅、修复、Issue/PR整理、CI核验、合并及发布流程。目标和授权来自用户上下文或外部维护配置，不借用业务项目profile；此入口不新增skill、CLI或定时器。详见[维护模式](MAINTENANCE.md)。
+
+## Pinned submodules
+
+See [submodule support](SUBMODULES.md) for explicit allowlists, pinned initialization, cross-repository evidence and parent-only README ownership. This capability does not enable runtime tests or child publication.
