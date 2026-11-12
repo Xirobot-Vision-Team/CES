@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.9.0 — Parent-pinned submodule evidence
+
+- Add explicit HTTPS repository/mount allowlists, safe pinned initialization, clean/pin build inventories and nested source chains.
+- Expand virtual before/after sources and child history without inventing source deletion on flat-to-submodule migration; bind knowledge, manual-test discovery, Issue source reading and citations to owning repositories.
+- Preserve old child README ownership metadata as detached records; parent documentation never stages or pushes child files. Keep native Finding validation, execution authorization and notification boundaries independent.
+- Add isolated real-Git regressions for pin changes, migration, stale/tampered sources and member-edit protection.
+
 ## 1.8.3 — Cumulative knowledge state and scoped reminders
 
 - Compare knowledge sources across durable written versions, retain chapter-specific citation bindings, and expose affected chapters without treating unselected sources as current. Preserve and disclose damaged or legacy history.

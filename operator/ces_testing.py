@@ -68,18 +68,24 @@ def execution_spec(item):
 def sources(c,item,head):
     output=[]
     for path in item['sources']:
+        import ces_submodules as subs
+        if subs.enabled(c):
+            text=subs.text(c,head,path);w.need(len(text.encode('utf-8'))<=4*1024*1024,'TEST_SOURCE_SIZE_LIMIT')
+            output.append(dict(path=path,sha256=w.sha(text),text=text,source_binding=subs.binding(c,head,path)));continue
         w.need(w.git(c,'ls-files','--',':(literal)'+path).splitlines()==[path],'TEST_SOURCE_NOT_TRACKED')
         text=w.git(c,'show',head+':'+path)
         w.need(len(text.encode('utf-8'))<=4*1024*1024,'TEST_SOURCE_SIZE_LIMIT')
         output.append(dict(path=path,sha256=w.sha(text),text=text))
     return output
-def fingerprint(items):return [dict(path=x['path'],sha256=x['sha256']) for x in items]
+def fingerprint(items):return [dict(path=x['path'],sha256=x['sha256'],**({'source_binding':x['source_binding']} if 'source_binding' in x else {})) for x in items]
 def pinned_head(c):
     head=w.git(c,'rev-parse','HEAD');branch=c.get('repository_sync',{}).get('branch') or w.git(c,'branch','--show-current')
     w.need(branch and not branch.startswith('-'),'TEST_BRANCH_REQUIRED')
     remote=w.git(c,'ls-remote','--exit-code','origin','refs/heads/'+branch).split()[0]
     w.need(head==remote,'TEST_HEAD_NOT_CURRENT_REMOTE_HEAD')
     w.need(not w.git(c,'status','--porcelain=v1','-uall'),'TEST_DIRTY_WORKTREE')
+    import ces_submodules as subs
+    if subs.enabled(c):subs.inventory(c,strict=True)
     return head
 @contextlib.contextmanager
 def lock(c,name):

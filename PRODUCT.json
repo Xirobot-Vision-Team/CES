@@ -1,6 +1,6 @@
 {
   "name": "CES Engineering Suite",
-  "operator_version": "1.8.3",
+  "operator_version": "1.9.0",
   "core_protocol_version": "1.0.0",
   "entry": "ces-product.cmd",
   "pillars": [
@@ -27,5 +27,6 @@
   "public_source_preparation": "privacy-checked projection, read-only CI, external project profiles, legacy bytes retained",
   "release_status": "maintenance_release",
   "legacy_cleanup": "explicit retired-file and reviewed-modification ledger; historical baseline unchanged",
-  "knowledge_inventory": "cumulative written source observations and chapter-specific citation bindings; selected-source stale projection"
+  "knowledge_inventory": "cumulative written source observations and chapter-specific citation bindings; selected-source stale projection",
+  "submodules": "opt-in allowlisted parent-pinned source chains, review expansion and parent-only document ownership"
 }

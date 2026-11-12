@@ -5,6 +5,7 @@ from pathlib import Path,PurePosixPath
 import ces_workflow as w
 import ces_documents as docs
 import ces_readme_catalog as catalog
+import ces_submodules as subs
 
 START=b'<!-- ces-readme:start -->'
 END=b'<!-- ces-readme:end -->'
@@ -36,6 +37,10 @@ def target(c,name):
 
 def blob(c,head,name):
     relative(name)
+    if subs.enabled(c):
+        content=subs.read(c,head,name)
+        w.need(content is not None and len(content)<=1024*1024,"README_BLOB_UNAVAILABLE_OR_LIMIT")
+        content.decode("utf-8-sig");return content
     p=subprocess.run(['git','--no-optional-locks','-C',c['repository_path'],'cat-file','blob',head+':'+name],
                      capture_output=True,env=w.clean_env(),timeout=45)
     w.need(p.returncode==0 and len(p.stdout)<=1024*1024,'README_BLOB_UNAVAILABLE_OR_LIMIT')
@@ -68,7 +73,7 @@ def manifest(c):
 def discover(c,head,sources):
     """Position and same-directory tracked build descriptors are evidence, never execution."""
     if not policy(c):return dict(enabled=False,targets=[],gaps=[])
-    names=[x for x in w.git(c,'ls-tree','-r','--name-only','-z',head).split('\0') if x]
+    names=subs.names(c,head) if subs.enabled(c) else [x for x in w.git(c,'ls-tree','-r','--name-only','-z',head).split('\0') if x]
     prefix=docs.root(c).relative_to(Path(c['repository_path']).resolve()).as_posix()+'/'
     grouped={};found=[];gaps=[]
     for name in names:
@@ -79,7 +84,7 @@ def discover(c,head,sources):
     descriptors_all=[(name,kind) for rows in grouped.values() for name,kind in rows]
     supporting=[]
     for name,_ in descriptors_all:
-        content=w.git(c,'show',head+':'+name)
+        content=subs.text(c,head,name) if subs.enabled(c) else w.git(c,'show',head+':'+name)
         w.need(len(content.encode('utf-8'))<=1024*1024,'README_DESCRIPTOR_LIMIT')
         supporting.append(dict(path=name,content_sha256=w.sha(content),line_count=len(content.splitlines())))
     w.need(len(supporting)<=512,'README_DESCRIPTOR_INVENTORY_LIMIT')
@@ -90,6 +95,8 @@ def discover(c,head,sources):
         roles=(['repository'] if str(p.parent)=='.' else [])+sorted({kind for _,kind in descriptors})
         if not roles:
             gaps.append(dict(path=name,reason='no_same_directory_project_or_solution_descriptor'));continue
+        if subs.mount(c,head,name):
+            gaps.append(dict(path=name,reason='submodule_readme_separate_publication_required'));continue
         scope='' if str(p.parent)=='.' else str(p.parent)+'/'
         relevant=[s['path'] for s in sources if not scope or s['path'].startswith(scope)]
         if not relevant:continue
@@ -106,6 +113,7 @@ def discover(c,head,sources):
                           current_sha256=w.sha(current),text_sha256=docs.text_hash(current),human_sha256=human(current),
                           content_contract=catalog.contract(roles),component_inventory=components))
     for folder,items in grouped.items():
+        if subs.mount(c,head,folder+'/README.md'):continue
         if not any(str(PurePosixPath(x).parent)==folder and README.fullmatch(PurePosixPath(x).name) for x in names):
             if c.get('knowledge',{}).get('readme_maintenance',{}).get('create_missing',False):
                 scope='' if folder=='.' else folder+'/'
@@ -126,7 +134,7 @@ def discover(c,head,sources):
 
 def source_text(c,revision,path,cache):
     key=(revision,path)
-    if key not in cache:cache[key]=w.git(c,'show',revision+':'+path)
+    if key not in cache:cache[key]=subs.text(c,revision,path) if subs.enabled(c) else w.git(c,'show',revision+':'+path)
     return cache[key]
 
 def citations(c,inp,refs,allowed,text_cache=None):
@@ -194,6 +202,13 @@ def plan(c,inp,draft):
     w.need(bound.get('enabled') is True,'README_POLICY_CHANGED_RERUN_PREPARE')
     entries=draft.get('readmes',[]);w.need(isinstance(entries,list) and len(entries)<=32,'README_DRAFT_INVALID')
     targets={x['path']:x for x in bound['targets']};seen=set();updates=[];gaps=list(bound.get('gaps',[]));data=manifest(c);olddata=copy.deepcopy(data)
+    if subs.enabled(c):
+        detached=data.setdefault('detached_submodule_readmes',{})
+        for name in list(data['files']):
+            owner=subs.mount(c,inp['head'],name)
+            if owner:
+                detached[name]=dict(metadata=data['files'].pop(name),parent_commit=inp['head'],repository=owner['repository'],reason='no_parent_repository_write_authority')
+                gaps.append(dict(path=name,reason='submodule_readme_separate_publication_required'))
     for entry in entries:
         name=entry.get('path');w.need(name in targets and name not in seen,'README_TARGET_NOT_BOUND_OR_DUPLICATE');seen.add(name);item=targets[name]
         path=target(c,name)
@@ -272,6 +287,7 @@ def managed_files(c):
     if not metadata.exists():return {}
     data=manifest(c);head=w.git(c,'rev-parse','HEAD');result={}
     for name,row in data['files'].items():
+        if subs.mount(c,head,name):continue # Preserved metadata is detached by the next knowledge plan; never stage a child file.
         path=target(c,name);w.need(path.is_file(),'README_MANAGED_FILE_MISSING')
         raw=path.read_bytes();prior_raw=committed(c,head,name,row.get('created',False))
         committed_unchanged=docs.text_hash(raw)==docs.text_hash(prior_raw)

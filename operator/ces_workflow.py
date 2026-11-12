@@ -115,6 +115,8 @@ def activity(c,start,end,with_exclusions=False):
 def md(text):
     return str(text).replace("\r"," ").replace("\n"," ").replace("|","\\|")
 def source_link(c,commit,path):
+    import ces_submodules
+    if ces_submodules.enabled(c):return ces_submodules.source_url(c,commit,path)
     return "https://github.com/"+c["github"]["repository"]+"/blob/"+commit+"/"+quote(path,safe="/")
 def render_analysis(c,run,checked):
     d=checked["data"];info=load(run/"run.json")

@@ -116,3 +116,7 @@ token预算分别配置，分析结论必须依据实际审阅的来源。
 功能阅读层负责来源追溯和报告绑定。原生 CodeValidate Finding 校验、算法正确性
 验收和性能验证分别保留独立要求。新代码 Issue 仍须原有原生证据、深度分析、归属/去重门。
 测试和 Issue fixed/regression 的独立执行验收不变。
+
+## Pinned submodules
+
+See [submodule support](SUBMODULES.md) for explicit allowlists, pinned initialization, cross-repository evidence and parent-only README ownership. This capability does not enable runtime tests or child publication.
