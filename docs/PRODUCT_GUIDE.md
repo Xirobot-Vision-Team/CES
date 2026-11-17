@@ -44,7 +44,7 @@ GitHub指派人数超限时明确停止，需配置团队提及或拆分，不�
 
 ## 项目测试与报告分析
 
-`test prepare/register/owners/run/analyze/publish/status --config <profile>`提供通用的测试入口源码审阅、结果协议及函数/功能开发者登记、独立执行回执、结果汇总、Codex分析和测试报告Issue发布。支持JUnit、TRX、JSON/JSON Lines、CSV及明确的控制台逐用例协议。负责人、测试维护工程师、函数/功能开发者和命令都从项目外部profile或版本化登记读取；失败/错误用例自动匹配登记开发者并抄送，保留匹配证据和未匹配缺口。默认关闭，不自动加入原定时任务。详见[项目测试说明](TESTING.md)。
+`test prepare/register/owners/run/analyze/publish/status --config <profile>`提供通用的测试入口源码审阅、结果协议及函数/功能开发者登记、独立执行回执、结果汇总、Codex分析和测试报告Issue发布。每轮执行新建报告Issue；配置接口拆分时，每轮每接口新建一份，同轮同快照重试去重。支持JUnit、TRX、JSON/JSON Lines、CSV及明确的控制台逐用例协议。负责人、测试维护工程师、函数/功能开发者和命令都从项目外部profile或版本化登记读取；失败/错误用例自动匹配登记开发者并抄送，保留匹配证据和未匹配缺口。默认关闭，不自动加入原定时任务。详见[项目测试说明](TESTING.md)。
 
 退出0不能替代有效报告；缺报告、全跳过、格式/计数异常或源码变化不得记通过。项目测试回执不能直接作为track的fixed/regression证据；原Issue修复门独立保留。
 

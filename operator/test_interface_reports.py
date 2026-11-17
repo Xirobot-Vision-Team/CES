@@ -42,6 +42,20 @@ class InterfaceReportsTests(unittest.TestCase):
             self.assertIn('@other',body)
         self.assertEqual(original,(run/'analysis.json').read_bytes())
         docs=t.export_reports(self.c);self.assertEqual(len(docs),3);self.assertIn('接口测试报告索引',docs['reports/tests/fixture/latest.md'])
+    def test_new_execution_opens_new_issues_for_every_interface(self):
+        first=self.start();second=Path(t.run_test(self.c,'fixture',True)['run'])
+        for run in (first,second):t.analyze(self.c,run,self.grouped_analysis(run))
+        server=cc.Server()
+        with patch.object(t.w,'credential',return_value='test-only'),patch.object(t.w,'api',side_effect=server.api):
+            published=[t.publish(self.c,run,True) for run in (first,second)]
+            again=[t.publish(self.c,run,True) for run in (first,second)]
+        self.assertEqual(len(server.issues),4);self.assertEqual(len(server.writes),4);self.assertEqual(server.comments,[])
+        numbers=[{x['number'] for x in result['reports']} for result in published]
+        self.assertFalse(numbers[0]&numbers[1])
+        self.assertEqual({x['interface_id'] for x in published[0]['reports']},{x['interface_id'] for x in published[1]['reports']})
+        for initial,retry in zip(published,again):
+            self.assertEqual(retry['status'],'duplicate_skipped')
+            self.assertEqual([x['url'] for x in initial['reports']],[x['url'] for x in retry['reports']])
     def test_each_interface_requires_its_own_bound_analysis(self):
         run=self.start()
         with self.assertRaisesRegex(RuntimeError,'ANALYSES_REQUIRED'):t.analyze(self.c,run,self.analysis(run))

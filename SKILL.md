@@ -59,6 +59,8 @@ For 仓库测试审查, a supplied test entry, or test-result analysis, read doc
 
 Execution is separately opt-in: explicit human authorization plus testing.enabled, testing.allow_execute, execution_policy.run_runtime_tests=true and `test run --execute`. A build-only project stays disabled until the user explicitly enables its test entry. After execution read actual logs/results and relevant code, write receipt-bound ces.test_analysis.v1, then `test analyze` and authorized `test publish` to a test-report Issue, CCing configured project owners/test maintainers and ordinary project CC recipients. Do not invent code defects from failures or automatically mark Issues fixed. New project test receipts do not replace track's independent fix criteria. Installation does not add test runs to existing automations.
 
+Create a new test-report Issue for each execution receipt, separately per interface when configured. The same receipt and snapshot retry deduplicates; revised analysis and multipart delivery stay in that execution's thread. Preserve legacy reports and ledgers without automatically replaying old executions.
+
 Use explicit user-registered function/feature ownership from the external profile or `test owners` registry to map case IDs/patterns to developers. When given a subject and developers, inspect test registration/call sites to prepare its case selectors; leave ambiguous associations unresolved. Failed/error cases CC only matching developers in addition to normal report roles; disclose unmapped cases, preserve each run's ownership snapshot, do not infer accounts from test output/blame, and do not treat registration as proof of fault. Updating ownership alone does not authorize tests or resend old reports.
 
 ## CES project maintenance

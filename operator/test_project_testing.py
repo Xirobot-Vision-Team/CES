@@ -192,6 +192,36 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(len(server.writes),1);self.assertEqual(second['status'],'duplicate_skipped')
         self.assertFalse(ces_tracking.managed(server.issues[0]));self.assertEqual(server.issues[0]['assignees'],[])
         self.assertFalse(first['email_delivery_verified'])
+    def test_new_executions_get_new_issues_and_leave_legacy_report_untouched(self):
+        self.setup_contract();runs=[]
+        for _ in range(2):
+            run=t.run_test(self.c,'fixture',True)['run'];t.analyze(self.c,run,self.analysis(run));runs.append(run)
+        server=cc_tests.Server()
+        with patch.object(t.w,'credential',return_value='test-only'),patch.object(t.w,'api',side_effect=server.api):
+            t.reports.Client(self.c).publish('test:2:fixture','legacy','Old report','Historical execution',['developer'])
+            legacy=copy.deepcopy(server.issues[0]);server.writes.clear()
+            published=[t.publish(self.c,run,True) for run in runs]
+            again=[t.publish(self.c,run,True) for run in runs]
+        self.assertEqual(len(server.issues),3);self.assertEqual(len(server.writes),2);self.assertEqual(server.comments,[])
+        self.assertEqual(server.issues[0],legacy)
+        self.assertNotEqual(published[0]['number'],published[1]['number'])
+        self.assertNotEqual(published[0]['receipt_id'],published[1]['receipt_id'])
+        for first,retry in zip(published,again):
+            self.assertEqual(retry['status'],'duplicate_skipped');self.assertEqual(first['url'],retry['url'])
+    def test_lost_new_report_response_is_reconciled_without_another_issue(self):
+        result=self.run_fixture();run=result['run'];t.analyze(self.c,run,self.analysis(run));server=cc_tests.Server();server.uncertain=True
+        with patch.object(t.w,'credential',return_value='test-only'),patch.object(t.w,'api',side_effect=server.api):
+            with self.assertRaisesRegex(RuntimeError,'response lost'):t.publish(self.c,run,True)
+            server.uncertain=False;retried=t.publish(self.c,run,True)
+        self.assertEqual(retried['status'],'duplicate_skipped');self.assertEqual(len(server.issues),1);self.assertEqual(len(server.writes),1)
+    def test_reanalysis_of_same_execution_stays_in_its_report(self):
+        result=self.run_fixture();run=result['run'];draft=self.analysis(run);t.analyze(self.c,run,draft);server=cc_tests.Server()
+        with patch.object(t.w,'credential',return_value='test-only'),patch.object(t.w,'api',side_effect=server.api):
+            first=t.publish(self.c,run,True)
+            doc=t.w.load(draft);doc['summary']+=' Additional review of the same execution evidence.';t.w.save(draft,doc);t.analyze(self.c,run,draft)
+            revised=t.publish(self.c,run,True);again=t.publish(self.c,run,True)
+        self.assertEqual(len(server.issues),1);self.assertEqual(len(server.comments),1)
+        self.assertEqual(first['number'],revised['number']);self.assertEqual(again['status'],'duplicate_skipped')
     def test_publish_requires_analysis_roles_and_opt_in(self):
         result=self.run_fixture()
         with self.assertRaises(FileNotFoundError):t.publish(self.c,result['run'],True)

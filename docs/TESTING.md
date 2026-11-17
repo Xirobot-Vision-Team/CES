@@ -96,7 +96,7 @@ ces-product.cmd test owners --config <profile> --entry <name>
 2. `test register --config <profile> --input <discovery.json> --draft <contract.json> --execute`校验源码和命令未变、引用字面一致后登记协议。登记不改变测试执行开关。记录按项目与入口隔离，版本保留；只要相关源码哈希、命令配置及解析器版本相同，后续运行可复用。相关来源变化时必须重新prepare、阅读并register，原判断仅在来源和合同重新核验后复用。
 3. `test run --config <profile> --entry <name> --execute`检查明确授权、已登记协议、本地已同步到远端HEAD、工作区/暂存区干净，然后执行实际命令。保存HEAD、完整argv/cwd、时间、退出码、超时、可执行文件哈希、有限控制台输出、报告哈希、用例状态与解析缺口。每轮独立目录，超时终止进程树；源码/索引/远端变化会使结果失效，不reset或覆盖成员编辑。
 4. Codex阅读`analysis-input.json`、归一化结果、真实日志/报告及相关代码，撰写`ces.test_analysis.v1`。要求分析结论、根因与待证实项、建议、后续验证、覆盖限制，并引用实际输出；源码结论另引用绑定源码行。`test analyze --config <profile> --run <run-dir> --draft <analysis.json>`重新核验哈希和引用，生成可读报告。
-5. `test publish --config <profile> --run <run-dir> --execute`重放证据与报告校验，向同一项目/测试入口的测试报告Issue发布快照并回读；抄送负责人、测试维护工程师、项目通用抄送人以及本轮问题用例匹配的登记开发者。重复同一快照不重发，未知POST沿用现有账本按远端对账结果处理。测试报告不带代码缺陷指纹，不混入代码Issue待修状态。若另有足够的代码根因证据，按原深度Issue流程去重创建代码问题，Issue创建以已确认的代码问题证据为依据。
+5. `test publish --config <profile> --run <run-dir> --execute`重放证据与报告校验，为本轮执行新建测试报告Issue并回读；报告线程按仓库、入口和不可变的`receipt_id`隔离，新执行即使结果相同也不追加到上一轮报告。抄送负责人、测试维护工程师、项目通用抄送人以及本轮问题用例匹配的登记开发者。同一轮重复发布同一快照不重发；同轮重新分析及长报告分段仍留在该轮线程。未知POST沿用现有账本按远端对账结果处理。测试报告不带代码缺陷指纹，不混入代码Issue待修状态。若另有足够的代码根因证据，按原深度Issue流程去重创建代码问题，Issue创建以已确认的代码问题证据为依据。
 6. 授权的`documents --execute`可将各入口最新一份已审阅报告导出到`docs/ces/reports/tests/<entry>/latest.md`；缓存、原始日志和历史版本仍在仓库外。保持manifest所有权检查和现有文档发布授权。
 
 `test status --config <profile>`显示开关、每个入口的登记状态、源码/命令是否要求重新审阅。`doctor`也显示testing配置。
@@ -142,7 +142,9 @@ source_paths的多份配置合为一份接口报告；不同接口即使同一�
 每项包含interface_id、精确case_ids，以及该接口的summary、root_cause、recommendation、
 verification、limitations、citations；每组独立审阅，不复制整轮分析到所有报告。
 单接口可沿用整轮分析。接口分析仍绑定原receipt_id、normalized_sha256和来源引用。
-GitHub按入口+接口分别维护去重线程；仓库导出latest.md索引及interfaces/<id>.md成品。
+GitHub按入口+执行回执+接口分别新建报告线程；每轮各接口独立报告，同轮同接口重试去重。
+升级前按入口/接口复用的旧报告及发送账本保留，不自动迁移或重发历史执行。
+仓库导出latest.md索引及interfaces/<id>.md成品。
 原始analysis.json及回执保持不变，不将拆分展示写成新的实际执行。
 
 ```json

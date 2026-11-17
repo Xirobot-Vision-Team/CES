@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Create a new GitHub test-report Issue per execution receipt, including each registered interface, instead of appending later executions to an older report. Preserve same-execution snapshot deduplication, response-loss reconciliation and multipart delivery.
+- Retain historical report threads and notification ledgers without automatic replay; daily and other periodic report threading is unchanged.
+
 ## 1.9.0 — Parent-pinned submodule evidence
 
 - Add explicit HTTPS repository/mount allowlists, safe pinned initialization, clean/pin build inventories and nested source chains.
