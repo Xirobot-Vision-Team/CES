@@ -452,7 +452,7 @@ def publish(c,path,execute=False):
     if receipt.get('ownership_sha256'):roles['developers']=developers
     if signers:roles['report_signers']=signers
     semantic=digest(dict(analysis=record['analysis_id'],roles=roles))
-    result=client.publish(f"test:{c['github']['repository_id']}:{receipt['entry']}",semantic,'[CES 测试审查] '+receipt['entry'],markdown,primary)
+    result=client.publish(f"test:{c['github']['repository_id']}:{receipt['entry']}:run:{receipt['receipt_id']}",semantic,'[CES 测试审查] '+receipt['entry'],markdown,primary)
     result.update(project_owners=owners,test_maintainers=engineers,report_signers=signers,developers=developers,developer_routing=developer_routing,receipt_id=receipt['receipt_id'],test_report_only=True,automatic_code_issue_created=False,assignees_changed=False)
     w.save(run/'publication.json',result);return result
 
@@ -468,7 +468,7 @@ def publish_interfaces(c,run,receipt,normalized,record,execute):
         target=copy.deepcopy(c);target.setdefault('notifications',{})['cc_recipients']=notifications.unique(copies+group['developers']);clients.append(reports.Client(target))
     outcomes=[]
     for group,client in zip(groups,clients):
-        topic=f"test:{c['github']['repository_id']}:{receipt['entry']}:interface:{group['interface_id']}"
+        topic=f"test:{c['github']['repository_id']}:{receipt['entry']}:run:{receipt['receipt_id']}:interface:{group['interface_id']}"
         published=client.publish(topic,group['report_id'],'[CES 测试审查] '+receipt['entry']+' · '+group['name'],group['markdown'],group['developers'])
         published.update(interface_id=group['interface_id'],name=group['name'],case_ids=group['case_ids'],report_signers=group['developers'],receipt_id=receipt['receipt_id'],test_report_only=True,automatic_code_issue_created=False,assignees_changed=False);outcomes.append(published)
     result=dict(status='duplicate_skipped' if all(x['status']=='duplicate_skipped' for x in outcomes) else 'test_interface_reports_published',reports=outcomes,receipt_id=receipt['receipt_id'])
